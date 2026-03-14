@@ -19,6 +19,14 @@ function getToken(): string | null {
   return match ? decodeURIComponent(match[1]) : null;
 }
 
+function getRefreshToken(): string | null {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie.match(
+    new RegExp("(?:^|; )" + REFRESH_COOKIE + "=([^;]*)"),
+  );
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
 function setTokens(access: string, refresh?: string): void {
   if (typeof document === "undefined") return;
   document.cookie = `${TOKEN_COOKIE}=${encodeURIComponent(access)}; path=/; max-age=86400; samesite=lax`;
@@ -58,23 +66,21 @@ async function request<T>(
   const res = await fetch(url, { ...options, headers });
   const data = await res.json().catch(() => ({}));
 
-  if (res.status === 401) {
-    const refresh = typeof document !== "undefined"
-      ? document.cookie
-          .split("; ")
-          .find((c) => c.startsWith(REFRESH_COOKIE + "="))
-          ?.split("=")[1]
-      : null;
+  const shouldTryRefresh = (res.status === 401 || res.status === 403) && !!getRefreshToken();
+  if (shouldTryRefresh) {
+    const refresh = getRefreshToken();
     if (refresh) {
       try {
-        const refreshRes = await fetch(`${BASE_URL}/auth/token/refresh/`, {
+        const base = BASE_URL.replace(/\/$/, "");
+        const refreshRes = await fetch(`${base}/auth/token/refresh/`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ refresh }),
         });
-        const refreshData = (await refreshRes.json()) as { access?: string };
+        const refreshData = (await refreshRes.json()) as { access?: string; refresh?: string };
         if (refreshData.access) {
-          setTokens(refreshData.access, refresh);
+          const newRefresh = refreshData.refresh ?? refresh;
+          setTokens(refreshData.access, newRefresh);
           headers.Authorization = `Bearer ${refreshData.access}`;
           const retry = await fetch(url, { ...options, headers });
           const retryData = await retry.json().catch(() => ({}));
@@ -82,9 +88,15 @@ async function request<T>(
           return retryData as T;
         }
       } catch {
-        clearTokens();
-        if (typeof window !== "undefined") window.location.href = "/login";
+        // retry failed or network error
       }
+      // refresh не удался (401 на /token/refresh или нет access) — разлогинить
+      clearTokens();
+      if (typeof window !== "undefined") {
+        const next = encodeURIComponent(window.location.pathname || "/");
+        window.location.href = `/login?next=${next}`;
+      }
+      throw new ApiError(401, { detail: "Session expired" });
     }
   }
 
@@ -169,6 +181,42 @@ export async function getMe(): Promise<UserProfile> {
   return request<UserProfile>("users/me/");
 }
 
+export type UserProfileUpdate = Partial<
+  Pick<UserProfile, "first_name" | "last_name" | "avatar_url">
+>;
+
+export async function updateMe(payload: UserProfileUpdate): Promise<UserProfile> {
+  return request<UserProfile>("users/me/", {
+    method: "PATCH",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function uploadAvatar(file: File): Promise<UserProfile> {
+  const base = BASE_URL.replace(/\/$/, "");
+  const token = getToken();
+  const formData = new FormData();
+  formData.append("avatar", file);
+
+  const headers: Record<string, string> = {};
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  const res = await fetch(`${base}/users/me/avatar/`, {
+    method: "POST",
+    headers,
+    body: formData,
+    credentials: "omit",
+  });
+
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new ApiError(res.status, data);
+  }
+  return data as UserProfile;
+}
+
 export type AdminUser = {
   id: number;
   email: string;
@@ -193,6 +241,29 @@ export async function getAdminUser(id: string | number): Promise<AdminUser> {
 
 /* ========== Billing ========== */
 
+export type Plan = {
+  id: number;
+  name: string;
+  tier: string;
+  price: string;
+  currency: string;
+  duration_days: number | null;
+  max_devices: number;
+  max_requests?: number;
+  sort_order: number;
+};
+
+export async function getPlans(): Promise<Plan[]> {
+  const base = BASE_URL.replace(/\/$/, "");
+  const res = await fetch(`${base}/billing/plans/`, {
+    credentials: "omit",
+  });
+  if (!res.ok) throw new ApiError(res.status, await res.json().catch(() => ({})));
+  const data = await res.json();
+  const list = Array.isArray(data) ? data : (data as { results?: Plan[] }).results ?? [];
+  return [...list].sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+}
+
 export type BillingStatus = {
   status: string;
   is_active: boolean;
@@ -204,6 +275,39 @@ export type BillingStatus = {
 
 export async function getBillingStatus(): Promise<BillingStatus> {
   return request<BillingStatus>("billing/status/");
+}
+
+/* ========== Usage ========== */
+
+export type UsageStatus = {
+  plan_name: string;
+  request_limit: number;
+  requests_used: number;
+  period: string;
+};
+
+export async function getUsageStatus(): Promise<UsageStatus> {
+  return request<UsageStatus>("usage/");
+}
+
+/* ========== On-Demand ========== */
+
+export type OnDemandSettings = {
+  limit_type: "fixed" | "unlimited";
+  limit_amount: number | null;
+};
+
+export async function getOnDemandSettings(): Promise<OnDemandSettings> {
+  return request<OnDemandSettings>("on-demand/settings/");
+}
+
+export async function updateOnDemandSettings(
+  payload: Partial<OnDemandSettings>,
+): Promise<OnDemandSettings> {
+  return request<OnDemandSettings>("on-demand/settings/", {
+    method: "PATCH",
+    body: JSON.stringify(payload),
+  });
 }
 
 /* ========== Diagnostics (для будущей интеграции) ========== */

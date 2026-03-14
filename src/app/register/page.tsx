@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Container,
   Card,
@@ -14,8 +14,12 @@ import {
 } from "@mantine/core";
 import { register, ApiError } from "@/lib/api";
 
+const DEFAULT_AFTER_AUTH = "/superadmin/dashboard";
+
 export default function RegisterPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const nextUrl = searchParams.get("next") || DEFAULT_AFTER_AUTH;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -52,7 +56,7 @@ export default function RegisterPage() {
       });
 
       if (data.access && data.refresh) {
-        router.push("/business/admin/services");
+        router.push(nextUrl);
       } else if (data.detail) {
         setError(data.detail);
       } else {

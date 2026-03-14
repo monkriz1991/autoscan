@@ -61,8 +61,6 @@ export default function Navbar() {
           {navLink("/marketing/pricing", "Pricing")}
           {!authenticated && navLink("/register", "Register")}
           {!authenticated && navLink("/login", "Login")}
-          {!authenticated && navLink("/business/scan/", "Diagnose")}
-          {!authenticated && navLink("/superadmin/dashboard", "Dashboard")}
 
           {authenticated && (
             <Menu position="bottom-end" shadow="md" width={200}>

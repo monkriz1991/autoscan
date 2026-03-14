@@ -1,5 +1,168 @@
-import React from "react";
+"use client";
 
-export default function Pricing() {
-  return <h1>Pricing Page</h1>;
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import {
+  Container,
+  Title,
+  Card,
+  Badge,
+  Text,
+  Button,
+  Stack,
+  Group,
+  Loader,
+  Center,
+  Notification,
+  ActionIcon,
+  Box,
+} from "@mantine/core";
+import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
+import { getPlans } from "@/lib/api";
+import type { Plan } from "@/lib/api";
+
+function formatDuration(days: number | null): string {
+  if (days === null) return "Бессрочно";
+  if (days === 30) return "1 месяц";
+  if (days === 365) return "1 год";
+  return `${days} дн.`;
+}
+
+export default function PricingPage() {
+  const [plans, setPlans] = useState<Plan[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    getPlans()
+      .then(setPlans)
+      .catch((err) => {
+        setError(err instanceof Error ? err.message : "Ошибка загрузки тарифов");
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  const scroll = (dir: number) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const cardWidth = 320;
+    const gap = 16;
+    const scrollAmount = (cardWidth + gap) * dir;
+    el.scrollBy({ left: scrollAmount, behavior: "smooth" });
+  };
+
+  if (loading) {
+    return (
+      <Center py="xl">
+        <Loader size="lg" />
+      </Center>
+    );
+  }
+
+  return (
+    <Container size="lg" py="xl">
+      <Stack gap="xl">
+        <Title order={1} ta="center">
+          Тарифы
+        </Title>
+
+        {error && (
+          <Notification color="red" onClose={() => setError("")}>
+            {error}
+          </Notification>
+        )}
+
+        {!error && plans.length === 0 && (
+          <Text c="dimmed" ta="center" size="lg">
+            Тарифы пока не добавлены.
+          </Text>
+        )}
+
+        {!error && plans.length > 0 && (
+          <Box>
+            <Group justify="center" mb="md" gap="xs">
+              <ActionIcon
+                variant="light"
+                size="xl"
+                aria-label="Предыдущий"
+                onClick={() => scroll(-1)}
+              >
+                <IconChevronLeft size={24} />
+              </ActionIcon>
+              <ActionIcon
+                variant="light"
+                size="xl"
+                aria-label="Следующий"
+                onClick={() => scroll(1)}
+              >
+                <IconChevronRight size={24} />
+              </ActionIcon>
+            </Group>
+
+            <Box
+              ref={scrollRef}
+              style={{
+                display: "flex",
+                gap: 16,
+                overflowX: "auto",
+                scrollSnapType: "x mandatory",
+                scrollBehavior: "smooth",
+                padding: "8px 0",
+                scrollbarWidth: "none",
+                msOverflowStyle: "none",
+              }}
+              className="carousel-scroll"
+            >
+              {plans.map((plan) => (
+                <Card
+                  key={plan.id}
+                  withBorder
+                  shadow="sm"
+                  radius="md"
+                  p="xl"
+                  miw={300}
+                  maw={320}
+                  style={{
+                    flex: "0 0 300px",
+                    scrollSnapAlign: "start",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Stack gap="md" style={{ flex: 1 }}>
+                    <Group justify="space-between">
+                      <Title order={3}>{plan.name}</Title>
+                      <Badge variant="light" size="lg">
+                        {plan.tier}
+                      </Badge>
+                    </Group>
+
+                    <Text size="xl" fw={700}>
+                      {plan.price} {plan.currency}
+                    </Text>
+
+                    <Text size="sm" c="dimmed">
+                      {formatDuration(plan.duration_days)}
+                    </Text>
+
+                    <Text size="sm">До {plan.max_devices} устройств</Text>
+
+                    <Button
+                      component={Link}
+                      href="/register"
+                      variant="filled"
+                      mt="auto"
+                    >
+                      Выбрать
+                    </Button>
+                  </Stack>
+                </Card>
+              ))}
+            </Box>
+          </Box>
+        )}
+      </Stack>
+    </Container>
+  );
 }

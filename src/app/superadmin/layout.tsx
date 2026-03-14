@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "@/components/ui/Navbar";
+import SuperadminSidebar from "@/components/ui/SuperadminSidebar";
 
 export default function SuperadminLayout({
   children,
@@ -9,9 +10,12 @@ export default function SuperadminLayout({
   return (
     <div className="layout layout--superadmin">
       <Navbar />
-      <main className="layout__main">
-        <div className="layout__content">{children}</div>
-      </main>
+      <div className="layout__body">
+        <SuperadminSidebar />
+        <main className="layout__main">
+          <div className="layout__content">{children}</div>
+        </main>
+      </div>
       <footer className="layout__footer">
         © {new Date().getFullYear()} Superadmin Panel
       </footer>

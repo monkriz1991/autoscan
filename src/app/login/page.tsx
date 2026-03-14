@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Container,
   Card,
@@ -14,8 +14,12 @@ import {
 } from "@mantine/core";
 import { login, ApiError } from "@/lib/api";
 
+const DEFAULT_AFTER_AUTH = "/superadmin/dashboard";
+
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const nextUrl = searchParams.get("next") || DEFAULT_AFTER_AUTH;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,7 +32,7 @@ export default function LoginPage() {
 
     try {
       await login(email, password);
-      router.push("/business/admin/services");
+      router.push(nextUrl);
     } catch (err) {
       setError(
         err instanceof ApiError

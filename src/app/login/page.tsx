@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   Container,
@@ -16,7 +16,7 @@ import { login, ApiError } from "@/lib/api";
 
 const DEFAULT_AFTER_AUTH = "/superadmin/dashboard";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const nextUrl = searchParams.get("next") || DEFAULT_AFTER_AUTH;
@@ -76,5 +76,13 @@ export default function LoginPage() {
         </Stack>
       </Card>
     </Container>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<Container size="xs" py="xl">Загрузка...</Container>}>
+      <LoginForm />
+    </Suspense>
   );
 }

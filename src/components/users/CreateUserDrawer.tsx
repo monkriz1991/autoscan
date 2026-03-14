@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Drawer, Stack, TextInput, PasswordInput, Button } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
+import { register, ApiError } from "@/lib/api";
 
 type Props = {
   opened: boolean;
@@ -15,7 +16,6 @@ export default function CreateUserDrawer({
   onClose,
   onCreated,
 }: Props) {
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
@@ -25,7 +25,7 @@ export default function CreateUserDrawer({
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
   const handleCreate = async () => {
-    if (!name || !email || !password || !repeatPassword) {
+    if (!email || !password || !repeatPassword) {
       notifications.show({
         title: "Ошибка",
         message: "Заполните все поля",
@@ -55,42 +55,47 @@ export default function CreateUserDrawer({
     try {
       setLoading(true);
 
-      const res = await fetch("/api/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-          role: "BUSINESS_OWNER",
-        }),
-      });
+      const data = await register(
+        { email, password1: password, password2: repeatPassword },
+        { storeTokens: false },
+      );
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || "Ошибка создания");
+      if (data.access && data.refresh) {
+        notifications.show({
+          title: "Успешно",
+          message: "Пользователь создан",
+          color: "green",
+        });
+        onCreated();
+        onClose();
+      } else {
+        notifications.show({
+          title: "Успешно",
+          message:
+            "Пользователь зарегистрирован. Проверьте email для подтверждения.",
+          color: "green",
+        });
+        onCreated();
+        onClose();
       }
 
-      notifications.show({
-        title: "Успешно",
-        message: "Пользователь создан",
-        color: "green",
-      });
-
-      setName("");
       setEmail("");
       setPassword("");
       setRepeatPassword("");
-
-      onCreated();
-      onClose();
-    } catch (error: any) {
-      notifications.show({
-        title: "Ошибка",
-        message: error.message,
-        color: "red",
-      });
+    } catch (error) {
+      const msg =
+        error instanceof ApiError
+          ? (error.data as { detail?: string | Record<string, string[]> })?.detail
+            ? typeof (error.data as { detail?: unknown }).detail === "string"
+              ? (error.data as { detail: string }).detail
+              : Object.values(
+                  (error.data as { detail: Record<string, string[]> }).detail,
+                )
+                  .flat()
+                  .join(", ")
+            : error.message
+          : "Ошибка создания";
+      notifications.show({ title: "Ошибка", message: msg, color: "red" });
     } finally {
       setLoading(false);
     }
@@ -107,13 +112,8 @@ export default function CreateUserDrawer({
     >
       <Stack>
         <TextInput
-          label="Имя"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-
-        <TextInput
           label="Email"
+          type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />

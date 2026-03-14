@@ -2,10 +2,9 @@ import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 import "@/styles/global.scss";
 
-import { MantineProvider, Container } from "@mantine/core";
+import { MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
-import Navbar from "../components/ui/Navbar";
-import Footer from "../components/ui/Footer";
+import RootLayoutContent from "../components/ui/RootLayoutContent";
 
 export default function RootLayout({
   children,
@@ -17,13 +16,7 @@ export default function RootLayout({
       <body>
         <MantineProvider defaultColorScheme="light">
           <Notifications position="top-right" />
-          <div className="layout">
-            <Navbar />
-            <main className="layout__main">
-              <Container size="lg">{children}</Container>
-            </main>
-            <Footer />
-          </div>
+          <RootLayoutContent>{children}</RootLayoutContent>
         </MantineProvider>
       </body>
     </html>

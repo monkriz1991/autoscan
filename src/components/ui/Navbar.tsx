@@ -1,93 +1,109 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { AppShell, Group, NavLink, Divider, Title, Box } from "@mantine/core";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { Avatar, Menu } from "@mantine/core";
+import { IconDashboard, IconLogout, IconStethoscope } from "@tabler/icons-react";
+import { isAuthenticated, logout, getMe } from "@/lib/api";
+import type { UserProfile } from "@/lib/api";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const [authenticated, setAuthenticated] = useState(false);
+  const [user, setUser] = useState<UserProfile | null>(null);
 
-  const isActive = (path) => pathname === path;
+  useEffect(() => {
+    const ok = isAuthenticated();
+    setAuthenticated(ok);
+    if (ok) {
+      getMe()
+        .then(setUser)
+        .catch(() => setUser(null));
+    } else {
+      setUser(null);
+    }
+  }, [pathname]);
+
+  const navLink = (href: string, label: string) => {
+    const isActive = pathname === href;
+    return (
+      <Link
+        href={href}
+        className={`navbar__link ${isActive ? "navbar__link--active" : ""}`}
+      >
+        {label}
+      </Link>
+    );
+  };
+
+  const handleLogout = () => {
+    logout();
+    setAuthenticated(false);
+    setUser(null);
+    router.push("/");
+  };
+
+  const avatarLetters = user?.email
+    ? user.email.slice(0, 2).toUpperCase()
+    : "?";
 
   return (
-    <Box px="md" py="sm" style={{ borderBottom: "1px solid #eee" }}>
-      <Group gap="xl" align="flex-start">
-        {/* ===== SITE ===== */}
-        <Box>
-          <Title order={6} mb="xs">
-            Site
-          </Title>
-          <NavLink
-            component={Link}
-            href="/"
-            label="Home"
-            active={isActive("/")}
-          />
-          <NavLink
-            component={Link}
-            href="/pricing"
-            label="Pricing"
-            active={isActive("/pricing")}
-          />
-          <NavLink
-            component={Link}
-            href="/register"
-            label="Register"
-            active={isActive("/register")}
-          />
-          <NavLink
-            component={Link}
-            href="/login"
-            label="Login"
-            active={isActive("/login")}
-          />
-        </Box>
+    <header className="navbar">
+      <div className="navbar__inner">
+        <Link href="/" className="navbar__logo">
+          Autoscan
+        </Link>
 
-        <Divider orientation="vertical" />
+        <nav className="navbar__nav">
+          {navLink("/", "Home")}
+          {navLink("/marketing/pricing", "Pricing")}
+          {!authenticated && navLink("/register", "Register")}
+          {!authenticated && navLink("/login", "Login")}
+          {!authenticated && navLink("/business/scan/", "Diagnose")}
+          {!authenticated && navLink("/superadmin/dashboard", "Dashboard")}
 
-        {/* ===== ADMIN ===== */}
-        <Box>
-          <Title order={6} mb="xs">
-            Admin
-          </Title>
-          {/* <NavLink
-            component={Link}
-            href="/admin"
-            label="Dashboard"
-            active={isActive("/admin")}
-          /> */}
-          <NavLink component={Link} href="/business/scan/" label="Diagnose" />
-        </Box>
-
-        <Divider orientation="vertical" />
-
-        {/* ===== SUPER ADMIN ===== */}
-        <Box>
-          <Title order={6} mb="xs">
-            Super
-          </Title>
-          <NavLink
-            component={Link}
-            href="/superadmin/dashboard"
-            label="Dashboard"
-          />
-          <NavLink
-            component={Link}
-            href="/superadmin/dashboard/businesses"
-            label="Businesses"
-          />
-          <NavLink
-            component={Link}
-            href="/superadmin/dashboard/users"
-            label="Users"
-          />
-          <NavLink
-            component={Link}
-            href="/superadmin/dashboard/analytics"
-            label="Analytics"
-          />
-        </Box>
-      </Group>
-    </Box>
+          {authenticated && (
+            <Menu position="bottom-end" shadow="md" width={200}>
+              <Menu.Target>
+                <Avatar
+                  src={user?.avatar_url}
+                  radius="xl"
+                  color="blue"
+                  style={{ cursor: "pointer" }}
+                >
+                  {avatarLetters}
+                </Avatar>
+              </Menu.Target>
+              <Menu.Dropdown>
+                <Menu.Item
+                  leftSection={<IconDashboard size={16} />}
+                  component={Link}
+                  href="/superadmin/dashboard"
+                >
+                  Dashboard
+                </Menu.Item>
+                <Menu.Item
+                  leftSection={<IconStethoscope size={16} />}
+                  component={Link}
+                  href="/business/scan/"
+                >
+                  Diagnose
+                </Menu.Item>
+                <Menu.Divider />
+                <Menu.Item
+                  leftSection={<IconLogout size={16} />}
+                  color="red"
+                  onClick={handleLogout}
+                >
+                  Выйти
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+          )}
+        </nav>
+      </div>
+    </header>
   );
 }

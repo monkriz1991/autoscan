@@ -12,6 +12,7 @@ import {
   Stack,
   Notification,
 } from "@mantine/core";
+import { login, ApiError } from "@/lib/api";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -26,22 +27,14 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || "Ошибка входа");
-        return;
-      }
-
-      router.push("/business/admin");
+      await login(email, password);
+      router.push("/business/admin/services");
     } catch (err) {
-      setError("Ошибка сервера");
+      setError(
+        err instanceof ApiError
+          ? (err.data as { detail?: string })?.detail || err.message
+          : "Ошибка входа",
+      );
     } finally {
       setLoading(false);
     }

@@ -44,16 +44,19 @@ export default function WidgetPage() {
   useEffect(() => {
     const load = async () => {
       setLoading(true);
-
-      const [servicesRes, specialistsRes] = await Promise.all([
-        fetch(`/api/services?businessId=${businessId}`),
-        fetch(`/api/specialists?businessId=${businessId}`),
-      ]);
-
-      setServices(await servicesRes.json());
-      setSpecialists(await specialistsRes.json());
-
-      setLoading(false);
+      try {
+        const [servicesData, specialistsData] = await Promise.all([
+          import("@/lib/api").then((m) => m.getServicesStub(businessId)),
+          import("@/lib/api").then((m) => m.getSpecialistsStub(businessId)),
+        ]);
+        setServices(servicesData);
+        setSpecialists(specialistsData);
+      } catch {
+        setServices([]);
+        setSpecialists([]);
+      } finally {
+        setLoading(false);
+      }
     };
 
     if (businessId) load();

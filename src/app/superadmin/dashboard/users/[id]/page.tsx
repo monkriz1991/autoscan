@@ -8,18 +8,19 @@ import {
   Card,
   Stack,
   TextInput,
-  Select,
   Button,
   Loader,
   Group,
 } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
+import { getAdminUser, ApiError } from "@/lib/api";
 
 type User = {
-  _id: string;
-  name: string;
+  id: number;
   email: string;
-  role: string;
+  first_name?: string;
+  last_name?: string;
+  is_staff?: boolean;
+  date_joined?: string;
 };
 
 export default function UserDetailsPage() {
@@ -28,81 +29,46 @@ export default function UserDetailsPage() {
 
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
 
   const fetchUser = async () => {
-    const res = await fetch(`/api/users/${id}`);
-    const data = await res.json();
-    setUser(data);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    if (id) fetchUser();
-  }, [id]);
-
-  const updateUser = async () => {
-    if (!user) return;
-
+    if (!id) return;
     try {
-      setSaving(true);
-
-      const res = await fetch(`/api/users/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(user),
-      });
-
-      if (!res.ok) throw new Error("Ошибка обновления");
-
-      notifications.show({
-        title: "Успешно",
-        message: "Данные пользователя обновлены",
-        color: "green",
-      });
-
-      await fetchUser(); // обновляем данные без перехода
+      setLoading(true);
+      const data = await getAdminUser(id as string);
+      setUser(data);
     } catch (error) {
-      notifications.show({
-        title: "Ошибка",
-        message: "Не удалось обновить пользователя",
-        color: "red",
-      });
+      if (error instanceof ApiError && error.status === 404) {
+        router.push("/superadmin/dashboard/users");
+      }
     } finally {
-      setSaving(false);
+      setLoading(false);
     }
   };
 
+  useEffect(() => {
+    fetchUser();
+  }, [id]);
+
   if (loading || !user) return <Loader />;
+
+  const name = [user.first_name, user.last_name].filter(Boolean).join(" ") || user.email;
 
   return (
     <Container size="sm" py="xl">
       <Title order={2} mb="lg">
-        Редактирование пользователя
+        Просмотр пользователя
       </Title>
 
       <Card withBorder shadow="sm">
         <Stack>
-          <TextInput
-            label="Имя"
-            value={user.name}
-            onChange={(e) => setUser({ ...user, name: e.target.value })}
-          />
+          <TextInput label="Имя" value={name} readOnly />
+
+          <TextInput label="Email" value={user.email} readOnly />
 
           <TextInput
-            label="Email"
-            value={user.email}
-            onChange={(e) => setUser({ ...user, email: e.target.value })}
-          />
-
-          <Select
             label="Роль"
-            data={[
-              { value: "SUPERADMIN", label: "SUPERADMIN" },
-              { value: "BUSINESS_OWNER", label: "BUSINESS_OWNER" },
-            ]}
-            value={user.role}
-            onChange={(value) => setUser({ ...user, role: value as string })}
+            value={user.is_staff ? "SUPERADMIN" : "BUSINESS_OWNER"}
+            readOnly
           />
 
           <Group justify="space-between" mt="md">
@@ -111,10 +77,6 @@ export default function UserDetailsPage() {
               onClick={() => router.push("/superadmin/dashboard/users")}
             >
               Назад
-            </Button>
-
-            <Button onClick={updateUser} loading={saving}>
-              Сохранить изменения
             </Button>
           </Group>
         </Stack>

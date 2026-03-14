@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import {
   Container,
   Title,
@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import CreateUserDrawer from "@/components/users/CreateUserDrawer";
 import AppPagination from "@/components/ui/AppPagination";
 import { usePagination } from "@/hooks/usePagination";
+import { getAdminUsers, ApiError } from "@/lib/api";
 
 type User = {
   _id: string;
@@ -26,7 +27,23 @@ type User = {
   role: string;
 };
 
-export default function UsersPage() {
+function mapAdminUser(u: {
+  id: number;
+  email: string;
+  first_name?: string;
+  last_name?: string;
+  is_staff?: boolean;
+}): User {
+  const name = [u.first_name, u.last_name].filter(Boolean).join(" ") || u.email;
+  return {
+    _id: String(u.id),
+    name,
+    email: u.email,
+    role: u.is_staff ? "SUPERADMIN" : "BUSINESS_OWNER",
+  };
+}
+
+function UsersPageContent() {
   const router = useRouter();
 
   const [users, setUsers] = useState<User[]>([]);
@@ -44,11 +61,13 @@ export default function UsersPage() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const res = await fetch("/api/users");
-      const data = await res.json();
-      setUsers(data);
+      const data = await getAdminUsers();
+      setUsers(data.map(mapAdminUser));
     } catch (error) {
       console.error("Ошибка загрузки пользователей", error);
+      if (error instanceof ApiError && error.status === 403) {
+        setUsers([]);
+      }
     } finally {
       setLoading(false);
     }
@@ -151,5 +170,13 @@ export default function UsersPage() {
         onCreated={fetchUsers}
       />
     </Container>
+  );
+}
+
+export default function UsersPage() {
+  return (
+    <Suspense fallback={<Loader />}>
+      <UsersPageContent />
+    </Suspense>
   );
 }

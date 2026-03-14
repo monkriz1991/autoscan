@@ -1,4 +1,5 @@
 import React from "react";
+import Navbar from "@/components/ui/Navbar";
 
 export default function MarketingLayout({
   children,
@@ -7,17 +8,7 @@ export default function MarketingLayout({
 }) {
   return (
     <div className="layout">
-      <header className="header">
-        <div className="container header__inner">
-          <div className="header__logo">Marketing</div>
-
-          <nav className="header__nav">
-            <a href="/">Home</a>
-            <a href="/pricing">Pricing</a>
-            <a href="/login">Login</a>
-          </nav>
-        </div>
-      </header>
+      <Navbar />
 
       <main className="layout__main">
         <div className="container">{children}</div>
@@ -30,9 +21,9 @@ export default function MarketingLayout({
           </div>
 
           <div className="footer__links">
-            <a href="/privacy">Политика</a>
-            <a href="/terms">Условия</a>
-            <a href="/contacts">Контакты</a>
+            <a href="/marketing/privacy">Политика</a>
+            <a href="/marketing/terms">Условия</a>
+            <a href="/marketing/contacts">Контакты</a>
           </div>
         </div>
       </footer>

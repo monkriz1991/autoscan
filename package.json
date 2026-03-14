@@ -15,20 +15,15 @@
     "@mantine/hooks": "^8.3.15",
     "@mantine/notifications": "^8.3.15",
     "@tabler/icons-react": "^3.37.1",
-    "bcryptjs": "^3.0.3",
     "dayjs": "^1.11.19",
-    "jsonwebtoken": "^9.0.3",
-    "mongoose": "^8.23.0",
     "next": "^16.1.6",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router-dom": "^7.13.0",
-    "sass": "^1.97.3",
-    "slugify": "^1.6.6"
+    "sass": "^1.97.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
-    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.3.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",

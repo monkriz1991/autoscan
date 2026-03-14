@@ -1,4 +1,5 @@
 import React from "react";
+import Navbar from "@/components/ui/Navbar";
 
 export default function AdminLayout({
   children,
@@ -6,12 +7,16 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div>
-      <header></header>
-
-      <main>{children}</main>
-
-      <footer></footer>
+    <div className="layout">
+      <Navbar />
+      <main className="layout__main">
+        <div className="container">{children}</div>
+      </main>
+      <footer className="footer">
+        <div className="container footer__inner">
+          <div className="footer__copy">© {new Date().getFullYear()} Business Panel</div>
+        </div>
+      </footer>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   Container,
@@ -12,7 +12,7 @@ import {
   Stack,
   Notification,
 } from "@mantine/core";
-import { register, ApiError } from "@/lib/api";
+import { register, getCaptcha, ApiError } from "@/lib/api";
 
 const DEFAULT_AFTER_AUTH = "/superadmin/dashboard";
 
@@ -24,9 +24,25 @@ function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
+  const [captchaAnswer, setCaptchaAnswer] = useState("");
+  const [captcha, setCaptcha] = useState<{ a: number; b: number; c: number; token: string } | null>(null);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const loadCaptcha = useCallback(async () => {
+    try {
+      const data = await getCaptcha();
+      setCaptcha(data);
+      setCaptchaAnswer("");
+    } catch {
+      setError("Не удалось загрузить капчу");
+    }
+  }, []);
+
+  useEffect(() => {
+    loadCaptcha();
+  }, [loadCaptcha]);
 
   const handleSubmit = async () => {
     setError("");
@@ -46,6 +62,18 @@ function RegisterForm() {
       return;
     }
 
+    const answer = parseInt(captchaAnswer, 10);
+    if (!captcha || isNaN(answer)) {
+      setError("Решите пример: сложите три числа");
+      return;
+    }
+
+    if (answer !== captcha.a + captcha.b + captcha.c) {
+      setError("Неверный ответ. Решите пример заново.");
+      loadCaptcha();
+      return;
+    }
+
     try {
       setLoading(true);
 
@@ -53,6 +81,8 @@ function RegisterForm() {
         email,
         password1: password,
         password2,
+        captcha_token: captcha.token,
+        captcha_answer: answer,
       });
 
       if (data.access && data.refresh) {
@@ -67,6 +97,9 @@ function RegisterForm() {
     } catch (err) {
       if (err instanceof ApiError) {
         const d = err.data as Record<string, unknown>;
+        if (d?.captcha_answer) {
+          loadCaptcha();
+        }
         const messages: string[] = [];
         if (typeof d?.detail === "string") {
           messages.push(d.detail);
@@ -123,6 +156,18 @@ function RegisterForm() {
             value={password2}
             onChange={(e) => setPassword2(e.target.value)}
           />
+
+          {captcha && (
+            <TextInput
+              label={`Сколько будет ${captcha.a} + ${captcha.b} + ${captcha.c}?`}
+              placeholder="Введите ответ"
+              type="number"
+              value={captchaAnswer}
+              onChange={(e) => setCaptchaAnswer(e.target.value)}
+              min={1}
+              max={27}
+            />
+          )}
 
           <Button fullWidth loading={loading} onClick={handleSubmit}>
             Создать аккаунт

@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Drawer, Stack, TextInput, PasswordInput, Button } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
-import { register, ApiError } from "@/lib/api";
+import { register, getCaptcha, ApiError } from "@/lib/api";
 
 type Props = {
   opened: boolean;
@@ -19,7 +19,25 @@ export default function CreateUserDrawer({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+  const [captchaAnswer, setCaptchaAnswer] = useState("");
+  const [captcha, setCaptcha] = useState<{ a: number; b: number; c: number; token: string } | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const loadCaptcha = useCallback(async () => {
+    try {
+      const data = await getCaptcha();
+      setCaptcha(data);
+      setCaptchaAnswer("");
+    } catch {
+      notifications.show({ title: "Ошибка", message: "Не удалось загрузить капчу", color: "red" });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (opened) {
+      loadCaptcha();
+    }
+  }, [opened, loadCaptcha]);
 
   const validateEmail = (value: string) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -52,11 +70,37 @@ export default function CreateUserDrawer({
       return;
     }
 
+    const answer = parseInt(captchaAnswer, 10);
+    if (!captcha || isNaN(answer)) {
+      notifications.show({
+        title: "Ошибка",
+        message: "Решите пример: сложите три числа",
+        color: "red",
+      });
+      return;
+    }
+
+    if (answer !== captcha.a + captcha.b + captcha.c) {
+      notifications.show({
+        title: "Ошибка",
+        message: "Неверный ответ. Решите пример заново.",
+        color: "red",
+      });
+      loadCaptcha();
+      return;
+    }
+
     try {
       setLoading(true);
 
       const data = await register(
-        { email, password1: password, password2: repeatPassword },
+        {
+          email,
+          password1: password,
+          password2: repeatPassword,
+          captcha_token: captcha.token,
+          captcha_answer: answer,
+        },
         { storeTokens: false },
       );
 
@@ -82,6 +126,8 @@ export default function CreateUserDrawer({
       setEmail("");
       setPassword("");
       setRepeatPassword("");
+      setCaptchaAnswer("");
+      loadCaptcha();
     } catch (error) {
       const msg =
         error instanceof ApiError
@@ -129,6 +175,16 @@ export default function CreateUserDrawer({
           value={repeatPassword}
           onChange={(e) => setRepeatPassword(e.target.value)}
         />
+
+        {captcha && (
+          <TextInput
+            label={`Сколько будет ${captcha.a} + ${captcha.b} + ${captcha.c}?`}
+            placeholder="Введите ответ"
+            type="number"
+            value={captchaAnswer}
+            onChange={(e) => setCaptchaAnswer(e.target.value)}
+          />
+        )}
 
         <Button onClick={handleCreate} loading={loading}>
           Создать

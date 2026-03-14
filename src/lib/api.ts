@@ -128,7 +128,7 @@ export async function login(email: string, password: string): Promise<LoginRespo
   const data = await request<LoginResponse>("auth/login/", {
     method: "POST",
     body: JSON.stringify({
-      email,
+      email: email.trim().toLowerCase(),
       password,
     }),
   });
@@ -136,10 +136,19 @@ export async function login(email: string, password: string): Promise<LoginRespo
   return data;
 }
 
+export type CaptchaResponse = {
+  a: number;
+  b: number;
+  c: number;
+  token: string;
+};
+
 export type RegisterPayload = {
   email: string;
   password1: string;
   password2: string;
+  captcha_token: string;
+  captcha_answer: number;
 };
 
 export type RegisterResponse = {
@@ -149,13 +158,21 @@ export type RegisterResponse = {
   detail?: string;
 };
 
+export async function getCaptcha(): Promise<CaptchaResponse> {
+  return request<CaptchaResponse>("auth/captcha/");
+}
+
 export async function register(
   payload: RegisterPayload,
   options?: { storeTokens?: boolean },
 ): Promise<RegisterResponse> {
+  const normalizedPayload = {
+    ...payload,
+    email: payload.email.trim().toLowerCase(),
+  };
   const data = await request<RegisterResponse>("auth/register/", {
     method: "POST",
-    body: JSON.stringify(payload),
+    body: JSON.stringify(normalizedPayload),
   });
   if (options?.storeTokens !== false && data.access && data.refresh) {
     setTokens(data.access, data.refresh);

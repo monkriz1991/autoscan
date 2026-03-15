@@ -7,12 +7,14 @@ import {
   IconBuilding,
   IconChartBar,
   IconSettings,
+  IconDeviceDesktop,
 } from "@tabler/icons-react";
 
 const NAV_ITEMS = [
   { href: "/superadmin/dashboard", label: "Dashboard", icon: IconDashboard },
   { href: "/superadmin/dashboard/businesses", label: "Businesses", icon: IconBuilding },
   { href: "/superadmin/dashboard/analytics", label: "Analytics", icon: IconChartBar },
+  { href: "/superadmin/dashboard/devices", label: "Устройства", icon: IconDeviceDesktop },
   { href: "/superadmin/dashboard/settings", label: "Настройки", icon: IconSettings },
 ];
 

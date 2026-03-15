@@ -11,6 +11,27 @@ const BASE_URL =
 const TOKEN_COOKIE = "token";
 const REFRESH_COOKIE = "refresh_token";
 
+const SUPPORTED_LOCALES = ["en", "de", "ru", "pl", "it", "es"];
+const DEFAULT_LOCALE = "en";
+
+function getLocale(): string {
+  if (typeof document === "undefined") return DEFAULT_LOCALE;
+  const lang = document.documentElement?.lang;
+  if (lang) {
+    const short = lang.split("-")[0].toLowerCase();
+    if (SUPPORTED_LOCALES.includes(short)) return short;
+  }
+  return DEFAULT_LOCALE;
+}
+
+function getLocaleHeaders(): Record<string, string> {
+  const locale = getLocale();
+  return {
+    "Accept-Language": locale,
+    "X-Locale": locale,
+  };
+}
+
 function getToken(): string | null {
   if (typeof document === "undefined") return null;
   const match = document.cookie.match(
@@ -57,6 +78,7 @@ async function request<T>(
   const token = getToken();
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
+    ...getLocaleHeaders(),
     ...((options.headers as Record<string, string>) || {}),
   };
   if (token) {
@@ -215,7 +237,7 @@ export async function uploadAvatar(file: File): Promise<UserProfile> {
   const formData = new FormData();
   formData.append("avatar", file);
 
-  const headers: Record<string, string> = {};
+  const headers: Record<string, string> = { ...getLocaleHeaders() };
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
@@ -274,6 +296,7 @@ export async function getPlans(): Promise<Plan[]> {
   const base = BASE_URL.replace(/\/$/, "");
   const res = await fetch(`${base}/billing/plans/`, {
     credentials: "omit",
+    headers: getLocaleHeaders(),
   });
   if (!res.ok) throw new ApiError(res.status, await res.json().catch(() => ({})));
   const data = await res.json();

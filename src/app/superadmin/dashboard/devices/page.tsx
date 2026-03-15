@@ -15,8 +15,9 @@ import {
   PasswordInput,
   Button,
   Table,
+  ActionIcon,
 } from "@mantine/core";
-import { IconDeviceDesktop } from "@tabler/icons-react";
+import { IconDeviceDesktop, IconTrash } from "@tabler/icons-react";
 
 const STORAGE_ACCESS = "django_access_token";
 const STORAGE_REFRESH = "django_refresh_token";
@@ -53,6 +54,7 @@ export default function DashboardDevicesPage() {
   const [authPassword, setAuthPassword] = useState("");
   const [authLoading, setAuthLoading] = useState(false);
   const [authError, setAuthError] = useState("");
+  const [revokingId, setRevokingId] = useState<number | null>(null);
 
   const apiBase =
     (typeof window !== "undefined"
@@ -149,6 +151,26 @@ export default function DashboardDevicesPage() {
     setDevices([]);
   };
 
+  const handleRevokeDevice = async (deviceId: number) => {
+    const token =
+      typeof window !== "undefined" ? localStorage.getItem(STORAGE_ACCESS) : null;
+    if (!token || !apiBase) return;
+
+    setRevokingId(deviceId);
+    try {
+      const res = await fetch(
+        `${apiBase.replace(/\/$/, "")}/users/me/devices/${deviceId}/`,
+        { method: "DELETE", headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (!res.ok) throw new Error("Ошибка отключения");
+      setDevices((prev) => prev.filter((d) => d.id !== deviceId));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Ошибка отключения устройства");
+    } finally {
+      setRevokingId(null);
+    }
+  };
+
   if (loading) {
     return (
       <Center py="xl">
@@ -229,6 +251,7 @@ export default function DashboardDevicesPage() {
                 <Table.Th>ID</Table.Th>
                 <Table.Th>Последняя активность</Table.Th>
                 <Table.Th>Статус</Table.Th>
+                <Table.Th style={{ width: 60 }} />
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
@@ -251,6 +274,17 @@ export default function DashboardDevicesPage() {
                         Неактивен
                       </Badge>
                     )}
+                  </Table.Td>
+                  <Table.Td>
+                    <ActionIcon
+                      variant="subtle"
+                      color="red"
+                      aria-label="Разлогинить устройство"
+                      loading={revokingId === d.id}
+                      onClick={() => handleRevokeDevice(d.id)}
+                    >
+                      <IconTrash size={18} />
+                    </ActionIcon>
                   </Table.Td>
                 </Table.Tr>
               ))}

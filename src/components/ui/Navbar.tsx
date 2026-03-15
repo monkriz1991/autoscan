@@ -57,6 +57,12 @@ export default function Navbar() {
             active={isActive("/admin")}
           /> */}
           <NavLink component={Link} href="/business/scan/" label="Diagnose" />
+          <NavLink
+            component={Link}
+            href="/account/devices"
+            label="Мои устройства"
+            active={isActive("/account/devices")}
+          />
         </Box>
 
         <Divider orientation="vertical" />

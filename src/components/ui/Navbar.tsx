@@ -1,14 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { Avatar, Menu } from "@mantine/core";
 import { IconDashboard, IconLogout, IconStethoscope } from "@tabler/icons-react";
 import { isAuthenticated, logout, getMe } from "@/lib/api";
 import type { UserProfile } from "@/lib/api";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function Navbar() {
+  const t = useTranslations("nav");
   const pathname = usePathname();
   const router = useRouter();
   const [authenticated, setAuthenticated] = useState(false);
@@ -42,7 +44,7 @@ export default function Navbar() {
     logout();
     setAuthenticated(false);
     setUser(null);
-    router.push("/");
+    router.replace("/");
   };
 
   const avatarLetters = user?.email
@@ -53,14 +55,16 @@ export default function Navbar() {
     <header className="navbar">
       <div className="navbar__inner">
         <Link href="/" className="navbar__logo">
-          Autoscan
+          {t("brand")}
         </Link>
 
         <nav className="navbar__nav">
-          {navLink("/", "Home")}
-          {navLink("/marketing/pricing", "Pricing")}
-          {!authenticated && navLink("/register", "Register")}
-          {!authenticated && navLink("/login", "Login")}
+          {navLink("/", t("home"))}
+          {navLink("/marketing/pricing", t("pricing"))}
+          {!authenticated && navLink("/register", t("register"))}
+          {!authenticated && navLink("/login", t("login"))}
+
+          <LanguageSwitcher />
 
           {authenticated && (
             <Menu position="bottom-end" shadow="md" width={200}>
@@ -80,14 +84,14 @@ export default function Navbar() {
                   component={Link}
                   href="/superadmin/dashboard"
                 >
-                  Dashboard
+                  {t("dashboard")}
                 </Menu.Item>
                 <Menu.Item
                   leftSection={<IconStethoscope size={16} />}
                   component={Link}
                   href="/business/scan/"
                 >
-                  Diagnose
+                  {t("diagnose")}
                 </Menu.Item>
                 <Menu.Divider />
                 <Menu.Item
@@ -95,7 +99,7 @@ export default function Navbar() {
                   color="red"
                   onClick={handleLogout}
                 >
-                  Выйти
+                  {t("logout")}
                 </Menu.Item>
               </Menu.Dropdown>
             </Menu>

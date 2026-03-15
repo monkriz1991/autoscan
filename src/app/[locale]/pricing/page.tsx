@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import {
   Container,
   Title,
@@ -30,14 +31,18 @@ interface Plan {
   sort_order: number;
 }
 
-function formatDuration(days: number | null): string {
-  if (days === null) return "Бессрочно";
-  if (days === 30) return "1 месяц";
-  if (days === 365) return "1 год";
-  return `${days} дн.`;
+function formatDuration(
+  days: number | null,
+  t: (key: string, values?: Record<string, number>) => string
+): string {
+  if (days === null) return t("unlimited");
+  if (days === 30) return t("month");
+  if (days === 365) return t("year");
+  return t("days", { count: days });
 }
 
 export default function PricingPage() {
+  const t = useTranslations("pricing");
   const [plans, setPlans] = useState<Plan[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -48,7 +53,7 @@ export default function PricingPage() {
 
   useEffect(() => {
     if (!plansUrl) {
-      setError("API не настроен (NEXT_PUBLIC_API_BASE_URL)");
+      setError(t("apiError"));
       setLoading(false);
       return;
     }
@@ -66,10 +71,10 @@ export default function PricingPage() {
         setPlans(sorted);
       })
       .catch((err) => {
-        setError(err instanceof Error ? err.message : "Ошибка загрузки тарифов");
+        setError(err instanceof Error ? err.message : t("loadError"));
       })
       .finally(() => setLoading(false));
-  }, [plansUrl]);
+  }, [plansUrl, t]);
 
   const scroll = (dir: number) => {
     const el = scrollRef.current;
@@ -91,7 +96,7 @@ export default function PricingPage() {
     <Container size="lg" py="xl">
       <Stack gap="xl">
         <Title order={1} ta="center">
-          Тарифы
+          {t("title")}
         </Title>
 
         {error && (
@@ -102,7 +107,7 @@ export default function PricingPage() {
 
         {!error && plans.length === 0 && (
           <Text c="dimmed" ta="center" size="lg">
-            Тарифы пока не добавлены.
+            {t("noPlans")}
           </Text>
         )}
 
@@ -112,7 +117,7 @@ export default function PricingPage() {
               <ActionIcon
                 variant="light"
                 size="xl"
-                aria-label="Предыдущий"
+                aria-label={t("prev")}
                 onClick={() => scroll(-1)}
               >
                 <IconChevronLeft size={24} />
@@ -120,7 +125,7 @@ export default function PricingPage() {
               <ActionIcon
                 variant="light"
                 size="xl"
-                aria-label="Следующий"
+                aria-label={t("next")}
                 onClick={() => scroll(1)}
               >
                 <IconChevronRight size={24} />
@@ -170,10 +175,10 @@ export default function PricingPage() {
                     </Text>
 
                     <Text size="sm" c="dimmed">
-                      {formatDuration(plan.duration_days)}
+                      {formatDuration(plan.duration_days, t)}
                     </Text>
 
-                    <Text size="sm">До {plan.max_devices} устройств</Text>
+                    <Text size="sm">{t("devices", { count: plan.max_devices })}</Text>
 
                     <Button
                       component={Link}
@@ -181,7 +186,7 @@ export default function PricingPage() {
                       variant="filled"
                       mt="auto"
                     >
-                      Выбрать
+                      {t("choose")}
                     </Button>
                   </Stack>
                 </Card>

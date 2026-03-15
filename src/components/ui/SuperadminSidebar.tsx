@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { Link, usePathname } from "@/i18n/navigation";
 import {
   IconDashboard,
   IconBuilding,
@@ -10,16 +10,17 @@ import {
   IconDeviceDesktop,
 } from "@tabler/icons-react";
 
-const NAV_ITEMS = [
-  { href: "/superadmin/dashboard", label: "Dashboard", icon: IconDashboard },
-  { href: "/superadmin/dashboard/businesses", label: "Businesses", icon: IconBuilding },
-  { href: "/superadmin/dashboard/analytics", label: "Analytics", icon: IconChartBar },
-  { href: "/superadmin/dashboard/devices", label: "Устройства", icon: IconDeviceDesktop },
-  { href: "/superadmin/dashboard/settings", label: "Настройки", icon: IconSettings },
-];
-
 export default function SuperadminSidebar() {
+  const t = useTranslations("nav");
   const pathname = usePathname();
+
+  const NAV_ITEMS = [
+    { href: "/superadmin/dashboard", label: t("dashboard"), icon: IconDashboard },
+    { href: "/superadmin/dashboard/businesses", label: t("businesses"), icon: IconBuilding },
+    { href: "/superadmin/dashboard/analytics", label: t("analytics"), icon: IconChartBar },
+    { href: "/superadmin/dashboard/devices", label: t("devices"), icon: IconDeviceDesktop },
+    { href: "/superadmin/dashboard/settings", label: t("settings"), icon: IconSettings },
+  ];
 
   return (
     <aside className="layout__sidebar">

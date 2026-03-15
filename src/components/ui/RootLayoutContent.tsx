@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/i18n/navigation";
 import { Container } from "@mantine/core";
 import Navbar from "./Navbar";
 import Footer from "./Footer";

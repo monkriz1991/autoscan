@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "@/components/ui/Navbar";
 import SuperadminSidebar from "@/components/ui/SuperadminSidebar";
+import DevBanner from "@/components/ui/DevBanner";
 
 export default function SuperadminLayout({
   children,
@@ -13,7 +14,10 @@ export default function SuperadminLayout({
       <div className="layout__body">
         <SuperadminSidebar />
         <main className="layout__main">
-          <div className="layout__content">{children}</div>
+          <div className="layout__content">
+            <DevBanner />
+            {children}
+          </div>
         </main>
       </div>
       <footer className="layout__footer">

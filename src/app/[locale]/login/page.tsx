@@ -1,7 +1,9 @@
 "use client";
 
 import { Suspense, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 import {
   Container,
   Card,
@@ -17,6 +19,7 @@ import { login, ApiError } from "@/lib/api";
 const DEFAULT_AFTER_AUTH = "/superadmin/dashboard";
 
 function LoginForm() {
+  const t = useTranslations("auth");
   const router = useRouter();
   const searchParams = useSearchParams();
   const nextUrl = searchParams.get("next") || DEFAULT_AFTER_AUTH;
@@ -37,7 +40,7 @@ function LoginForm() {
       setError(
         err instanceof ApiError
           ? (err.data as { detail?: string })?.detail || err.message
-          : "Ошибка входа",
+          : t("loginError"),
       );
     } finally {
       setLoading(false);
@@ -49,7 +52,7 @@ function LoginForm() {
       <Card withBorder shadow="sm" radius="md" p="xl">
         <Stack>
           <Title order={3} ta="center">
-            Вход в систему
+            {t("loginTitle")}
           </Title>
 
           {error && (
@@ -59,19 +62,19 @@ function LoginForm() {
           )}
 
           <TextInput
-            label="Email"
+            label={t("email")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
 
           <PasswordInput
-            label="Пароль"
+            label={t("password")}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
 
           <Button fullWidth loading={loading} onClick={handleSubmit}>
-            Войти
+            {t("loginButton")}
           </Button>
         </Stack>
       </Card>
@@ -80,8 +83,9 @@ function LoginForm() {
 }
 
 export default function LoginPage() {
+  const t = useTranslations("auth");
   return (
-    <Suspense fallback={<Container size="xs" py="xl">Загрузка...</Container>}>
+    <Suspense fallback={<Container size="xs" py="xl">{t("loading")}</Container>}>
       <LoginForm />
     </Suspense>
   );

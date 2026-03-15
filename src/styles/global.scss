@@ -224,6 +224,11 @@ body {
   }
 }
 
+/* Pricing carousel */
+.carousel-scroll::-webkit-scrollbar {
+  display: none;
+}
+
 /* Footer */
 .footer {
   background: #ffffff;

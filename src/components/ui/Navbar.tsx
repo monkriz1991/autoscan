@@ -59,9 +59,9 @@ export default function Navbar() {
           <NavLink component={Link} href="/business/scan/" label="Diagnose" />
           <NavLink
             component={Link}
-            href="/account/devices"
+            href="/superadmin/dashboard/devices"
             label="Мои устройства"
-            active={isActive("/account/devices")}
+            active={isActive("/superadmin/dashboard/devices")}
           />
         </Box>
 
@@ -91,6 +91,12 @@ export default function Navbar() {
             component={Link}
             href="/superadmin/dashboard/analytics"
             label="Analytics"
+          />
+          <NavLink
+            component={Link}
+            href="/superadmin/dashboard/devices"
+            label="Устройства"
+            active={isActive("/superadmin/dashboard/devices")}
           />
         </Box>
       </Group>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Container,
   Card,
@@ -13,8 +13,12 @@ import {
   Notification,
 } from "@mantine/core";
 
+const DEFAULT_AFTER_AUTH = "/superadmin/dashboard";
+
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const nextUrl = searchParams.get("next") || DEFAULT_AFTER_AUTH;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,7 +43,7 @@ export default function LoginPage() {
         return;
       }
 
-      router.push("/business/admin");
+      router.push(nextUrl);
     } catch (err) {
       setError("Ошибка сервера");
     } finally {

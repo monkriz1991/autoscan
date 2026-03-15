@@ -32,6 +32,11 @@ body {
   margin: 0 auto;
 }
 
+/* Pricing carousel */
+.carousel-scroll::-webkit-scrollbar {
+  display: none;
+}
+
 /* Footer */
 .footer {
   background: #ffffff;

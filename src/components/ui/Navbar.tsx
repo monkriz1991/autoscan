@@ -72,7 +72,7 @@ export default function Navbar() {
                 <Avatar
                   src={user?.avatar_url}
                   radius="xl"
-                  color="blue"
+                  color="silver"
                   style={{ cursor: "pointer" }}
                 >
                   {avatarLetters}

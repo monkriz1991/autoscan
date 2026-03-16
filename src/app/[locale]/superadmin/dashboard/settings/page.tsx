@@ -112,7 +112,7 @@ export default function SuperadminSettingsPage() {
             src={user?.avatar_url}
             radius="xl"
             size={80}
-            color="blue"
+            color="silver"
           >
             {user?.email?.slice(0, 2).toUpperCase() ?? "?"}
           </Avatar>

@@ -38,7 +38,7 @@ export default function ScanPage() {
                         ? "red"
                         : error.severity === "medium"
                           ? "orange"
-                          : "blue"
+                          : "silver"
                     }
                   >
                     {error.severity}

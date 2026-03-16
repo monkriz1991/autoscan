@@ -8,6 +8,7 @@ import {
   IconChartBar,
   IconSettings,
   IconDeviceDesktop,
+  IconCar,
 } from "@tabler/icons-react";
 
 export default function SuperadminSidebar() {
@@ -18,6 +19,7 @@ export default function SuperadminSidebar() {
     { href: "/superadmin/dashboard", label: t("dashboard"), icon: IconDashboard },
     { href: "/superadmin/dashboard/businesses", label: t("businesses"), icon: IconBuilding },
     { href: "/superadmin/dashboard/analytics", label: t("analytics"), icon: IconChartBar },
+    { href: "/superadmin/dashboard/vehicle", label: t("vehicle"), icon: IconCar },
     { href: "/superadmin/dashboard/devices", label: t("devices"), icon: IconDeviceDesktop },
     { href: "/superadmin/dashboard/settings", label: t("settings"), icon: IconSettings },
   ];

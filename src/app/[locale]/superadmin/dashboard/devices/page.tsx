@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import {
   Card,
   Title,
@@ -15,8 +16,9 @@ import {
   PasswordInput,
   Button,
   Table,
+  ActionIcon,
 } from "@mantine/core";
-import { IconDeviceDesktop } from "@tabler/icons-react";
+import { IconDeviceDesktop, IconTrash } from "@tabler/icons-react";
 
 const STORAGE_ACCESS = "django_access_token";
 const STORAGE_REFRESH = "django_refresh_token";
@@ -29,10 +31,10 @@ interface Device {
   is_active: boolean;
 }
 
-function formatDate(iso: string): string {
+function formatDate(iso: string, locale: string): string {
   try {
     const d = new Date(iso);
-    return d.toLocaleString("ru-RU", {
+    return d.toLocaleString(locale, {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
@@ -45,6 +47,9 @@ function formatDate(iso: string): string {
 }
 
 export default function DashboardDevicesPage() {
+  const t = useTranslations("devices");
+  const tAuth = useTranslations("auth");
+  const locale = useLocale();
   const [devices, setDevices] = useState<Device[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -53,6 +58,7 @@ export default function DashboardDevicesPage() {
   const [authPassword, setAuthPassword] = useState("");
   const [authLoading, setAuthLoading] = useState(false);
   const [authError, setAuthError] = useState("");
+  const [revokingId, setRevokingId] = useState<number | null>(null);
 
   const apiBase =
     (typeof window !== "undefined"
@@ -61,7 +67,7 @@ export default function DashboardDevicesPage() {
 
   const fetchDevices = useCallback(async () => {
     if (!apiBase) {
-      setError("API не настроен (NEXT_PUBLIC_API_BASE_URL)");
+      setError(t("apiNotConfigured"));
       setLoading(false);
       return;
     }
@@ -91,11 +97,11 @@ export default function DashboardDevicesPage() {
       setDevices(Array.isArray(data) ? data : []);
       setError("");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Ошибка загрузки");
+      setError(err instanceof Error ? err.message : t("loadError"));
     } finally {
       setLoading(false);
     }
-  }, [apiBase]);
+  }, [apiBase, t]);
 
   useEffect(() => {
     fetchDevices();
@@ -104,11 +110,11 @@ export default function DashboardDevicesPage() {
   const handleAuthSubmit = async () => {
     setAuthError("");
     if (!authEmail || !authPassword) {
-      setAuthError("Введите email и пароль");
+      setAuthError(t("enterEmailPassword"));
       return;
     }
     if (!apiBase) {
-      setAuthError("API не настроен");
+      setAuthError(t("apiNotConfigured"));
       return;
     }
 
@@ -121,7 +127,7 @@ export default function DashboardDevicesPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setAuthError(data.detail || "Неверный email или пароль");
+        setAuthError(data.detail || t("invalidCredentials"));
         return;
       }
       if (data.access) {
@@ -133,10 +139,10 @@ export default function DashboardDevicesPage() {
         setLoading(true);
         fetchDevices();
       } else {
-        setAuthError("Некорректный ответ сервера");
+        setAuthError(t("invalidResponse"));
       }
     } catch (err) {
-      setAuthError("Ошибка соединения");
+      setAuthError(t("connectionError"));
     } finally {
       setAuthLoading(false);
     }
@@ -147,6 +153,26 @@ export default function DashboardDevicesPage() {
     localStorage.removeItem(STORAGE_REFRESH);
     setNeedsAuth(true);
     setDevices([]);
+  };
+
+  const handleRevokeDevice = async (deviceId: number) => {
+    const token =
+      typeof window !== "undefined" ? localStorage.getItem(STORAGE_ACCESS) : null;
+    if (!token || !apiBase) return;
+
+    setRevokingId(deviceId);
+    try {
+      const res = await fetch(
+        `${apiBase.replace(/\/$/, "")}/users/me/devices/${deviceId}/`,
+        { method: "DELETE", headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (!res.ok) throw new Error(t("revokeError"));
+      setDevices((prev) => prev.filter((d) => d.id !== deviceId));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t("revokeError"));
+    } finally {
+      setRevokingId(null);
+    }
   };
 
   if (loading) {
@@ -161,10 +187,9 @@ export default function DashboardDevicesPage() {
     return (
       <Card withBorder shadow="sm" radius="md" p="xl" maw={400}>
         <Stack>
-          <Title order={4}>Вход для раздела «Устройства»</Title>
+          <Title order={4}>{t("authTitle")}</Title>
           <Text size="sm" c="dimmed">
-            Войдите в аккаунт GearMind AI (Django), чтобы просмотреть
-            подключённые устройства.
+            {t("authDesc")}
           </Text>
           {authError && (
             <Notification color="red" onClose={() => setAuthError("")}>
@@ -172,18 +197,18 @@ export default function DashboardDevicesPage() {
             </Notification>
           )}
           <TextInput
-            label="Email"
+            label={tAuth("email")}
             type="email"
             value={authEmail}
             onChange={(e) => setAuthEmail(e.target.value)}
           />
           <PasswordInput
-            label="Пароль"
+            label={tAuth("password")}
             value={authPassword}
             onChange={(e) => setAuthPassword(e.target.value)}
           />
           <Button loading={authLoading} onClick={handleAuthSubmit}>
-            Войти
+            {t("login")}
           </Button>
         </Stack>
       </Card>
@@ -193,9 +218,9 @@ export default function DashboardDevicesPage() {
   return (
     <Stack>
       <Group justify="space-between">
-        <Title order={4}>Активные сессии устройств</Title>
+        <Title order={4}>{t("title")}</Title>
         <Button variant="subtle" size="xs" onClick={handleLogout}>
-          Выйти
+          {t("logout")}
         </Button>
       </Group>
 
@@ -210,10 +235,9 @@ export default function DashboardDevicesPage() {
           <Group gap="md">
             <IconDeviceDesktop size={48} stroke={1} />
             <Stack gap={4}>
-              <Text fw={500}>Нет активных устройств</Text>
+              <Text fw={500}>{t("noDevices")}</Text>
               <Text size="sm" c="dimmed">
-                Подключённые приложения (десктоп, мобильное) отобразятся здесь
-                после первого heartbeat.
+                {t("noDevicesDesc")}
               </Text>
             </Stack>
           </Group>
@@ -225,10 +249,11 @@ export default function DashboardDevicesPage() {
           <Table striped highlightOnHover>
             <Table.Thead>
               <Table.Tr>
-                <Table.Th>Устройство</Table.Th>
-                <Table.Th>ID</Table.Th>
-                <Table.Th>Последняя активность</Table.Th>
-                <Table.Th>Статус</Table.Th>
+                <Table.Th>{t("device")}</Table.Th>
+                <Table.Th>{t("id")}</Table.Th>
+                <Table.Th>{t("lastActive")}</Table.Th>
+                <Table.Th>{t("status")}</Table.Th>
+                <Table.Th style={{ width: 60 }} />
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
@@ -240,17 +265,28 @@ export default function DashboardDevicesPage() {
                       {d.hardware_id}
                     </Text>
                   </Table.Td>
-                  <Table.Td>{formatDate(d.last_active)}</Table.Td>
+                  <Table.Td>{formatDate(d.last_active, locale)}</Table.Td>
                   <Table.Td>
                     {d.is_active ? (
                       <Badge color="green" size="sm">
-                        Онлайн
+                        {t("online")}
                       </Badge>
                     ) : (
                       <Badge color="gray" size="sm">
-                        Неактивен
+                        {t("offline")}
                       </Badge>
                     )}
+                  </Table.Td>
+                  <Table.Td>
+                    <ActionIcon
+                      variant="subtle"
+                      color="red"
+                      aria-label={t("revoke")}
+                      loading={revokingId === d.id}
+                      onClick={() => handleRevokeDevice(d.id)}
+                    >
+                      <IconTrash size={18} />
+                    </ActionIcon>
                   </Table.Td>
                 </Table.Tr>
               ))}

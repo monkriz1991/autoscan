@@ -1,27 +1,42 @@
+import createMiddleware from "next-intl/middleware";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { routing } from "./i18n/routing";
 
 const DEFAULT_AFTER_AUTH = "/superadmin/dashboard";
 
-export function middleware(request: NextRequest) {
+const intlMiddleware = createMiddleware(routing);
+
+export default function middleware(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
   const { pathname } = request.nextUrl;
 
-  if (token && (pathname === "/login" || pathname === "/register")) {
-    const next = request.nextUrl.searchParams.get("next") || DEFAULT_AFTER_AUTH;
+  const localeMatch = pathname.match(/^\/(en|de|ru|pl|it|es)(\/|$)/);
+  const pathWithoutLocale = localeMatch
+    ? pathname.slice(localeMatch[1].length + 1) || "/"
+    : pathname;
+
+  if (token && (pathWithoutLocale === "/login" || pathWithoutLocale === "/register" || pathWithoutLocale.startsWith("/login/") || pathWithoutLocale.startsWith("/register/"))) {
+    const locale = localeMatch?.[1] || "en";
+    const next = request.nextUrl.searchParams.get("next") || `/${locale}${DEFAULT_AFTER_AUTH}`;
     return NextResponse.redirect(new URL(next, request.url));
   }
   if (
     !token &&
-    (pathname.startsWith("/business") || pathname.startsWith("/superadmin"))
+    (pathWithoutLocale.startsWith("/business") || pathWithoutLocale.startsWith("/superadmin"))
   ) {
-    const loginUrl = new URL("/login", request.url);
+    const locale = localeMatch?.[1] || "en";
+    const loginUrl = new URL(`/${locale}/login`, request.url);
     loginUrl.searchParams.set("next", pathname);
     return NextResponse.redirect(loginUrl);
   }
-  return NextResponse.next();
+
+  return intlMiddleware(request);
 }
 
 export const config = {
-  matcher: ["/business/:path*", "/superadmin/:path*", "/login", "/register"],
+  matcher: [
+    "/(en|de|ru|pl|it|es)/:path*",
+    "/((?!api|_next|_vercel|.*\\..*).*)",
+  ],
 };

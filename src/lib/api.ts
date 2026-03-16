@@ -5,11 +5,32 @@
 
 const BASE_URL =
   typeof window !== "undefined"
-    ? (process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000/api/v1")
-    : process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000/api/v1";
+    ? (process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8001/api/v1")
+    : process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8001/api/v1";
 
 const TOKEN_COOKIE = "token";
 const REFRESH_COOKIE = "refresh_token";
+
+const SUPPORTED_LOCALES = ["en", "de", "ru", "pl", "it", "es"];
+const DEFAULT_LOCALE = "en";
+
+function getLocale(): string {
+  if (typeof document === "undefined") return DEFAULT_LOCALE;
+  const lang = document.documentElement?.lang;
+  if (lang) {
+    const short = lang.split("-")[0].toLowerCase();
+    if (SUPPORTED_LOCALES.includes(short)) return short;
+  }
+  return DEFAULT_LOCALE;
+}
+
+function getLocaleHeaders(): Record<string, string> {
+  const locale = getLocale();
+  return {
+    "Accept-Language": locale,
+    "X-Locale": locale,
+  };
+}
 
 function getToken(): string | null {
   if (typeof document === "undefined") return null;
@@ -57,6 +78,7 @@ async function request<T>(
   const token = getToken();
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
+    ...getLocaleHeaders(),
     ...((options.headers as Record<string, string>) || {}),
   };
   if (token) {
@@ -215,7 +237,7 @@ export async function uploadAvatar(file: File): Promise<UserProfile> {
   const formData = new FormData();
   formData.append("avatar", file);
 
-  const headers: Record<string, string> = {};
+  const headers: Record<string, string> = { ...getLocaleHeaders() };
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
@@ -274,6 +296,7 @@ export async function getPlans(): Promise<Plan[]> {
   const base = BASE_URL.replace(/\/$/, "");
   const res = await fetch(`${base}/billing/plans/`, {
     credentials: "omit",
+    headers: getLocaleHeaders(),
   });
   if (!res.ok) throw new ApiError(res.status, await res.json().catch(() => ({})));
   const data = await res.json();
@@ -327,15 +350,141 @@ export async function updateOnDemandSettings(
   });
 }
 
-/* ========== Diagnostics (для будущей интеграции) ========== */
+/* ========== Cars catalog ========== */
 
-export async function getDiagnosticsVehicles(): Promise<unknown[]> {
-  const res = await request<{ results?: unknown[] }>("diagnostics/vehicles/");
-  return Array.isArray((res as { results?: unknown[] }).results)
-    ? (res as { results: unknown[] }).results
-    : Array.isArray(res)
-      ? (res as unknown[])
-      : [];
+export type CarMake = { id: number; name: string; make_id?: number };
+
+export type CarModel = {
+  id: number;
+  name: string;
+  make: number;
+  make_name: string;
+  year_from?: number | null;
+  year_to?: number | null;
+};
+
+export type CarModification = {
+  id: number;
+  name: string;
+  model: number;
+  model_name: string;
+  make_name: string;
+  year_from?: number | null;
+  year_to?: number | null;
+  characteristics: Record<string, string>;
+};
+
+export async function getCarMakes(q?: string): Promise<CarMake[]> {
+  const path = q ? `cars/makes/?q=${encodeURIComponent(q)}` : "cars/makes/";
+  const res = await request<CarMake[] | { results?: CarMake[] }>(path);
+  return Array.isArray(res) ? res : (res as { results?: CarMake[] }).results ?? [];
+}
+
+export async function getCarModels(
+  make: string,
+  year?: number,
+): Promise<CarModel[]> {
+  const params = new URLSearchParams({ make });
+  if (year) params.set("year", String(year));
+  const res = await request<CarModel[] | { results?: CarModel[] }>(
+    `cars/models/?${params}`,
+  );
+  return Array.isArray(res) ? res : (res as { results?: CarModel[] }).results ?? [];
+}
+
+export async function getCarModifications(
+  modelId: number,
+  year?: number,
+): Promise<CarModification[]> {
+  const params = new URLSearchParams();
+  if (year != null && !isNaN(year) && year > 0) {
+    params.set("year", String(year));
+  }
+  const queryString = params.toString();
+  const path = `cars/models/${modelId}/modifications/${queryString ? `?${queryString}` : ""}`;
+  const res = await request<CarModification[] | { results?: CarModification[] }>(
+    path,
+  );
+  return Array.isArray(res) ? res : (res as { results?: CarModification[] }).results ?? [];
+}
+
+export async function getCarModificationDetail(
+  modId: number,
+): Promise<CarModification> {
+  return request<CarModification>(`cars/modifications/${modId}/`);
+}
+
+export type CarsSearchExternalItem = {
+  Make_Name: string;
+  Model_Name: string;
+};
+
+export async function searchCarsExternal(
+  make: string,
+  year: number,
+): Promise<CarsSearchExternalItem[]> {
+  const params = new URLSearchParams({
+    make,
+    year: String(year),
+  });
+  return request<CarsSearchExternalItem[]>(
+    `cars/search-external/?${params}`,
+  );
+}
+
+/* ========== Vehicles (garage) ========== */
+
+export type Vehicle = {
+  id: number;
+  vin: string;
+  make: string;
+  model: string;
+  year: number | null;
+  modification_id: number | null;
+  characteristics: Record<string, string>;
+};
+
+export type VehicleCreateUpdate = {
+  vin?: string;
+  make: string;
+  model: string;
+  year?: number | null;
+  modification_id?: number | null;
+};
+
+export async function getVehicles(): Promise<Vehicle[]> {
+  const res = await request<Vehicle[] | { results?: Vehicle[] }>(
+    "diagnostics/vehicles/",
+  );
+  return Array.isArray(res) ? res : (res as { results?: Vehicle[] }).results ?? [];
+}
+
+export async function createVehicle(
+  payload: VehicleCreateUpdate,
+): Promise<Vehicle> {
+  return request<Vehicle>("diagnostics/vehicles/", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function updateVehicle(
+  id: number,
+  payload: Partial<VehicleCreateUpdate>,
+): Promise<Vehicle> {
+  return request<Vehicle>(`diagnostics/vehicles/${id}/`, {
+    method: "PATCH",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function deleteVehicle(id: number): Promise<void> {
+  await request(`diagnostics/vehicles/${id}/`, { method: "DELETE" });
+}
+
+/** @deprecated Use getVehicles instead */
+export async function getDiagnosticsVehicles(): Promise<Vehicle[]> {
+  return getVehicles();
 }
 
 /* ========== Stub: services/specialists (нет в backend auto_ai_auth) ========== */

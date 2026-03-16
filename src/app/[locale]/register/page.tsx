@@ -1,7 +1,9 @@
 "use client";
 
 import { Suspense, useCallback, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 import {
   Container,
   Card,
@@ -17,6 +19,7 @@ import { register, getCaptcha, ApiError } from "@/lib/api";
 const DEFAULT_AFTER_AUTH = "/superadmin/dashboard";
 
 function RegisterForm() {
+  const t = useTranslations("auth");
   const router = useRouter();
   const searchParams = useSearchParams();
   const nextUrl = searchParams.get("next") || DEFAULT_AFTER_AUTH;
@@ -36,9 +39,9 @@ function RegisterForm() {
       setCaptcha(data);
       setCaptchaAnswer("");
     } catch {
-      setError("Не удалось загрузить капчу");
+      setError(t("captchaLoadError"));
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     loadCaptcha();
@@ -48,28 +51,28 @@ function RegisterForm() {
     setError("");
 
     if (!email || !password || !password2) {
-      setError("Заполните все поля");
+      setError(t("fillAll"));
       return;
     }
 
     if (password.length < 8) {
-      setError("Пароль должен содержать минимум 8 символов");
+      setError(t("passwordMin"));
       return;
     }
 
     if (password !== password2) {
-      setError("Пароли не совпадают");
+      setError(t("passwordMismatch"));
       return;
     }
 
     const answer = parseInt(captchaAnswer, 10);
     if (!captcha || isNaN(answer)) {
-      setError("Решите пример: сложите три числа");
+      setError(t("solveCaptcha"));
       return;
     }
 
     if (answer !== captcha.a + captcha.b + captcha.c) {
-      setError("Неверный ответ. Решите пример заново.");
+      setError(t("captchaWrong"));
       loadCaptcha();
       return;
     }
@@ -90,9 +93,7 @@ function RegisterForm() {
       } else if (data.detail) {
         setError(data.detail);
       } else {
-        setError(
-          "Регистрация успешна. Проверьте email для подтверждения аккаунта.",
-        );
+        setError(t("registerSuccess"));
       }
     } catch (err) {
       if (err instanceof ApiError) {
@@ -108,16 +109,9 @@ function RegisterForm() {
             messages.push(String(m)),
           );
         }
-        for (const [key, val] of Object.entries(d || {})) {
-          if (key !== "detail" && Array.isArray(val)) {
-            val.forEach((m) => messages.push(String(m)));
-          } else if (key !== "detail" && typeof val === "string") {
-            messages.push(val);
-          }
-        }
         setError(messages.length > 0 ? messages.join(". ") : err.message);
       } else {
-        setError(err instanceof Error ? err.message : "Ошибка регистрации");
+        setError(err instanceof Error ? err.message : t("registerError"));
       }
     } finally {
       setLoading(false);
@@ -129,7 +123,7 @@ function RegisterForm() {
       <Card withBorder shadow="sm" radius="md" p="xl">
         <Stack>
           <Title order={3} ta="center">
-            Регистрация бизнеса
+            {t("registerBusiness")}
           </Title>
 
           {error && (
@@ -139,28 +133,28 @@ function RegisterForm() {
           )}
 
           <TextInput
-            label="Email"
+            label={t("email")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
 
           <PasswordInput
-            label="Пароль"
-            placeholder="Минимум 8 символов"
+            label={t("password")}
+            placeholder={t("passwordPlaceholder")}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
 
           <PasswordInput
-            label="Повторите пароль"
+            label={t("password2")}
             value={password2}
             onChange={(e) => setPassword2(e.target.value)}
           />
 
           {captcha && (
             <TextInput
-              label={`Сколько будет ${captcha.a} + ${captcha.b} + ${captcha.c}?`}
-              placeholder="Введите ответ"
+              label={t("captchaLabel", { a: captcha.a, b: captcha.b, c: captcha.c })}
+              placeholder={t("captchaPlaceholder")}
               type="number"
               value={captchaAnswer}
               onChange={(e) => setCaptchaAnswer(e.target.value)}
@@ -170,7 +164,7 @@ function RegisterForm() {
           )}
 
           <Button fullWidth loading={loading} onClick={handleSubmit}>
-            Создать аккаунт
+            {t("createAccount")}
           </Button>
         </Stack>
       </Card>
@@ -179,8 +173,9 @@ function RegisterForm() {
 }
 
 export default function RegisterPage() {
+  const t = useTranslations("auth");
   return (
-    <Suspense fallback={<Container size="xs" py="xl">Загрузка...</Container>}>
+    <Suspense fallback={<Container size="xs" py="xl">{t("loading")}</Container>}>
       <RegisterForm />
     </Suspense>
   );

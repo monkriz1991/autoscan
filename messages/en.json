@@ -8,6 +8,7 @@
     "diagnose": "Diagnose",
     "logout": "Log out",
     "devices": "Devices",
+    "vehicle": "Vehicle",
     "settings": "Settings",
     "businesses": "Businesses",
     "analytics": "Analytics",
@@ -110,6 +111,27 @@
     "next": "Next",
     "loadError": "Plans load error",
     "apiError": "API not configured (NEXT_PUBLIC_API_BASE_URL)"
+  },
+  "vehicle": {
+    "title": "My vehicles",
+    "addVehicle": "Add vehicle",
+    "editVehicle": "Edit vehicle",
+    "noVehicles": "No vehicles yet",
+    "noVehiclesDesc": "Add a vehicle to view its configuration and specifications.",
+    "make": "Make",
+    "model": "Model",
+    "year": "Year",
+    "vin": "VIN",
+    "modification": "Modification",
+    "characteristics": "Characteristics",
+    "searchInExternal": "Search in external catalog",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "deleteConfirm": "Delete this vehicle?",
+    "loadError": "Load error",
+    "saveError": "Save error",
+    "yearRequiredForModifications": "Enter year above to filter modifications"
   },
   "footer": {
     "copyright": "© {year} My App"

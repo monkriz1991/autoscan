@@ -8,6 +8,7 @@
     "diagnose": "Diagnóstico",
     "logout": "Cerrar sesión",
     "devices": "Dispositivos",
+    "vehicle": "Vehículo",
     "settings": "Ajustes",
     "businesses": "Empresas",
     "analytics": "Analítica",
@@ -107,6 +108,27 @@
     "next": "Siguiente",
     "loadError": "Error al cargar planes",
     "apiError": "API no configurada (NEXT_PUBLIC_API_BASE_URL)"
+  },
+  "vehicle": {
+    "title": "Mis vehículos",
+    "addVehicle": "Añadir vehículo",
+    "editVehicle": "Editar",
+    "noVehicles": "Sin vehículos",
+    "noVehiclesDesc": "Añade un vehículo para ver su configuración y especificaciones.",
+    "make": "Marca",
+    "model": "Modelo",
+    "year": "Año",
+    "vin": "VIN",
+    "modification": "Modificación",
+    "characteristics": "Características",
+    "searchInExternal": "Buscar en catálogo externo",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "deleteConfirm": "¿Eliminar este vehículo?",
+    "loadError": "Error de carga",
+    "saveError": "Error al guardar",
+    "yearRequiredForModifications": "Introduce el año arriba para filtrar modificaciones"
   },
   "footer": {
     "copyright": "© {year} My App"

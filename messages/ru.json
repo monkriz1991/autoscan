@@ -8,6 +8,7 @@
     "diagnose": "Диагностика",
     "logout": "Выйти",
     "devices": "Устройства",
+    "vehicle": "Автомобиль",
     "settings": "Настройки",
     "businesses": "Бизнесы",
     "analytics": "Аналитика",
@@ -110,6 +111,27 @@
     "next": "Следующий",
     "loadError": "Ошибка загрузки тарифов",
     "apiError": "API не настроен (NEXT_PUBLIC_API_BASE_URL)"
+  },
+  "vehicle": {
+    "title": "Мои автомобили",
+    "addVehicle": "Добавить автомобиль",
+    "editVehicle": "Редактировать",
+    "noVehicles": "Нет автомобилей",
+    "noVehiclesDesc": "Добавьте автомобиль для просмотра конфигурации и характеристик.",
+    "make": "Марка",
+    "model": "Модель",
+    "year": "Год",
+    "vin": "VIN",
+    "modification": "Модификация",
+    "characteristics": "Характеристики",
+    "searchInExternal": "Поиск во внешнем каталоге",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "delete": "Удалить",
+    "deleteConfirm": "Удалить этот автомобиль?",
+    "loadError": "Ошибка загрузки",
+    "saveError": "Ошибка сохранения",
+    "yearRequiredForModifications": "Введите год выше для фильтрации модификаций"
   },
   "footer": {
     "copyright": "© {year} My App"

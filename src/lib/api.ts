@@ -392,15 +392,50 @@ export async function getCarModels(
   return Array.isArray(res) ? res : (res as { results?: CarModel[] }).results ?? [];
 }
 
-export async function getCarModifications(
+export type CarFilterOptions = {
+  body_types: string[];
+  engine_types: string[];
+};
+
+export async function getCarModelYears(modelId: number): Promise<number[]> {
+  const res = await request<{ years: number[] }>(
+    `cars/models/${modelId}/years/`,
+  );
+  return res.years ?? [];
+}
+
+export async function getCarFilterOptions(
   modelId: number,
   year?: number,
-): Promise<CarModification[]> {
+): Promise<CarFilterOptions> {
   const params = new URLSearchParams();
   if (year != null && !isNaN(year) && year > 0) {
     params.set("year", String(year));
   }
   const queryString = params.toString();
+  const path = `cars/models/${modelId}/filter-options/${queryString ? `?${queryString}` : ""}`;
+  return request<CarFilterOptions>(path);
+}
+
+export async function getCarModifications(
+  modelId: number,
+  params?: {
+    year?: number;
+    body_type?: string;
+    engine_type?: string;
+  },
+): Promise<CarModification[]> {
+  const searchParams = new URLSearchParams();
+  if (params?.year != null && !isNaN(params.year) && params.year > 0) {
+    searchParams.set("year", String(params.year));
+  }
+  if (params?.body_type?.trim()) {
+    searchParams.set("body_type", params.body_type.trim());
+  }
+  if (params?.engine_type?.trim()) {
+    searchParams.set("engine_type", params.engine_type.trim());
+  }
+  const queryString = searchParams.toString();
   const path = `cars/models/${modelId}/modifications/${queryString ? `?${queryString}` : ""}`;
   const res = await request<CarModification[] | { results?: CarModification[] }>(
     path,
@@ -430,6 +465,17 @@ export async function searchCarsExternal(
   return request<CarsSearchExternalItem[]>(
     `cars/search-external/?${params}`,
   );
+}
+
+export type DecodeVinResult = {
+  make: string;
+  model: string;
+  year: number | null;
+};
+
+export async function decodeVin(vin: string): Promise<DecodeVinResult> {
+  const params = new URLSearchParams({ vin: vin.trim().toUpperCase() });
+  return request<DecodeVinResult>(`cars/decode-vin/?${params}`);
 }
 
 /* ========== Vehicles (garage) ========== */

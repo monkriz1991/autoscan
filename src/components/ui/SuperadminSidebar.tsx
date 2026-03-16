@@ -4,7 +4,6 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import {
   IconDashboard,
-  IconBuilding,
   IconChartBar,
   IconSettings,
   IconDeviceDesktop,
@@ -17,7 +16,6 @@ export default function SuperadminSidebar() {
 
   const NAV_ITEMS = [
     { href: "/superadmin/dashboard", label: t("dashboard"), icon: IconDashboard },
-    { href: "/superadmin/dashboard/businesses", label: t("businesses"), icon: IconBuilding },
     { href: "/superadmin/dashboard/analytics", label: t("analytics"), icon: IconChartBar },
     { href: "/superadmin/dashboard/vehicle", label: t("vehicle"), icon: IconCar },
     { href: "/superadmin/dashboard/devices", label: t("devices"), icon: IconDeviceDesktop },

@@ -30,6 +30,7 @@ export default function LanguageSwitcher() {
         <Button
           variant="subtle"
           size="sm"
+          color="silver"
           leftSection={<IconLanguage size={18} />}
           aria-label="Switch language"
         >

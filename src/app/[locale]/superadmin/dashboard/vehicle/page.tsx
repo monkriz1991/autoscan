@@ -24,14 +24,17 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { IconCar, IconPlus, IconTrash, IconEdit, IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import {
+  ApiError,
   getVehicles,
   createVehicle,
   updateVehicle,
   deleteVehicle,
   getCarMakes,
   getCarModels,
+  getCarFilterOptions,
   getCarModifications,
   searchCarsExternal,
+  decodeVin,
   type Vehicle,
   type VehicleCreateUpdate,
   type CarMake,
@@ -66,6 +69,12 @@ export default function DashboardVehiclePage() {
   const [formModificationId, setFormModificationId] = useState<number | null>(
     null,
   );
+  const [formBodyType, setFormBodyType] = useState<string | null>(null);
+  const [formEngineType, setFormEngineType] = useState<string | null>(null);
+  const [bodyTypes, setBodyTypes] = useState<string[]>([]);
+  const [engineTypes, setEngineTypes] = useState<string[]>([]);
+  const [decodingVin, setDecodingVin] = useState(false);
+  const [vinDecodeError, setVinDecodeError] = useState("");
 
   const fetchVehicles = useCallback(async () => {
     setLoading(true);
@@ -128,6 +137,44 @@ export default function DashboardVehiclePage() {
   }, [formMake, formYear]);
 
   useEffect(() => {
+    if (!formModel || !models.length) return;
+    const modelLower = formModel.toLowerCase();
+    const m = models.find((x) => x.name.toLowerCase() === modelLower);
+    if (m) setFormModelId(m.id);
+  }, [models, formModel]);
+
+  useEffect(() => {
+    if (!formModelId) {
+      setBodyTypes([]);
+      setEngineTypes([]);
+      setFormBodyType(null);
+      setFormEngineType(null);
+      setModifications([]);
+      setFormModificationId(null);
+      return;
+    }
+    const year =
+      typeof formYear === "number"
+        ? formYear
+        : parseInt(String(formYear), 10);
+    const hasYear =
+      !isNaN(year) && year >= 1990 && year <= new Date().getFullYear() + 1;
+    if (!hasYear) {
+      setBodyTypes([]);
+      setEngineTypes([]);
+      setFormBodyType(null);
+      setFormEngineType(null);
+      setModifications([]);
+      setFormModificationId(null);
+      return;
+    }
+    getCarFilterOptions(formModelId, year).then((opts) => {
+      setBodyTypes(opts.body_types ?? []);
+      setEngineTypes(opts.engine_types ?? []);
+    });
+  }, [formModelId, formYear]);
+
+  useEffect(() => {
     if (!formModelId) {
       setModifications([]);
       setFormModificationId(null);
@@ -144,7 +191,11 @@ export default function DashboardVehiclePage() {
       setFormModificationId(null);
       return;
     }
-    getCarModifications(formModelId, year)
+    getCarModifications(formModelId, {
+      year,
+      body_type: formBodyType?.trim() || undefined,
+      engine_type: formEngineType?.trim() || undefined,
+    })
       .then((mods) => {
         setModifications(mods);
         setFormModificationId((prev) => {
@@ -154,7 +205,7 @@ export default function DashboardVehiclePage() {
         });
       })
       .catch(() => setModifications([]));
-  }, [formModelId, formYear]);
+  }, [formModelId, formYear, formBodyType, formEngineType]);
 
   const resetForm = () => {
     setFormMake("");
@@ -163,7 +214,41 @@ export default function DashboardVehiclePage() {
     setFormVin("");
     setFormModelId(null);
     setFormModificationId(null);
+    setFormBodyType(null);
+    setFormEngineType(null);
+    setBodyTypes([]);
+    setEngineTypes([]);
     setEditingVehicle(null);
+    setVinDecodeError("");
+  };
+
+  const handleDecodeVin = async () => {
+    const vin = formVin.trim();
+    if (!vin || vin.length !== 17) {
+      setVinDecodeError(t("vinDecodeError"));
+      return;
+    }
+    setDecodingVin(true);
+    setVinDecodeError("");
+    try {
+      const result = await decodeVin(vin);
+      setFormMake(result.make);
+      setFormModel(result.model || "");
+      setFormYear(result.year ?? "");
+      setFormModelId(null);
+      setFormModificationId(null);
+    } catch (err) {
+      const msg =
+        err instanceof ApiError &&
+        err.data &&
+        typeof err.data === "object" &&
+        "detail" in err.data
+          ? String((err.data as { detail?: unknown }).detail)
+          : t("vinDecodeError");
+      setVinDecodeError(msg);
+    } finally {
+      setDecodingVin(false);
+    }
   };
 
   const handleOpenAdd = () => {
@@ -179,6 +264,8 @@ export default function DashboardVehiclePage() {
     setFormVin(v.vin ?? "");
     setFormModelId(null);
     setFormModificationId(v.modification_id);
+    setFormBodyType(null);
+    setFormEngineType(null);
     setModels([]);
     setModifications([]);
     getCarModels(v.make, v.year ?? undefined).then((r) => {
@@ -417,6 +504,31 @@ export default function DashboardVehiclePage() {
         size="sm"
       >
         <Stack gap="md">
+          <TextInput
+            label={t("vin")}
+            placeholder="1HGBH41JXMN109186"
+            value={formVin}
+            onChange={(e) => {
+              setFormVin(e.target.value);
+              setVinDecodeError("");
+            }}
+          />
+          <Group gap="xs">
+            <Button
+              variant="light"
+              size="sm"
+              loading={decodingVin}
+              onClick={handleDecodeVin}
+              disabled={!formVin.trim() || formVin.trim().length !== 17}
+            >
+              {decodingVin ? t("vinDecoding") : t("decodeByVin")}
+            </Button>
+          </Group>
+          {vinDecodeError && (
+            <Text size="sm" c="red">
+              {vinDecodeError}
+            </Text>
+          )}
           <Select
             label={t("make")}
             placeholder={t("make")}
@@ -455,6 +567,42 @@ export default function DashboardVehiclePage() {
             clearable
           />
           {formModelId && (
+            <Group grow>
+              <Select
+                label={t("bodyType")}
+                placeholder={t("allBodyTypes")}
+                data={[
+                  { value: "", label: t("allBodyTypes") },
+                  ...bodyTypes.map((v) => ({ value: v, label: v })),
+                ]}
+                value={formBodyType ?? ""}
+                onChange={(v) => setFormBodyType(v || null)}
+                clearable
+                disabled={
+                  !formYear ||
+                  isNaN(parseInt(String(formYear), 10)) ||
+                  parseInt(String(formYear), 10) < 1990
+                }
+              />
+              <Select
+                label={t("engineType")}
+                placeholder={t("allEngineTypes")}
+                data={[
+                  { value: "", label: t("allEngineTypes") },
+                  ...engineTypes.map((v) => ({ value: v, label: v })),
+                ]}
+                value={formEngineType ?? ""}
+                onChange={(v) => setFormEngineType(v || null)}
+                clearable
+                disabled={
+                  !formYear ||
+                  isNaN(parseInt(String(formYear), 10)) ||
+                  parseInt(String(formYear), 10) < 1990
+                }
+              />
+            </Group>
+          )}
+          {formModelId && (
             <Select
               label={t("modification")}
               placeholder={
@@ -462,13 +610,24 @@ export default function DashboardVehiclePage() {
                   ? t("modification")
                   : t("yearRequiredForModifications")
               }
-              data={modifications.map((m) => ({
-                value: String(m.id),
-                label:
+              data={modifications.map((m) => {
+                const years =
                   m.year_from != null || m.year_to != null
-                    ? `${m.name} (${m.year_from ?? "?"}-${m.year_to ?? "?"})`
-                    : m.name,
-              }))}
+                    ? ` (${m.year_from ?? "?"}-${m.year_to ?? "?"})`
+                    : "";
+                const chars = m.characteristics || {};
+                const extras = [
+                  chars["Тип кузова"],
+                  chars["Тип двигателя"],
+                  chars["Тип КПП"],
+                ]
+                  .filter(Boolean)
+                  .join(", ");
+                const label = extras
+                  ? `${m.name}${years} — ${extras}`
+                  : `${m.name}${years}`;
+                return { value: String(m.id), label };
+              })}
               value={formModificationId ? String(formModificationId) : null}
               onChange={(v) =>
                 setFormModificationId(v ? parseInt(v, 10) : null)
@@ -482,12 +641,6 @@ export default function DashboardVehiclePage() {
               }
             />
           )}
-          <TextInput
-            label={t("vin")}
-            placeholder="VIN"
-            value={formVin}
-            onChange={(e) => setFormVin(e.target.value)}
-          />
           <Group justify="flex-end" mt="md">
             <Button variant="subtle" onClick={closeDrawer}>
               {t("cancel")}

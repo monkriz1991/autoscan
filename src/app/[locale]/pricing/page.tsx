@@ -181,6 +181,8 @@ export default function PricingPage() {
                     <Text size="sm">{t("devices", { count: plan.max_devices })}</Text>
 
                     <Button
+                      className="btn-metallic"
+                      color="silver"
                       component={Link}
                       href="/register"
                       variant="filled"

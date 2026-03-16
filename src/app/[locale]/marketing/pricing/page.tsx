@@ -149,6 +149,8 @@ export default function PricingPage() {
                     <Text size="sm">До {plan.max_devices} устройств</Text>
 
                     <Button
+                      className="btn-metallic"
+                      color="silver"
                       component={Link}
                       href="/register"
                       variant="filled"

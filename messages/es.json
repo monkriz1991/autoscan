@@ -10,7 +10,6 @@
     "devices": "Dispositivos",
     "vehicle": "Vehículo",
     "settings": "Ajustes",
-    "businesses": "Empresas",
     "analytics": "Analítica",
     "brand": "Autoscan"
   },
@@ -20,6 +19,7 @@
     "subtitle": "Herramienta OBD precisa con interfaz moderna, datos en vivo y sugerencias AI sin ruido visual innecesario.",
     "login": "Iniciar sesión",
     "pricing": "Precios",
+    "dashboard": "Área personal",
     "specsTitle": "Capacidades actuales de la plataforma",
     "spec0": "Aplicación de escritorio multiplataforma",
     "spec1": "Diagnóstico OBD-II en modo solo lectura",
@@ -128,7 +128,14 @@
     "deleteConfirm": "¿Eliminar este vehículo?",
     "loadError": "Error de carga",
     "saveError": "Error al guardar",
-    "yearRequiredForModifications": "Introduce el año arriba para filtrar modificaciones"
+    "yearRequiredForModifications": "Introduce el año arriba para filtrar modificaciones",
+    "bodyType": "Tipo de carrocería",
+    "engineType": "Tipo de motor",
+    "allBodyTypes": "Todos",
+    "allEngineTypes": "Todos",
+    "decodeByVin": "Decodificar por VIN",
+    "vinDecoding": "Decodificando...",
+    "vinDecodeError": "No se pudo decodificar el vehículo por VIN. NHTSA cubre principalmente vehículos del mercado estadounidense. Use la entrada manual para otros mercados."
   },
   "footer": {
     "copyright": "© {year} My App"

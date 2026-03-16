@@ -10,7 +10,6 @@
     "devices": "Geräte",
     "vehicle": "Fahrzeug",
     "settings": "Einstellungen",
-    "businesses": "Unternehmen",
     "analytics": "Analytik",
     "brand": "Autoscan"
   },
@@ -20,6 +19,7 @@
     "subtitle": "Präzises OBD-Tool mit moderner Oberfläche, Live-Daten und KI-Hinweisen ohne unnötigen visuellen Aufwand.",
     "login": "Anmelden",
     "pricing": "Preise",
+    "dashboard": "Persönlicher Bereich",
     "specsTitle": "Aktuelle Plattformfunktionen",
     "spec0": "Plattformübergreifende Desktop-Anwendung",
     "spec1": "OBD-II-Diagnose im Nur-Lese-Modus",
@@ -131,7 +131,14 @@
     "deleteConfirm": "Dieses Fahrzeug löschen?",
     "loadError": "Ladefehler",
     "saveError": "Speicherfehler",
-    "yearRequiredForModifications": "Jahr oben eingeben, um Modifikationen zu filtern"
+    "yearRequiredForModifications": "Jahr oben eingeben, um Modifikationen zu filtern",
+    "bodyType": "Karosserietyp",
+    "engineType": "Motortyp",
+    "allBodyTypes": "Alle",
+    "allEngineTypes": "Alle",
+    "decodeByVin": "Anhand VIN decodieren",
+    "vinDecoding": "Decodierung...",
+    "vinDecodeError": "Fahrzeug anhand VIN konnte nicht ermittelt werden. NHTSA enthält hauptsächlich Fahrzeuge für den US-Markt. Nutzen Sie die manuelle Eingabe für andere Märkte."
   },
   "footer": {
     "copyright": "© {year} My App"

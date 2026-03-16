@@ -16,6 +16,7 @@ function CarHero() {
   }, []);
   return (
     <Box
+      className="car-hero"
       style={{
         width: "100vw",
         position: "relative",

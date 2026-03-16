@@ -313,6 +313,39 @@ body {
   background: #ffffff;
 }
 
+/* Drawer content (Superadmin sidebar на мобильных) */
+.layout__drawer-content {
+  padding: 16px 0;
+}
+
+.layout__drawer-content .layout__sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.layout__drawer-content .layout__sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  font-size: 14px;
+  color: #495057;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.layout__drawer-content .layout__sidebar-link:hover {
+  background: #e9ecef;
+  color: #212529;
+}
+
+.layout__drawer-content .layout__sidebar-link--active {
+  background: #e9ecef;
+  color: #212529;
+  font-weight: 600;
+}
+
 /* Pricing carousel */
 .carousel-scroll {
   &::-webkit-scrollbar {
@@ -356,5 +389,122 @@ body {
     &:hover {
       color: #000;
     }
+  }
+}
+
+/* ========== Mobile (< 768px) ========== */
+@media (max-width: 767px) {
+  .navbar {
+    padding: 12px 0;
+  }
+
+  .navbar__inner {
+    padding: 0 12px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .navbar__logo {
+    font-size: 18px;
+  }
+
+  .navbar__nav {
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .navbar__link {
+    font-size: 13px;
+  }
+
+  .layout__main {
+    padding: 20px 12px;
+  }
+
+  .container {
+    padding: 0 12px;
+  }
+
+  /* Superadmin: sidebar скрыт, Burger + Drawer на мобильных */
+  .layout--superadmin .layout__body {
+    flex-direction: column;
+  }
+
+  .layout--superadmin .layout__sidebar--desktop {
+    display: none;
+  }
+
+  .layout--superadmin .layout__mobile-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #fff;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .layout--superadmin .layout__mobile-header-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #212529;
+  }
+
+  .layout--superadmin .layout__main {
+    padding: 16px 12px;
+    width: 100%;
+  }
+
+  .layout--superadmin .layout__content {
+    max-width: 100%;
+  }
+
+  .layout--superadmin .layout__footer {
+    font-size: 12px;
+    padding: 12px;
+  }
+
+  .footer__inner {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .footer__links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* Vehicle table: горизонтальная прокрутка */
+  .vehicle-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -12px;
+    padding: 0 12px;
+  }
+
+  /* CarHero: уменьшить отступы на мобильных */
+  .car-hero {
+    padding: 40px 16px 36px !important;
+  }
+
+  /* Drawer формы добавления ТС: полная ширина на мобильных */
+  .vehicle-form-drawer {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* Desktop: скрыть mobile header */
+@media (min-width: 768px) {
+  .layout--superadmin .layout__mobile-header {
+    display: none;
+  }
+}
+
+/* ========== Mobile (< 480px) ========== */
+@media (max-width: 479px) {
+  .navbar__nav {
+    gap: 8px;
   }
 }

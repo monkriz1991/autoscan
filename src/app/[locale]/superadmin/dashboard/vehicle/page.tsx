@@ -391,7 +391,8 @@ export default function DashboardVehiclePage() {
 
       {vehicles.length > 0 && (
         <Card withBorder shadow="sm" radius="md" p="md">
-          <Table striped highlightOnHover>
+          <div className="vehicle-table-wrapper">
+          <Table striped highlightOnHover minWidth={400}>
             <Table.Thead>
               <Table.Tr>
                 <Table.Th>{t("make")}</Table.Th>
@@ -490,6 +491,7 @@ export default function DashboardVehiclePage() {
               ])}
             </Table.Tbody>
           </Table>
+          </div>
         </Card>
       )}
 
@@ -502,6 +504,7 @@ export default function DashboardVehiclePage() {
         title={editingVehicle ? t("editVehicle") : t("addVehicle")}
         position="right"
         size="sm"
+        classNames={{ content: "vehicle-form-drawer" }}
       >
         <Stack gap="md">
           <TextInput

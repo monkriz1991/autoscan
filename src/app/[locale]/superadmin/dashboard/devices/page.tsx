@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 import {
   Card,
   Title,
@@ -12,24 +13,12 @@ import {
   Loader,
   Center,
   Notification,
-  TextInput,
-  PasswordInput,
   Button,
   Table,
   ActionIcon,
 } from "@mantine/core";
 import { IconDeviceDesktop, IconTrash } from "@tabler/icons-react";
-
-const STORAGE_ACCESS = "django_access_token";
-const STORAGE_REFRESH = "django_refresh_token";
-
-interface Device {
-  id: number;
-  device_name: string;
-  hardware_id: string;
-  last_active: string;
-  is_active: boolean;
-}
+import { getDevices, revokeDevice, isAuthenticated, logout, type UserDevice } from "@/lib/api";
 
 function formatDate(iso: string, locale: string): string {
   try {
@@ -48,52 +37,20 @@ function formatDate(iso: string, locale: string): string {
 
 export default function DashboardDevicesPage() {
   const t = useTranslations("devices");
-  const tAuth = useTranslations("auth");
   const locale = useLocale();
-  const [devices, setDevices] = useState<Device[]>([]);
+  const router = useRouter();
+  const [devices, setDevices] = useState<UserDevice[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [needsAuth, setNeedsAuth] = useState(false);
-  const [authEmail, setAuthEmail] = useState("");
-  const [authPassword, setAuthPassword] = useState("");
-  const [authLoading, setAuthLoading] = useState(false);
-  const [authError, setAuthError] = useState("");
   const [revokingId, setRevokingId] = useState<number | null>(null);
 
-  const apiBase =
-    (typeof window !== "undefined"
-      ? process.env.NEXT_PUBLIC_API_BASE_URL
-      : process.env.NEXT_PUBLIC_API_BASE_URL) || "";
-
   const fetchDevices = useCallback(async () => {
-    if (!apiBase) {
-      setError(t("apiNotConfigured"));
-      setLoading(false);
+    if (!isAuthenticated()) {
+      router.replace("/login");
       return;
     }
-
-    const token =
-      typeof window !== "undefined" ? localStorage.getItem(STORAGE_ACCESS) : null;
-    if (!token) {
-      setNeedsAuth(true);
-      setLoading(false);
-      return;
-    }
-
-    const url = `${apiBase.replace(/\/$/, "")}/users/me/devices/`;
     try {
-      const res = await fetch(url, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (res.status === 401) {
-        localStorage.removeItem(STORAGE_ACCESS);
-        localStorage.removeItem(STORAGE_REFRESH);
-        setNeedsAuth(true);
-        setLoading(false);
-        return;
-      }
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
+      const data = await getDevices();
       setDevices(Array.isArray(data) ? data : []);
       setError("");
     } catch (err) {
@@ -101,72 +58,25 @@ export default function DashboardDevicesPage() {
     } finally {
       setLoading(false);
     }
-  }, [apiBase, t]);
+  }, [router, t]);
 
   useEffect(() => {
+    if (!isAuthenticated()) {
+      router.replace("/login");
+      return;
+    }
     fetchDevices();
-  }, [fetchDevices]);
-
-  const handleAuthSubmit = async () => {
-    setAuthError("");
-    if (!authEmail || !authPassword) {
-      setAuthError(t("enterEmailPassword"));
-      return;
-    }
-    if (!apiBase) {
-      setAuthError(t("apiNotConfigured"));
-      return;
-    }
-
-    setAuthLoading(true);
-    try {
-      const res = await fetch(`${apiBase.replace(/\/$/, "")}/auth/login/`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: authEmail, password: authPassword }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setAuthError(data.detail || t("invalidCredentials"));
-        return;
-      }
-      if (data.access) {
-        localStorage.setItem(STORAGE_ACCESS, data.access);
-        if (data.refresh) localStorage.setItem(STORAGE_REFRESH, data.refresh);
-        setNeedsAuth(false);
-        setAuthEmail("");
-        setAuthPassword("");
-        setLoading(true);
-        fetchDevices();
-      } else {
-        setAuthError(t("invalidResponse"));
-      }
-    } catch (err) {
-      setAuthError(t("connectionError"));
-    } finally {
-      setAuthLoading(false);
-    }
-  };
+  }, [fetchDevices, router]);
 
   const handleLogout = () => {
-    localStorage.removeItem(STORAGE_ACCESS);
-    localStorage.removeItem(STORAGE_REFRESH);
-    setNeedsAuth(true);
-    setDevices([]);
+    logout();
+    router.replace("/");
   };
 
   const handleRevokeDevice = async (deviceId: number) => {
-    const token =
-      typeof window !== "undefined" ? localStorage.getItem(STORAGE_ACCESS) : null;
-    if (!token || !apiBase) return;
-
     setRevokingId(deviceId);
     try {
-      const res = await fetch(
-        `${apiBase.replace(/\/$/, "")}/users/me/devices/${deviceId}/`,
-        { method: "DELETE", headers: { Authorization: `Bearer ${token}` } }
-      );
-      if (!res.ok) throw new Error(t("revokeError"));
+      await revokeDevice(deviceId);
       setDevices((prev) => prev.filter((d) => d.id !== deviceId));
     } catch (err) {
       setError(err instanceof Error ? err.message : t("revokeError"));
@@ -180,38 +90,6 @@ export default function DashboardDevicesPage() {
       <Center py="xl">
         <Loader size="lg" />
       </Center>
-    );
-  }
-
-  if (needsAuth) {
-    return (
-      <Card withBorder shadow="sm" radius="md" p="xl" maw={400}>
-        <Stack>
-          <Title order={4}>{t("authTitle")}</Title>
-          <Text size="sm" c="dimmed">
-            {t("authDesc")}
-          </Text>
-          {authError && (
-            <Notification color="red" onClose={() => setAuthError("")}>
-              {authError}
-            </Notification>
-          )}
-          <TextInput
-            label={tAuth("email")}
-            type="email"
-            value={authEmail}
-            onChange={(e) => setAuthEmail(e.target.value)}
-          />
-          <PasswordInput
-            label={tAuth("password")}
-            value={authPassword}
-            onChange={(e) => setAuthPassword(e.target.value)}
-          />
-          <Button loading={authLoading} onClick={handleAuthSubmit}>
-            {t("login")}
-          </Button>
-        </Stack>
-      </Card>
     );
   }
 
@@ -249,6 +127,7 @@ export default function DashboardDevicesPage() {
           <Table striped highlightOnHover>
             <Table.Thead>
               <Table.Tr>
+                <Table.Th>{t("application")}</Table.Th>
                 <Table.Th>{t("device")}</Table.Th>
                 <Table.Th>{t("id")}</Table.Th>
                 <Table.Th>{t("lastActive")}</Table.Th>
@@ -259,6 +138,7 @@ export default function DashboardDevicesPage() {
             <Table.Tbody>
               {devices.map((d) => (
                 <Table.Tr key={d.id}>
+                  <Table.Td>{d.application_name || "—"}</Table.Td>
                   <Table.Td>{d.device_name || "—"}</Table.Td>
                   <Table.Td>
                     <Text size="sm" ff="monospace" c="dimmed">

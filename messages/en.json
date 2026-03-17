@@ -50,7 +50,11 @@
     "captchaWrong": "Wrong answer. Solve the example again.",
     "captchaLoadError": "Failed to load captcha",
     "registerSuccess": "Registration successful. Check your email to verify your account.",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "oauth2ConsentTitle": "Allow AutoScan AI Desktop to access your account?",
+    "oauth2Allow": "Allow",
+    "oauth2Deny": "Cancel",
+    "oauth2Error": "Authorization error"
   },
   "devBanner": {
     "title": "Project in development",
@@ -86,6 +90,7 @@
     "login": "Log in",
     "noDevices": "No active devices",
     "noDevicesDesc": "Connected apps (desktop, mobile) will appear here after the first heartbeat.",
+    "application": "Application",
     "device": "Device",
     "id": "ID",
     "lastActive": "Last activity",

@@ -23,11 +23,14 @@ export default function middleware(request: NextRequest) {
   }
   if (
     !token &&
-    (pathWithoutLocale.startsWith("/business") || pathWithoutLocale.startsWith("/superadmin"))
+    (pathWithoutLocale.startsWith("/business") ||
+      pathWithoutLocale.startsWith("/superadmin") ||
+      pathWithoutLocale.startsWith("/auth/authorize"))
   ) {
     const locale = localeMatch?.[1] || "en";
     const loginUrl = new URL(`/${locale}/login`, request.url);
-    loginUrl.searchParams.set("next", pathname);
+    const fullPath = pathname + (request.nextUrl.search || "");
+    loginUrl.searchParams.set("next", fullPath);
     return NextResponse.redirect(loginUrl);
   }
 

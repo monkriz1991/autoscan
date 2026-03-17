@@ -50,7 +50,11 @@
     "captchaWrong": "Nieprawidłowa odpowiedź. Rozwiąż przykład ponownie.",
     "captchaLoadError": "Nie udało się załadować captcha",
     "registerSuccess": "Rejestracja udana. Sprawdź e-mail, aby potwierdzić konto.",
-    "loading": "Ładowanie..."
+    "loading": "Ładowanie...",
+    "oauth2ConsentTitle": "Zezwolić AutoScan AI Desktop na dostęp do konta?",
+    "oauth2Allow": "Zezwól",
+    "oauth2Deny": "Anuluj",
+    "oauth2Error": "Błąd autoryzacji"
   },
   "devBanner": {
     "title": "Projekt w trakcie rozwoju",
@@ -86,6 +90,7 @@
     "login": "Zaloguj się",
     "noDevices": "Brak aktywnych urządzeń",
     "noDevicesDesc": "Podłączone aplikacje (desktop, mobilne) pojawią się tutaj po pierwszym heartbeat.",
+    "application": "Aplikacja",
     "device": "Urządzenie",
     "id": "ID",
     "lastActive": "Ostatnia aktywność",

@@ -202,6 +202,27 @@ export async function register(
   return data;
 }
 
+export type OAuth2AuthorizeParams = {
+  client_id: string;
+  redirect_uri: string;
+  response_type: string;
+  scope?: string;
+  state?: string;
+  code_challenge?: string;
+  code_challenge_method?: string;
+};
+
+export type OAuth2AuthorizeResponse = { redirect_url: string };
+
+export async function createOAuth2Authorization(
+  params: OAuth2AuthorizeParams,
+): Promise<OAuth2AuthorizeResponse> {
+  return request<OAuth2AuthorizeResponse>("auth/oauth2/authorize/", {
+    method: "POST",
+    body: JSON.stringify(params),
+  });
+}
+
 /* ========== Users ========== */
 
 export type UserProfile = {
@@ -229,6 +250,26 @@ export async function updateMe(payload: UserProfileUpdate): Promise<UserProfile>
     method: "PATCH",
     body: JSON.stringify(payload),
   });
+}
+
+export type UserDevice = {
+  id: number;
+  application_name?: string;
+  device_name: string;
+  hardware_id: string;
+  last_active: string;
+  is_active: boolean;
+};
+
+export async function getDevices(): Promise<UserDevice[]> {
+  const res = await request<UserDevice[] | { results?: UserDevice[] }>(
+    "users/me/devices/",
+  );
+  return Array.isArray(res) ? res : (res as { results?: UserDevice[] }).results ?? [];
+}
+
+export async function revokeDevice(deviceId: number): Promise<void> {
+  await request(`users/me/devices/${deviceId}/`, { method: "DELETE" });
 }
 
 export async function uploadAvatar(file: File): Promise<UserProfile> {
@@ -311,6 +352,8 @@ export type BillingStatus = {
   expires_at?: string;
   device_limit?: number;
   device_count?: number;
+  session_limit?: number;
+  session_count?: number;
 };
 
 export async function getBillingStatus(): Promise<BillingStatus> {

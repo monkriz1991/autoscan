@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState, useEffect } from "react";
+import { Suspense, useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
@@ -13,11 +13,16 @@ import {
   Stack,
   Notification,
   Group,
+  List,
 } from "@mantine/core";
+import type { UserDevice } from "@/lib/api";
 import {
   createOAuth2Authorization,
   ApiError,
   isAuthenticated,
+  getBillingStatus,
+  getDevices,
+  revokeDevice,
 } from "@/lib/api";
 
 function AuthorizeForm() {
@@ -26,7 +31,10 @@ function AuthorizeForm() {
   const searchParams = useSearchParams();
 
   const [loading, setLoading] = useState(false);
+  const [revokingId, setRevokingId] = useState<number | null>(null);
   const [error, setError] = useState("");
+  const [sessionInfo, setSessionInfo] = useState<{ used: number; limit: number } | null>(null);
+  const [devices, setDevices] = useState<UserDevice[]>([]);
 
   const clientId = searchParams.get("client_id") ?? "";
   const redirectUri = searchParams.get("redirect_uri") ?? "";
@@ -45,7 +53,50 @@ function AuthorizeForm() {
       router.replace(`/login?next=${encodeURIComponent(next)}`);
       return;
     }
+    const loadData = async () => {
+      try {
+        const [status, devs] = await Promise.all([getBillingStatus(), getDevices()]);
+        const used = status.session_count ?? 0;
+        const limit = status.session_limit ?? 1;
+        setSessionInfo({ used, limit });
+        setDevices(devs);
+      } catch {
+        setSessionInfo({ used: 0, limit: 1 });
+        setDevices([]);
+      }
+    };
+    loadData();
   }, [router]);
+
+  const refreshData = useCallback(async () => {
+    try {
+      const [status, devs] = await Promise.all([getBillingStatus(), getDevices()]);
+      setSessionInfo({
+        used: status.session_count ?? 0,
+        limit: status.session_limit ?? 1,
+      });
+      setDevices(devs);
+    } catch {
+      // keep current state
+    }
+  }, []);
+
+  const handleRevoke = async (deviceId: number) => {
+    setError("");
+    setRevokingId(deviceId);
+    try {
+      await revokeDevice(deviceId);
+      await refreshData();
+    } catch (err) {
+      setError(
+        err instanceof ApiError
+          ? (err.data as { detail?: string })?.detail ?? err.message
+          : t("revokeError")
+      );
+    } finally {
+      setRevokingId(null);
+    }
+  };
 
   const hasRequiredParams = clientId && redirectUri && responseType === "code";
 
@@ -111,6 +162,56 @@ function AuthorizeForm() {
             {t("oauth2ConsentTitle")}
           </Title>
 
+          {sessionInfo && (
+            <Text size="sm" c="dimmed" ta="center">
+              {t("sessionsCount", {
+                used: sessionInfo.used,
+                limit: sessionInfo.limit,
+              })}
+            </Text>
+          )}
+
+          {sessionInfo && sessionInfo.used >= sessionInfo.limit && (
+            <Stack gap="xs">
+              <Notification color="orange" title={t("sessionLimitReached")}>
+                {t("sessionLimitReachedDesc")}
+              </Notification>
+              {devices.length > 0 && (
+                <Stack gap="xs">
+                  <Text size="sm" fw={500}>
+                    {t("revokeSessionToFreeSlot")}
+                  </Text>
+                  <List size="sm" spacing="xs">
+                    {devices.map((d) => (
+                      <List.Item
+                        key={d.id}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          gap: 8,
+                        }}
+                      >
+                        <span>
+                          {d.device_name || d.application_name || d.hardware_id}
+                        </span>
+                        <Button
+                          size="xs"
+                          variant="light"
+                          color="red"
+                          loading={revokingId === d.id}
+                          onClick={() => handleRevoke(d.id)}
+                        >
+                          {t("revoke")}
+                        </Button>
+                      </List.Item>
+                    ))}
+                  </List>
+                </Stack>
+              )}
+            </Stack>
+          )}
+
           {error && (
             <Notification color="red" onClose={() => setError("")}>
               {error}
@@ -121,7 +222,11 @@ function AuthorizeForm() {
             <Button variant="default" onClick={handleDeny}>
               {t("oauth2Deny")}
             </Button>
-            <Button loading={loading} onClick={handleAllow}>
+            <Button
+              loading={loading}
+              onClick={handleAllow}
+              disabled={sessionInfo != null && sessionInfo.used >= sessionInfo.limit}
+            >
               {t("oauth2Allow")}
             </Button>
           </Group>

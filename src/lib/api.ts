@@ -214,6 +214,19 @@ export type OAuth2AuthorizeParams = {
 
 export type OAuth2AuthorizeResponse = { redirect_url: string };
 
+export type OAuth2Config = {
+  client_id: string;
+  scanner_web_redirect_uri?: string;
+};
+
+export async function getOAuth2Config(): Promise<OAuth2Config> {
+  const base = BASE_URL.replace(/\/$/, "");
+  const url = base.endsWith("/api/v1") ? `${base}/auth/oauth2-config/` : `${base.replace(/\/api\/v1\/?$/, "")}/api/v1/auth/oauth2-config/`;
+  const res = await fetch(url);
+  if (!res.ok) throw new ApiError(res.status, await res.json().catch(() => ({})));
+  return res.json();
+}
+
 export async function createOAuth2Authorization(
   params: OAuth2AuthorizeParams,
 ): Promise<OAuth2AuthorizeResponse> {
@@ -221,6 +234,46 @@ export async function createOAuth2Authorization(
     method: "POST",
     body: JSON.stringify(params),
   });
+}
+
+async function sha256Base64Url(input: string): Promise<string> {
+  const enc = new TextEncoder();
+  const data = enc.encode(input);
+  const hash = await crypto.subtle.digest("SHA-256", data);
+  return btoa(String.fromCharCode(...new Uint8Array(hash)))
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+}
+
+async function generatePKCE(): Promise<{ codeVerifier: string; codeChallenge: string }> {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
+  const verifier = Array.from(crypto.getRandomValues(new Uint8Array(64)))
+    .map((b) => chars[b % chars.length])
+    .join("");
+  const challenge = await sha256Base64Url(verifier);
+  return { codeVerifier: verifier, codeChallenge: challenge };
+}
+
+/** Подключение к сканеру: если пользователь авторизован, создаёт код и перенаправляет в приложение. */
+export async function connectToScannerApp(): Promise<void> {
+  const config = await getOAuth2Config();
+  const redirectUri = config.scanner_web_redirect_uri || "http://localhost:3001/auth/callback";
+  const { codeVerifier, codeChallenge } = await generatePKCE();
+  const state = crypto.randomUUID();
+
+  const { redirect_url } = await createOAuth2Authorization({
+    client_id: config.client_id,
+    redirect_uri: redirectUri,
+    response_type: "code",
+    scope: "read write",
+    state,
+    code_challenge: codeChallenge,
+    code_challenge_method: "S256",
+  });
+  // Verifier в fragment (не отправляется на сервер) — callback сканера прочитает
+  const withVerifier = `${redirect_url}#verifier=${encodeURIComponent(codeVerifier)}`;
+  window.location.href = withVerifier;
 }
 
 /* ========== Users ========== */

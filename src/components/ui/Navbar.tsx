@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { Avatar, Menu } from "@mantine/core";
-import { IconDashboard, IconLogout, IconStethoscope } from "@tabler/icons-react";
+import { IconDashboard, IconLogout, IconPlugConnected, IconStethoscope } from "@tabler/icons-react";
 import { isAuthenticated, logout, getMe } from "@/lib/api";
 import type { UserProfile } from "@/lib/api";
 import LanguageSwitcher from "./LanguageSwitcher";
@@ -92,6 +92,13 @@ export default function Navbar() {
                   href="/business/scan/"
                 >
                   {t("diagnose")}
+                </Menu.Item>
+                <Menu.Item
+                  leftSection={<IconPlugConnected size={16} />}
+                  component={Link}
+                  href="/auth/connect-app"
+                >
+                  {t("connectApp")}
                 </Menu.Item>
                 <Menu.Divider />
                 <Menu.Item

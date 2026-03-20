@@ -48,16 +48,11 @@ export default function PricingPage() {
   const [error, setError] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || "";
-  const plansUrl = apiBase ? `${apiBase.replace(/\/$/, "")}/billing/plans/` : "";
+  const apiBase =
+    process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8001/api/v1";
+  const plansUrl = `${apiBase.replace(/\/$/, "")}/billing/plans/`;
 
   useEffect(() => {
-    if (!plansUrl) {
-      setError(t("apiError"));
-      setLoading(false);
-      return;
-    }
-
     fetch(plansUrl)
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);

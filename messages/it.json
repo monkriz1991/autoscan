@@ -48,7 +48,15 @@
     "captchaWrong": "Risposta errata. Risolvi l'esempio di nuovo.",
     "captchaLoadError": "Impossibile caricare il captcha",
     "registerSuccess": "Registrazione completata. Controlla la tua email per verificare l'account.",
-    "loading": "Caricamento..."
+    "loading": "Caricamento...",
+    "oauthEntry": {
+      "title": "Continua l'accesso",
+      "missingNext": "Parametro di reindirizzamento (next) mancante.",
+      "invalidNext": "Destinazione di reindirizzamento non valida.",
+      "redirectAuthorize": "Reindirizzamento all'autorizzazione…",
+      "openManually": "Apri manualmente l'autorizzazione",
+      "loading": "Caricamento…"
+    }
   },
   "devBanner": {
     "title": "Progetto in sviluppo",

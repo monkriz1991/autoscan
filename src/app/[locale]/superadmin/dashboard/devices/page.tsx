@@ -61,17 +61,9 @@ export default function DashboardDevicesPage() {
   const [revokingId, setRevokingId] = useState<number | null>(null);
 
   const apiBase =
-    (typeof window !== "undefined"
-      ? process.env.NEXT_PUBLIC_API_BASE_URL
-      : process.env.NEXT_PUBLIC_API_BASE_URL) || "";
+    process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8001/api/v1";
 
   const fetchDevices = useCallback(async () => {
-    if (!apiBase) {
-      setError(t("apiNotConfigured"));
-      setLoading(false);
-      return;
-    }
-
     const token =
       typeof window !== "undefined" ? localStorage.getItem(STORAGE_ACCESS) : null;
     if (!token) {
@@ -111,10 +103,6 @@ export default function DashboardDevicesPage() {
     setAuthError("");
     if (!authEmail || !authPassword) {
       setAuthError(t("enterEmailPassword"));
-      return;
-    }
-    if (!apiBase) {
-      setAuthError(t("apiNotConfigured"));
       return;
     }
 

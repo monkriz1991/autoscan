@@ -48,7 +48,15 @@
     "captchaWrong": "Wrong answer. Solve the example again.",
     "captchaLoadError": "Failed to load captcha",
     "registerSuccess": "Registration successful. Check your email to verify your account.",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "oauthEntry": {
+      "title": "Continue sign-in",
+      "missingNext": "Missing redirect parameter (next).",
+      "invalidNext": "Invalid redirect target.",
+      "redirectAuthorize": "Redirecting to authorization… If the desktop app should open, complete login in the browser.",
+      "openManually": "Open authorization manually",
+      "loading": "Loading…"
+    }
   },
   "devBanner": {
     "title": "Project in development",

@@ -13,7 +13,9 @@
     "vehicle": "Veicolo",
     "settings": "Impostazioni",
     "analytics": "Analytics",
-    "brand": "Autoscan"
+    "brand": "Autoscan",
+    "aiHistory": "Cronologia diagnostica AI",
+    "requestHistory": "Cronologia richieste"
   },
   "home": {
     "brand": "AutoScan",
@@ -153,6 +155,40 @@
     "decodeByVin": "Decodifica da VIN",
     "vinDecoding": "Decodifica...",
     "vinDecodeError": "Impossibile decodificare il veicolo da VIN. NHTSA copre principalmente veicoli per il mercato USA. Usare l'inserimento manuale per altri mercati."
+  },
+  "diagnosticsHistory": {
+    "title": "Cronologia diagnostica AI",
+    "subtitle": "Report GearMind salvati. I dati sono caricati dal server.",
+    "subtitleChat": "Conversazione: richiesta e risposta del modello (prima pagina).",
+    "subtitleMerged": "Report di analisi e chat multi-turno dal server (prima pagina di ogni elenco).",
+    "badgeAnalysis": "Analisi",
+    "badgeChat": "Chat",
+    "footerChats": "Report: {reports} di {reportsTotal} · Chat: {chats} di {chatsTotal} · blocchi: {blocks}",
+    "emptyBoth": "Nessun report o chat. Avvia un'analisi o una chat nell'app scanner.",
+    "chatSessionLine": "aggiornato {updated} · sessione #{id}",
+    "chatSessionEmpty": "In questa sessione non ci sono ancora messaggi.",
+    "sidebarTitle": "Chat e report",
+    "pickFromSidebar": "Seleziona un elemento a destra.",
+    "searchPlaceholder": "Cerca: n., data, DTC, auto, testo…",
+    "noSearchResults": "Nessun risultato — modifica la ricerca.",
+    "filteredList": "in elenco {shown} di {total}",
+    "chatYou": "Tu",
+    "chatAi": "IA",
+    "footerShown": "Dialoghi: {shown} di {total} (prima pagina)",
+    "empty": "Nessun report. Esegui un'analisi nell'app scanner.",
+    "loadError": "Impossibile caricare la cronologia",
+    "kindDtc": "DTC",
+    "kindMetrics": "Dati live",
+    "total": "Totale: {count}",
+    "refresh": "Aggiorna",
+    "open": "Apri",
+    "modalTitle": "Report #{id}",
+    "vehicle": "Veicolo",
+    "snapshot": "Snapshot dati (JSON)",
+    "snapshotTechnical": "Dati tecnici (live data)",
+    "snapshotDebugFull": "Snapshot completo (debug, campi interni)",
+    "createdAt": "Creato",
+    "type": "Tipo"
   },
   "footer": {
     "copyright": "© {year} My App"

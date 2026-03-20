@@ -13,7 +13,9 @@
     "vehicle": "Автомобиль",
     "settings": "Настройки",
     "analytics": "Аналитика",
-    "brand": "Autoscan"
+    "brand": "Autoscan",
+    "aiHistory": "История ИИ-диагностики",
+    "requestHistory": "История запросов"
   },
   "home": {
     "brand": "AutoScan",
@@ -155,6 +157,40 @@
     "decodeByVin": "Определить по VIN",
     "vinDecoding": "Определение...",
     "vinDecodeError": "Не удалось определить автомобиль по VIN. NHTSA содержит в основном авто для рынка США. Используйте ручной ввод для других рынков."
+  },
+  "diagnosticsHistory": {
+    "title": "История ИИ-диагностики",
+    "subtitle": "Сохранённые отчёты GearMind из сканера и веба. Данные подгружаются с сервера.",
+    "subtitleChat": "Переписка: ваш запрос и ответ модели. Данные с сервера (первая страница).",
+    "subtitleMerged": "Отчёты analyze и мультитёрновые чаты с сервера (первая страница каждого списка).",
+    "badgeAnalysis": "Анализ",
+    "badgeChat": "Чат",
+    "footerChats": "Отчётов: {reports} из {reportsTotal} · Чатов: {chats} из {chatsTotal} · блоков: {blocks}",
+    "emptyBoth": "Пока нет отчётов и чатов. Запустите анализ или диалог в приложении сканера.",
+    "chatSessionLine": "обновлено {updated} · сессия #{id}",
+    "chatSessionEmpty": "В этой сессии пока нет сообщений.",
+    "sidebarTitle": "Чаты и отчёты",
+    "pickFromSidebar": "Выберите элемент справа.",
+    "searchPlaceholder": "Поиск: №, дата, DTC, авто, текст в чате…",
+    "noSearchResults": "Ничего не найдено — измените запрос.",
+    "filteredList": "в списке {shown} из {total}",
+    "chatYou": "Вы",
+    "chatAi": "ИИ",
+    "footerShown": "Диалогов: {shown} из {total} (первая страница)",
+    "empty": "Пока нет отчётов. Запустите анализ в приложении сканера.",
+    "loadError": "Не удалось загрузить историю",
+    "kindDtc": "DTC",
+    "kindMetrics": "Показатели",
+    "total": "Всего: {count}",
+    "refresh": "Обновить",
+    "open": "Открыть",
+    "modalTitle": "Отчёт №{id}",
+    "vehicle": "Автомобиль",
+    "snapshot": "Снимок данных (JSON)",
+    "snapshotTechnical": "Технические данные (live data)",
+    "snapshotDebugFull": "Полный снимок (отладка, служебные поля)",
+    "createdAt": "Создано",
+    "type": "Тип"
   },
   "footer": {
     "copyright": "© {year} My App"

@@ -629,6 +629,141 @@ export async function getDiagnosticsVehicles(): Promise<Vehicle[]> {
   return getVehicles();
 }
 
+/* ========== История ИИ-диагностики ========== */
+
+export type DiagnosticReportListItem = {
+  id: number;
+  report_kind: string;
+  dtc_codes: string[];
+  created_at: string;
+  vehicle_id: number | null;
+};
+
+export type DiagnosticHistoryResponse = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: DiagnosticReportListItem[];
+};
+
+export type DiagnosticReportDetail = {
+  id: number;
+  report_kind: string;
+  dtc_codes: string[];
+  live_data_snapshot: Record<string, unknown>;
+  ai_analysis: string;
+  created_at: string;
+  vehicle: {
+    id: number;
+    make: string;
+    model: string;
+    year: number | null;
+  } | null;
+};
+
+export async function getDiagnosticHistory(
+  page = 1,
+  pageSize?: number,
+): Promise<DiagnosticHistoryResponse> {
+  const params = new URLSearchParams({ page: String(page) });
+  if (pageSize != null) params.set("page_size", String(pageSize));
+  return request<DiagnosticHistoryResponse>(
+    `diagnostics/history/?${params.toString()}`,
+  );
+}
+
+export async function getDiagnosticReport(
+  id: number,
+): Promise<DiagnosticReportDetail> {
+  return request<DiagnosticReportDetail>(`diagnostics/reports/${id}/`);
+}
+
+/* ========== Чат-сессии диагностики (мультитёрн follow-up) ========== */
+
+export type DiagnosticChatMessage = {
+  id: number;
+  role: "user" | "assistant";
+  content: string;
+  created_at: string;
+};
+
+export type DiagnosticChatSessionDetail = {
+  id: number;
+  vehicle_id: number | null;
+  title: string;
+  created_at: string;
+  updated_at: string;
+  messages: DiagnosticChatMessage[];
+};
+
+export type DiagnosticChatSessionCreated = {
+  id: number;
+  created_at: string;
+  updated_at: string;
+};
+
+export type DiagnosticChatSessionListItem = {
+  id: number;
+  title: string;
+  created_at: string;
+  updated_at: string;
+  vehicle_id: number | null;
+  message_count: number;
+  last_message_preview: string;
+};
+
+export type DiagnosticChatSessionsResponse = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: DiagnosticChatSessionListItem[];
+};
+
+/** GET /api/v1/diagnostics/chat/sessions/ — список сессий (пагинация DRF) */
+export async function getDiagnosticChatSessions(
+  page = 1,
+  pageSize?: number,
+): Promise<DiagnosticChatSessionsResponse> {
+  const params = new URLSearchParams({ page: String(page) });
+  if (pageSize != null) params.set("page_size", String(pageSize));
+  return request<DiagnosticChatSessionsResponse>(
+    `diagnostics/chat/sessions/?${params.toString()}`,
+  );
+}
+
+/** POST /api/v1/diagnostics/chat/sessions/ — опционально { vehicle_id } */
+export async function createDiagnosticChatSession(body?: {
+  vehicle_id?: number | null;
+}): Promise<DiagnosticChatSessionCreated> {
+  return request<DiagnosticChatSessionCreated>("diagnostics/chat/sessions/", {
+    method: "POST",
+    body: JSON.stringify(body ?? {}),
+  });
+}
+
+/** GET /api/v1/diagnostics/chat/sessions/<id>/ — история сообщений */
+export async function getDiagnosticChatSession(
+  id: number,
+): Promise<DiagnosticChatSessionDetail> {
+  return request<DiagnosticChatSessionDetail>(
+    `diagnostics/chat/sessions/${id}/`,
+  );
+}
+
+/** POST /api/v1/diagnostics/chat/sessions/<id>/messages/ — свободный текст (квота как у analyze) */
+export async function postDiagnosticChatMessage(
+  sessionId: number,
+  message: string,
+): Promise<{ ai_analysis: string; session_id: number }> {
+  return request<{ ai_analysis: string; session_id: number }>(
+    `diagnostics/chat/sessions/${sessionId}/messages/`,
+    {
+      method: "POST",
+      body: JSON.stringify({ message }),
+    },
+  );
+}
+
 /* ========== Stub: services/specialists (нет в backend auto_ai_auth) ========== */
 
 export type ServiceStub = { _id: string; name: string; parent: string | null };

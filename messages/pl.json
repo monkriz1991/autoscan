@@ -13,7 +13,9 @@
     "vehicle": "Pojazd",
     "settings": "Ustawienia",
     "analytics": "Analityka",
-    "brand": "Autoscan"
+    "brand": "Autoscan",
+    "aiHistory": "Historia diagnostyki AI",
+    "requestHistory": "Historia zapytań"
   },
   "home": {
     "brand": "AutoScan",
@@ -155,6 +157,40 @@
     "decodeByVin": "Dekoduj po VIN",
     "vinDecoding": "Dekodowanie...",
     "vinDecodeError": "Nie udało się zdekodować pojazdu z VIN. NHTSA obejmuje głównie pojazdy rynku USA. Użyj ręcznego wprowadzania dla innych rynków."
+  },
+  "diagnosticsHistory": {
+    "title": "Historia diagnostyki AI",
+    "subtitle": "Zapisane raporty GearMind. Dane są pobierane z serwera.",
+    "subtitleChat": "Czat: Twoje zapytanie i odpowiedź modelu (pierwsza strona).",
+    "subtitleMerged": "Raporty analiz i wieloetapowe czaty z serwera (pierwsza strona każdej listy).",
+    "badgeAnalysis": "Analiza",
+    "badgeChat": "Czat",
+    "footerChats": "Raporty: {reports} z {reportsTotal} · Czaty: {chats} z {chatsTotal} · bloki: {blocks}",
+    "emptyBoth": "Brak raportów i czatów. Uruchom analizę lub czat w aplikacji skanera.",
+    "chatSessionLine": "zaktualizowano {updated} · sesja #{id}",
+    "chatSessionEmpty": "W tej sesji nie ma jeszcze wiadomości.",
+    "sidebarTitle": "Czaty i raporty",
+    "pickFromSidebar": "Wybierz element po prawej.",
+    "searchPlaceholder": "Szukaj: nr, data, DTC, auto, treść…",
+    "noSearchResults": "Brak wyników — zmień zapytanie.",
+    "filteredList": "na liście {shown} z {total}",
+    "chatYou": "Ty",
+    "chatAi": "AI",
+    "footerShown": "Dialogi: {shown} z {total} (pierwsza strona)",
+    "empty": "Brak raportów. Uruchom analizę w aplikacji skanera.",
+    "loadError": "Nie udało się wczytać historii",
+    "kindDtc": "DTC",
+    "kindMetrics": "Live",
+    "total": "Łącznie: {count}",
+    "refresh": "Odśwież",
+    "open": "Otwórz",
+    "modalTitle": "Raport #{id}",
+    "vehicle": "Pojazd",
+    "snapshot": "Snapshot danych (JSON)",
+    "snapshotTechnical": "Dane techniczne (live data)",
+    "snapshotDebugFull": "Pełny snapshot (debug, pola wewnętrzne)",
+    "createdAt": "Utworzono",
+    "type": "Typ"
   },
   "footer": {
     "copyright": "© {year} My App"

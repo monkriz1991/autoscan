@@ -13,7 +13,9 @@
     "vehicle": "Vehicle",
     "settings": "Settings",
     "analytics": "Analytics",
-    "brand": "Autoscan"
+    "brand": "Autoscan",
+    "aiHistory": "AI diagnostics history",
+    "requestHistory": "Request history"
   },
   "home": {
     "brand": "AutoScan",
@@ -155,6 +157,40 @@
     "decodeByVin": "Decode by VIN",
     "vinDecoding": "Decoding...",
     "vinDecodeError": "Could not decode vehicle from VIN. NHTSA covers mainly US market vehicles. Use manual entry for other markets."
+  },
+  "diagnosticsHistory": {
+    "title": "AI diagnostics history",
+    "subtitle": "Saved GearMind reports from the scanner and web. Data is loaded from the server.",
+    "subtitleChat": "Conversation view: your request and the model reply. Synced from the server (first page).",
+    "subtitleMerged": "Analyze reports and multi-turn chats from the server (first page of each list).",
+    "badgeAnalysis": "Analysis",
+    "badgeChat": "Chat",
+    "footerChats": "Reports: {reports} of {reportsTotal} · Chats: {chats} of {chatsTotal} · blocks: {blocks}",
+    "emptyBoth": "No reports or chats yet. Run an analysis or chat in the scanner app.",
+    "chatSessionLine": "updated {updated} · session #{id}",
+    "chatSessionEmpty": "No messages in this session yet.",
+    "sidebarTitle": "Chats & reports",
+    "pickFromSidebar": "Pick an item on the right.",
+    "searchPlaceholder": "Search: id, date, DTC, vehicle, message text…",
+    "noSearchResults": "No matches — try a different query.",
+    "filteredList": "list: {shown} of {total}",
+    "chatYou": "You",
+    "chatAi": "AI",
+    "footerShown": "Dialogs: {shown} of {total} (first page)",
+    "empty": "No reports yet. Run an analysis in the scanner app.",
+    "loadError": "Failed to load history",
+    "kindDtc": "DTC",
+    "kindMetrics": "Live data",
+    "total": "Total: {count}",
+    "refresh": "Refresh",
+    "open": "Open",
+    "modalTitle": "Report #{id}",
+    "vehicle": "Vehicle",
+    "snapshot": "Data snapshot (JSON)",
+    "snapshotTechnical": "Technical data (live data)",
+    "snapshotDebugFull": "Full snapshot (debug, incl. internal fields)",
+    "createdAt": "Created",
+    "type": "Type"
   },
   "footer": {
     "copyright": "© {year} My App"

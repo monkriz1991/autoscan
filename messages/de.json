@@ -13,7 +13,9 @@
     "vehicle": "Fahrzeug",
     "settings": "Einstellungen",
     "analytics": "Analytik",
-    "brand": "Autoscan"
+    "brand": "Autoscan",
+    "aiHistory": "KI-Diagnoseverlauf",
+    "requestHistory": "Anfrageverlauf"
   },
   "home": {
     "brand": "AutoScan",
@@ -155,6 +157,40 @@
     "decodeByVin": "Anhand VIN decodieren",
     "vinDecoding": "Decodierung...",
     "vinDecodeError": "Fahrzeug anhand VIN konnte nicht ermittelt werden. NHTSA enthält hauptsächlich Fahrzeuge für den US-Markt. Nutzen Sie die manuelle Eingabe für andere Märkte."
+  },
+  "diagnosticsHistory": {
+    "title": "KI-Diagnoseverlauf",
+    "subtitle": "Gespeicherte GearMind-Berichte. Daten werden vom Server geladen.",
+    "subtitleChat": "Chat: Ihre Anfrage und die Modellantwort (erste Seite).",
+    "subtitleMerged": "Analyseberichte und mehrschrittige Chats vom Server (erste Seite je Liste).",
+    "badgeAnalysis": "Analyse",
+    "badgeChat": "Chat",
+    "footerChats": "Berichte: {reports} von {reportsTotal} · Chats: {chats} von {chatsTotal} · Blöcke: {blocks}",
+    "emptyBoth": "Noch keine Berichte oder Chats. Starten Sie eine Analyse oder einen Chat in der Scanner-App.",
+    "chatSessionLine": "aktualisiert {updated} · Sitzung #{id}",
+    "chatSessionEmpty": "In dieser Sitzung gibt es noch keine Nachrichten.",
+    "sidebarTitle": "Chats & Berichte",
+    "pickFromSidebar": "Wählen Sie rechts einen Eintrag.",
+    "searchPlaceholder": "Suche: Nr., Datum, DTC, Fahrzeug, Text…",
+    "noSearchResults": "Keine Treffer — andere Eingabe versuchen.",
+    "filteredList": "Liste: {shown} von {total}",
+    "chatYou": "Sie",
+    "chatAi": "KI",
+    "footerShown": "Dialoge: {shown} von {total} (erste Seite)",
+    "empty": "Noch keine Berichte. Starten Sie eine Analyse in der Scanner-App.",
+    "loadError": "Verlauf konnte nicht geladen werden",
+    "kindDtc": "DTC",
+    "kindMetrics": "Live-Daten",
+    "total": "Gesamt: {count}",
+    "refresh": "Aktualisieren",
+    "open": "Öffnen",
+    "modalTitle": "Bericht #{id}",
+    "vehicle": "Fahrzeug",
+    "snapshot": "Daten-Snapshot (JSON)",
+    "snapshotTechnical": "Technische Daten (Live-Daten)",
+    "snapshotDebugFull": "Vollständiger Snapshot (Debug, interne Felder)",
+    "createdAt": "Erstellt",
+    "type": "Typ"
   },
   "footer": {
     "copyright": "© {year} My App"

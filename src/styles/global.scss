@@ -1,3 +1,99 @@
+/* Metallic silver buttons — очень размытые переливы, градиент смещён вправо */
+.btn-metallic {
+  background: linear-gradient(
+    90deg,
+    #ffffff 0%,
+    #fcfcfc 6%,
+    #f8f8f8 12%,
+    #f2f2f3 18%,
+    #eaeaea 24%,
+    #dedee0 32%,
+    #d2d2d5 42%,
+    #c8c8cc 55%,
+    #d2d2d5 65%,
+    #e2e2e4 75%,
+    #eeeeef 84%,
+    #f6f6f6 92%,
+    #fdfdfd 98%,
+    #ffffff 100%
+  ) !important;
+  border: 1px solid rgba(168, 169, 173, 0.45) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.03),
+    0 2px 4px rgba(0, 0, 0, 0.05) !important;
+  color: #334155 !important;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.7),
+    0 0 1px rgba(255, 255, 255, 0.3);
+}
+.btn-metallic:hover {
+  background: linear-gradient(
+    90deg,
+    #ffffff 0%,
+    #fdfdfd 6%,
+    #fafafa 12%,
+    #f4f4f5 18%,
+    #eeeef0 24%,
+    #e4e4e6 32%,
+    #d9d9dc 42%,
+    #d0d0d3 55%,
+    #d9d9dc 65%,
+    #e6e6e8 75%,
+    #f0f0f1 84%,
+    #f8f8f8 92%,
+    #fefefe 98%,
+    #ffffff 100%
+  ) !important;
+  border-color: rgba(177, 178, 182, 0.55) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.02),
+    0 3px 8px rgba(0, 0, 0, 0.06) !important;
+  color: #1e293b !important;
+}
+/* Вариант default (Тарифы) */
+.btn-metallic-outline {
+  background: linear-gradient(
+    90deg,
+    #ffffff 0%,
+    #fafafa 10%,
+    #f5f5f6 22%,
+    #f0f0f1 35%,
+    #ececed 50%,
+    #ebebec 62%,
+    #efeff0 74%,
+    #f4f4f5 86%,
+    #f8f8f8 95%,
+    #ffffff 100%
+  ) !important;
+  border: 1px solid rgba(168, 169, 173, 0.4) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    0 1px 2px rgba(0, 0, 0, 0.04) !important;
+  color: #334155 !important;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6),
+    0 0 1px rgba(255, 255, 255, 0.2);
+}
+.btn-metallic-outline:hover {
+  background: linear-gradient(
+    90deg,
+    #ffffff 0%,
+    #fbfbfb 10%,
+    #f6f6f7 22%,
+    #f2f2f3 35%,
+    #eeeef0 50%,
+    #ededee 62%,
+    #f1f1f2 74%,
+    #f6f6f7 86%,
+    #fafafa 95%,
+    #ffffff 100%
+  ) !important;
+  border-color: rgba(177, 178, 182, 0.5) !important;
+  color: #1e293b !important;
+}
+
 /* Reset */
 * {
   box-sizing: border-box;
@@ -80,7 +176,7 @@ body {
 
 .navbar__link--active {
   font-weight: 600;
-  color: #228be6;
+  color: #495057;
 }
 
 /* Header (marketing, business, etc.) */
@@ -169,8 +265,8 @@ body {
 }
 
 .layout--superadmin .layout__sidebar-link--active {
-  background: #e7f5ff;
-  color: #228be6;
+  background: #e9ecef;
+  color: #212529;
   font-weight: 600;
 }
 
@@ -217,6 +313,39 @@ body {
   background: #ffffff;
 }
 
+/* Drawer content (Superadmin sidebar на мобильных) */
+.layout__drawer-content {
+  padding: 16px 0;
+}
+
+.layout__drawer-content .layout__sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.layout__drawer-content .layout__sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  font-size: 14px;
+  color: #495057;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.layout__drawer-content .layout__sidebar-link:hover {
+  background: #e9ecef;
+  color: #212529;
+}
+
+.layout__drawer-content .layout__sidebar-link--active {
+  background: #e9ecef;
+  color: #212529;
+  font-weight: 600;
+}
+
 /* Pricing carousel */
 .carousel-scroll {
   &::-webkit-scrollbar {
@@ -260,5 +389,122 @@ body {
     &:hover {
       color: #000;
     }
+  }
+}
+
+/* ========== Mobile (< 768px) ========== */
+@media (max-width: 767px) {
+  .navbar {
+    padding: 12px 0;
+  }
+
+  .navbar__inner {
+    padding: 0 12px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .navbar__logo {
+    font-size: 18px;
+  }
+
+  .navbar__nav {
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .navbar__link {
+    font-size: 13px;
+  }
+
+  .layout__main {
+    padding: 20px 12px;
+  }
+
+  .container {
+    padding: 0 12px;
+  }
+
+  /* Superadmin: sidebar скрыт, Burger + Drawer на мобильных */
+  .layout--superadmin .layout__body {
+    flex-direction: column;
+  }
+
+  .layout--superadmin .layout__sidebar--desktop {
+    display: none;
+  }
+
+  .layout--superadmin .layout__mobile-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #fff;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .layout--superadmin .layout__mobile-header-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #212529;
+  }
+
+  .layout--superadmin .layout__main {
+    padding: 16px 12px;
+    width: 100%;
+  }
+
+  .layout--superadmin .layout__content {
+    max-width: 100%;
+  }
+
+  .layout--superadmin .layout__footer {
+    font-size: 12px;
+    padding: 12px;
+  }
+
+  .footer__inner {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .footer__links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* Vehicle table: горизонтальная прокрутка */
+  .vehicle-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -12px;
+    padding: 0 12px;
+  }
+
+  /* CarHero: уменьшить отступы на мобильных */
+  .car-hero {
+    padding: 40px 16px 36px !important;
+  }
+
+  /* Drawer формы добавления ТС: полная ширина на мобильных */
+  .vehicle-form-drawer {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* Desktop: скрыть mobile header */
+@media (min-width: 768px) {
+  .layout--superadmin .layout__mobile-header {
+    display: none;
+  }
+}
+
+/* ========== Mobile (< 480px) ========== */
+@media (max-width: 479px) {
+  .navbar__nav {
+    gap: 8px;
   }
 }

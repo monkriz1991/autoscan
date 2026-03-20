@@ -1,5 +1,6 @@
 {
   "nav": {
+    "menu": "Menü",
     "home": "Startseite",
     "pricing": "Preise",
     "register": "Registrierung",
@@ -8,8 +9,8 @@
     "diagnose": "Diagnose",
     "logout": "Abmelden",
     "devices": "Geräte",
+    "vehicle": "Fahrzeug",
     "settings": "Einstellungen",
-    "businesses": "Unternehmen",
     "analytics": "Analytik",
     "brand": "Autoscan"
   },
@@ -19,6 +20,7 @@
     "subtitle": "Präzises OBD-Tool mit moderner Oberfläche, Live-Daten und KI-Hinweisen ohne unnötigen visuellen Aufwand.",
     "login": "Anmelden",
     "pricing": "Preise",
+    "dashboard": "Persönlicher Bereich",
     "specsTitle": "Aktuelle Plattformfunktionen",
     "spec0": "Plattformübergreifende Desktop-Anwendung",
     "spec1": "OBD-II-Diagnose im Nur-Lese-Modus",
@@ -118,6 +120,34 @@
     "next": "Weiter",
     "loadError": "Fehler beim Laden der Tarife",
     "apiError": "API nicht konfiguriert (NEXT_PUBLIC_API_BASE_URL)"
+  },
+  "vehicle": {
+    "title": "Meine Fahrzeuge",
+    "addVehicle": "Fahrzeug hinzufügen",
+    "editVehicle": "Bearbeiten",
+    "noVehicles": "Keine Fahrzeuge",
+    "noVehiclesDesc": "Fügen Sie ein Fahrzeug hinzu, um Konfiguration und Spezifikationen anzuzeigen.",
+    "make": "Marke",
+    "model": "Modell",
+    "year": "Jahr",
+    "vin": "VIN",
+    "modification": "Modifikation",
+    "characteristics": "Eigenschaften",
+    "searchInExternal": "In externem Katalog suchen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "deleteConfirm": "Dieses Fahrzeug löschen?",
+    "loadError": "Ladefehler",
+    "saveError": "Speicherfehler",
+    "yearRequiredForModifications": "Jahr oben eingeben, um Modifikationen zu filtern",
+    "bodyType": "Karosserietyp",
+    "engineType": "Motortyp",
+    "allBodyTypes": "Alle",
+    "allEngineTypes": "Alle",
+    "decodeByVin": "Anhand VIN decodieren",
+    "vinDecoding": "Decodierung...",
+    "vinDecodeError": "Fahrzeug anhand VIN konnte nicht ermittelt werden. NHTSA enthält hauptsächlich Fahrzeuge für den US-Markt. Nutzen Sie die manuelle Eingabe für andere Märkte."
   },
   "footer": {
     "copyright": "© {year} My App"

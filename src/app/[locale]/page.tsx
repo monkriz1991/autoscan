@@ -1,14 +1,22 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { Box, Button, SimpleGrid, Stack, Text, Title } from "@mantine/core";
+import { isAuthenticated } from "@/lib/api";
 
 function CarHero() {
   const t = useTranslations("home");
+  const [authenticated, setAuthenticated] = useState(false);
+
+  useEffect(() => {
+    setAuthenticated(isAuthenticated());
+  }, []);
   return (
     <Box
+      className="car-hero"
       style={{
         width: "100vw",
         position: "relative",
@@ -99,16 +107,33 @@ function CarHero() {
         </Stack>
 
         <Box style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
-          <Link href="/login" style={{ textDecoration: "none" }}>
-            <Button radius="xl" size="md" px="xl">
-              {t("login")}
-            </Button>
-          </Link>
-          <Link href="/pricing" style={{ textDecoration: "none" }}>
-            <Button variant="default" radius="xl" size="md" px="xl">
-              {t("pricing")}
-            </Button>
-          </Link>
+          {authenticated ? (
+            <Link href="/superadmin/dashboard" style={{ textDecoration: "none" }}>
+              <Button className="btn-metallic" color="silver" radius="xl" size="md" px="xl">
+                {t("dashboard")}
+              </Button>
+            </Link>
+          ) : (
+            <>
+              <Link href="/login" style={{ textDecoration: "none" }}>
+                <Button className="btn-metallic" color="silver" radius="xl" size="md" px="xl">
+                  {t("login")}
+                </Button>
+              </Link>
+              <Link href="/pricing" style={{ textDecoration: "none" }}>
+                <Button
+                  className="btn-metallic btn-metallic-outline"
+                  color="silver"
+                  variant="default"
+                  radius="xl"
+                  size="md"
+                  px="xl"
+                >
+                  {t("pricing")}
+                </Button>
+              </Link>
+            </>
+          )}
         </Box>
       </Box>
     </Box>

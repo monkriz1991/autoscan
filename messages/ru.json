@@ -1,5 +1,6 @@
 {
   "nav": {
+    "menu": "Меню",
     "home": "Главная",
     "pricing": "Тарифы",
     "register": "Регистрация",
@@ -8,8 +9,8 @@
     "diagnose": "Диагностика",
     "logout": "Выйти",
     "devices": "Устройства",
+    "vehicle": "Автомобиль",
     "settings": "Настройки",
-    "businesses": "Бизнесы",
     "analytics": "Аналитика",
     "brand": "Autoscan"
   },
@@ -19,6 +20,7 @@
     "subtitle": "Точный OBD-инструмент с современным интерфейсом, живыми данными и AI-подсказками без лишнего визуального шума.",
     "login": "Войти",
     "pricing": "Тарифы",
+    "dashboard": "Личный кабинет",
     "specsTitle": "Текущие возможности платформы",
     "spec0": "Кроссплатформенное desktop-приложение",
     "spec1": "Диагностика OBD-II в режиме только чтение",
@@ -118,6 +120,34 @@
     "next": "Следующий",
     "loadError": "Ошибка загрузки тарифов",
     "apiError": "API не настроен (NEXT_PUBLIC_API_BASE_URL)"
+  },
+  "vehicle": {
+    "title": "Мои автомобили",
+    "addVehicle": "Добавить автомобиль",
+    "editVehicle": "Редактировать",
+    "noVehicles": "Нет автомобилей",
+    "noVehiclesDesc": "Добавьте автомобиль для просмотра конфигурации и характеристик.",
+    "make": "Марка",
+    "model": "Модель",
+    "year": "Год",
+    "vin": "VIN",
+    "modification": "Модификация",
+    "characteristics": "Характеристики",
+    "searchInExternal": "Поиск во внешнем каталоге",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "delete": "Удалить",
+    "deleteConfirm": "Удалить этот автомобиль?",
+    "loadError": "Ошибка загрузки",
+    "saveError": "Ошибка сохранения",
+    "yearRequiredForModifications": "Введите год выше для фильтрации модификаций",
+    "bodyType": "Тип кузова",
+    "engineType": "Тип двигателя",
+    "allBodyTypes": "Все",
+    "allEngineTypes": "Все",
+    "decodeByVin": "Определить по VIN",
+    "vinDecoding": "Определение...",
+    "vinDecodeError": "Не удалось определить автомобиль по VIN. NHTSA содержит в основном авто для рынка США. Используйте ручной ввод для других рынков."
   },
   "footer": {
     "copyright": "© {year} My App"

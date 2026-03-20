@@ -9,7 +9,7 @@ export default function DevBanner() {
   return (
     <Alert
       variant="light"
-      color="blue"
+      color="silver"
       icon={<IconInfoCircle size={20} />}
       title={t("title")}
       mb="md"

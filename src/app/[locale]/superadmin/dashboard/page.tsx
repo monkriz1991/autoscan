@@ -163,6 +163,8 @@ export default function SuperadminDashboardPage() {
           </Text>
         )}
         <Button
+          className="btn-metallic btn-metallic-outline"
+          color="silver"
           component={Link}
           href="/marketing/pricing"
           variant="light"
@@ -239,6 +241,8 @@ export default function SuperadminDashboardPage() {
             />
           )}
           <Button
+            className="btn-metallic btn-metallic-outline"
+            color="silver"
             onClick={handleSaveOnDemand}
             loading={savingOnDemand}
             size="sm"

@@ -1,5 +1,6 @@
 {
   "nav": {
+    "menu": "Menu",
     "home": "Home",
     "pricing": "Prezzi",
     "register": "Registrazione",
@@ -8,8 +9,8 @@
     "diagnose": "Diagnostica",
     "logout": "Esci",
     "devices": "Dispositivi",
+    "vehicle": "Veicolo",
     "settings": "Impostazioni",
-    "businesses": "Aziende",
     "analytics": "Analytics",
     "brand": "Autoscan"
   },
@@ -19,6 +20,7 @@
     "subtitle": "Strumento OBD preciso con interfaccia moderna, dati in tempo reale e suggerimenti AI senza rumore visivo superfluo.",
     "login": "Accedi",
     "pricing": "Prezzi",
+    "dashboard": "Area personale",
     "specsTitle": "Funzionalità attuali della piattaforma",
     "spec0": "Applicazione desktop multipiattaforma",
     "spec1": "Diagnostica OBD-II in modalità sola lettura",
@@ -116,6 +118,34 @@
     "next": "Successivo",
     "loadError": "Errore caricamento piani",
     "apiError": "API non configurata (NEXT_PUBLIC_API_BASE_URL)"
+  },
+  "vehicle": {
+    "title": "I miei veicoli",
+    "addVehicle": "Aggiungi veicolo",
+    "editVehicle": "Modifica",
+    "noVehicles": "Nessun veicolo",
+    "noVehiclesDesc": "Aggiungi un veicolo per visualizzare configurazione e specifiche.",
+    "make": "Marca",
+    "model": "Modello",
+    "year": "Anno",
+    "vin": "VIN",
+    "modification": "Modifica",
+    "characteristics": "Caratteristiche",
+    "searchInExternal": "Cerca nel catalogo esterno",
+    "save": "Salva",
+    "cancel": "Annulla",
+    "delete": "Elimina",
+    "deleteConfirm": "Eliminare questo veicolo?",
+    "loadError": "Errore di caricamento",
+    "saveError": "Errore di salvataggio",
+    "yearRequiredForModifications": "Inserisci l'anno sopra per filtrare le modifiche",
+    "bodyType": "Tipo carrozzeria",
+    "engineType": "Tipo motore",
+    "allBodyTypes": "Tutti",
+    "allEngineTypes": "Tutti",
+    "decodeByVin": "Decodifica da VIN",
+    "vinDecoding": "Decodifica...",
+    "vinDecodeError": "Impossibile decodificare il veicolo da VIN. NHTSA copre principalmente veicoli per il mercato USA. Usare l'inserimento manuale per altri mercati."
   },
   "footer": {
     "copyright": "© {year} My App"

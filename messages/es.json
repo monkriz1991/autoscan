@@ -1,5 +1,6 @@
 {
   "nav": {
+    "menu": "Menú",
     "home": "Inicio",
     "pricing": "Precios",
     "register": "Registro",
@@ -8,8 +9,8 @@
     "diagnose": "Diagnóstico",
     "logout": "Cerrar sesión",
     "devices": "Dispositivos",
+    "vehicle": "Vehículo",
     "settings": "Ajustes",
-    "businesses": "Empresas",
     "analytics": "Analítica",
     "brand": "Autoscan"
   },
@@ -19,6 +20,7 @@
     "subtitle": "Herramienta OBD precisa con interfaz moderna, datos en vivo y sugerencias AI sin ruido visual innecesario.",
     "login": "Iniciar sesión",
     "pricing": "Precios",
+    "dashboard": "Área personal",
     "specsTitle": "Capacidades actuales de la plataforma",
     "spec0": "Aplicación de escritorio multiplataforma",
     "spec1": "Diagnóstico OBD-II en modo solo lectura",
@@ -115,6 +117,34 @@
     "next": "Siguiente",
     "loadError": "Error al cargar planes",
     "apiError": "API no configurada (NEXT_PUBLIC_API_BASE_URL)"
+  },
+  "vehicle": {
+    "title": "Mis vehículos",
+    "addVehicle": "Añadir vehículo",
+    "editVehicle": "Editar",
+    "noVehicles": "Sin vehículos",
+    "noVehiclesDesc": "Añade un vehículo para ver su configuración y especificaciones.",
+    "make": "Marca",
+    "model": "Modelo",
+    "year": "Año",
+    "vin": "VIN",
+    "modification": "Modificación",
+    "characteristics": "Características",
+    "searchInExternal": "Buscar en catálogo externo",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "deleteConfirm": "¿Eliminar este vehículo?",
+    "loadError": "Error de carga",
+    "saveError": "Error al guardar",
+    "yearRequiredForModifications": "Introduce el año arriba para filtrar modificaciones",
+    "bodyType": "Tipo de carrocería",
+    "engineType": "Tipo de motor",
+    "allBodyTypes": "Todos",
+    "allEngineTypes": "Todos",
+    "decodeByVin": "Decodificar por VIN",
+    "vinDecoding": "Decodificando...",
+    "vinDecodeError": "No se pudo decodificar el vehículo por VIN. NHTSA cubre principalmente vehículos del mercado estadounidense. Use la entrada manual para otros mercados."
   },
   "footer": {
     "copyright": "© {year} My App"

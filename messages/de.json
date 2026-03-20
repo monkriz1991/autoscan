@@ -67,6 +67,14 @@
     "connectAppDesc": "Sie sind angemeldet. Klicken Sie, um die App mit Ihrem Konto zu verbinden.",
     "connectAppButton": "Mit App verbinden",
     "oauth2Error": "Autorisierungsfehler"
+    "oauthEntry": {
+      "title": "Anmeldung fortsetzen",
+      "missingNext": "Fehlender Redirect-Parameter (next).",
+      "invalidNext": "Ungültiges Redirect-Ziel.",
+      "redirectAuthorize": "Weiterleitung zur Autorisierung…",
+      "openManually": "Autorisierung manuell öffnen",
+      "loading": "Laden…"
+    }
   },
   "devBanner": {
     "title": "Projekt in Entwicklung",

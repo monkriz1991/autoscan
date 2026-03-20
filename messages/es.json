@@ -53,7 +53,6 @@
     "captchaWrong": "Respuesta incorrecta. Resuelve el ejemplo de nuevo.",
     "captchaLoadError": "No se pudo cargar el captcha",
     "registerSuccess": "Registro exitoso. Revisa tu email para verificar la cuenta.",
-    "loading": "Cargando...",
     "oauth2ConsentTitle": "¿Permitir que AutoScan AI Desktop acceda a tu cuenta?",
     "sessionsCount": "{used} de {limit} sesiones activas",
     "sessionLimitReached": "Límite de sesiones alcanzado",
@@ -67,6 +66,15 @@
     "connectAppDesc": "Has iniciado sesión. Haz clic para autorizar la app.",
     "connectAppButton": "Conectar a la app",
     "oauth2Error": "Error de autorización"
+    "loading": "Cargando...",
+    "oauthEntry": {
+      "title": "Continuar inicio de sesión",
+      "missingNext": "Falta el parámetro de redirección (next).",
+      "invalidNext": "Destino de redirección no válido.",
+      "redirectAuthorize": "Redirigiendo a la autorización…",
+      "openManually": "Abrir autorización manualmente",
+      "loading": "Cargando…"
+    }
   },
   "devBanner": {
     "title": "Proyecto en desarrollo",

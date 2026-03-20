@@ -13,7 +13,9 @@
     "vehicle": "Vehículo",
     "settings": "Ajustes",
     "analytics": "Analítica",
-    "brand": "Autoscan"
+    "brand": "Autoscan",
+    "aiHistory": "Historial de diagnóstico IA",
+    "requestHistory": "Historial de solicitudes"
   },
   "home": {
     "brand": "AutoScan",
@@ -152,6 +154,40 @@
     "decodeByVin": "Decodificar por VIN",
     "vinDecoding": "Decodificando...",
     "vinDecodeError": "No se pudo decodificar el vehículo por VIN. NHTSA cubre principalmente vehículos del mercado estadounidense. Use la entrada manual para otros mercados."
+  },
+  "diagnosticsHistory": {
+    "title": "Historial de diagnóstico IA",
+    "subtitle": "Informes GearMind guardados. Los datos se cargan del servidor.",
+    "subtitleChat": "Conversación: tu solicitud y la respuesta del modelo (primera página).",
+    "subtitleMerged": "Informes de análisis y chats multivuelta desde el servidor (primera página de cada lista).",
+    "badgeAnalysis": "Análisis",
+    "badgeChat": "Chat",
+    "footerChats": "Informes: {reports} de {reportsTotal} · Chats: {chats} de {chatsTotal} · bloques: {blocks}",
+    "emptyBoth": "Aún no hay informes ni chats. Ejecuta un análisis o un chat en la app del escáner.",
+    "chatSessionLine": "actualizado {updated} · sesión #{id}",
+    "chatSessionEmpty": "Esta sesión aún no tiene mensajes.",
+    "sidebarTitle": "Chats e informes",
+    "pickFromSidebar": "Elige un elemento a la derecha.",
+    "searchPlaceholder": "Buscar: nº, fecha, DTC, coche, texto…",
+    "noSearchResults": "Sin resultados — prueba otra búsqueda.",
+    "filteredList": "en la lista {shown} de {total}",
+    "chatYou": "Tú",
+    "chatAi": "IA",
+    "footerShown": "Diálogos: {shown} de {total} (primera página)",
+    "empty": "Sin informes aún. Ejecute un análisis en la app del escáner.",
+    "loadError": "No se pudo cargar el historial",
+    "kindDtc": "DTC",
+    "kindMetrics": "Datos en vivo",
+    "total": "Total: {count}",
+    "refresh": "Actualizar",
+    "open": "Abrir",
+    "modalTitle": "Informe #{id}",
+    "vehicle": "Vehículo",
+    "snapshot": "Instantánea de datos (JSON)",
+    "snapshotTechnical": "Datos técnicos (live data)",
+    "snapshotDebugFull": "Instantánea completa (depuración, campos internos)",
+    "createdAt": "Creado",
+    "type": "Tipo"
   },
   "footer": {
     "copyright": "© {year} My App"

@@ -26,7 +26,7 @@ function CarHero() {
         marginRight: "-50vw",
         marginTop: "-40px",
         padding: "72px 24px 64px",
-        background: "#f9f9fa",
+        background: "#f4f5f7",
         overflow: "hidden",
       }}
     >

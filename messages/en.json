@@ -65,7 +65,7 @@
     "connectAppTitle": "Connect to Scanner App",
     "connectAppDesc": "You are logged in. Click to authorize this app with your account.",
     "connectAppButton": "Connect to App",
-    "oauth2Error": "Authorization error"
+    "oauth2Error": "Authorization error",
     "loading": "Loading...",
     "oauthEntry": {
       "title": "Continue sign-in",

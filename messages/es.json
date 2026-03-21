@@ -65,7 +65,7 @@
     "connectAppTitle": "Conectar a la app del escáner",
     "connectAppDesc": "Has iniciado sesión. Haz clic para autorizar la app.",
     "connectAppButton": "Conectar a la app",
-    "oauth2Error": "Error de autorización"
+    "oauth2Error": "Error de autorización",
     "loading": "Cargando...",
     "oauthEntry": {
       "title": "Continuar inicio de sesión",

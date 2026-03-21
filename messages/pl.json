@@ -65,7 +65,7 @@
     "connectAppTitle": "Połącz z aplikacją skanera",
     "connectAppDesc": "Jesteś zalogowany. Kliknij, aby autoryzować aplikację.",
     "connectAppButton": "Połącz z aplikacją",
-    "oauth2Error": "Błąd autoryzacji"
+    "oauth2Error": "Błąd autoryzacji",
     "loading": "Ładowanie...",
     "oauthEntry": {
       "title": "Kontynuuj logowanie",

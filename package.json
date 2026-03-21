@@ -4,6 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "validate:messages": "node scripts/validate-messages.mjs",
+    "predev": "npm run validate:messages",
+    "prebuild": "npm run validate:messages",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

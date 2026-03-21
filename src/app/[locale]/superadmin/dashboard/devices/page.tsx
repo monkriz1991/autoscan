@@ -44,23 +44,11 @@ export default function DashboardDevicesPage() {
   const [error, setError] = useState("");
   const [revokingId, setRevokingId] = useState<number | null>(null);
 
-  const apiBase =
-    process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8001/api/v1";
-
   const fetchDevices = useCallback(async () => {
     if (!isAuthenticated()) {
       router.replace("/login");
       return;
     }
-    const token =
-      typeof window !== "undefined" ? localStorage.getItem(STORAGE_ACCESS) : null;
-    if (!token) {
-      setNeedsAuth(true);
-      setLoading(false);
-      return;
-    }
-
-    const url = `${apiBase.replace(/\/$/, "")}/users/me/devices/`;
     try {
       const data = await getDevices();
       setDevices(Array.isArray(data) ? data : []);
@@ -79,36 +67,6 @@ export default function DashboardDevicesPage() {
     }
     fetchDevices();
   }, [fetchDevices, router]);
-
-    setAuthLoading(true);
-    try {
-      const res = await fetch(`${apiBase.replace(/\/$/, "")}/auth/login/`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: authEmail, password: authPassword }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setAuthError(data.detail || t("invalidCredentials"));
-        return;
-      }
-      if (data.access) {
-        localStorage.setItem(STORAGE_ACCESS, data.access);
-        if (data.refresh) localStorage.setItem(STORAGE_REFRESH, data.refresh);
-        setNeedsAuth(false);
-        setAuthEmail("");
-        setAuthPassword("");
-        setLoading(true);
-        fetchDevices();
-      } else {
-        setAuthError(t("invalidResponse"));
-      }
-    } catch (err) {
-      setAuthError(t("connectionError"));
-    } finally {
-      setAuthLoading(false);
-    }
-  };
 
   const handleLogout = () => {
     logout();

@@ -65,7 +65,7 @@
     "connectAppTitle": "Connetti all'app scanner",
     "connectAppDesc": "Sei connesso. Clicca per autorizzare l'app.",
     "connectAppButton": "Connetti all'app",
-    "oauth2Error": "Errore di autorizzazione"
+    "oauth2Error": "Errore di autorizzazione",
     "loading": "Caricamento...",
     "oauthEntry": {
       "title": "Continua l'accesso",

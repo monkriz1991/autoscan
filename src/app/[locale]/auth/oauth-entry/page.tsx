@@ -5,16 +5,39 @@ import { useSearchParams } from "next/navigation";
 import { Button, Container, Stack, Text, Title } from "@mantine/core";
 import { useTranslations } from "next-intl";
 
-/** Разрешённые цели ?next= для OAuth (тот же хост, путь authorize). */
-function isAllowedNextTarget(url: string): boolean {
-  try {
-    const u = new URL(url);
-    if (u.protocol !== "https:" && u.protocol !== "http:") return false;
-    const p = u.pathname;
-    return p.includes("/o/authorize") || p.includes("/authorize/");
-  } catch {
-    return false;
+/** Путь ведёт на OAuth authorize (Django /o/authorize/ или Next /auth/authorize). */
+function isAllowedAuthorizePath(pathname: string): boolean {
+  return pathname.includes("/o/authorize") || pathname.includes("/authorize/");
+}
+
+/**
+ * Собрать абсолютный URL для редиректа из ?next=.
+ * Django часто отдаёт относительный путь `/o/authorize/?...` — `new URL("/o/...")` без базы падает.
+ */
+function resolveOAuthNextTarget(decoded: string): string | null {
+  const trimmed = decoded.trim();
+  if (!trimmed) return null;
+
+  if (trimmed.startsWith("https://") || trimmed.startsWith("http://")) {
+    try {
+      const u = new URL(trimmed);
+      if (u.protocol !== "https:" && u.protocol !== "http:") return null;
+      if (!isAllowedAuthorizePath(u.pathname)) return null;
+      return trimmed;
+    } catch {
+      return null;
+    }
   }
+
+  // Только same-origin путь (не //evil.com/...)
+  if (trimmed.startsWith("/") && !trimmed.startsWith("//")) {
+    const pathOnly = trimmed.split("?")[0]?.split("#")[0] ?? "";
+    if (!isAllowedAuthorizePath(pathOnly)) return null;
+    if (typeof window === "undefined") return null;
+    return `${window.location.origin}${trimmed}`;
+  }
+
+  return null;
 }
 
 function OAuthEntryInner() {
@@ -33,25 +56,28 @@ function OAuthEntryInner() {
 
   const [err, setErr] = useState("");
 
+  const resolvedTarget = useMemo(() => resolveOAuthNextTarget(decoded), [decoded]);
+
   useEffect(() => {
     if (!rawNext || !decoded) {
       setErr(t("missingNext"));
       return;
     }
-    if (!isAllowedNextTarget(decoded)) {
+    if (!resolvedTarget) {
       setErr(t("invalidNext"));
       return;
     }
-    window.location.replace(decoded);
-  }, [rawNext, decoded, t]);
+    setErr("");
+    window.location.replace(resolvedTarget);
+  }, [rawNext, decoded, resolvedTarget, t]);
 
   return (
     <Container size="sm" py="xl">
       <Stack gap="md">
         <Title order={3}>{t("title")}</Title>
         {err ? <Text c="red">{err}</Text> : <Text c="dimmed">{t("redirectAuthorize")}</Text>}
-        {decoded && !err && (
-          <Button component="a" href={decoded} size="md">
+        {resolvedTarget && !err && (
+          <Button component="a" href={resolvedTarget} size="md">
             {t("openManually")}
           </Button>
         )}

@@ -88,7 +88,7 @@ export default function Navbar() {
                 <Menu.Item
                   leftSection={<IconDashboard size={16} />}
                   component={Link}
-                  href="/superadmin/dashboard"
+                  href="/cabinet/dashboard"
                 >
                   {t("dashboard")}
                 </Menu.Item>

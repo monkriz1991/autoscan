@@ -16,7 +16,7 @@ import {
 } from "@mantine/core";
 import { register, getCaptcha, ApiError } from "@/lib/api";
 
-const DEFAULT_AFTER_AUTH = "/superadmin/dashboard";
+const DEFAULT_AFTER_AUTH = "/cabinet/dashboard";
 
 function RegisterForm() {
   const t = useTranslations("auth");

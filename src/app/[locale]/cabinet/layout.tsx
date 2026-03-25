@@ -1,18 +1,18 @@
 import React from "react";
 import Navbar from "@/components/ui/Navbar";
-import SuperadminSidebar from "@/components/ui/SuperadminSidebar";
+import CabinetSidebar from "@/components/ui/CabinetSidebar";
 import DevBanner from "@/components/ui/DevBanner";
 
-export default function SuperadminLayout({
+export default function CabinetLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <div className="layout layout--superadmin">
+    <div className="layout layout--cabinet">
       <Navbar />
       <div className="layout__body">
-        <SuperadminSidebar />
+        <CabinetSidebar />
         <main className="layout__main">
           <div className="layout__content">
             <DevBanner />
@@ -21,7 +21,7 @@ export default function SuperadminLayout({
         </main>
       </div>
       <footer className="layout__footer">
-        © {new Date().getFullYear()} Superadmin Panel
+        © {new Date().getFullYear()} Autoscan
       </footer>
     </div>
   );

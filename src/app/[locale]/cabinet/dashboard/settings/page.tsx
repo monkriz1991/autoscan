@@ -18,7 +18,7 @@ import {
 import { getMe, updateMe, uploadAvatar } from "@/lib/api";
 import type { UserProfile } from "@/lib/api";
 
-export default function SuperadminSettingsPage() {
+export default function CabinetSettingsPage() {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");

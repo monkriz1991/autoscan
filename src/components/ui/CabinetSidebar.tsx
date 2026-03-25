@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { Burger, Drawer } from "@mantine/core";
@@ -8,19 +7,17 @@ import { useDisclosure } from "@mantine/hooks";
 import {
   IconDashboard,
   IconChartBar,
-  IconHistory,
   IconSettings,
   IconDeviceDesktop,
   IconCar,
 } from "@tabler/icons-react";
 
 const NAV_ITEMS = [
-  { href: "/superadmin/dashboard", icon: IconDashboard },
-  { href: "/superadmin/dashboard/analytics", icon: IconChartBar },
-  { href: "/superadmin/dashboard/diagnostics-history", icon: IconHistory },
-  { href: "/superadmin/dashboard/vehicle", icon: IconCar },
-  { href: "/superadmin/dashboard/devices", icon: IconDeviceDesktop },
-  { href: "/superadmin/dashboard/settings", icon: IconSettings },
+  { href: "/cabinet/dashboard", icon: IconDashboard },
+  { href: "/cabinet/dashboard/analytics", icon: IconChartBar },
+  { href: "/cabinet/dashboard/vehicle", icon: IconCar },
+  { href: "/cabinet/dashboard/devices", icon: IconDeviceDesktop },
+  { href: "/cabinet/dashboard/settings", icon: IconSettings },
 ];
 
 function SidebarNav({ onLinkClick }: { onLinkClick?: () => void }) {
@@ -28,12 +25,11 @@ function SidebarNav({ onLinkClick }: { onLinkClick?: () => void }) {
   const pathname = usePathname();
 
   const labels: Record<string, string> = {
-    "/superadmin/dashboard": t("dashboard"),
-    "/superadmin/dashboard/analytics": t("analytics"),
-    "/superadmin/dashboard/diagnostics-history": t("requestHistory"),
-    "/superadmin/dashboard/vehicle": t("vehicle"),
-    "/superadmin/dashboard/devices": t("devices"),
-    "/superadmin/dashboard/settings": t("settings"),
+    "/cabinet/dashboard": t("dashboard"),
+    "/cabinet/dashboard/analytics": t("analytics"),
+    "/cabinet/dashboard/vehicle": t("vehicle"),
+    "/cabinet/dashboard/devices": t("devices"),
+    "/cabinet/dashboard/settings": t("settings"),
   };
 
   return (
@@ -41,7 +37,7 @@ function SidebarNav({ onLinkClick }: { onLinkClick?: () => void }) {
       {NAV_ITEMS.map(({ href, icon: Icon }) => {
         const isActive =
           pathname === href ||
-          (pathname.startsWith(href + "/") && href !== "/superadmin/dashboard");
+          (pathname.startsWith(href + "/") && href !== "/cabinet/dashboard");
         return (
           <Link
             key={href}
@@ -58,7 +54,7 @@ function SidebarNav({ onLinkClick }: { onLinkClick?: () => void }) {
   );
 }
 
-export default function SuperadminSidebar() {
+export default function CabinetSidebar() {
   const t = useTranslations("nav");
   const [opened, { open, close }] = useDisclosure(false);
 

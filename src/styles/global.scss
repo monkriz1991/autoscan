@@ -220,21 +220,21 @@ body {
   }
 }
 
-/* Superadmin layout */
-.layout--superadmin {
+/* Cabinet layout */
+.layout--cabinet {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: #f8f9fa;
 }
 
-.layout--superadmin .layout__body {
+.layout--cabinet .layout__body {
   flex: 1;
   display: flex;
   min-height: 0;
 }
 
-.layout--superadmin .layout__sidebar {
+.layout--cabinet .layout__sidebar {
   width: 240px;
   flex-shrink: 0;
   background: #ffffff;
@@ -242,13 +242,13 @@ body {
   padding: 16px 0;
 }
 
-.layout--superadmin .layout__sidebar-nav {
+.layout--cabinet .layout__sidebar-nav {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.layout--superadmin .layout__sidebar-link {
+.layout--cabinet .layout__sidebar-link {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -259,30 +259,30 @@ body {
   transition: background 0.15s ease, color 0.15s ease;
 }
 
-.layout--superadmin .layout__sidebar-link:hover {
+.layout--cabinet .layout__sidebar-link:hover {
   background: #e9ecef;
   color: #212529;
 }
 
-.layout--superadmin .layout__sidebar-link--active {
+.layout--cabinet .layout__sidebar-link--active {
   background: #e9ecef;
   color: #212529;
   font-weight: 600;
 }
 
-.layout--superadmin .layout__main {
+.layout--cabinet .layout__main {
   flex: 1;
   padding: 32px 24px;
   overflow: auto;
 }
 
-.layout--superadmin .layout__content {
+.layout--cabinet .layout__content {
   width: 100%;
   margin: 0 auto;
   max-width: 80vw;
 }
 
-.layout--superadmin .layout__header {
+.layout--cabinet .layout__header {
   height: 64px;
   background: #ffffff;
   border-bottom: 1px solid #e9ecef;
@@ -290,20 +290,20 @@ body {
   align-items: center;
 }
 
-.layout--superadmin .layout__header-inner {
+.layout--cabinet .layout__header-inner {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
 }
 
-.layout--superadmin .layout__logo {
+.layout--cabinet .layout__logo {
   margin: 0;
   font-weight: 600;
   font-size: 20px;
 }
 
-.layout--superadmin .layout__footer {
+.layout--cabinet .layout__footer {
   height: 60px;
   border-top: 1px solid #e9ecef;
   display: flex;
@@ -314,7 +314,7 @@ body {
   background: #ffffff;
 }
 
-/* Drawer content (Superadmin sidebar на мобильных) */
+/* Drawer content (cabinet sidebar на мобильных) */
 .layout__drawer-content {
   padding: 16px 0;
 }
@@ -427,16 +427,16 @@ body {
     padding: 0 12px;
   }
 
-  /* Superadmin: sidebar скрыт, Burger + Drawer на мобильных */
-  .layout--superadmin .layout__body {
+  /* Cabinet: sidebar скрыт, Burger + Drawer на мобильных */
+  .layout--cabinet .layout__body {
     flex-direction: column;
   }
 
-  .layout--superadmin .layout__sidebar--desktop {
+  .layout--cabinet .layout__sidebar--desktop {
     display: none;
   }
 
-  .layout--superadmin .layout__mobile-header {
+  .layout--cabinet .layout__mobile-header {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -445,22 +445,22 @@ body {
     border-bottom: 1px solid #e9ecef;
   }
 
-  .layout--superadmin .layout__mobile-header-title {
+  .layout--cabinet .layout__mobile-header-title {
     font-size: 14px;
     font-weight: 600;
     color: #212529;
   }
 
-  .layout--superadmin .layout__main {
+  .layout--cabinet .layout__main {
     padding: 16px 12px;
     width: 100%;
   }
 
-  .layout--superadmin .layout__content {
+  .layout--cabinet .layout__content {
     max-width: 100%;
   }
 
-  .layout--superadmin .layout__footer {
+  .layout--cabinet .layout__footer {
     font-size: 12px;
     padding: 12px;
   }
@@ -498,7 +498,7 @@ body {
 
 /* Desktop: скрыть mobile header */
 @media (min-width: 768px) {
-  .layout--superadmin .layout__mobile-header {
+  .layout--cabinet .layout__mobile-header {
     display: none;
   }
 }

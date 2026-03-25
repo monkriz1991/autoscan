@@ -8,6 +8,7 @@ import { useDisclosure } from "@mantine/hooks";
 import {
   IconDashboard,
   IconChartBar,
+  IconHistory,
   IconSettings,
   IconDeviceDesktop,
   IconCar,
@@ -16,6 +17,7 @@ import {
 const NAV_ITEMS = [
   { href: "/superadmin/dashboard", icon: IconDashboard },
   { href: "/superadmin/dashboard/analytics", icon: IconChartBar },
+  { href: "/superadmin/dashboard/diagnostics-history", icon: IconHistory },
   { href: "/superadmin/dashboard/vehicle", icon: IconCar },
   { href: "/superadmin/dashboard/devices", icon: IconDeviceDesktop },
   { href: "/superadmin/dashboard/settings", icon: IconSettings },
@@ -28,6 +30,7 @@ function SidebarNav({ onLinkClick }: { onLinkClick?: () => void }) {
   const labels: Record<string, string> = {
     "/superadmin/dashboard": t("dashboard"),
     "/superadmin/dashboard/analytics": t("analytics"),
+    "/superadmin/dashboard/diagnostics-history": t("requestHistory"),
     "/superadmin/dashboard/vehicle": t("vehicle"),
     "/superadmin/dashboard/devices": t("devices"),
     "/superadmin/dashboard/settings": t("settings"),

@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
@@ -13,8 +13,10 @@ import {
   Button,
   Stack,
   Notification,
+  Loader,
+  Center,
 } from "@mantine/core";
-import { login, ApiError } from "@/lib/api";
+import { login, ApiError, isAuthenticated, getMe } from "@/lib/api";
 
 const DEFAULT_AFTER_AUTH = "/superadmin/dashboard";
 
@@ -27,7 +29,28 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [checkingSession, setCheckingSession] = useState(true);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      setCheckingSession(false);
+      return;
+    }
+    getMe()
+      .then(() => {
+        const pathOnly = nextUrl.split("?")[0];
+        const search = nextUrl.includes("?") ? nextUrl.slice(nextUrl.indexOf("?")) : "";
+        if (/^\/(en|de|ru|pl|it|es)(\/|$)/.test(pathOnly)) {
+          window.location.href = nextUrl;
+        } else {
+          router.replace(pathOnly + search);
+        }
+      })
+      .catch(() => {
+        setCheckingSession(false);
+      });
+  }, [router, nextUrl]);
 
   const handleSubmit = async () => {
     setError("");
@@ -35,7 +58,12 @@ function LoginForm() {
 
     try {
       await login(email, password);
-      router.push(nextUrl);
+      const pathOnly = nextUrl.split("?")[0];
+      if (/^\/(en|de|ru|pl|it|es)(\/|$)/.test(pathOnly)) {
+        window.location.href = nextUrl;
+      } else {
+        router.push(nextUrl);
+      }
     } catch (err) {
       setError(
         err instanceof ApiError
@@ -46,6 +74,16 @@ function LoginForm() {
       setLoading(false);
     }
   };
+
+  if (checkingSession) {
+    return (
+      <Container size="xs" py="xl">
+        <Center py="xl">
+          <Loader size="lg" />
+        </Center>
+      </Container>
+    );
+  }
 
   return (
     <Container size="xs" py="xl">

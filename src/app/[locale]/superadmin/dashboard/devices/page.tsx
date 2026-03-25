@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 import {
   Card,
   Title,
@@ -12,11 +13,12 @@ import {
   Loader,
   Center,
   Notification,
+  Button,
   Table,
   ActionIcon,
 } from "@mantine/core";
 import { IconDeviceDesktop, IconTrash } from "@tabler/icons-react";
-import { deleteUserDeviceSession, getUserDevices, type UserDeviceSession } from "@/lib/api";
+import { getDevices, revokeDevice, isAuthenticated, logout, type UserDevice } from "@/lib/api";
 
 function formatDate(iso: string, locale: string): string {
   try {
@@ -36,32 +38,45 @@ function formatDate(iso: string, locale: string): string {
 export default function DashboardDevicesPage() {
   const t = useTranslations("devices");
   const locale = useLocale();
-  const [devices, setDevices] = useState<UserDeviceSession[]>([]);
+  const router = useRouter();
+  const [devices, setDevices] = useState<UserDevice[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [revokingId, setRevokingId] = useState<number | null>(null);
 
   const fetchDevices = useCallback(async () => {
-    setLoading(true);
-    setError("");
+    if (!isAuthenticated()) {
+      router.replace("/login");
+      return;
+    }
     try {
-      const list = await getUserDevices();
-      setDevices(list);
+      const data = await getDevices();
+      setDevices(Array.isArray(data) ? data : []);
+      setError("");
     } catch (err) {
       setError(err instanceof Error ? err.message : t("loadError"));
     } finally {
       setLoading(false);
     }
-  }, [t]);
+  }, [router, t]);
 
   useEffect(() => {
-    void fetchDevices();
-  }, [fetchDevices]);
+    if (!isAuthenticated()) {
+      router.replace("/login");
+      return;
+    }
+    fetchDevices();
+  }, [fetchDevices, router]);
+
+  const handleLogout = () => {
+    logout();
+    router.replace("/");
+  };
 
   const handleRevokeDevice = async (deviceId: number) => {
     setRevokingId(deviceId);
     try {
-      await deleteUserDeviceSession(deviceId);
+      await revokeDevice(deviceId);
       setDevices((prev) => prev.filter((d) => d.id !== deviceId));
     } catch (err) {
       setError(err instanceof Error ? err.message : t("revokeError"));

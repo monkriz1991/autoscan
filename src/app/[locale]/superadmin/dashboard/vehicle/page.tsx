@@ -392,7 +392,7 @@ export default function DashboardVehiclePage() {
       {vehicles.length > 0 && (
         <Card withBorder shadow="sm" radius="md" p="md">
           <div className="vehicle-table-wrapper">
-          <Table striped highlightOnHover minWidth={400}>
+          <Table striped highlightOnHover className="vehicle-table" style={{ minWidth: 400 }}>
             <Table.Thead>
               <Table.Tr>
                 <Table.Th>{t("make")}</Table.Th>

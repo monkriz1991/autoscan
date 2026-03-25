@@ -202,6 +202,80 @@ export async function register(
   return data;
 }
 
+export type OAuth2AuthorizeParams = {
+  client_id: string;
+  redirect_uri: string;
+  response_type: string;
+  scope?: string;
+  state?: string;
+  code_challenge?: string;
+  code_challenge_method?: string;
+};
+
+export type OAuth2AuthorizeResponse = { redirect_url: string };
+
+export type OAuth2Config = {
+  client_id: string;
+  scanner_web_redirect_uri?: string;
+};
+
+export async function getOAuth2Config(): Promise<OAuth2Config> {
+  const base = BASE_URL.replace(/\/$/, "");
+  const url = base.endsWith("/api/v1") ? `${base}/auth/oauth2-config/` : `${base.replace(/\/api\/v1\/?$/, "")}/api/v1/auth/oauth2-config/`;
+  const res = await fetch(url);
+  if (!res.ok) throw new ApiError(res.status, await res.json().catch(() => ({})));
+  return res.json();
+}
+
+export async function createOAuth2Authorization(
+  params: OAuth2AuthorizeParams,
+): Promise<OAuth2AuthorizeResponse> {
+  return request<OAuth2AuthorizeResponse>("auth/oauth2/authorize/", {
+    method: "POST",
+    body: JSON.stringify(params),
+  });
+}
+
+async function sha256Base64Url(input: string): Promise<string> {
+  const enc = new TextEncoder();
+  const data = enc.encode(input);
+  const hash = await crypto.subtle.digest("SHA-256", data);
+  return btoa(String.fromCharCode(...new Uint8Array(hash)))
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+}
+
+async function generatePKCE(): Promise<{ codeVerifier: string; codeChallenge: string }> {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
+  const verifier = Array.from(crypto.getRandomValues(new Uint8Array(64)))
+    .map((b) => chars[b % chars.length])
+    .join("");
+  const challenge = await sha256Base64Url(verifier);
+  return { codeVerifier: verifier, codeChallenge: challenge };
+}
+
+/** Подключение к сканеру: если пользователь авторизован, создаёт код и перенаправляет в приложение. */
+export async function connectToScannerApp(): Promise<void> {
+  const config = await getOAuth2Config();
+  const redirectUri = config.scanner_web_redirect_uri || "http://localhost:3001/auth/callback";
+  const { codeVerifier, codeChallenge } = await generatePKCE();
+  const state = crypto.randomUUID();
+
+  const { redirect_url } = await createOAuth2Authorization({
+    client_id: config.client_id,
+    redirect_uri: redirectUri,
+    response_type: "code",
+    scope: "read write",
+    state,
+    code_challenge: codeChallenge,
+    code_challenge_method: "S256",
+  });
+  // Verifier в fragment (не отправляется на сервер) — callback сканера прочитает
+  const withVerifier = `${redirect_url}#verifier=${encodeURIComponent(codeVerifier)}`;
+  window.location.href = withVerifier;
+}
+
 /* ========== Users ========== */
 
 export type UserProfile = {
@@ -248,6 +322,26 @@ export async function updateMe(payload: UserProfileUpdate): Promise<UserProfile>
     method: "PATCH",
     body: JSON.stringify(payload),
   });
+}
+
+export type UserDevice = {
+  id: number;
+  application_name?: string;
+  device_name: string;
+  hardware_id: string;
+  last_active: string;
+  is_active: boolean;
+};
+
+export async function getDevices(): Promise<UserDevice[]> {
+  const res = await request<UserDevice[] | { results?: UserDevice[] }>(
+    "users/me/devices/",
+  );
+  return Array.isArray(res) ? res : (res as { results?: UserDevice[] }).results ?? [];
+}
+
+export async function revokeDevice(deviceId: number): Promise<void> {
+  await request(`users/me/devices/${deviceId}/`, { method: "DELETE" });
 }
 
 export async function uploadAvatar(file: File): Promise<UserProfile> {
@@ -330,6 +424,8 @@ export type BillingStatus = {
   expires_at?: string;
   device_limit?: number;
   device_count?: number;
+  session_limit?: number;
+  session_count?: number;
 };
 
 export async function getBillingStatus(): Promise<BillingStatus> {
@@ -706,6 +802,141 @@ export async function sendDiagnosticChatMessage(
 /** @deprecated Use getVehicles instead */
 export async function getDiagnosticsVehicles(): Promise<Vehicle[]> {
   return getVehicles();
+}
+
+/* ========== История ИИ-диагностики ========== */
+
+export type DiagnosticReportListItem = {
+  id: number;
+  report_kind: string;
+  dtc_codes: string[];
+  created_at: string;
+  vehicle_id: number | null;
+};
+
+export type DiagnosticHistoryResponse = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: DiagnosticReportListItem[];
+};
+
+export type DiagnosticReportDetail = {
+  id: number;
+  report_kind: string;
+  dtc_codes: string[];
+  live_data_snapshot: Record<string, unknown>;
+  ai_analysis: string;
+  created_at: string;
+  vehicle: {
+    id: number;
+    make: string;
+    model: string;
+    year: number | null;
+  } | null;
+};
+
+export async function getDiagnosticHistory(
+  page = 1,
+  pageSize?: number,
+): Promise<DiagnosticHistoryResponse> {
+  const params = new URLSearchParams({ page: String(page) });
+  if (pageSize != null) params.set("page_size", String(pageSize));
+  return request<DiagnosticHistoryResponse>(
+    `diagnostics/history/?${params.toString()}`,
+  );
+}
+
+export async function getDiagnosticReport(
+  id: number,
+): Promise<DiagnosticReportDetail> {
+  return request<DiagnosticReportDetail>(`diagnostics/reports/${id}/`);
+}
+
+/* ========== Чат-сессии диагностики (мультитёрн follow-up) ========== */
+
+export type DiagnosticChatMessage = {
+  id: number;
+  role: "user" | "assistant";
+  content: string;
+  created_at: string;
+};
+
+export type DiagnosticChatSessionDetail = {
+  id: number;
+  vehicle_id: number | null;
+  title: string;
+  created_at: string;
+  updated_at: string;
+  messages: DiagnosticChatMessage[];
+};
+
+export type DiagnosticChatSessionCreated = {
+  id: number;
+  created_at: string;
+  updated_at: string;
+};
+
+export type DiagnosticChatSessionListItem = {
+  id: number;
+  title: string;
+  created_at: string;
+  updated_at: string;
+  vehicle_id: number | null;
+  message_count: number;
+  last_message_preview: string;
+};
+
+export type DiagnosticChatSessionsResponse = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: DiagnosticChatSessionListItem[];
+};
+
+/** GET /api/v1/diagnostics/chat/sessions/ — список сессий (пагинация DRF) */
+export async function getDiagnosticChatSessions(
+  page = 1,
+  pageSize?: number,
+): Promise<DiagnosticChatSessionsResponse> {
+  const params = new URLSearchParams({ page: String(page) });
+  if (pageSize != null) params.set("page_size", String(pageSize));
+  return request<DiagnosticChatSessionsResponse>(
+    `diagnostics/chat/sessions/?${params.toString()}`,
+  );
+}
+
+/** POST /api/v1/diagnostics/chat/sessions/ — опционально { vehicle_id } */
+export async function createDiagnosticChatSession(body?: {
+  vehicle_id?: number | null;
+}): Promise<DiagnosticChatSessionCreated> {
+  return request<DiagnosticChatSessionCreated>("diagnostics/chat/sessions/", {
+    method: "POST",
+    body: JSON.stringify(body ?? {}),
+  });
+}
+
+/** GET /api/v1/diagnostics/chat/sessions/<id>/ — история сообщений */
+export async function getDiagnosticChatSession(
+  id: number,
+): Promise<DiagnosticChatSessionDetail> {
+  return request<DiagnosticChatSessionDetail>(
+    `diagnostics/chat/sessions/${id}/`,
+  );
+}
+
+/** POST /api/v1/diagnostics/chat/sessions/<id>/messages/ — свободный текст (квота как у analyze) */
+export async function postDiagnosticChatMessage(
+  sessionId: number,
+  message: string,
+): Promise<{ ai_analysis: string; session_id: number }> {
+  return request<{ ai_analysis: string; session_id: number }>(
+    `diagnostics/chat/sessions/${sessionId}/messages/`,
+    {
+      method: "POST",
+      body: JSON.stringify({ message }),
+    },
+  );
 }
 
 /* ========== Stub: services/specialists (нет в backend auto_ai_auth) ========== */

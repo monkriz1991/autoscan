@@ -149,6 +149,33 @@
     "vinDecoding": "Dekodowanie...",
     "vinDecodeError": "Nie udało się zdekodować pojazdu z VIN. NHTSA obejmuje głównie pojazdy rynku USA. Użyj ręcznego wprowadzania dla innych rynków."
   },
+  "analytics": {
+    "title": "OBD analytics",
+    "subtitle": "Records synced from the desktop scanner. Errors = last successful survey before the recording was saved.",
+    "records": "Records",
+    "noRecords": "No records yet. Sync a recording from the scanner app.",
+    "selectRecord": "Select a record on the left.",
+    "loadError": "Failed to load list",
+    "detailError": "Failed to load record",
+    "tabOverview": "Overview",
+    "tabErrors": "Errors",
+    "tabCharts": "Charts",
+    "tabChat": "AI chat",
+    "externalId": "Record ID",
+    "started": "Started",
+    "vehicle": "Vehicle",
+    "points": "Points",
+    "anomalies": "Anomalies",
+    "surveyKind": "Survey type",
+    "surveyAt": "Snapshot time",
+    "noErrors": "No error snapshot attached.",
+    "chartFields": "PIDs on chart",
+    "noChartData": "No chart data (pick PIDs with numeric samples).",
+    "startChat": "Start chat for this record",
+    "yourMessage": "Your message",
+    "send": "Send",
+    "chatError": "Chat error"
+  },
   "footer": {
     "copyright": "© {year} My App"
   }

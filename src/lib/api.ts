@@ -528,6 +528,162 @@ export async function deleteVehicle(id: number): Promise<void> {
   await request(`diagnostics/vehicles/${id}/`, { method: "DELETE" });
 }
 
+/* ========== OBD records & diagnostic chat ========== */
+
+export type OBDRecordBriefVehicle = {
+  id: number;
+  make: string;
+  model: string;
+  year: number | null;
+};
+
+export type OBDRecordListItem = {
+  id: number;
+  external_id: string;
+  schema_version: number;
+  started_at: string;
+  finished_at: string | null;
+  duration_ms: number | null;
+  vehicle: OBDRecordBriefVehicle | null;
+  vehicle_name_meta: string;
+  vin: string;
+  adapter_type: string;
+  comment: string;
+  tags: string[];
+  pids: string[];
+  points_count: number;
+  errors_survey_kind: string;
+  errors_captured_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type Paginated<T> = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+};
+
+export async function getObdRecordsPage(
+  page = 1,
+  pageSize = 20,
+): Promise<Paginated<OBDRecordListItem>> {
+  const params = new URLSearchParams({
+    page: String(page),
+    page_size: String(pageSize),
+  });
+  return request<Paginated<OBDRecordListItem>>(`diagnostics/obd-records/?${params}`);
+}
+
+export type OBDRecordDetail = OBDRecordListItem & {
+  errors_snapshot: Record<string, unknown> | null;
+};
+
+export async function getObdRecordDetail(externalId: string): Promise<OBDRecordDetail> {
+  return request<OBDRecordDetail>(`diagnostics/obd-records/${externalId}/`);
+}
+
+export type OBDRecordSummary = {
+  record_id: string;
+  meta: Record<string, unknown>;
+  pids: string[];
+  points_total: number;
+  time_from_ms: number | null;
+  time_to_ms: number | null;
+  stats: Record<string, { min?: number; max?: number; avg?: number; samples: number }>;
+  anomalies: string[];
+  text_summary: string;
+};
+
+export async function getObdRecordSummary(externalId: string): Promise<OBDRecordSummary> {
+  return request<OBDRecordSummary>(`diagnostics/obd-records/${externalId}/summary/`);
+}
+
+export type OBDRecordSegment = {
+  record_id: string;
+  from_ms: number;
+  to_ms: number;
+  fields: string[];
+  points: Array<{ timestamp: number; values: Record<string, unknown> }>;
+};
+
+export async function getObdRecordSegment(
+  externalId: string,
+  fromMs: number,
+  toMs: number,
+  fields?: string[],
+): Promise<OBDRecordSegment> {
+  const params = new URLSearchParams({
+    from: String(fromMs),
+    to: String(toMs),
+  });
+  if (fields?.length) {
+    params.set("fields", fields.join(","));
+  }
+  return request<OBDRecordSegment>(`diagnostics/obd-records/${externalId}/segment/?${params}`);
+}
+
+export type OBDRecordChatBootstrap = {
+  chat_session_id: number;
+  session_id: number;
+  created: boolean;
+};
+
+export async function bootstrapObdRecordChat(externalId: string): Promise<OBDRecordChatBootstrap> {
+  return request<OBDRecordChatBootstrap>(
+    `diagnostics/obd-records/${externalId}/chat/bootstrap/`,
+    {
+      method: "POST",
+      body: JSON.stringify({}),
+    },
+  );
+}
+
+export type DiagnosticChatMessage = {
+  id: number;
+  role: string;
+  content: string;
+  created_at: string;
+};
+
+export type DiagnosticChatSessionDetail = {
+  id: number;
+  vehicle_id: number | null;
+  title: string;
+  created_at: string;
+  updated_at: string;
+  source_obd_record_id: number | null;
+  source_obd_record_external_id: string | null;
+  messages: DiagnosticChatMessage[];
+};
+
+export async function getDiagnosticChatSession(
+  sessionId: number,
+): Promise<DiagnosticChatSessionDetail> {
+  return request<DiagnosticChatSessionDetail>(`diagnostics/chat/sessions/${sessionId}/`);
+}
+
+export type DiagnosticChatFollowupResponse = {
+  ai_analysis: string;
+  session_id: number;
+  ai_quota_mode?: string;
+  next_request_may_be_ondemand?: boolean;
+};
+
+export async function sendDiagnosticChatMessage(
+  sessionId: number,
+  message: string,
+): Promise<DiagnosticChatFollowupResponse> {
+  return request<DiagnosticChatFollowupResponse>(
+    `diagnostics/chat/sessions/${sessionId}/messages/`,
+    {
+      method: "POST",
+      body: JSON.stringify({ message }),
+    },
+  );
+}
+
 /** @deprecated Use getVehicles instead */
 export async function getDiagnosticsVehicles(): Promise<Vehicle[]> {
   return getVehicles();

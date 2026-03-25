@@ -108,7 +108,7 @@ function CarHero() {
 
         <Box style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
           {authenticated ? (
-            <Link href="/superadmin/dashboard" style={{ textDecoration: "none" }}>
+            <Link href="/cabinet/dashboard" style={{ textDecoration: "none" }}>
               <Button className="btn-metallic" color="silver" radius="xl" size="md" px="xl">
                 {t("dashboard")}
               </Button>
@@ -120,7 +120,7 @@ function CarHero() {
                   {t("login")}
                 </Button>
               </Link>
-              <Link href="/pricing" style={{ textDecoration: "none" }}>
+              <Link href="/marketing/pricing" style={{ textDecoration: "none" }}>
                 <Button
                   className="btn-metallic btn-metallic-outline"
                   color="silver"

@@ -5,7 +5,7 @@ import { Container } from "@mantine/core";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
-const SELF_LAYOUT_PREFIXES = ["/marketing", "/superadmin", "/business"];
+const SELF_LAYOUT_PREFIXES = ["/marketing", "/cabinet", "/business"];
 
 function hasOwnLayout(pathname: string): boolean {
   return SELF_LAYOUT_PREFIXES.some((prefix) => pathname.startsWith(prefix));

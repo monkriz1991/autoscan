@@ -220,6 +220,25 @@ export async function getMe(): Promise<UserProfile> {
   return request<UserProfile>("users/me/");
 }
 
+/** Подключённые приложения (OAuth2-сессии), GET /users/me/devices/ */
+export type UserDeviceSession = {
+  id: number;
+  application_name: string;
+  device_name: string;
+  hardware_id: string;
+  last_active: string;
+  is_active: boolean;
+};
+
+export async function getUserDevices(): Promise<UserDeviceSession[]> {
+  const data = await request<UserDeviceSession[] | unknown>("users/me/devices/");
+  return Array.isArray(data) ? data : [];
+}
+
+export async function deleteUserDeviceSession(id: number): Promise<void> {
+  await request<unknown>(`users/me/devices/${id}/`, { method: "DELETE" });
+}
+
 export type UserProfileUpdate = Partial<
   Pick<UserProfile, "first_name" | "last_name" | "avatar_url">
 >;

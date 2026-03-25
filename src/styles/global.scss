@@ -277,8 +277,9 @@ body {
 }
 
 .layout--superadmin .layout__content {
-  max-width: 900px;
+  width: 100%;
   margin: 0 auto;
+  max-width: 80vw;
 }
 
 .layout--superadmin .layout__header {

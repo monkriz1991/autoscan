@@ -15,7 +15,8 @@
     "analytics": "Analityka",
     "brand": "Autoscan",
     "aiHistory": "Historia diagnostyki AI",
-    "requestHistory": "Historia zapytań"
+    "requestHistory": "Historia zapytań",
+    "faq": "FAQ"
   },
   "home": {
     "brand": "AutoScan",
@@ -200,7 +201,60 @@
     "createdAt": "Utworzono",
     "type": "Typ"
   },
+  "analytics": {
+    "title": "Analityka OBD",
+    "subtitle": "Zapisane trasy, podsumowania AI, migawki błędów, wykresy i czat dla każdego nagrania.",
+    "loadError": "Nie udało się wczytać nagrań",
+    "detailError": "Nie udało się wczytać szczegółów nagrania",
+    "loadingDetail": "Ładowanie…",
+    "records": "Nagrania",
+    "recordsCount": "Nagrań: {count}",
+    "noRecords": "Brak nagrań",
+    "noRecordsHint": "Zapisz przejazd w aplikacji skanera — pojawi się na tej liście.",
+    "emptyDetailTitle": "Wybierz nagranie",
+    "emptyDetailHint": "Kliknij wiersz po lewej, aby zobaczyć statystyki, wykresy i czat dla tej sesji.",
+    "started": "Start",
+    "statPoints": "Punktów",
+    "statPids": "PID",
+    "statDuration": "Czas trwania",
+    "statErrors": "Błędy (DTC)",
+    "statErrorsYes": "Tak",
+    "statErrorsNo": "Nie",
+    "tabOverview": "Przegląd",
+    "tabErrors": "Błędy",
+    "tabCharts": "Wykresy",
+    "tabChat": "Czat AI",
+    "statsTitle": "Nagranie",
+    "vehicle": "Pojazd",
+    "summaryBlock": "Podsumowanie AI",
+    "anomalies": "Anomalie",
+    "surveyKind": "Rodzaj pomiaru",
+    "surveyAt": "Zarejestrowano",
+    "noErrors": "Brak migawki błędów dla tego nagrania.",
+    "chartFields": "Serie (PID)",
+    "noChartData": "Brak danych do wykresu. Wybierz PID lub sprawdź, czy są próbki numeryczne.",
+    "chartCardTitle": "Dane na osi czasu",
+    "chatIntro": "Pytania uzupełniające o tym nagraniu. Zużywa limit jak inne funkcje AI.",
+    "startChat": "Otwórz czat AI dla tego nagrania",
+    "userLabel": "Ty",
+    "assistantLabel": "Asystent",
+    "yourMessage": "Twoja wiadomość",
+    "send": "Wyślij",
+    "selectRecord": "Wybierz nagranie z listy",
+    "chatError": "Błąd czatu"
+  },
   "footer": {
     "copyright": "© {year} My App"
+  },
+  "faqPage": {
+    "title": "Często zadawane pytania",
+    "subtitle": "Wyszukiwanie w treści pytania i krótkim opisie w języku z nagłówka.",
+    "searchLabel": "Szukaj w pytaniach",
+    "searchPlaceholder": "Wpisz zapytanie…",
+    "translations": "Tłumaczenia",
+    "loading": "Ładowanie…",
+    "empty": "Brak pytań.",
+    "noResults": "Brak wyników dla tego zapytania.",
+    "error": "Nie udało się załadować FAQ. Spróbuj ponownie później."
   }
 }

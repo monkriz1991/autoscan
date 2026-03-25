@@ -67,6 +67,7 @@ export default function Navbar() {
         <nav className="navbar__nav">
           {navLink("/", t("home"))}
           {navLink("/marketing/pricing", t("pricing"))}
+          {navLink("/faq", t("faq"))}
           {!authenticated && navLink("/register", t("register"))}
           {!authenticated && navLink("/login", t("login"))}
 

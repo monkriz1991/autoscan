@@ -405,6 +405,54 @@ export type Plan = {
   sort_order: number;
 };
 
+/** Публичный FAQ (локаль из Accept-Language / X-Locale). */
+export type FaqPublicItem = {
+  slug: string;
+  question: string;
+  excerpt: string;
+  answer_html: string;
+  sort_order: number;
+  available_locales: string[];
+  cover_image_url: string | null;
+};
+
+export async function getPublicFaq(options?: {
+  /** Поиск по вопросу и краткому описанию (локаль — из Accept-Language / X-Locale). */
+  q?: string;
+}): Promise<FaqPublicItem[]> {
+  const base = BASE_URL.replace(/\/$/, "");
+  const params = new URLSearchParams();
+  const q = (options?.q ?? "").trim();
+  if (q) params.set("q", q.slice(0, 200));
+  const qs = params.toString();
+  const url = qs ? `${base}/faq/?${qs}` : `${base}/faq/`;
+  const res = await fetch(url, {
+    credentials: "omit",
+    headers: getLocaleHeaders(),
+  });
+  if (!res.ok) {
+    throw new ApiError(res.status, await res.json().catch(() => ({})));
+  }
+  const data = await res.json();
+  if (!Array.isArray(data)) return [];
+  return data.map((row: Record<string, unknown>) => ({
+    slug: String(row.slug ?? ""),
+    question: String(row.question ?? ""),
+    excerpt: String(row.excerpt ?? ""),
+    answer_html: String(row.answer_html ?? ""),
+    sort_order: Number(row.sort_order ?? 0),
+    available_locales: Array.isArray(row.available_locales)
+      ? (row.available_locales as string[]).filter((x) => typeof x === "string")
+      : [],
+    cover_image_url:
+      row.cover_image_url === null ||
+      row.cover_image_url === undefined ||
+      row.cover_image_url === ""
+        ? null
+        : String(row.cover_image_url),
+  }));
+}
+
 export async function getPlans(): Promise<Plan[]> {
   const base = BASE_URL.replace(/\/$/, "");
   const res = await fetch(`${base}/billing/plans/`, {
@@ -773,12 +821,6 @@ export type DiagnosticChatSessionDetail = {
   messages: DiagnosticChatMessage[];
 };
 
-export async function getDiagnosticChatSession(
-  sessionId: number,
-): Promise<DiagnosticChatSessionDetail> {
-  return request<DiagnosticChatSessionDetail>(`diagnostics/chat/sessions/${sessionId}/`);
-}
-
 export type DiagnosticChatFollowupResponse = {
   ai_analysis: string;
   session_id: number;
@@ -854,22 +896,6 @@ export async function getDiagnosticReport(
 }
 
 /* ========== Чат-сессии диагностики (мультитёрн follow-up) ========== */
-
-export type DiagnosticChatMessage = {
-  id: number;
-  role: "user" | "assistant";
-  content: string;
-  created_at: string;
-};
-
-export type DiagnosticChatSessionDetail = {
-  id: number;
-  vehicle_id: number | null;
-  title: string;
-  created_at: string;
-  updated_at: string;
-  messages: DiagnosticChatMessage[];
-};
 
 export type DiagnosticChatSessionCreated = {
   id: number;

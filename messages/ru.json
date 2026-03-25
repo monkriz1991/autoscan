@@ -15,7 +15,8 @@
     "analytics": "Аналитика",
     "brand": "Autoscan",
     "aiHistory": "История ИИ-диагностики",
-    "requestHistory": "История запросов"
+    "requestHistory": "История запросов",
+    "faq": "FAQ"
   },
   "home": {
     "brand": "AutoScan",
@@ -200,7 +201,60 @@
     "createdAt": "Создано",
     "type": "Тип"
   },
+  "analytics": {
+    "title": "Аналитика OBD",
+    "subtitle": "Просмотр загруженных поездок, ИИ-сводок, снимков ошибок, графиков и чата по каждой записи.",
+    "loadError": "Не удалось загрузить записи",
+    "detailError": "Не удалось загрузить детали записи",
+    "loadingDetail": "Загрузка…",
+    "records": "Записи",
+    "recordsCount": "Записей: {count}",
+    "noRecords": "Пока нет записей",
+    "noRecordsHint": "Сохраните поездку в приложении сканера — она появится в этом списке.",
+    "emptyDetailTitle": "Выберите запись",
+    "emptyDetailHint": "Нажмите строку слева, чтобы увидеть статистику, графики и чат по этой сессии.",
+    "started": "Начало",
+    "statPoints": "Точек",
+    "statPids": "PID",
+    "statDuration": "Длительность",
+    "statErrors": "Ошибки (DTC)",
+    "statErrorsYes": "Есть",
+    "statErrorsNo": "Нет",
+    "tabOverview": "Обзор",
+    "tabErrors": "Ошибки",
+    "tabCharts": "Графики",
+    "tabChat": "ИИ-чат",
+    "statsTitle": "Запись",
+    "vehicle": "Автомобиль",
+    "summaryBlock": "ИИ-сводка",
+    "anomalies": "Аномалии",
+    "surveyKind": "Тип опроса",
+    "surveyAt": "Зафиксировано",
+    "noErrors": "Для этой записи нет снимка ошибок.",
+    "chartFields": "Ряды (PID)",
+    "noChartData": "Нет данных для графика. Выберите PID или проверьте, что в записи есть числовые значения.",
+    "chartCardTitle": "Показатели во времени",
+    "chatIntro": "Задавайте уточняющие вопросы по этой записи. Расход квоты как у других ИИ-функций.",
+    "startChat": "Открыть ИИ-чат по этой записи",
+    "userLabel": "Вы",
+    "assistantLabel": "Ассистент",
+    "yourMessage": "Ваше сообщение",
+    "send": "Отправить",
+    "selectRecord": "Выберите запись в списке",
+    "chatError": "Ошибка чата"
+  },
   "footer": {
     "copyright": "© {year} My App"
+  },
+  "faqPage": {
+    "title": "Часто задаваемые вопросы",
+    "subtitle": "Поиск по тексту вопроса и краткому описанию для языка, выбранного в шапке сайта.",
+    "searchLabel": "Поиск по вопросам",
+    "searchPlaceholder": "Введите запрос…",
+    "translations": "Переводы",
+    "loading": "Загрузка…",
+    "empty": "Пока нет вопросов.",
+    "noResults": "Ничего не найдено по вашему запросу.",
+    "error": "Не удалось загрузить FAQ. Попробуйте позже."
   }
 }

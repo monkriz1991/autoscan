@@ -15,7 +15,8 @@
     "analytics": "Analítica",
     "brand": "Autoscan",
     "aiHistory": "Historial de diagnóstico IA",
-    "requestHistory": "Historial de solicitudes"
+    "requestHistory": "Historial de solicitudes",
+    "faq": "FAQ"
   },
   "home": {
     "brand": "AutoScan",
@@ -119,7 +120,10 @@
     "offline": "Inactivo",
     "revoke": "Desconectar dispositivo",
     "revokeError": "Error al desconectar",
-    "loadError": "Error de carga"
+    "loadError": "Error de carga",
+    "invalidCredentials": "Correo o contraseña no válidos",
+    "invalidResponse": "Respuesta del servidor no válida",
+    "connectionError": "Error de conexión"
   },
   "pricing": {
     "title": "Planes",
@@ -197,7 +201,60 @@
     "createdAt": "Creado",
     "type": "Tipo"
   },
+  "analytics": {
+    "title": "Analítica OBD",
+    "subtitle": "Viajes guardados, resúmenes IA, instantáneas de errores, gráficos y chat por cada grabación.",
+    "loadError": "No se pudieron cargar las grabaciones",
+    "detailError": "No se pudieron cargar los detalles de la grabación",
+    "loadingDetail": "Cargando…",
+    "records": "Grabaciones",
+    "recordsCount": "{count} grabaciones",
+    "noRecords": "Aún no hay grabaciones",
+    "noRecordsHint": "Guarda un trayecto en la app del escáner — aparecerá en esta lista.",
+    "emptyDetailTitle": "Selecciona una grabación",
+    "emptyDetailHint": "Elige una fila a la izquierda para ver estadísticas, gráficos y chat de esa sesión.",
+    "started": "Inicio",
+    "statPoints": "Puntos",
+    "statPids": "PIDs",
+    "statDuration": "Duración",
+    "statErrors": "Errores (DTC)",
+    "statErrorsYes": "Sí",
+    "statErrorsNo": "No",
+    "tabOverview": "Resumen",
+    "tabErrors": "Errores",
+    "tabCharts": "Gráficos",
+    "tabChat": "Chat IA",
+    "statsTitle": "Grabación",
+    "vehicle": "Vehículo",
+    "summaryBlock": "Resumen IA",
+    "anomalies": "Anomalías",
+    "surveyKind": "Tipo de encuesta",
+    "surveyAt": "Capturado",
+    "noErrors": "No hay instantánea de errores para esta grabación.",
+    "chartFields": "Series (PIDs)",
+    "noChartData": "Sin datos para el gráfico. Elige PIDs o comprueba que haya muestras numéricas.",
+    "chartCardTitle": "Datos en vivo en el tiempo",
+    "chatIntro": "Preguntas de seguimiento sobre esta grabación. Usa cuota del plan como otras funciones IA.",
+    "startChat": "Abrir chat IA para esta grabación",
+    "userLabel": "Tú",
+    "assistantLabel": "Asistente",
+    "yourMessage": "Tu mensaje",
+    "send": "Enviar",
+    "selectRecord": "Selecciona una grabación de la lista",
+    "chatError": "Error de chat"
+  },
   "footer": {
     "copyright": "© {year} My App"
+  },
+  "faqPage": {
+    "title": "Preguntas frecuentes",
+    "subtitle": "Búsqueda en la pregunta y la descripción breve según el idioma del encabezado.",
+    "searchLabel": "Buscar en preguntas",
+    "searchPlaceholder": "Escriba para filtrar…",
+    "translations": "Traducciones",
+    "loading": "Cargando…",
+    "empty": "Aún no hay preguntas.",
+    "noResults": "Ninguna pregunta coincide con su búsqueda.",
+    "error": "No se pudieron cargar las preguntas frecuentes. Inténtelo más tarde."
   }
 }

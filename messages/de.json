@@ -15,7 +15,8 @@
     "analytics": "Analytik",
     "brand": "Autoscan",
     "aiHistory": "KI-Diagnoseverlauf",
-    "requestHistory": "Anfrageverlauf"
+    "requestHistory": "Anfrageverlauf",
+    "faq": "FAQ"
   },
   "home": {
     "brand": "AutoScan",
@@ -201,6 +202,48 @@
     "createdAt": "Erstellt",
     "type": "Typ"
   },
+  "analytics": {
+    "title": "OBD-Analytik",
+    "subtitle": "Hochgeladene Fahrten, KI-Zusammenfassungen, Fehlersnapshots, Diagramme und Chat pro Aufzeichnung.",
+    "loadError": "Aufzeichnungen konnten nicht geladen werden",
+    "detailError": "Details der Aufzeichnung konnten nicht geladen werden",
+    "loadingDetail": "Wird geladen…",
+    "records": "Aufzeichnungen",
+    "recordsCount": "{count} Aufzeichnungen",
+    "noRecords": "Noch keine Aufzeichnungen",
+    "noRecordsHint": "Speichern Sie eine Fahrt in der Scanner-App — sie erscheint in dieser Liste.",
+    "emptyDetailTitle": "Aufzeichnung auswählen",
+    "emptyDetailHint": "Wählen Sie links eine Zeile für Statistik, Diagramme und Chat zu dieser Session.",
+    "started": "Start",
+    "statPoints": "Punkte",
+    "statPids": "PIDs",
+    "statDuration": "Dauer",
+    "statErrors": "Fehler (DTC)",
+    "statErrorsYes": "Ja",
+    "statErrorsNo": "Nein",
+    "tabOverview": "Überblick",
+    "tabErrors": "Fehler",
+    "tabCharts": "Diagramme",
+    "tabChat": "KI-Chat",
+    "statsTitle": "Aufzeichnung",
+    "vehicle": "Fahrzeug",
+    "summaryBlock": "KI-Zusammenfassung",
+    "anomalies": "Auffälligkeiten",
+    "surveyKind": "Erhebungsart",
+    "surveyAt": "Erfasst am",
+    "noErrors": "Kein Fehlersnapshot für diese Aufzeichnung.",
+    "chartFields": "Reihen (PIDs)",
+    "noChartData": "Keine Diagrammdaten. PIDs wählen oder prüfen, ob numerische Messwerte vorliegen.",
+    "chartCardTitle": "Live-Daten über die Zeit",
+    "chatIntro": "Rückfragen zu dieser Aufzeichnung. Verbraucht Kontingent wie andere KI-Funktionen.",
+    "startChat": "KI-Chat zu dieser Aufzeichnung öffnen",
+    "userLabel": "Sie",
+    "assistantLabel": "Assistent",
+    "yourMessage": "Ihre Nachricht",
+    "send": "Senden",
+    "selectRecord": "Wählen Sie eine Aufzeichnung aus der Liste",
+    "chatError": "Chat-Fehler"
+  },
   "cookieConsent": {
     "ariaLabel": "Cookie- und Datenschutzeinstellungen",
     "title": "Wir verwenden Cookies und ähnliche Technologien",
@@ -228,5 +271,17 @@
     "terms": "Nutzungsbedingungen",
     "privacy": "Datenschutzerklärung",
     "contacts": "Kontakt"
+    "copyright": "© {year} My App"
+  },
+  "faqPage": {
+    "title": "Häufig gestellte Fragen",
+    "subtitle": "Suche in Frage und Kurzbeschreibung für die im Header gewählte Sprache.",
+    "searchLabel": "Fragen durchsuchen",
+    "searchPlaceholder": "Suchbegriff eingeben…",
+    "translations": "Übersetzungen",
+    "loading": "Wird geladen…",
+    "empty": "Noch keine Fragen.",
+    "noResults": "Keine Treffer für Ihre Suche.",
+    "error": "FAQ konnte nicht geladen werden. Bitte später erneut versuchen."
   }
 }

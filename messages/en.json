@@ -15,7 +15,8 @@
     "analytics": "Analytics",
     "brand": "Autoscan",
     "aiHistory": "AI diagnostics history",
-    "requestHistory": "Request history"
+    "requestHistory": "Request history",
+    "faq": "FAQ"
   },
   "home": {
     "brand": "AutoScan",
@@ -222,10 +223,64 @@
     "save": "Save preferences",
     "privacyLink": "Privacy policy"
   },
+  "analytics": {
+    "title": "OBD analytics",
+    "subtitle": "Browse uploaded drives, AI summaries, error snapshots, charts, and follow-up chat for each recording.",
+    "loadError": "Failed to load recordings",
+    "detailError": "Failed to load recording details",
+    "loadingDetail": "Loading…",
+    "records": "Recordings",
+    "recordsCount": "{count} recordings",
+    "noRecords": "No recordings yet",
+    "noRecordsHint": "Save a drive from the scanner app — it will show up in this list.",
+    "emptyDetailTitle": "Select a recording",
+    "emptyDetailHint": "Pick a row on the left to see stats, charts, and chat for that session.",
+    "started": "Started",
+    "statPoints": "Points",
+    "statPids": "PIDs",
+    "statDuration": "Duration",
+    "statErrors": "Errors (DTC)",
+    "statErrorsYes": "Yes",
+    "statErrorsNo": "No",
+    "tabOverview": "Overview",
+    "tabErrors": "Errors",
+    "tabCharts": "Charts",
+    "tabChat": "AI chat",
+    "statsTitle": "Recording",
+    "vehicle": "Vehicle",
+    "summaryBlock": "AI summary",
+    "anomalies": "Anomalies",
+    "surveyKind": "Survey type",
+    "surveyAt": "Captured at",
+    "noErrors": "No error snapshot for this recording.",
+    "chartFields": "Series (PIDs)",
+    "noChartData": "No chart data. Choose PIDs or ensure the recording has numeric samples.",
+    "chartCardTitle": "Live data over time",
+    "chatIntro": "Ask follow-up questions about this recording. Uses your plan quota like other AI features.",
+    "startChat": "Open AI chat for this recording",
+    "userLabel": "You",
+    "assistantLabel": "Assistant",
+    "yourMessage": "Your message",
+    "send": "Send",
+    "selectRecord": "Select a recording from the list",
+    "chatError": "Chat error"
+  },
   "footer": {
     "copyright": "© {year} My App",
     "terms": "Terms of Use",
     "privacy": "Privacy Policy",
     "contacts": "Contact"
+    "copyright": "© {year} My App"
+  },
+  "faqPage": {
+    "title": "Frequently asked questions",
+    "subtitle": "Search matches the question and short description for the language you selected in the header.",
+    "searchLabel": "Search questions",
+    "searchPlaceholder": "Type to filter…",
+    "translations": "Translations",
+    "loading": "Loading…",
+    "empty": "No questions yet.",
+    "noResults": "No questions match your search.",
+    "error": "Could not load FAQ. Try again later."
   }
 }

@@ -220,21 +220,21 @@ body {
   }
 }
 
-/* Superadmin layout */
-.layout--superadmin {
+/* Cabinet layout */
+.layout--cabinet {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: #f8f9fa;
 }
 
-.layout--superadmin .layout__body {
+.layout--cabinet .layout__body {
   flex: 1;
   display: flex;
   min-height: 0;
 }
 
-.layout--superadmin .layout__sidebar {
+.layout--cabinet .layout__sidebar {
   width: 240px;
   flex-shrink: 0;
   background: #ffffff;
@@ -242,13 +242,13 @@ body {
   padding: 16px 0;
 }
 
-.layout--superadmin .layout__sidebar-nav {
+.layout--cabinet .layout__sidebar-nav {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.layout--superadmin .layout__sidebar-link {
+.layout--cabinet .layout__sidebar-link {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -259,29 +259,30 @@ body {
   transition: background 0.15s ease, color 0.15s ease;
 }
 
-.layout--superadmin .layout__sidebar-link:hover {
+.layout--cabinet .layout__sidebar-link:hover {
   background: #e9ecef;
   color: #212529;
 }
 
-.layout--superadmin .layout__sidebar-link--active {
+.layout--cabinet .layout__sidebar-link--active {
   background: #e9ecef;
   color: #212529;
   font-weight: 600;
 }
 
-.layout--superadmin .layout__main {
+.layout--cabinet .layout__main {
   flex: 1;
   padding: 32px 24px;
   overflow: auto;
 }
 
-.layout--superadmin .layout__content {
-  max-width: 900px;
+.layout--cabinet .layout__content {
+  width: 100%;
   margin: 0 auto;
+  max-width: 80vw;
 }
 
-.layout--superadmin .layout__header {
+.layout--cabinet .layout__header {
   height: 64px;
   background: #ffffff;
   border-bottom: 1px solid #e9ecef;
@@ -289,20 +290,20 @@ body {
   align-items: center;
 }
 
-.layout--superadmin .layout__header-inner {
+.layout--cabinet .layout__header-inner {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
 }
 
-.layout--superadmin .layout__logo {
+.layout--cabinet .layout__logo {
   margin: 0;
   font-weight: 600;
   font-size: 20px;
 }
 
-.layout--superadmin .layout__footer {
+.layout--cabinet .layout__footer {
   height: 60px;
   border-top: 1px solid #e9ecef;
   display: flex;
@@ -313,7 +314,7 @@ body {
   background: #ffffff;
 }
 
-/* Drawer content (Superadmin sidebar на мобильных) */
+/* Drawer content (cabinet sidebar на мобильных) */
 .layout__drawer-content {
   padding: 16px 0;
 }
@@ -362,7 +363,94 @@ body {
 .footer {
   background: #ffffff;
   border-top: 1px solid #e9ecef;
-  padding: 24px 0;
+  padding: 32px 0 24px;
+}
+
+.faq-page {
+  padding: 1rem 0 2.5rem;
+  max-width: 48rem;
+}
+
+/* FAQ: строка как таблица (аватар + текст), раскрытие — hero + ответ */
+.faq-card-table__row {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 12px;
+  align-items: flex-start;
+  width: 100%;
+  text-align: left;
+}
+
+.faq-card-table__avatar img {
+  object-fit: cover;
+}
+
+.faq-card-table__hero {
+  display: block;
+  width: 100%;
+  max-height: 280px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+@media (max-width: 36em) {
+  .faq-card-table__row {
+    grid-template-columns: 48px 1fr;
+    gap: 10px;
+  }
+}
+
+.faq-answer {
+  font-size: 14px;
+  line-height: 1.65;
+  color: #495057;
+
+  p {
+    margin: 0 0 0.75em;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  iframe {
+    max-width: 100%;
+    width: 100%;
+    min-height: 200px;
+    border: 0;
+    border-radius: 8px;
+    aspect-ratio: 16 / 9;
+  }
+
+  a {
+    color: #228be6;
+  }
+
+  ul,
+  ol {
+    padding-left: 1.25rem;
+    margin: 0 0 0.75em;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 0 0 0.75em;
+  }
+
+  th,
+  td {
+    border: 1px solid #dee2e6;
+    padding: 6px 8px;
+    text-align: left;
+  }
 }
 
 .footer__inner {
@@ -426,16 +514,16 @@ body {
     padding: 0 12px;
   }
 
-  /* Superadmin: sidebar скрыт, Burger + Drawer на мобильных */
-  .layout--superadmin .layout__body {
+  /* Cabinet: sidebar скрыт, Burger + Drawer на мобильных */
+  .layout--cabinet .layout__body {
     flex-direction: column;
   }
 
-  .layout--superadmin .layout__sidebar--desktop {
+  .layout--cabinet .layout__sidebar--desktop {
     display: none;
   }
 
-  .layout--superadmin .layout__mobile-header {
+  .layout--cabinet .layout__mobile-header {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -444,22 +532,22 @@ body {
     border-bottom: 1px solid #e9ecef;
   }
 
-  .layout--superadmin .layout__mobile-header-title {
+  .layout--cabinet .layout__mobile-header-title {
     font-size: 14px;
     font-weight: 600;
     color: #212529;
   }
 
-  .layout--superadmin .layout__main {
+  .layout--cabinet .layout__main {
     padding: 16px 12px;
     width: 100%;
   }
 
-  .layout--superadmin .layout__content {
+  .layout--cabinet .layout__content {
     max-width: 100%;
   }
 
-  .layout--superadmin .layout__footer {
+  .layout--cabinet .layout__footer {
     font-size: 12px;
     padding: 12px;
   }
@@ -497,7 +585,7 @@ body {
 
 /* Desktop: скрыть mobile header */
 @media (min-width: 768px) {
-  .layout--superadmin .layout__mobile-header {
+  .layout--cabinet .layout__mobile-header {
     display: none;
   }
 }

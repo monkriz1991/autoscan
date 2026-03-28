@@ -15,7 +15,8 @@
     "analytics": "Analytics",
     "brand": "Autoscan",
     "aiHistory": "Cronologia diagnostica AI",
-    "requestHistory": "Cronologia richieste"
+    "requestHistory": "Cronologia richieste",
+    "faq": "FAQ"
   },
   "home": {
     "brand": "AutoScan",
@@ -94,6 +95,8 @@
     "onDemandDesc": "L'utilizzo on-demand viene fatturato dopo aver raggiunto il limite del piano.",
     "monthlyLimit": "Limite mensile",
     "monthlyLimitDesc": "Imposta un importo fisso o illimitato.",
+    "fixed": "Fisso",
+    "unlimited": "Illimitato",
     "save": "Salva",
     "saved": "Impostazioni on-demand salvate",
     "saveError": "Errore di salvataggio"
@@ -220,10 +223,64 @@
     "save": "Salva preferenze",
     "privacyLink": "Informativa sulla privacy"
   },
+  "analytics": {
+    "title": "Analitica OBD",
+    "subtitle": "Percorsi caricati, riepiloghi IA, snapshot errori, grafici e chat per ogni registrazione.",
+    "loadError": "Impossibile caricare le registrazioni",
+    "detailError": "Impossibile caricare i dettagli della registrazione",
+    "loadingDetail": "Caricamento…",
+    "records": "Registrazioni",
+    "recordsCount": "{count} registrazioni",
+    "noRecords": "Nessuna registrazione",
+    "noRecordsHint": "Salva un percorso nell'app scanner — comparirà in questo elenco.",
+    "emptyDetailTitle": "Seleziona una registrazione",
+    "emptyDetailHint": "Scegli una riga a sinistra per statistiche, grafici e chat di quella sessione.",
+    "started": "Inizio",
+    "statPoints": "Punti",
+    "statPids": "PID",
+    "statDuration": "Durata",
+    "statErrors": "Errori (DTC)",
+    "statErrorsYes": "Sì",
+    "statErrorsNo": "No",
+    "tabOverview": "Panoramica",
+    "tabErrors": "Errori",
+    "tabCharts": "Grafici",
+    "tabChat": "Chat IA",
+    "statsTitle": "Registrazione",
+    "vehicle": "Veicolo",
+    "summaryBlock": "Riepilogo IA",
+    "anomalies": "Anomalie",
+    "surveyKind": "Tipo rilevazione",
+    "surveyAt": "Acquisito",
+    "noErrors": "Nessuno snapshot errori per questa registrazione.",
+    "chartFields": "Serie (PID)",
+    "noChartData": "Nessun dato per il grafico. Scegli i PID o verifica campioni numerici.",
+    "chartCardTitle": "Dati nel tempo",
+    "chatIntro": "Domande di follow-up su questa registrazione. Usa la quota come le altre funzioni IA.",
+    "startChat": "Apri chat IA per questa registrazione",
+    "userLabel": "Tu",
+    "assistantLabel": "Assistente",
+    "yourMessage": "Il tuo messaggio",
+    "send": "Invia",
+    "selectRecord": "Seleziona una registrazione dall'elenco",
+    "chatError": "Errore chat"
+  },
   "footer": {
     "copyright": "© {year} My App",
     "terms": "Termini di utilizzo",
     "privacy": "Informativa sulla privacy",
     "contacts": "Contatti"
+    "copyright": "© {year} My App"
+  },
+  "faqPage": {
+    "title": "Domande frequenti",
+    "subtitle": "Ricerca nel testo della domanda e nella breve descrizione nella lingua dell’intestazione.",
+    "searchLabel": "Cerca nelle domande",
+    "searchPlaceholder": "Digita per filtrare…",
+    "translations": "Traduzioni",
+    "loading": "Caricamento…",
+    "empty": "Nessuna domanda per ora.",
+    "noResults": "Nessuna domanda corrisponde alla ricerca.",
+    "error": "Impossibile caricare le FAQ. Riprova più tardi."
   }
 }

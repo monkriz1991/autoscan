@@ -53,7 +53,7 @@ function findPlanPrice(plans: Plan[], planName: string | null | undefined): stri
   return plan ? `${plan.price} ${plan.currency}` : "—";
 }
 
-export default function SuperadminDashboardPage() {
+export default function CabinetDashboardPage() {
   const t = useTranslations("dashboard");
   const locale = useLocale();
   const [billing, setBilling] = useState<BillingStatus | null>(null);

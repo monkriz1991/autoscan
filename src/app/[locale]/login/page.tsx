@@ -18,7 +18,7 @@ import {
 } from "@mantine/core";
 import { login, ApiError, isAuthenticated, getMe } from "@/lib/api";
 
-const DEFAULT_AFTER_AUTH = "/superadmin/dashboard";
+const DEFAULT_AFTER_AUTH = "/cabinet/dashboard";
 
 function LoginForm() {
   const t = useTranslations("auth");

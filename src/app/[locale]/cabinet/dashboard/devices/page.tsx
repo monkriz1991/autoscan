@@ -95,12 +95,7 @@ export default function DashboardDevicesPage() {
 
   return (
     <Stack>
-      <Group justify="space-between">
-        <Title order={4}>{t("title")}</Title>
-        <Button variant="subtle" size="xs" onClick={handleLogout}>
-          {t("logout")}
-        </Button>
-      </Group>
+      <Title order={4}>{t("title")}</Title>
 
       {error && (
         <Notification color="red" onClose={() => setError("")}>
@@ -142,7 +137,7 @@ export default function DashboardDevicesPage() {
                   <Table.Td>{d.device_name || "—"}</Table.Td>
                   <Table.Td>
                     <Text size="sm" ff="monospace" c="dimmed">
-                      {d.hardware_id}
+                      {d.hardware_id || "—"}
                     </Text>
                   </Table.Td>
                   <Table.Td>{formatDate(d.last_active, locale)}</Table.Td>
@@ -163,7 +158,7 @@ export default function DashboardDevicesPage() {
                       color="red"
                       aria-label={t("revoke")}
                       loading={revokingId === d.id}
-                      onClick={() => handleRevokeDevice(d.id)}
+                      onClick={() => void handleRevokeDevice(d.id)}
                     >
                       <IconTrash size={18} />
                     </ActionIcon>

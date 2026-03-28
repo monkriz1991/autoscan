@@ -201,7 +201,32 @@
     "createdAt": "Erstellt",
     "type": "Typ"
   },
+  "cookieConsent": {
+    "ariaLabel": "Cookie- und Datenschutzeinstellungen",
+    "title": "Wir verwenden Cookies und ähnliche Technologien",
+    "summary": "Notwendige Cookies sind für den Betrieb der Website erforderlich (z. B. Anmeldung und Sicherheit). Mit Ihrer Einwilligung können wir zusätzliche Cookies für Analyse und Marketing nutzen.",
+    "euNote": "Im EWR und im Vereinigten Königreich aktivieren wir nicht notwendige Cookies erst nach Ihrer Zustimmung. Sie können Ihre Wahl jederzeit ändern.",
+    "usNote": "In den USA, einschließlich Kalifornien, können Sie bestimmte Nutzungen personenbezogener Daten einschränken — siehe unsere Datenschutzerklärung und die Option unten zu Verkauf oder Weitergabe.",
+    "necessaryTitle": "Unbedingt erforderlich",
+    "necessaryDesc": "Erforderlich für Grundfunktionen, Authentifizierung und Sicherheit. Diese können nicht deaktiviert werden.",
+    "alwaysOn": "Immer aktiv",
+    "analyticsTitle": "Analyse",
+    "analyticsDesc": "Hilft uns zu verstehen, wie die Website genutzt wird (z. B. aggregierte Besuche).",
+    "marketingTitle": "Marketing",
+    "marketingDesc": "Kann zur Messung von Kampagnen oder für relevante Inhalte auf unseren oder Partnerseiten verwendet werden, soweit anwendbar.",
+    "saleOptOutTitle": "Verkauf/Weitergabe begrenzen (USA)",
+    "saleOptOutDesc": "Signalisiert den Widerruf des Verkaufs oder der Weitergabe personenbezogener Daten für verhaltensbezogene Werbung über Kontexte hinweg, soweit nach US-Staatsrecht (z. B. Kalifornien) anerkannt.",
+    "acceptAll": "Alle akzeptieren",
+    "rejectOptional": "Nicht notwendige ablehnen",
+    "customize": "Anpassen",
+    "hideCustomize": "Optionen ausblenden",
+    "save": "Einstellungen speichern",
+    "privacyLink": "Datenschutzerklärung"
+  },
   "footer": {
-    "copyright": "© {year} My App"
+    "copyright": "© {year} My App",
+    "terms": "Nutzungsbedingungen",
+    "privacy": "Datenschutzerklärung",
+    "contacts": "Kontakt"
   }
 }

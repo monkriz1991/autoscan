@@ -37,12 +37,45 @@ function AuthorizeForm() {
   const [devices, setDevices] = useState<UserDevice[]>([]);
 
   const clientId = searchParams.get("client_id") ?? "";
-  const redirectUri = searchParams.get("redirect_uri") ?? "";
+  const redirectUriFromQuery = searchParams.get("redirect_uri") ?? "";
+  const [redirectUri, setRedirectUri] = useState(redirectUriFromQuery);
   const responseType = searchParams.get("response_type") ?? "";
   const scope = searchParams.get("scope") ?? "";
   const state = searchParams.get("state") ?? "";
   const codeChallenge = searchParams.get("code_challenge") ?? "";
   const codeChallengeMethod = searchParams.get("code_challenge_method") ?? "";
+
+  // Локально: прод redirect_uri или коллбек на порт сканера (:3000) — нормализуем под autoscan (страница согласия).
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      setRedirectUri(redirectUriFromQuery);
+      return;
+    }
+    const isLocal =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1";
+    if (!isLocal || !redirectUriFromQuery) {
+      setRedirectUri(redirectUriFromQuery);
+      return;
+    }
+    const canonicalLocal = `${window.location.origin}/auth/callback`;
+    try {
+      const u = new URL(redirectUriFromQuery);
+      const rLocal = u.hostname === "localhost" || u.hostname === "127.0.0.1";
+      if (!rLocal) {
+        setRedirectUri(canonicalLocal);
+        return;
+      }
+      if (`${u.protocol}//${u.host}` !== window.location.origin) {
+        setRedirectUri(canonicalLocal);
+        return;
+      }
+    } catch {
+      setRedirectUri(redirectUriFromQuery);
+      return;
+    }
+    setRedirectUri(redirectUriFromQuery);
+  }, [redirectUriFromQuery]);
 
   useEffect(() => {
     if (!isAuthenticated()) {

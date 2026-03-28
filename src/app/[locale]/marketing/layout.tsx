@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "@/components/ui/Navbar";
+import MarketingFooter from "@/components/ui/MarketingFooter";
 
 export default function MarketingLayout({
   children,
@@ -14,19 +15,7 @@ export default function MarketingLayout({
         <div className="container">{children}</div>
       </main>
 
-      <footer className="footer">
-        <div className="container footer__inner">
-          <div className="footer__copy">
-            © {new Date().getFullYear()} Your Company
-          </div>
-
-          <div className="footer__links">
-            <a href="/marketing/privacy">Политика</a>
-            <a href="/marketing/terms">Условия</a>
-            <a href="/marketing/contacts">Контакты</a>
-          </div>
-        </div>
-      </footer>
+      <MarketingFooter />
     </div>
   );
 }

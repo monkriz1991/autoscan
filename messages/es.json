@@ -197,7 +197,32 @@
     "createdAt": "Creado",
     "type": "Tipo"
   },
+  "cookieConsent": {
+    "ariaLabel": "Opciones de cookies y privacidad",
+    "title": "Usamos cookies y tecnologías similares",
+    "summary": "Las cookies necesarias permiten el funcionamiento del sitio (inicio de sesión, seguridad). Con tu permiso podemos usar cookies adicionales para analítica y marketing.",
+    "euNote": "En el EEE y el Reino Unido, las cookies no esenciales solo se activan con tu consentimiento. Puedes cambiar tu elección en cualquier momento.",
+    "usNote": "En Estados Unidos, incluida California, puedes limitar ciertos usos de la información personal — consulta nuestro aviso de privacidad y la opción siguiente sobre venta o intercambio.",
+    "necessaryTitle": "Estrictamente necesarias",
+    "necessaryDesc": "Necesarias para el funcionamiento básico, la autenticación y la seguridad. No se pueden desactivar.",
+    "alwaysOn": "Siempre activas",
+    "analyticsTitle": "Analítica",
+    "analyticsDesc": "Nos ayuda a entender cómo se usa el sitio (por ejemplo, visitas agregadas).",
+    "marketingTitle": "Marketing",
+    "marketingDesc": "Puede usarse para medir campañas o mostrar contenido relevante en nuestras propiedades o las de socios, cuando corresponda.",
+    "saleOptOutTitle": "Limitar venta/intercambio (EE. UU.)",
+    "saleOptOutDesc": "Indica que rechazas la venta o el intercambio de información personal para publicidad conductual entre contextos cuando así lo reconozcan las leyes estatales de EE. UU. (por ejemplo, California).",
+    "acceptAll": "Aceptar todas",
+    "rejectOptional": "Rechazar no esenciales",
+    "customize": "Personalizar",
+    "hideCustomize": "Ocultar opciones",
+    "save": "Guardar preferencias",
+    "privacyLink": "Política de privacidad"
+  },
   "footer": {
-    "copyright": "© {year} My App"
+    "copyright": "© {year} My App",
+    "terms": "Términos de uso",
+    "privacy": "Política de privacidad",
+    "contacts": "Contacto"
   }
 }

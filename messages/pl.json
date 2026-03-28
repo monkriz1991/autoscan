@@ -200,7 +200,32 @@
     "createdAt": "Utworzono",
     "type": "Typ"
   },
+  "cookieConsent": {
+    "ariaLabel": "Ustawienia plików cookie i prywatności",
+    "title": "Używamy plików cookie i podobnych technologii",
+    "summary": "Niezbędne cookie są potrzebne do działania serwisu (logowanie, bezpieczeństwo). Za Twoją zgodą możemy włączyć dodatkowe cookie do analityki i marketingu.",
+    "euNote": "W EOG i Wielkiej Brytanii cookie inne niż niezbędne włączamy dopiero po wyrażeniu zgody. Wybór możesz zmienić w każdej chwili.",
+    "usNote": "W Stanach Zjednoczonych, w tym Kalifornii, przysługują prawa do ograniczenia wykorzystania danych osobowych — zobacz politykę prywatności i opcję poniżej dotyczącą sprzedaży/udostępniania.",
+    "necessaryTitle": "Ściśle niezbędne",
+    "necessaryDesc": "Wymagane do podstawowego działania serwisu, uwierzytelniania i bezpieczeństwa. Nie można ich wyłączyć.",
+    "alwaysOn": "Zawsze włączone",
+    "analyticsTitle": "Analityka",
+    "analyticsDesc": "Pomaga zrozumieć, jak korzystasz z serwisu (np. zagregowane wizyty).",
+    "marketingTitle": "Marketing",
+    "marketingDesc": "Może służyć do mierzenia kampanii lub wyświetlania treści na naszych lub partnerskich witrynach, w stosownych przypadkach.",
+    "saleOptOutTitle": "Ogranicz sprzedaż/udostępnianie (USA)",
+    "saleOptOutDesc": "Sygnalizuje rezygnację ze sprzedaży lub udostępniania danych osobowych w celach reklamy behawioralnej w wielu kontekstach, tam gdzie wybór jest uznawany na mocy prawa stanowego USA (np. Kalifornia).",
+    "acceptAll": "Akceptuję wszystkie",
+    "rejectOptional": "Odrzuć nieistotne",
+    "customize": "Dostosuj",
+    "hideCustomize": "Ukryj opcje",
+    "save": "Zapisz preferencje",
+    "privacyLink": "Polityka prywatności"
+  },
   "footer": {
-    "copyright": "© {year} My App"
+    "copyright": "© {year} My App",
+    "terms": "Warunki użytkowania",
+    "privacy": "Polityka prywatności",
+    "contacts": "Kontakt"
   }
 }

@@ -11,6 +11,10 @@ const backendBase = process.env.NEXT_PUBLIC_BACKEND_BASE ||
 const nextConfig = {
   output: "standalone",
   reactStrictMode: true,
+  // OAuth redirect_uri в БД без префикса локали — /auth/callback → страница под [locale]
+  async redirects() {
+    return [{ source: "/auth/callback", destination: "/en/auth/callback", permanent: false }];
+  },
   async rewrites() {
     return [
       { source: "/api-auth/:path*", destination: `${backendBase}/api-auth/:path*` },

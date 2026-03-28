@@ -200,7 +200,32 @@
     "createdAt": "Created",
     "type": "Type"
   },
+  "cookieConsent": {
+    "ariaLabel": "Cookie and privacy choices",
+    "title": "We use cookies and similar technologies",
+    "summary": "We use essential cookies to run the site (for example, login and security). With your permission we may use additional cookies for analytics and marketing.",
+    "euNote": "If you are in the European Economic Area or UK, we only enable non-essential cookies after you opt in. You can change your choice at any time.",
+    "usNote": "If you are in the United States, including California, you can limit certain uses of personal information as described in our privacy notice. See also the option below regarding sale or sharing.",
+    "necessaryTitle": "Strictly necessary",
+    "necessaryDesc": "Required for basic site operation, authentication and security. These cannot be turned off.",
+    "alwaysOn": "Always on",
+    "analyticsTitle": "Analytics",
+    "analyticsDesc": "Helps us understand how the site is used (for example, aggregated visits).",
+    "marketingTitle": "Marketing",
+    "marketingDesc": "May be used to measure campaigns or show relevant content on our or partners’ properties, where applicable.",
+    "saleOptOutTitle": "Limit sale or sharing (US)",
+    "saleOptOutDesc": "Signals that you opt out of the sale or sharing of personal information for cross-context behavioral advertising where this choice is recognized under US state laws (for example, California).",
+    "acceptAll": "Accept all",
+    "rejectOptional": "Reject non-essential",
+    "customize": "Customize",
+    "hideCustomize": "Hide options",
+    "save": "Save preferences",
+    "privacyLink": "Privacy policy"
+  },
   "footer": {
-    "copyright": "© {year} My App"
+    "copyright": "© {year} My App",
+    "terms": "Terms of Use",
+    "privacy": "Privacy Policy",
+    "contacts": "Contact"
   }
 }

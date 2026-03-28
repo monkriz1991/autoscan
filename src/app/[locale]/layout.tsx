@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { MantineProvider, createTheme } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import RootLayoutContent from "@/components/ui/RootLayoutContent";
+import CookieConsentBanner from "@/components/ui/CookieConsentBanner";
 import LocaleHtmlLang from "@/components/ui/LocaleHtmlLang";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
@@ -54,6 +55,7 @@ export default async function LocaleLayout({
       >
         <Notifications position="top-right" />
         <RootLayoutContent>{children}</RootLayoutContent>
+        <CookieConsentBanner />
       </MantineProvider>
     </NextIntlClientProvider>
   );

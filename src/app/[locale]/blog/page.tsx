@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { buildLocalePageMetadata } from "@/lib/seo-metadata";
-import FaqPageContent from "./FaqPageContent";
+import BlogPageContent from "./BlogPageContent";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -13,15 +13,15 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  return buildLocalePageMetadata(locale, "/faq", "faqTitle", "faqDescription");
+  return buildLocalePageMetadata(locale, "/blog", "blogTitle", "blogDescription");
 }
 
-export default async function FaqPage({ params }: Props) {
+export default async function BlogPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   return (
     <Suspense fallback={null}>
-      <FaqPageContent />
+      <BlogPageContent />
     </Suspense>
   );
 }

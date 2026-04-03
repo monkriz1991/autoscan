@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import React from "react";
 import Navbar from "@/components/ui/Navbar";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    robots: { index: false, follow: false, googleBot: { index: false, follow: false } },
+  };
+}
 
 export default function AdminLayout({
   children,

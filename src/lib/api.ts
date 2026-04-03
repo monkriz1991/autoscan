@@ -405,6 +405,15 @@ export type Plan = {
   sort_order: number;
 };
 
+/** Идентификатор способа оплаты на checkout (расширяется при добавлении шлюзов). */
+export type PaymentMethodId = "crypto_trc20";
+
+/** Описание способа оплаты для UI (список методов на странице оформления). */
+export type PaymentMethod = {
+  id: PaymentMethodId;
+  available: boolean;
+};
+
 /** Публичный FAQ (локаль из Accept-Language / X-Locale). */
 export type FaqPublicItem = {
   slug: string;
@@ -453,6 +462,116 @@ export async function getPublicFaq(options?: {
   }));
 }
 
+export type BlogPostItem = {
+  slug: string;
+  title: string;
+  excerpt: string;
+  published_at: string;
+  available_locales: string[];
+  cover_image_url: string | null;
+};
+
+export type BlogPostDetail = BlogPostItem & {
+  body_html: string;
+};
+
+export async function getBlogPosts(): Promise<BlogPostItem[]> {
+  const base = BASE_URL.replace(/\/$/, "");
+  const url = `${base}/blog/`;
+  const res = await fetch(url, {
+    credentials: "omit",
+    headers: getLocaleHeaders(),
+  });
+  if (!res.ok) {
+    throw new ApiError(res.status, await res.json().catch(() => ({})));
+  }
+  const data = await res.json();
+  if (!Array.isArray(data)) return [];
+  return data.map((row: Record<string, unknown>) => ({
+    slug: String(row.slug ?? ""),
+    title: String(row.title ?? ""),
+    excerpt: String(row.excerpt ?? ""),
+    published_at: String(row.published_at ?? ""),
+    available_locales: Array.isArray(row.available_locales)
+      ? (row.available_locales as string[]).filter((x) => typeof x === "string")
+      : [],
+    cover_image_url:
+      row.cover_image_url === null ||
+      row.cover_image_url === undefined ||
+      row.cover_image_url === ""
+        ? null
+        : String(row.cover_image_url),
+  }));
+}
+
+export async function getBlogPost(slug: string): Promise<BlogPostDetail> {
+  const base = BASE_URL.replace(/\/$/, "");
+  const url = `${base}/blog/${encodeURIComponent(slug)}/`;
+  const res = await fetch(url, {
+    credentials: "omit",
+    headers: getLocaleHeaders(),
+  });
+  if (!res.ok) {
+    throw new ApiError(res.status, await res.json().catch(() => ({})));
+  }
+  const data = await res.json();
+  return {
+    slug: String(data.slug ?? ""),
+    title: String(data.title ?? ""),
+    excerpt: String(data.excerpt ?? ""),
+    published_at: String(data.published_at ?? ""),
+    body_html: String(data.body_html ?? ""),
+    available_locales: Array.isArray(data.available_locales)
+      ? (data.available_locales as string[]).filter((x) => typeof x === "string")
+      : [],
+    cover_image_url:
+      data.cover_image_url === null ||
+      data.cover_image_url === undefined ||
+      data.cover_image_url === ""
+        ? null
+        : String(data.cover_image_url),
+  };
+}
+
+/** SSR/метаданные: пост с заголовками локали (getBlogPost на сервере всегда брал бы en). */
+export async function getBlogPostForLocale(
+  slug: string,
+  locale: string,
+): Promise<BlogPostDetail | null> {
+  const base = (
+    typeof window !== "undefined"
+      ? (process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8001/api/v1")
+      : process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8001/api/v1"
+  ).replace(/\/$/, "");
+  const url = `${base}/blog/${encodeURIComponent(slug)}/`;
+  const res = await fetch(url, {
+    credentials: "omit",
+    headers: {
+      "Accept-Language": locale,
+      "X-Locale": locale,
+    },
+    next: { revalidate: 120 },
+  });
+  if (!res.ok) return null;
+  const data = await res.json();
+  return {
+    slug: String(data.slug ?? ""),
+    title: String(data.title ?? ""),
+    excerpt: String(data.excerpt ?? ""),
+    published_at: String(data.published_at ?? ""),
+    body_html: String(data.body_html ?? ""),
+    available_locales: Array.isArray(data.available_locales)
+      ? (data.available_locales as string[]).filter((x) => typeof x === "string")
+      : [],
+    cover_image_url:
+      data.cover_image_url === null ||
+      data.cover_image_url === undefined ||
+      data.cover_image_url === ""
+        ? null
+        : String(data.cover_image_url),
+  };
+}
+
 export async function getPlans(): Promise<Plan[]> {
   const base = BASE_URL.replace(/\/$/, "");
   const res = await fetch(`${base}/billing/plans/`, {
@@ -463,6 +582,12 @@ export async function getPlans(): Promise<Plan[]> {
   const data = await res.json();
   const list = Array.isArray(data) ? data : (data as { results?: Plan[] }).results ?? [];
   return [...list].sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+}
+
+/** План по id из публичного списка тарифов (отдельного эндпоинта нет). */
+export async function getPlanById(planId: number): Promise<Plan | null> {
+  const plans = await getPlans();
+  return plans.find((p) => p.id === planId) ?? null;
 }
 
 export type BillingStatus = {
@@ -478,6 +603,31 @@ export type BillingStatus = {
 
 export async function getBillingStatus(): Promise<BillingStatus> {
   return request<BillingStatus>("billing/status/");
+}
+
+export type CryptoPaymentOrder = {
+  id: string;
+  status: "pending" | "confirmed" | "expired" | "failed";
+  network: string;
+  pay_address: string;
+  amount_usdt: string;
+  txid: string | null;
+  created_at: string;
+  expires_at: string;
+  confirmed_at: string | null;
+};
+
+/** POST /billing/crypto/create-order/ — ордер USDT TRC-20 (требуется JWT). */
+export async function createCryptoOrder(planId: number): Promise<CryptoPaymentOrder> {
+  return request<CryptoPaymentOrder>("billing/crypto/create-order/", {
+    method: "POST",
+    body: JSON.stringify({ plan_id: planId, network: "trc20" }),
+  });
+}
+
+/** GET /billing/crypto/order/:id/ — статус ордера. */
+export async function getCryptoOrderStatus(orderId: string): Promise<CryptoPaymentOrder> {
+  return request<CryptoPaymentOrder>(`billing/crypto/order/${orderId}/`);
 }
 
 /* ========== Usage ========== */

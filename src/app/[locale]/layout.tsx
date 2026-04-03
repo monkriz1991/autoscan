@@ -1,11 +1,14 @@
+import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages, setRequestLocale } from "next-intl/server";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
+import { getMetadataBase, localeToOpenGraphLocale } from "@/lib/site-url";
 import { MantineProvider, createTheme } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import RootLayoutContent from "@/components/ui/RootLayoutContent";
 import CookieConsentBanner from "@/components/ui/CookieConsentBanner";
+import GoogleAnalytics from "@/components/ui/GoogleAnalytics";
 import LocaleHtmlLang from "@/components/ui/LocaleHtmlLang";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
@@ -13,6 +16,35 @@ import "@/styles/global.scss";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "seo" });
+  const alternateLocales = routing.locales
+    .filter((l) => l !== locale)
+    .map((l) => localeToOpenGraphLocale(l));
+  return {
+    metadataBase: getMetadataBase(),
+    title: {
+      default: t("siteTitle"),
+      template: `%s | ${t("siteName")}`,
+    },
+    description: t("defaultDescription"),
+    openGraph: {
+      type: "website",
+      siteName: t("siteName"),
+      locale: localeToOpenGraphLocale(locale),
+      alternateLocale: alternateLocales,
+    },
+    twitter: {
+      card: "summary_large_image",
+    },
+  };
 }
 
 export default async function LocaleLayout({
@@ -55,6 +87,7 @@ export default async function LocaleLayout({
       >
         <Notifications position="top-right" />
         <RootLayoutContent>{children}</RootLayoutContent>
+        <GoogleAnalytics />
         <CookieConsentBanner />
       </MantineProvider>
     </NextIntlClientProvider>

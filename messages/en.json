@@ -17,7 +17,8 @@
     "brand": "Autoscan",
     "aiHistory": "AI diagnostics history",
     "requestHistory": "Request history",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "download": "Download"
   },
   "seo": {
     "siteName": "AutoScan",
@@ -41,9 +42,43 @@
     "privacyDescription": "How AutoScan collects, uses, and protects your personal data.",
     "contactsTitle": "Contacts",
     "contactsDescription": "Contact AutoScan for support and business inquiries.",
+    "disclaimerTitle": "Disclaimer",
+    "disclaimerDescription": "AutoScan limitation of liability for use of the service and site content.",
     "checkoutTitle": "Checkout",
     "checkoutDescription": "Complete your AutoScan plan purchase.",
+    "downloadTitle": "Download app",
+    "downloadDescription": "Download the AutoScan desktop app for Windows, macOS, and Linux.",
     "blogPostNotFoundTitle": "Article not found"
+  },
+  "downloadPage": {
+    "title": "Download",
+    "subtitle": "Get the desktop app for your platform.",
+    "loadError": "Could not load downloads. Please try again later.",
+    "heroRecommendedWindows": "Recommended for your system — Windows",
+    "heroRecommendedMac": "Recommended for your system — macOS",
+    "heroRecommendedLinux": "Recommended for your system — Linux",
+    "heroRecommendedDefault": "Latest release",
+    "installer": "Installer",
+    "version": "Version",
+    "ctaDownload": "Download",
+    "ctaLogin": "Log in",
+    "ctaUpgrade": "View plans",
+    "noChecksum": "SHA-256 will appear here when published by the team.",
+    "downloadError": "Download failed. Try again or sign in.",
+    "heroEmptyTitle": "No builds yet",
+    "heroEmptyBody": "Check back soon — installers will appear here when a release is published.",
+    "otherDownloadsTitle": "Other installers (same version)",
+    "ctaLoginRequired": "Login required",
+    "ctaPaidRequired": "Paid plan",
+    "whatsNewTitle": "What’s new",
+    "hideFullNotes": "Hide full release notes",
+    "showFullNotes": "Show full release notes",
+    "archiveTitle": "Previous versions",
+    "archiveEmpty": "No older versions are listed.",
+    "colVersion": "Version",
+    "colPublished": "Published",
+    "colNotes": "Notes",
+    "colFiles": "Downloads"
   },
   "home": {
     "brand": "AutoScan",
@@ -333,10 +368,15 @@
     "chatError": "Chat error"
   },
   "footer": {
-    "copyright": "© {year} My App",
+    "copyright": "© {year} {siteName}",
     "terms": "Terms of Use",
     "privacy": "Privacy Policy",
+    "disclaimer": "Disclaimer",
     "contacts": "Contact"
+  },
+  "disclaimerPage": {
+    "title": "Disclaimer",
+    "lead": "Information on this site and diagnostic results are for reference only and do not replace professional inspection. See the documents linked in the footer; legal will expand this section."
   },
   "faqPage": {
     "title": "Frequently asked questions",

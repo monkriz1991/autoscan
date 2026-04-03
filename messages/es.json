@@ -17,7 +17,8 @@
     "brand": "Autoscan",
     "aiHistory": "Historial de diagnóstico IA",
     "requestHistory": "Historial de solicitudes",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "download": "Descargar"
   },
   "seo": {
     "siteName": "AutoScan",
@@ -41,9 +42,43 @@
     "privacyDescription": "Cómo AutoScan trata y protege tus datos personales.",
     "contactsTitle": "Contacto",
     "contactsDescription": "Contactar con AutoScan: soporte y consultas comerciales.",
+    "disclaimerTitle": "Descargo de responsabilidad",
+    "disclaimerDescription": "Limitación de responsabilidad de AutoScan por el uso del servicio y el contenido del sitio.",
     "checkoutTitle": "Pago",
     "checkoutDescription": "Completar la compra del plan AutoScan.",
+    "downloadTitle": "Descargar aplicación",
+    "downloadDescription": "Aplicación de escritorio AutoScan para Windows, macOS y Linux.",
     "blogPostNotFoundTitle": "Artículo no encontrado"
+  },
+  "downloadPage": {
+    "title": "Descargar",
+    "subtitle": "Aplicación de escritorio para tu plataforma.",
+    "loadError": "No se pudieron cargar las descargas.",
+    "heroRecommendedWindows": "Recomendado para tu sistema — Windows",
+    "heroRecommendedMac": "Recomendado para tu sistema — macOS",
+    "heroRecommendedLinux": "Recomendado para tu sistema — Linux",
+    "heroRecommendedDefault": "Última versión",
+    "installer": "Instalador",
+    "version": "Versión",
+    "ctaDownload": "Descargar",
+    "ctaLogin": "Iniciar sesión",
+    "ctaUpgrade": "Planes",
+    "noChecksum": "SHA-256 lo publicará el equipo.",
+    "downloadError": "Error al descargar.",
+    "heroEmptyTitle": "Aún no hay builds",
+    "heroEmptyBody": "Los instaladores aparecerán al publicar un release.",
+    "otherDownloadsTitle": "Otros instaladores (misma versión)",
+    "ctaLoginRequired": "Requiere iniciar sesión",
+    "ctaPaidRequired": "Plan de pago",
+    "whatsNewTitle": "Novedades",
+    "hideFullNotes": "Ocultar notas completas",
+    "showFullNotes": "Mostrar notas completas",
+    "archiveTitle": "Versiones anteriores",
+    "archiveEmpty": "No hay versiones anteriores.",
+    "colVersion": "Versión",
+    "colPublished": "Fecha",
+    "colNotes": "Notas",
+    "colFiles": "Descargas"
   },
   "home": {
     "brand": "AutoScan",
@@ -333,10 +368,15 @@
     "chatError": "Error de chat"
   },
   "footer": {
-    "copyright": "© {year} My App",
+    "copyright": "© {year} {siteName}",
     "terms": "Términos de uso",
     "privacy": "Política de privacidad",
+    "disclaimer": "Descargo de responsabilidad",
     "contacts": "Contacto"
+  },
+  "disclaimerPage": {
+    "title": "Descargo de responsabilidad",
+    "lead": "La información del sitio y los resultados del diagnóstico son orientativos y no sustituyen una revisión profesional. Consulte los documentos enlazados; el texto legal completo lo ampliará el departamento jurídico."
   },
   "faqPage": {
     "title": "Preguntas frecuentes",

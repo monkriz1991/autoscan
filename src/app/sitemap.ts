@@ -6,10 +6,12 @@ const STATIC_PATHS = [
   "",
   "/marketing/pricing",
   "/faq",
+  "/download",
   "/blog",
   "/marketing/terms",
   "/marketing/privacy",
   "/marketing/contacts",
+  "/marketing/disclaimer",
   "/login",
   "/register",
 ];

@@ -17,7 +17,8 @@
     "brand": "Autoscan",
     "aiHistory": "Cronologia diagnostica AI",
     "requestHistory": "Cronologia richieste",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "download": "Scarica"
   },
   "seo": {
     "siteName": "AutoScan",
@@ -41,9 +42,43 @@
     "privacyDescription": "Come AutoScan tratta e protegge i dati personali.",
     "contactsTitle": "Contatti",
     "contactsDescription": "Contatta AutoScan: supporto e richieste commerciali.",
+    "disclaimerTitle": "Limitazione di responsabilità",
+    "disclaimerDescription": "Limitazione di responsabilità di AutoScan per l’uso del servizio e i contenuti del sito.",
     "checkoutTitle": "Checkout",
     "checkoutDescription": "Acquisto del piano AutoScan.",
+    "downloadTitle": "Scarica l’app",
+    "downloadDescription": "App desktop AutoScan per Windows, macOS e Linux.",
     "blogPostNotFoundTitle": "Articolo non trovato"
+  },
+  "downloadPage": {
+    "title": "Scarica",
+    "subtitle": "App desktop per la tua piattaforma.",
+    "loadError": "Impossibile caricare i download.",
+    "heroRecommendedWindows": "Consigliato per il tuo sistema — Windows",
+    "heroRecommendedMac": "Consigliato per il tuo sistema — macOS",
+    "heroRecommendedLinux": "Consigliato per il tuo sistema — Linux",
+    "heroRecommendedDefault": "Ultima versione",
+    "installer": "Installer",
+    "version": "Versione",
+    "ctaDownload": "Scarica",
+    "ctaLogin": "Accedi",
+    "ctaUpgrade": "Piani",
+    "noChecksum": "SHA-256 sarà pubblicato dal team.",
+    "downloadError": "Download non riuscito.",
+    "heroEmptyTitle": "Nessuna build",
+    "heroEmptyBody": "Gli installer compariranno dopo la pubblicazione.",
+    "otherDownloadsTitle": "Altri installer (stessa versione)",
+    "ctaLoginRequired": "Accesso richiesto",
+    "ctaPaidRequired": "Piano a pagamento",
+    "whatsNewTitle": "Novità",
+    "hideFullNotes": "Nascondi note complete",
+    "showFullNotes": "Mostra note complete",
+    "archiveTitle": "Versioni precedenti",
+    "archiveEmpty": "Nessuna versione precedente.",
+    "colVersion": "Versione",
+    "colPublished": "Data",
+    "colNotes": "Note",
+    "colFiles": "Download"
   },
   "home": {
     "brand": "AutoScan",
@@ -333,10 +368,15 @@
     "chatError": "Errore chat"
   },
   "footer": {
-    "copyright": "© {year} My App",
+    "copyright": "© {year} {siteName}",
     "terms": "Termini di utilizzo",
     "privacy": "Informativa sulla privacy",
+    "disclaimer": "Limitazione di responsabilità",
     "contacts": "Contatti"
+  },
+  "disclaimerPage": {
+    "title": "Limitazione di responsabilità",
+    "lead": "Le informazioni sul sito e i risultati diagnostici sono solo indicative e non sostituiscono un controllo professionale. Per i dettagli vedi i documenti nel piè di pagina; il testo completo sarà integrato dall’ufficio legale."
   },
   "faqPage": {
     "title": "Domande frequenti",

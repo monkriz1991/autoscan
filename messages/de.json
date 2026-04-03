@@ -17,7 +17,8 @@
     "brand": "Autoscan",
     "aiHistory": "KI-Diagnoseverlauf",
     "requestHistory": "Anfrageverlauf",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "download": "Download"
   },
   "seo": {
     "siteName": "AutoScan",
@@ -41,9 +42,43 @@
     "privacyDescription": "Wie AutoScan personenbezogene Daten verarbeitet und schützt.",
     "contactsTitle": "Kontakt",
     "contactsDescription": "AutoScan kontaktieren: Support und Geschäftsanfragen.",
+    "disclaimerTitle": "Haftungsausschluss",
+    "disclaimerDescription": "Haftungsbeschränkung von AutoScan bei Nutzung des Dienstes und der Websiteinhalte.",
     "checkoutTitle": "Kasse",
     "checkoutDescription": "AutoScan-Tarif kaufen.",
+    "downloadTitle": "App herunterladen",
+    "downloadDescription": "AutoScan Desktop-App für Windows, macOS und Linux.",
     "blogPostNotFoundTitle": "Artikel nicht gefunden"
+  },
+  "downloadPage": {
+    "title": "Download",
+    "subtitle": "Desktop-App für Ihre Plattform.",
+    "loadError": "Downloads konnten nicht geladen werden.",
+    "heroRecommendedWindows": "Empfohlen für Ihr System — Windows",
+    "heroRecommendedMac": "Empfohlen für Ihr System — macOS",
+    "heroRecommendedLinux": "Empfohlen für Ihr System — Linux",
+    "heroRecommendedDefault": "Aktuelle Version",
+    "installer": "Installer",
+    "version": "Version",
+    "ctaDownload": "Herunterladen",
+    "ctaLogin": "Anmelden",
+    "ctaUpgrade": "Tarife",
+    "noChecksum": "SHA-256 wird vom Team veröffentlicht.",
+    "downloadError": "Download fehlgeschlagen.",
+    "heroEmptyTitle": "Noch keine Builds",
+    "heroEmptyBody": "Installers erscheinen nach Veröffentlichung.",
+    "otherDownloadsTitle": "Weitere Installer (gleiche Version)",
+    "ctaLoginRequired": "Login nötig",
+    "ctaPaidRequired": "Bezahlter Plan",
+    "whatsNewTitle": "Neuigkeiten",
+    "hideFullNotes": "Release Notes ausblenden",
+    "showFullNotes": "Release Notes anzeigen",
+    "archiveTitle": "Frühere Versionen",
+    "archiveEmpty": "Keine älteren Versionen.",
+    "colVersion": "Version",
+    "colPublished": "Datum",
+    "colNotes": "Notizen",
+    "colFiles": "Downloads"
   },
   "home": {
     "brand": "AutoScan",
@@ -333,10 +368,15 @@
     "privacyLink": "Datenschutzerklärung"
   },
   "footer": {
-    "copyright": "© {year} My App",
+    "copyright": "© {year} {siteName}",
     "terms": "Nutzungsbedingungen",
     "privacy": "Datenschutzerklärung",
+    "disclaimer": "Haftungsausschluss",
     "contacts": "Kontakt"
+  },
+  "disclaimerPage": {
+    "title": "Haftungsausschluss",
+    "lead": "Die Informationen auf dieser Website und Diagnoseergebnisse dienen nur der Orientierung und ersetzen keine fachkundige Prüfung. Details in den verlinkten Dokumenten; der vollständige Text wird von der Rechtsabteilung ergänzt."
   },
   "faqPage": {
     "title": "Häufig gestellte Fragen",

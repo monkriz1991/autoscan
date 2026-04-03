@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "@/components/ui/Navbar";
-import MarketingFooter from "@/components/ui/MarketingFooter";
+import Footer from "@/components/ui/Footer";
 
 export default function MarketingLayout({
   children,
@@ -15,7 +15,7 @@ export default function MarketingLayout({
         <div className="container">{children}</div>
       </main>
 
-      <MarketingFooter />
+      <Footer />
     </div>
   );
 }

@@ -481,6 +481,158 @@ export async function getPublicFaq(options?: {
   }));
 }
 
+/** Состояние доступа к файлу установщика (как в API downloads). */
+export type DownloadAssetAccess = "download" | "login_required" | "paid_required";
+
+export type DownloadsAssetDto = {
+  id: number;
+  os_type: string;
+  os_label: string;
+  architecture: string;
+  installer_type: string;
+  installer_label: string;
+  file_size: number;
+  checksum_sha256: string;
+  download_label: string;
+  access: DownloadAssetAccess;
+  download_url: string | null;
+  download_api_url: string | null;
+};
+
+export type DownloadsReleaseDto = {
+  id: number;
+  version: string;
+  version_code: number;
+  title: string;
+  release_notes_short: string;
+  release_notes_full: string;
+  is_prerelease: boolean;
+  published_at: string | null;
+};
+
+export type DownloadsArchiveRow = {
+  release: DownloadsReleaseDto;
+  assets: DownloadsAssetDto[];
+};
+
+export type DownloadsPageDto = {
+  client_os: string;
+  latest: DownloadsReleaseDto | null;
+  primary_asset: DownloadsAssetDto | null;
+  secondary_assets: DownloadsAssetDto[];
+  archive: DownloadsArchiveRow[];
+};
+
+function parseDownloadsAsset(row: Record<string, unknown>): DownloadsAssetDto {
+  return {
+    id: Number(row.id ?? 0),
+    os_type: String(row.os_type ?? ""),
+    os_label: String(row.os_label ?? ""),
+    architecture: String(row.architecture ?? ""),
+    installer_type: String(row.installer_type ?? ""),
+    installer_label: String(row.installer_label ?? ""),
+    file_size: Number(row.file_size ?? 0),
+    checksum_sha256: String(row.checksum_sha256 ?? ""),
+    download_label: String(row.download_label ?? ""),
+    access: (row.access === "login_required" || row.access === "paid_required"
+      ? row.access
+      : "download") as DownloadAssetAccess,
+    download_url: row.download_url ? String(row.download_url) : null,
+    download_api_url: row.download_api_url ? String(row.download_api_url) : null,
+  };
+}
+
+function parseDownloadsRelease(row: Record<string, unknown> | null): DownloadsReleaseDto | null {
+  if (!row || typeof row !== "object") return null;
+  return {
+    id: Number(row.id ?? 0),
+    version: String(row.version ?? ""),
+    version_code: Number(row.version_code ?? 0),
+    title: String(row.title ?? ""),
+    release_notes_short: String(row.release_notes_short ?? ""),
+    release_notes_full: String(row.release_notes_full ?? ""),
+    is_prerelease: Boolean(row.is_prerelease),
+    published_at: row.published_at ? String(row.published_at) : null,
+  };
+}
+
+/** GET /downloads/page/ — данные для страницы «Скачать» (JWT опционален). */
+export async function getDownloadsPage(clientOs: string): Promise<DownloadsPageDto> {
+  const params = new URLSearchParams();
+  const co = (clientOs || "unknown").trim().toLowerCase();
+  if (co) params.set("client_os", co.slice(0, 32));
+  const qs = params.toString();
+  const path = qs ? `downloads/page/?${qs}` : "downloads/page/";
+  const raw = await request<Record<string, unknown>>(path);
+  const archiveRaw = Array.isArray(raw.archive) ? raw.archive : [];
+  return {
+    client_os: String(raw.client_os ?? "unknown"),
+    latest: parseDownloadsRelease((raw.latest as Record<string, unknown>) ?? null),
+    primary_asset: raw.primary_asset
+      ? parseDownloadsAsset(raw.primary_asset as Record<string, unknown>)
+      : null,
+    secondary_assets: Array.isArray(raw.secondary_assets)
+      ? (raw.secondary_assets as Record<string, unknown>[]).map(parseDownloadsAsset)
+      : [],
+    archive: archiveRaw
+      .map((row) => {
+        const r = row as Record<string, unknown>;
+        const rel = parseDownloadsRelease((r.release as Record<string, unknown>) ?? null);
+        if (!rel) return null;
+        return {
+          release: rel,
+          assets: Array.isArray(r.assets)
+            ? (r.assets as Record<string, unknown>[]).map(parseDownloadsAsset)
+            : [],
+        };
+      })
+      .filter((x): x is DownloadsArchiveRow => x !== null),
+  };
+}
+
+/**
+ * Скачивание через защищённый URL (Bearer из cookie). Прямой media-URL открывается без этого.
+ */
+export async function downloadProtectedAsset(
+  absoluteApiFileUrl: string,
+  filenameFallback: string,
+): Promise<void> {
+  if (typeof window === "undefined") return;
+  const token = getToken();
+  const headers: Record<string, string> = {};
+  if (token) headers.Authorization = `Bearer ${token}`;
+  const res = await fetch(absoluteApiFileUrl, { headers });
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new ApiError(res.status, data);
+  }
+  const blob = await res.blob();
+  const cd = res.headers.get("Content-Disposition");
+  let name = filenameFallback;
+  if (cd) {
+    const mStar = /filename\*=UTF-8''([^;]+)/i.exec(cd);
+    const mQ = /filename="([^"]+)"/i.exec(cd);
+    const mPlain = /filename=([^;\s]+)/i.exec(cd);
+    const rawName = mStar?.[1] || mQ?.[1] || mPlain?.[1];
+    if (rawName) {
+      try {
+        name = decodeURIComponent(rawName.replace(/"/g, ""));
+      } catch {
+        name = rawName.replace(/"/g, "");
+      }
+    }
+  }
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = name || filenameFallback;
+  a.rel = "noopener";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
 export type BlogPostItem = {
   slug: string;
   title: string;

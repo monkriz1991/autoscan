@@ -1,0 +1,89 @@
+"use client";
+
+import { useCallback, useState } from "react";
+import { useTranslations } from "next-intl";
+import { Button, Card, Group, SimpleGrid, Stack, Text } from "@mantine/core";
+import { IconDownload } from "@tabler/icons-react";
+import { Link, usePathname } from "@/i18n/navigation";
+import { downloadProtectedAsset, type DownloadsAssetDto } from "@/lib/api";
+import { formatFileSize } from "./formatFileSize";
+
+type Props = {
+  assets: DownloadsAssetDto[];
+};
+
+export default function DownloadOptionsGrid({ assets }: Props) {
+  const t = useTranslations("downloadPage");
+  const pathname = usePathname();
+  const loginHref = `/login?next=${encodeURIComponent(pathname || "/download")}`;
+
+  const [busyId, setBusyId] = useState<number | null>(null);
+
+  const downloadOne = useCallback(
+    async (asset: DownloadsAssetDto) => {
+      const name =
+        asset.download_label?.trim() ||
+        `setup-${asset.os_type}-${asset.installer_type}`.replace(/[^a-z0-9._-]+/gi, "_");
+      if (asset.download_url) {
+        window.location.href = asset.download_url;
+        return;
+      }
+      if (asset.download_api_url) {
+        setBusyId(asset.id);
+        try {
+          await downloadProtectedAsset(asset.download_api_url, name);
+        } finally {
+          setBusyId(null);
+        }
+      }
+    },
+    [],
+  );
+
+  if (!assets.length) return null;
+
+  return (
+    <Stack gap="sm" mt="xl">
+      <Text fw={600} size="lg">
+        {t("otherDownloadsTitle")}
+      </Text>
+      <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="md">
+        {assets.map((asset) => (
+          <Card key={asset.id} withBorder shadow="xs" padding="md" radius="md" className="download-option-card">
+            <Stack gap="xs">
+              <Text fw={600} size="sm">
+                {asset.os_label}
+              </Text>
+              <Text size="xs" c="dimmed">
+                {asset.installer_label} · {formatFileSize(asset.file_size)}
+              </Text>
+              <Group gap="xs" mt="auto">
+                {asset.access === "download" && (
+                  <Button
+                    size="xs"
+                    variant="light"
+                    leftSection={<IconDownload size={14} />}
+                    loading={busyId === asset.id}
+                    onClick={() => void downloadOne(asset)}
+                  >
+                    {t("ctaDownload")}
+                  </Button>
+                )}
+                {asset.access === "login_required" && (
+                  <Button size="xs" component={Link} href={loginHref} variant="light">
+                    {t("ctaLoginRequired")}
+                  </Button>
+                )}
+                {asset.access === "paid_required" && (
+                  <Button size="xs" component={Link} href="/marketing/pricing" variant="light">
+                    {t("ctaPaidRequired")}
+                  </Button>
+                )}
+              </Group>
+            </Stack>
+          </Card>
+        ))}
+      </SimpleGrid>
+    </Stack>
+  );
+}

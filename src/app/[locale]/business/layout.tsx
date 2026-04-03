@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import React from "react";
 import Navbar from "@/components/ui/Navbar";
+import Footer from "@/components/ui/Footer";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -19,11 +20,7 @@ export default function AdminLayout({
       <main className="layout__main">
         <div className="container">{children}</div>
       </main>
-      <footer className="footer">
-        <div className="container footer__inner">
-          <div className="footer__copy">© {new Date().getFullYear()} Business Panel</div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

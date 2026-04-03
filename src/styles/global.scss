@@ -361,9 +361,20 @@ body {
 
 /* Footer */
 .footer {
+  flex-shrink: 0;
+  width: 100%;
   background: #ffffff;
   border-top: 1px solid #e9ecef;
   padding: 32px 0 24px;
+}
+
+/* Кабинет: блок футера по левому краю области main (как контент), а не по центру всего viewport */
+@media (min-width: 768px) {
+  .layout--cabinet .footer .container.footer__inner {
+    max-width: 1200px;
+    margin-left: calc(240px + 24px);
+    margin-right: auto;
+  }
 }
 
 .faq-page {
@@ -595,4 +606,13 @@ body {
   .navbar__nav {
     gap: 8px;
   }
+}
+
+/* Страница «Скачать» */
+.download-hero--primary {
+  border-color: rgba(100, 116, 139, 0.35);
+}
+
+.download-option-card {
+  background: rgba(248, 250, 252, 0.6);
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import { usePathname } from "@/i18n/navigation";
-import { Container } from "@mantine/core";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
@@ -27,7 +26,7 @@ export default function RootLayoutContent({
     <div className="layout">
       <Navbar />
       <main className="layout__main">
-        <Container size="lg">{children}</Container>
+        <div className="container">{children}</div>
       </main>
       <Footer />
     </div>

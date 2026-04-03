@@ -68,6 +68,7 @@ export default function Navbar() {
           {navLink("/", t("home"))}
           {navLink("/marketing/pricing", t("pricing"))}
           {navLink("/faq", t("faq"))}
+          {navLink("/download", t("download"))}
           {navLink("/blog", t("blog", { fallback: "Blog" }))}
           {!authenticated && navLink("/register", t("register"))}
           {!authenticated && navLink("/login", t("login"))}

@@ -19,7 +19,9 @@ export async function buildLocalePageMetadata(
     | "termsTitle"
     | "privacyTitle"
     | "contactsTitle"
-    | "checkoutTitle",
+    | "disclaimerTitle"
+    | "checkoutTitle"
+    | "downloadTitle",
   descriptionKey:
     | "homeDescription"
     | "pricingDescription"
@@ -30,7 +32,9 @@ export async function buildLocalePageMetadata(
     | "termsDescription"
     | "privacyDescription"
     | "contactsDescription"
-    | "checkoutDescription",
+    | "disclaimerDescription"
+    | "checkoutDescription"
+    | "downloadDescription",
   options?: { noindex?: boolean },
 ): Promise<Metadata> {
   const t = await getTranslations({ locale, namespace: "seo" });

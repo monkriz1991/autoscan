@@ -17,7 +17,8 @@
     "brand": "Autoscan",
     "aiHistory": "История ИИ-диагностики",
     "requestHistory": "История запросов",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "download": "Скачать"
   },
   "seo": {
     "siteName": "AutoScan",
@@ -41,9 +42,43 @@
     "privacyDescription": "Как AutoScan обрабатывает и защищает персональные данные.",
     "contactsTitle": "Контакты",
     "contactsDescription": "Связаться с AutoScan: поддержка и деловые запросы.",
+    "disclaimerTitle": "Отказ от ответственности",
+    "disclaimerDescription": "Ограничение ответственности AutoScan за использование сервиса и информации на сайте.",
     "checkoutTitle": "Оформление заказа",
     "checkoutDescription": "Оплата выбранного тарифа AutoScan.",
+    "downloadTitle": "Скачать приложение",
+    "downloadDescription": "Скачайте десктоп-приложение AutoScan для Windows, macOS и Linux.",
     "blogPostNotFoundTitle": "Статья не найдена"
+  },
+  "downloadPage": {
+    "title": "Скачать",
+    "subtitle": "Установите десктоп-приложение под вашу платформу.",
+    "loadError": "Не удалось загрузить список файлов. Попробуйте позже.",
+    "heroRecommendedWindows": "Рекомендуется для вашей системы — Windows",
+    "heroRecommendedMac": "Рекомендуется для вашей системы — macOS",
+    "heroRecommendedLinux": "Рекомендуется для вашей системы — Linux",
+    "heroRecommendedDefault": "Актуальный релиз",
+    "installer": "Установщик",
+    "version": "Версия",
+    "ctaDownload": "Скачать",
+    "ctaLogin": "Войти",
+    "ctaUpgrade": "Тарифы",
+    "noChecksum": "SHA-256 появится после публикации командой.",
+    "downloadError": "Не удалось скачать. Повторите попытку или войдите в аккаунт.",
+    "heroEmptyTitle": "Пока нет сборок",
+    "heroEmptyBody": "Загляните позже — установщики появятся после публикации релиза.",
+    "otherDownloadsTitle": "Другие установщики (та же версия)",
+    "ctaLoginRequired": "Нужен вход",
+    "ctaPaidRequired": "Платный тариф",
+    "whatsNewTitle": "Что нового",
+    "hideFullNotes": "Скрыть полные примечания",
+    "showFullNotes": "Показать полные примечания",
+    "archiveTitle": "Прошлые версии",
+    "archiveEmpty": "Старых версий в списке нет.",
+    "colVersion": "Версия",
+    "colPublished": "Дата",
+    "colNotes": "Описание",
+    "colFiles": "Файлы"
   },
   "home": {
     "brand": "AutoScan",
@@ -333,10 +368,15 @@
     "chatError": "Ошибка чата"
   },
   "footer": {
-    "copyright": "© {year} My App",
+    "copyright": "© {year} {siteName}",
     "terms": "Условия использования",
     "privacy": "Политика конфиденциальности",
+    "disclaimer": "Отказ от ответственности",
     "contacts": "Контакты"
+  },
+  "disclaimerPage": {
+    "title": "Отказ от ответственности",
+    "lead": "Информация на сайте и результаты диагностики носят справочный характер и не заменяют осмотр специалиста. Подробные условия — в документах ниже; полный текст раздела будет дополнен юридическим отделом."
   },
   "faqPage": {
     "title": "Часто задаваемые вопросы",

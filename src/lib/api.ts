@@ -817,10 +817,157 @@ export type UsageStatus = {
   request_limit: number;
   requests_used: number;
   period: string;
+  on_demand_used_usd?: string;
+  on_demand_limit_type?: "fixed" | "unlimited" | null;
+  on_demand_limit_amount_usd?: string | null;
+  next_request_may_be_ondemand?: boolean;
 };
 
 export async function getUsageStatus(): Promise<UsageStatus> {
   return request<UsageStatus>("usage/");
+}
+
+/* ========== Account aggregates (cabinet) ========== */
+
+export type BillingSummaryPayment = {
+  id: number;
+  amount: string;
+  currency: string;
+  status: string;
+  provider: string;
+  plan_name: string;
+  created_at: string;
+  paid_at: string | null;
+  invoice_url: string | null;
+  receipt_url: string | null;
+};
+
+export type BillingSummaryLicense = {
+  status: string;
+  is_active: boolean;
+  plan?: string | null;
+  expires_at?: string | null;
+  device_limit?: number;
+  device_count?: number;
+  session_limit?: number;
+  session_count?: number;
+  reason?: string | null;
+  plan_label?: string;
+  status_label?: string;
+  reason_label?: string;
+};
+
+export type BillingSummary = {
+  license: BillingSummaryLicense;
+  current_plan: {
+    plan_name: string;
+    tier: string | null;
+    status: string;
+    is_active: boolean;
+    started_at: string | null;
+    expires_at: string | null;
+    renews_at: string | null;
+    request_limit: number;
+    device_limit: number;
+    metrics_limit: number | null;
+    on_demand_limit_usd: string | null;
+    price: string;
+    currency: string;
+  };
+  payments: BillingSummaryPayment[];
+  subscriptions: Array<{
+    id: number;
+    plan_name: string;
+    tier: string;
+    status: string;
+    is_active_now: boolean;
+    started_at: string;
+    valid_until: string;
+    request_limit: number;
+    device_limit: number;
+  }>;
+  activation_keys: Array<{
+    id: number;
+    masked_key: string;
+    type: string;
+    plan_name: string;
+    status: string;
+    issued_at: string | null;
+    valid_from: string | null;
+    valid_until: string | null;
+    assigned_device_count: number | null;
+  }>;
+  entitlements: {
+    requests_per_month: number;
+    devices_max: number;
+    sessions_max: number;
+    devices_in_use: number;
+    sessions_in_use: number;
+  };
+  actions: {
+    show_upgrade: boolean;
+    show_renew: boolean;
+    pricing_path: string;
+    activate_key_path: string | null;
+  };
+};
+
+export async function getBillingSummary(): Promise<BillingSummary> {
+  return request<BillingSummary>("account/billing-summary/");
+}
+
+export type UsageDashboardPeriod = "today" | "7d" | "30d" | "all";
+
+export type UsageDashboardResponse = {
+  period: UsageDashboardPeriod;
+  kpis: {
+    ai_requests_in_period: number;
+    ai_requests_included_in_period: number;
+    ai_requests_ondemand_in_period: number;
+    metrics_sessions_in_period: number;
+    metrics_total_duration_ms: number;
+    metrics_total_points: number;
+    connected_devices_count: number;
+    total_requests_all_periods: number;
+    requests_used_current_period: number;
+  };
+  limits: {
+    request_limit: number;
+    requests_used_current_period: number;
+    billing_period: string;
+    device_limit: number;
+    devices_in_use: number;
+    on_demand_used_usd?: string | null;
+    on_demand_limit_type?: string | null;
+    on_demand_limit_amount_usd?: string | null;
+  };
+  progress: {
+    requests: { used: number; limit: number; percent: number };
+    devices: { used: number; limit: number; percent: number };
+  };
+  chart_points: Array<{
+    date: string;
+    ai_requests: number;
+    metrics_sessions: number;
+  }>;
+  chart_granularity: string;
+  breakdown: { diagnostic_reports_by_kind: Record<string, number> };
+  recent_activity: Array<{
+    external_id?: string;
+    created_at?: string | null;
+    vehicle_name_meta?: string;
+    duration_ms?: number | null;
+    points_count?: number | null;
+  }>;
+};
+
+export async function getUsageDashboard(
+  period: UsageDashboardPeriod,
+): Promise<UsageDashboardResponse> {
+  const q = new URLSearchParams({ period });
+  return request<UsageDashboardResponse>(
+    `account/usage-dashboard/?${q.toString()}`,
+  );
 }
 
 /* ========== On-Demand ========== */

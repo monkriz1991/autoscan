@@ -10,10 +10,12 @@ import {
   IconSettings,
   IconDeviceDesktop,
   IconCar,
+  IconCreditCard,
 } from "@tabler/icons-react";
 
 const NAV_ITEMS = [
   { href: "/cabinet/dashboard", icon: IconDashboard },
+  { href: "/cabinet/dashboard/billing", icon: IconCreditCard },
   { href: "/cabinet/dashboard/analytics", icon: IconChartBar },
   { href: "/cabinet/dashboard/vehicle", icon: IconCar },
   { href: "/cabinet/dashboard/devices", icon: IconDeviceDesktop },
@@ -26,6 +28,7 @@ function SidebarNav({ onLinkClick }: { onLinkClick?: () => void }) {
 
   const labels: Record<string, string> = {
     "/cabinet/dashboard": t("dashboard"),
+    "/cabinet/dashboard/billing": t("billing"),
     "/cabinet/dashboard/analytics": t("analytics"),
     "/cabinet/dashboard/vehicle": t("vehicle"),
     "/cabinet/dashboard/devices": t("devices"),

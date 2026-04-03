@@ -6,10 +6,12 @@ import { notFound } from "next/navigation";
 import { getMetadataBase, localeToOpenGraphLocale } from "@/lib/site-url";
 import { MantineProvider, createTheme } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
+import JsonLd from "@/components/seo/JsonLd";
 import RootLayoutContent from "@/components/ui/RootLayoutContent";
 import CookieConsentBanner from "@/components/ui/CookieConsentBanner";
 import GoogleAnalytics from "@/components/ui/GoogleAnalytics";
 import LocaleHtmlLang from "@/components/ui/LocaleHtmlLang";
+import { fetchStructuredData } from "@/lib/seo/structured-data";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 import "@/styles/global.scss";
@@ -60,9 +62,11 @@ export default async function LocaleLayout({
   }
   setRequestLocale(locale);
   const messages = await getMessages();
+  const globalLd = await fetchStructuredData({ bundles: ["global"], locale });
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
+      <JsonLd data={globalLd} />
       <LocaleHtmlLang locale={locale} />
       <MantineProvider
         theme={createTheme({

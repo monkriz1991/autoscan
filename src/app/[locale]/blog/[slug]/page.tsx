@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
 import { setRequestLocale } from "next-intl/server";
+import JsonLd from "@/components/seo/JsonLd";
 import { getBlogPostForLocale } from "@/lib/api";
+import { fetchStructuredData } from "@/lib/seo/structured-data";
 import { alternateLanguageUrls, getSiteOrigin, localeToOpenGraphLocale } from "@/lib/site-url";
 import BlogPostContent from "./BlogPostContent";
 
@@ -56,9 +58,22 @@ export default async function BlogPostPage({ params }: Props) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
+  const pathSuffix = `/blog/${slug}`;
+  const languages = alternateLanguageUrls(pathSuffix);
+  const pageUrl = languages[locale];
+  const postLd = await fetchStructuredData({
+    bundles: ["blog_post"],
+    locale,
+    pageUrl,
+    slug,
+  });
+
   return (
-    <Suspense fallback={null}>
-      <BlogPostContent slug={slug} />
-    </Suspense>
+    <>
+      <JsonLd data={postLd} />
+      <Suspense fallback={null}>
+        <BlogPostContent slug={slug} />
+      </Suspense>
+    </>
   );
 }

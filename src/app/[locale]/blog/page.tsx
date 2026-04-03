@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
+import JsonLd from "@/components/seo/JsonLd";
 import { buildLocalePageMetadata } from "@/lib/seo-metadata";
+import { fetchStructuredData } from "@/lib/seo/structured-data";
+import { alternateLanguageUrls } from "@/lib/site-url";
 import BlogPageContent from "./BlogPageContent";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -19,9 +22,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function BlogPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: "seo" });
+  const pageUrl = alternateLanguageUrls("/blog")[locale];
+  const blogListLd = await fetchStructuredData({
+    bundles: ["blog_list"],
+    locale,
+    pageUrl,
+    title: t("blogTitle"),
+    description: t("blogDescription"),
+  });
   return (
-    <Suspense fallback={null}>
-      <BlogPageContent />
-    </Suspense>
+    <>
+      <JsonLd data={blogListLd} />
+      <Suspense fallback={null}>
+        <BlogPageContent />
+      </Suspense>
+    </>
   );
 }

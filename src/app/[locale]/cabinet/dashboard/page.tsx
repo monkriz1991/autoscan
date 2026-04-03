@@ -1,130 +1,100 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import {
-  Title,
   Card,
-  Text,
-  Button,
-  Stack,
-  Loader,
   Center,
-  Notification,
+  Group,
+  Loader,
   Progress,
   Select,
-  NumberInput,
-  Group,
+  SimpleGrid,
+  Stack,
+  Text,
+  Title,
 } from "@mantine/core";
 import {
-  getBillingStatus,
-  getPlans,
-  getUsageStatus,
-  getOnDemandSettings,
-  updateOnDemandSettings,
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import {
+  getUsageDashboard,
+  type UsageDashboardPeriod,
+  type UsageDashboardResponse,
 } from "@/lib/api";
-import type { BillingStatus, OnDemandSettings, Plan } from "@/lib/api";
 
-function formatExpires(
-  expiresAt: string | undefined,
-  t: (key: string, values?: Record<string, number | string>) => string,
-  locale: string
-): string {
-  if (!expiresAt) return "";
-  try {
-    const d = new Date(expiresAt);
-    const now = new Date();
-    const diffMs = d.getTime() - now.getTime();
-    const diffDays = Math.max(0, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
-    const formatted = d.toLocaleDateString(locale, {
-      day: "numeric",
-      month: "short",
-    });
-    return t("reset", { date: formatted, days: diffDays });
-  } catch {
-    return expiresAt;
-  }
+const PERIODS: { value: UsageDashboardPeriod; labelKey: string }[] = [
+  { value: "today", labelKey: "periodToday" },
+  { value: "7d", labelKey: "period7d" },
+  { value: "30d", labelKey: "period30d" },
+  { value: "all", labelKey: "periodAll" },
+];
+
+function formatDurationMs(ms: number | null | undefined): string {
+  if (ms == null || ms < 0) return "—";
+  const s = Math.round(ms / 1000);
+  if (s < 60) return `${s}s`;
+  const m = Math.floor(s / 60);
+  const r = s % 60;
+  if (m < 60) return `${m}m ${r}s`;
+  const h = Math.floor(m / 60);
+  return `${h}h ${m % 60}m`;
 }
 
-function findPlanPrice(plans: Plan[], planName: string | null | undefined): string {
-  if (!planName) return "—";
-  const plan = plans.find((p) => p.name.toLowerCase() === planName.toLowerCase());
-  return plan ? `${plan.price} ${plan.currency}` : "—";
+function formatChartDate(
+  dateStr: string,
+  granularity: string,
+  locale: string,
+): string {
+  try {
+    const d = new Date(dateStr);
+    if (granularity === "month") {
+      return d.toLocaleDateString(locale, { month: "short", year: "numeric" });
+    }
+    return d.toLocaleDateString(locale, { month: "short", day: "numeric" });
+  } catch {
+    return dateStr;
+  }
 }
 
 export default function CabinetDashboardPage() {
   const t = useTranslations("dashboard");
   const locale = useLocale();
-  const [billing, setBilling] = useState<BillingStatus | null>(null);
-  const [plans, setPlans] = useState<Plan[]>([]);
-  const [usage, setUsage] = useState<{ plan_name: string; request_limit: number; requests_used: number; period: string } | null>(null);
-  const [onDemand, setOnDemand] = useState<OnDemandSettings | null>(null);
+  const [period, setPeriod] = useState<UsageDashboardPeriod>("30d");
+  const [data, setData] = useState<UsageDashboardResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const [limitType, setLimitType] = useState<string>("fixed");
-  const [limitAmount, setLimitAmount] = useState<number | string>(10);
-  const [savingOnDemand, setSavingOnDemand] = useState(false);
-
-  const loadData = () => {
-    Promise.all([
-      getBillingStatus().catch(() => null),
-      getPlans().catch(() => []),
-      getUsageStatus().catch(() => null),
-      getOnDemandSettings().catch(() => null),
-    ]).then(([b, p, u, o]) => {
-      setBilling(b ?? null);
-      setPlans(Array.isArray(p) ? p : []);
-      setUsage(u ?? null);
-      if (o) {
-        setOnDemand(o);
-        setLimitType(o.limit_type);
-        setLimitAmount(o.limit_amount ?? 10);
-      }
-    }).finally(() => setLoading(false));
-  };
 
   useEffect(() => {
-    loadData();
-  }, []);
-
-  const handleSaveOnDemand = async () => {
+    setLoading(true);
     setError("");
-    setSuccess("");
-    setSavingOnDemand(true);
-    try {
-      const updated = await updateOnDemandSettings({
-        limit_type: limitType as "fixed" | "unlimited",
-        limit_amount: limitType === "fixed" ? Number(limitAmount) : null,
-      });
-      setOnDemand(updated);
-      setSuccess(t("saved"));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : t("saveError"));
-    } finally {
-      setSavingOnDemand(false);
-    }
-  };
+    getUsageDashboard(period)
+      .then(setData)
+      .catch(() => {
+        setError(t("loadErrorUsage"));
+      })
+      .finally(() => setLoading(false));
+  }, [period]);
 
-  const planName = billing?.plan ?? "Free";
-  const planPrice =
-    planName === "Free" ? t("free") : findPlanPrice(plans, billing?.plan);
-  const isFree = !billing?.plan || billing?.status === "none";
+  const chartData =
+    data?.chart_points.map((p) => ({
+      ...p,
+      label: formatChartDate(p.date, data.chart_granularity, locale),
+    })) ?? [];
 
-  const usagePercent =
-    usage && usage.request_limit > 0
-      ? Math.min(100, (usage.requests_used / usage.request_limit) * 100)
-      : 0;
+  const hasChartActivity = chartData.some(
+    (p) => p.ai_requests > 0 || p.metrics_sessions > 0,
+  );
 
-  const onDemandUsed = 0;
-  const onDemandLimit =
-    onDemand?.limit_type === "fixed" && onDemand?.limit_amount != null
-      ? Number(onDemand.limit_amount)
-      : 0;
-  const onDemandPercent = onDemandLimit > 0 ? (onDemandUsed / onDemandLimit) * 100 : 0;
-
-  if (loading) {
+  if (loading && !data) {
     return (
       <Center py="xl">
         <Loader size="lg" />
@@ -134,124 +104,242 @@ export default function CabinetDashboardPage() {
 
   return (
     <Stack gap="xl">
-      <Title order={1}>{t("planUsage")}</Title>
+      <Group justify="space-between" align="flex-end" wrap="wrap">
+        <Title order={1}>{t("usageTitle")}</Title>
+        <Select
+          w={200}
+          label={t("periodLabel")}
+          data={PERIODS.map((p) => ({
+            value: p.value,
+            label: t(p.labelKey),
+          }))}
+          value={period}
+          onChange={(v) => setPeriod((v as UsageDashboardPeriod) ?? "30d")}
+        />
+      </Group>
 
       {error && (
-        <Notification color="red" onClose={() => setError("")}>
+        <Text c="red" size="sm">
           {error}
-        </Notification>
-      )}
-      {success && (
-        <Notification color="green" onClose={() => setSuccess("")}>
-          {success}
-        </Notification>
+        </Text>
       )}
 
-      <Card withBorder p="lg" radius="md" shadow="sm">
-        <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb="sm">
-          {t("currentPlan")}
-        </Text>
-        <Title order={3} mb="xs">
-          {planName}
-        </Title>
-        <Text size="lg" mb="xs">
-          {planPrice}
-        </Text>
-        {!isFree && billing?.expires_at && (
-          <Text size="sm" c="dimmed" mb="md">
-            {formatExpires(billing.expires_at, t, locale)}
-          </Text>
-        )}
-        <Button
-          className="btn-metallic btn-metallic-outline"
-          color="silver"
-          component={Link}
-          href="/marketing/pricing"
-          variant="light"
-          size="sm"
-        >
-          {t("manage")}
-        </Button>
-      </Card>
+      {loading && data && (
+        <Center py="sm">
+          <Loader size="sm" />
+        </Center>
+      )}
 
-      {usage && (
-        <Card withBorder p="lg" radius="md" shadow="sm">
-          <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb="md">
-            {t("includedIn", { plan: usage.plan_name })}
-          </Text>
-          <Group justify="space-between" mb="xs">
-            <Text size="sm" fw={500}>
-              {t("total")}
+      {data && (
+        <>
+          <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="md">
+            <Card withBorder p="md" radius="md" shadow="sm">
+              <Text size="xs" c="dimmed" tt="uppercase" fw={600}>
+                {t("kpiAiRequests")}
+              </Text>
+              <Title order={3}>{data.kpis.ai_requests_in_period}</Title>
+              <Text size="xs" c="dimmed">
+                {t("kpiAiBreakdown", {
+                  inc: data.kpis.ai_requests_included_in_period,
+                  od: data.kpis.ai_requests_ondemand_in_period,
+                })}
+              </Text>
+            </Card>
+            <Card withBorder p="md" radius="md" shadow="sm">
+              <Text size="xs" c="dimmed" tt="uppercase" fw={600}>
+                {t("kpiMetricsSessions")}
+              </Text>
+              <Title order={3}>{data.kpis.metrics_sessions_in_period}</Title>
+            </Card>
+            <Card withBorder p="md" radius="md" shadow="sm">
+              <Text size="xs" c="dimmed" tt="uppercase" fw={600}>
+                {t("kpiMetricsDuration")}
+              </Text>
+              <Title order={3}>
+                {formatDurationMs(data.kpis.metrics_total_duration_ms)}
+              </Title>
+            </Card>
+            <Card withBorder p="md" radius="md" shadow="sm">
+              <Text size="xs" c="dimmed" tt="uppercase" fw={600}>
+                {t("kpiMetricsPoints")}
+              </Text>
+              <Title order={3}>{data.kpis.metrics_total_points}</Title>
+            </Card>
+            <Card withBorder p="md" radius="md" shadow="sm">
+              <Text size="xs" c="dimmed" tt="uppercase" fw={600}>
+                {t("kpiDevices")}
+              </Text>
+              <Title order={3}>{data.kpis.connected_devices_count}</Title>
+            </Card>
+            <Card withBorder p="md" radius="md" shadow="sm">
+              <Text size="xs" c="dimmed" tt="uppercase" fw={600}>
+                {t("kpiMonthlyRequests")}
+              </Text>
+              <Title order={3}>{data.kpis.requests_used_current_period}</Title>
+              <Text size="xs" c="dimmed">
+                {t("kpiTotalRequests")}: {data.kpis.total_requests_all_periods}
+              </Text>
+            </Card>
+          </SimpleGrid>
+
+          <Card withBorder p="lg" radius="md" shadow="sm">
+            <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb="md">
+              {t("progressRequests")}
             </Text>
-            <Text size="lg" fw={600}>
-              {Math.round(usagePercent)}%
-            </Text>
-          </Group>
-          <Progress value={usagePercent} color="green" size="lg" radius="xl" mb="xs" />
-          <Text size="sm" c="dimmed">
-            {t("usedCount", { used: usage.requests_used, total: usage.request_limit })}
-          </Text>
-        </Card>
-      )}
-
-      <Card withBorder p="lg" radius="md" shadow="sm">
-        <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb="md">
-          {t("onDemand")}
-        </Text>
-
-        <Group justify="space-between" mb="xs">
-          <Text size="sm" fw={500}>
-            {t("onDemand")}
-          </Text>
-          <Text size="sm">
-            ${onDemandUsed} / {onDemand?.limit_type === "unlimited" ? "∞" : `$${onDemandLimit}`}
-          </Text>
-        </Group>
-        {onDemand?.limit_type !== "unlimited" && onDemandLimit > 0 && (
-          <Progress value={onDemandPercent} color="green" size="sm" mb="md" />
-        )}
-        <Text size="sm" c="dimmed" mb="md">
-          {t("onDemandDesc")}
-        </Text>
-
-        <Text size="sm" fw={500} mb="xs">
-          {t("monthlyLimit")}
-        </Text>
-        <Text size="sm" c="dimmed" mb="sm">
-          {t("monthlyLimitDesc")}
-        </Text>
-        <Group align="flex-end">
-          <Select
-            data={[
-              { value: "fixed", label: t("fixed") },
-              { value: "unlimited", label: t("unlimited") },
-            ]}
-            value={limitType}
-            onChange={(v) => setLimitType(v ?? "fixed")}
-            w={140}
-          />
-          {limitType === "fixed" && (
-            <NumberInput
-              value={limitAmount}
-              onChange={setLimitAmount}
-              min={0}
-              step={1}
-              placeholder="10"
-              w={100}
+            <Group justify="space-between" mb="xs">
+              <Text size="sm" fw={500}>
+                {data.limits.requests_used_current_period} /{" "}
+                {data.limits.request_limit}
+              </Text>
+              <Text size="sm" fw={600}>
+                {Math.round(data.progress.requests.percent)}%
+              </Text>
+            </Group>
+            <Progress
+              value={data.progress.requests.percent}
+              color="green"
+              size="lg"
+              radius="xl"
+              mb="lg"
             />
-          )}
-          <Button
-            className="btn-metallic btn-metallic-outline"
-            color="silver"
-            onClick={handleSaveOnDemand}
-            loading={savingOnDemand}
-            size="sm"
-            variant="light"
-          >
-            {t("save")}
-          </Button>
-        </Group>
-      </Card>
+            <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb="md">
+              {t("progressDevices")}
+            </Text>
+            <Group justify="space-between" mb="xs">
+              <Text size="sm" fw={500}>
+                {data.limits.devices_in_use} / {data.limits.device_limit}
+              </Text>
+              <Text size="sm" fw={600}>
+                {Math.round(data.progress.devices.percent)}%
+              </Text>
+            </Group>
+            <Progress
+              value={data.progress.devices.percent}
+              color="blue"
+              size="md"
+              radius="xl"
+            />
+            {data.limits.on_demand_limit_type != null && (
+              <Text size="sm" c="dimmed" mt="md">
+                {t("onDemandUsageLine", {
+                  used: String(data.limits.on_demand_used_usd ?? "0"),
+                  limit:
+                    data.limits.on_demand_limit_type === "unlimited"
+                      ? "∞"
+                      : String(data.limits.on_demand_limit_amount_usd ?? "—"),
+                })}
+              </Text>
+            )}
+          </Card>
+
+          <Card withBorder p="lg" radius="md" shadow="sm">
+            <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb="md">
+              {t("usageOverTime")}
+            </Text>
+            {!hasChartActivity ? (
+              <Text size="sm" c="dimmed">
+                {t("noChartData")}
+              </Text>
+            ) : (
+              <div style={{ width: "100%", height: 320 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="label" tick={{ fontSize: 11 }} />
+                    <YAxis allowDecimals={false} tick={{ fontSize: 11 }} />
+                    <Tooltip />
+                    <Legend />
+                    <Line
+                      type="monotone"
+                      dataKey="ai_requests"
+                      name={t("chartAi")}
+                      stroke="#40c057"
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="metrics_sessions"
+                      name={t("chartMetrics")}
+                      stroke="#228be6"
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+          </Card>
+
+          <Card withBorder p="lg" radius="md" shadow="sm">
+            <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb="md">
+              {t("breakdownTitle")}
+            </Text>
+            {Object.keys(data.breakdown.diagnostic_reports_by_kind).length ===
+            0 ? (
+              <Text size="sm" c="dimmed">
+                {t("noBreakdown")}
+              </Text>
+            ) : (
+              <Stack gap="xs">
+                {Object.entries(data.breakdown.diagnostic_reports_by_kind).map(
+                  ([kind, count]) => (
+                    <Group key={kind} justify="space-between">
+                      <Text size="sm">{kind}</Text>
+                      <Text size="sm" fw={600}>
+                        {count}
+                      </Text>
+                    </Group>
+                  ),
+                )}
+              </Stack>
+            )}
+          </Card>
+
+          <Card withBorder p="lg" radius="md" shadow="sm">
+            <Group justify="space-between" mb="md">
+              <Text size="xs" c="dimmed" tt="uppercase" fw={600}>
+                {t("recentTitle")}
+              </Text>
+              <Text
+                component={Link}
+                href="/cabinet/dashboard/analytics"
+                size="sm"
+                c="dimmed"
+              >
+                {t("openAnalytics")}
+              </Text>
+            </Group>
+            {data.recent_activity.length === 0 ? (
+              <Text size="sm" c="dimmed">
+                {t("noRecent")}
+              </Text>
+            ) : (
+              <Stack gap="sm">
+                {data.recent_activity.map((row, idx) => (
+                  <Card
+                    key={`${row.external_id ?? idx}-${row.created_at ?? ""}`}
+                    withBorder
+                    p="sm"
+                    radius="sm"
+                  >
+                    <Text size="sm" fw={500}>
+                      {row.vehicle_name_meta || row.external_id || "—"}
+                    </Text>
+                    <Text size="xs" c="dimmed">
+                      {row.created_at
+                        ? new Date(row.created_at).toLocaleString(locale)
+                        : "—"}{" "}
+                      · {formatDurationMs(row.duration_ms)} ·{" "}
+                      {t("pointsLabel", { n: row.points_count ?? 0 })}
+                    </Text>
+                  </Card>
+                ))}
+              </Stack>
+            )}
+          </Card>
+        </>
+      )}
     </Stack>
   );
 }

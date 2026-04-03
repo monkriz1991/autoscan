@@ -5,11 +5,11 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { Avatar, Menu } from "@mantine/core";
 import {
+  IconChartBar,
+  IconCreditCard,
   IconDashboard,
-  IconHistory,
   IconLogout,
-  IconPlugConnected,
-  IconStethoscope,
+  IconSettings,
 } from "@tabler/icons-react";
 import { isAuthenticated, logout, getMe } from "@/lib/api";
 import type { UserProfile } from "@/lib/api";
@@ -96,25 +96,25 @@ export default function Navbar() {
                   {t("dashboard")}
                 </Menu.Item>
                 <Menu.Item
-                  leftSection={<IconStethoscope size={16} />}
+                  leftSection={<IconCreditCard size={16} />}
                   component={Link}
-                  href="/business/scan/"
+                  href="/cabinet/dashboard/billing"
                 >
-                  {t("diagnose")}
+                  {t("billing")}
                 </Menu.Item>
                 <Menu.Item
-                  leftSection={<IconHistory size={16} />}
+                  leftSection={<IconChartBar size={16} />}
                   component={Link}
-                  href="/superadmin/dashboard/diagnostics-history"
+                  href="/cabinet/dashboard/analytics"
                 >
-                  {t("aiHistory")}
+                  {t("analytics")}
                 </Menu.Item>
                 <Menu.Item
-                  leftSection={<IconPlugConnected size={16} />}
+                  leftSection={<IconSettings size={16} />}
                   component={Link}
-                  href="/auth/connect-app"
+                  href="/cabinet/dashboard/settings"
                 >
-                  {t("connectApp")}
+                  {t("settings")}
                 </Menu.Item>
                 <Menu.Divider />
                 <Menu.Item

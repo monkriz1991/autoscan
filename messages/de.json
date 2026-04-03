@@ -90,7 +90,7 @@
     "captchaWrong": "Falsche Antwort. Lösen Sie das Beispiel erneut.",
     "captchaLoadError": "Captcha konnte nicht geladen werden",
     "registerSuccess": "Registrierung erfolgreich. Überprüfen Sie Ihre E-Mail zur Kontobestätigung.",
-    "loading": "Laden...",
+    "loading": "Laden…",
     "oauth2ConsentTitle": "AutoScan AI Desktop Zugriff auf Ihr Konto erlauben?",
     "sessionsCount": "{used} von {limit} aktiven Sitzungen",
     "sessionLimitReached": "Sitzungslimit erreicht",
@@ -104,7 +104,6 @@
     "connectAppDesc": "Sie sind angemeldet. Klicken Sie, um die App mit Ihrem Konto zu verbinden.",
     "connectAppButton": "Mit App verbinden",
     "oauth2Error": "Autorisierungsfehler",
-    "loading": "Laden…",
     "oauthEntry": {
       "title": "Anmeldung fortsetzen",
       "missingNext": "Fehlender Redirect-Parameter (next).",
@@ -181,7 +180,12 @@
     "next": "Weiter",
     "loadError": "Fehler beim Laden der Tarife",
     "apiError": "API nicht konfiguriert (NEXT_PUBLIC_API_BASE_URL)",
-    "loginForPayment": "Zum Bezahlen anmelden"
+    "loginForPayment": "Zum Bezahlen anmelden",
+    "pay": "Mit Krypto zahlen",
+    "loginToPay": "Zum Bezahlen anmelden",
+    "payStarting": "Checkout wird vorbereitet…",
+    "payError": "Zahlungsfehler",
+    "freeChoose": "Loslegen"
   },
   "checkout": {
     "title": "Kasse",
@@ -353,5 +357,17 @@
     "error": "Blog-Beiträge konnten nicht geladen werden. Bitte später erneut versuchen.",
     "notFound": "Beitrag nicht gefunden.",
     "backToList": "Zurück zur Übersicht"
+  },
+  "billing": {
+    "successTitle": "Zahlung",
+    "successPending": "Zahlung wird bestätigt…",
+    "successDone": "Ihr Abonnement ist jetzt aktiv.",
+    "successNoPaymentId": "Danke. Falls sich Ihr Plan noch nicht aktualisiert hat, öffnen Sie das Dashboard in ein paar Minuten.",
+    "successTimeout": "Die Zahlung wird noch verarbeitet. Bitte prüfen Sie Ihren Plan später im Dashboard.",
+    "statusError": "Zahlungsstatus konnte nicht geladen werden.",
+    "goToDashboard": "Zum Dashboard",
+    "cancelTitle": "Zahlung abgebrochen",
+    "cancelBody": "Sie können jederzeit erneut einen Plan wählen.",
+    "backToPricing": "Zurück zu den Plänen"
   }
 }

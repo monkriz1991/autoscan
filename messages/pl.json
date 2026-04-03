@@ -180,7 +180,12 @@
     "next": "Następny",
     "loadError": "Błąd ładowania cennika",
     "apiError": "API nie skonfigurowane (NEXT_PUBLIC_API_BASE_URL)",
-    "loginForPayment": "Zaloguj się, aby zapłacić"
+    "loginForPayment": "Zaloguj się, aby zapłacić",
+    "pay": "Zapłać krypto",
+    "loginToPay": "Zaloguj się, aby zapłacić",
+    "payStarting": "Przygotowanie płatności…",
+    "payError": "Błąd płatności",
+    "freeChoose": "Rozpocznij"
   },
   "checkout": {
     "title": "Kasa",
@@ -352,5 +357,17 @@
     "error": "Nie udało się załadować wpisów. Spróbuj później.",
     "notFound": "Wpis nie znaleziony.",
     "backToList": "Wróć do listy"
+  },
+  "billing": {
+    "successTitle": "Płatność",
+    "successPending": "Potwierdzanie płatności…",
+    "successDone": "Subskrypcja jest aktywna.",
+    "successNoPaymentId": "Dziękujemy. Jeśli plan się nie zaktualizował, sprawdź panel za kilka minut.",
+    "successTimeout": "Płatność jest nadal przetwarzana. Wkrótce sprawdź plan w panelu.",
+    "statusError": "Nie udało się pobrać statusu płatności.",
+    "goToDashboard": "Przejdź do panelu",
+    "cancelTitle": "Płatność anulowana",
+    "cancelBody": "Możesz ponownie wybrać plan w dowolnym momencie.",
+    "backToPricing": "Wróć do planów"
   }
 }

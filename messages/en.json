@@ -180,7 +180,12 @@
     "next": "Next",
     "loadError": "Plans load error",
     "apiError": "API not configured (NEXT_PUBLIC_API_BASE_URL)",
-    "loginForPayment": "Log in to pay"
+    "loginForPayment": "Log in to pay",
+    "pay": "Pay with crypto",
+    "loginToPay": "Log in to pay",
+    "payStarting": "Preparing checkout…",
+    "payError": "Payment error",
+    "freeChoose": "Get started"
   },
   "checkout": {
     "title": "Checkout",
@@ -352,5 +357,17 @@
     "error": "Could not load blog posts. Try again later.",
     "notFound": "Post not found.",
     "backToList": "Back to list"
+  },
+  "billing": {
+    "successTitle": "Payment",
+    "successPending": "Confirming payment…",
+    "successDone": "Your subscription is now active.",
+    "successNoPaymentId": "Thank you. If your plan has not updated yet, open the dashboard in a few minutes.",
+    "successTimeout": "Payment is still being processed. Please check your plan in the dashboard shortly.",
+    "statusError": "Could not load payment status.",
+    "goToDashboard": "Go to dashboard",
+    "cancelTitle": "Payment cancelled",
+    "cancelBody": "You can choose a plan again at any time.",
+    "backToPricing": "Back to plans"
   }
 }

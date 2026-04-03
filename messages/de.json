@@ -119,7 +119,24 @@
     "prev": "Zurück",
     "next": "Weiter",
     "loadError": "Fehler beim Laden der Tarife",
-    "apiError": "API nicht konfiguriert (NEXT_PUBLIC_API_BASE_URL)"
+    "apiError": "API nicht konfiguriert (NEXT_PUBLIC_API_BASE_URL)",
+    "pay": "Mit Krypto zahlen",
+    "loginToPay": "Zum Bezahlen anmelden",
+    "payStarting": "Checkout wird vorbereitet…",
+    "payError": "Zahlungsfehler",
+    "freeChoose": "Loslegen"
+  },
+  "billing": {
+    "successTitle": "Zahlung",
+    "successPending": "Zahlung wird bestätigt…",
+    "successDone": "Ihr Abonnement ist jetzt aktiv.",
+    "successNoPaymentId": "Danke. Falls sich Ihr Plan noch nicht aktualisiert hat, öffnen Sie das Dashboard in ein paar Minuten.",
+    "successTimeout": "Die Zahlung wird noch verarbeitet. Bitte prüfen Sie Ihren Plan später im Dashboard.",
+    "statusError": "Zahlungsstatus konnte nicht geladen werden.",
+    "goToDashboard": "Zum Dashboard",
+    "cancelTitle": "Zahlung abgebrochen",
+    "cancelBody": "Sie können jederzeit erneut einen Plan wählen.",
+    "backToPricing": "Zurück zu den Plänen"
   },
   "vehicle": {
     "title": "Meine Fahrzeuge",

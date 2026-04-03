@@ -133,13 +133,32 @@ export class ApiError extends Error {
   data: unknown;
 
   constructor(status: number, data: unknown) {
-    super(typeof data === "object" && data !== null && "detail" in data
-      ? String((data as { detail?: unknown }).detail)
-      : `API error ${status}`);
+    const msgFromData =
+      typeof data === "object" && data !== null
+        ? (data as { error?: unknown; detail?: unknown })
+        : null;
+    const message =
+      msgFromData && typeof msgFromData.error === "string" && msgFromData.error
+        ? msgFromData.error
+        : msgFromData && typeof msgFromData.detail === "string" && msgFromData.detail
+          ? msgFromData.detail
+          : `API error ${status}`;
+    super(message);
     this.name = "ApiError";
     this.status = status;
     this.data = data;
   }
+}
+
+/** Сообщение для UI: detail (DRF) или error (наши view). */
+export function getApiErrorMessage(err: unknown): string {
+  if (err instanceof ApiError && err.data && typeof err.data === "object" && err.data !== null) {
+    const d = err.data as { error?: unknown; detail?: unknown };
+    if (typeof d.error === "string" && d.error) return d.error;
+    if (typeof d.detail === "string" && d.detail) return d.detail;
+  }
+  if (err instanceof Error) return err.message;
+  return "Unknown error";
 }
 
 /* ========== Auth ========== */
@@ -315,6 +334,40 @@ export type BillingStatus = {
 
 export async function getBillingStatus(): Promise<BillingStatus> {
   return request<BillingStatus>("billing/status/");
+}
+
+export type PlisioCreateInvoiceResponse = {
+  payment_id: number;
+  plisio_invoice_id: string;
+  invoice_url: string;
+};
+
+export async function createPlisioInvoice(
+  planId: number,
+): Promise<PlisioCreateInvoiceResponse> {
+  return request<PlisioCreateInvoiceResponse>("billing/plisio/create-invoice/", {
+    method: "POST",
+    body: JSON.stringify({ plan_id: planId }),
+  });
+}
+
+export type PlisioPaymentStatusResponse = {
+  payment_id: number;
+  plisio_invoice_id: string;
+  invoice_url: string;
+  status: string;
+  plan: string;
+  amount_usd: string;
+  currency: string;
+  created_at: string;
+};
+
+export async function getPlisioPaymentStatus(
+  paymentId: number,
+): Promise<PlisioPaymentStatusResponse> {
+  return request<PlisioPaymentStatusResponse>(
+    `billing/plisio/payment/${paymentId}/`,
+  );
 }
 
 /* ========== Usage ========== */

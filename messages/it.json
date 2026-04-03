@@ -117,7 +117,24 @@
     "prev": "Precedente",
     "next": "Successivo",
     "loadError": "Errore caricamento piani",
-    "apiError": "API non configurata (NEXT_PUBLIC_API_BASE_URL)"
+    "apiError": "API non configurata (NEXT_PUBLIC_API_BASE_URL)",
+    "pay": "Paga in crypto",
+    "loginToPay": "Accedi per pagare",
+    "payStarting": "Preparazione del checkout…",
+    "payError": "Errore di pagamento",
+    "freeChoose": "Inizia"
+  },
+  "billing": {
+    "successTitle": "Pagamento",
+    "successPending": "Conferma del pagamento…",
+    "successDone": "Il tuo abbonamento è ora attivo.",
+    "successNoPaymentId": "Grazie. Se il piano non si è aggiornato, apri il dashboard tra qualche minuto.",
+    "successTimeout": "Il pagamento è ancora in elaborazione. Controlla il piano nel dashboard a breve.",
+    "statusError": "Impossibile caricare lo stato del pagamento.",
+    "goToDashboard": "Vai al dashboard",
+    "cancelTitle": "Pagamento annullato",
+    "cancelBody": "Puoi scegliere un piano di nuovo in qualsiasi momento.",
+    "backToPricing": "Torna ai piani"
   },
   "vehicle": {
     "title": "I miei veicoli",

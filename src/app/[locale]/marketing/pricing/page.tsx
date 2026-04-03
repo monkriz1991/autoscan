@@ -1,14 +1,13 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
+import PlanCheckoutButton from "@/components/billing/PlanCheckoutButton";
 import {
   Container,
   Title,
   Card,
   Badge,
   Text,
-  Button,
   Stack,
   Group,
   Loader,
@@ -148,16 +147,7 @@ export default function PricingPage() {
 
                     <Text size="sm">До {plan.max_devices} устройств</Text>
 
-                    <Button
-                      className="btn-metallic"
-                      color="silver"
-                      component={Link}
-                      href="/register"
-                      variant="filled"
-                      mt="auto"
-                    >
-                      Выбрать
-                    </Button>
+                    <PlanCheckoutButton plan={plan} />
                   </Stack>
                 </Card>
               ))}

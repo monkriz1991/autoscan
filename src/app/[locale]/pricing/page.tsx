@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
 import {
   Container,
   Title,
@@ -19,6 +18,7 @@ import {
   Box,
 } from "@mantine/core";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
+import PlanCheckoutButton from "@/components/billing/PlanCheckoutButton";
 
 interface Plan {
   id: number;
@@ -175,16 +175,7 @@ export default function PricingPage() {
 
                     <Text size="sm">{t("devices", { count: plan.max_devices })}</Text>
 
-                    <Button
-                      className="btn-metallic"
-                      color="silver"
-                      component={Link}
-                      href="/register"
-                      variant="filled"
-                      mt="auto"
-                    >
-                      {t("choose")}
-                    </Button>
+                    <PlanCheckoutButton plan={plan} />
                   </Stack>
                 </Card>
               ))}

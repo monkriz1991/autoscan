@@ -119,7 +119,24 @@
     "prev": "Предыдущий",
     "next": "Следующий",
     "loadError": "Ошибка загрузки тарифов",
-    "apiError": "API не настроен (NEXT_PUBLIC_API_BASE_URL)"
+    "apiError": "API не настроен (NEXT_PUBLIC_API_BASE_URL)",
+    "pay": "Оплатить криптой",
+    "loginToPay": "Войти для оплаты",
+    "payStarting": "Подготовка оплаты…",
+    "payError": "Ошибка оплаты",
+    "freeChoose": "Начать"
+  },
+  "billing": {
+    "successTitle": "Оплата",
+    "successPending": "Подтверждаем платёж…",
+    "successDone": "Подписка активирована.",
+    "successNoPaymentId": "Спасибо. Если план не обновился, откройте кабинет через несколько минут.",
+    "successTimeout": "Платёж ещё обрабатывается. Проверьте план в кабинете чуть позже.",
+    "statusError": "Не удалось получить статус платежа.",
+    "goToDashboard": "В личный кабинет",
+    "cancelTitle": "Оплата отменена",
+    "cancelBody": "Вы можете выбрать тариф снова в любое время.",
+    "backToPricing": "К тарифам"
   },
   "vehicle": {
     "title": "Мои автомобили",

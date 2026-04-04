@@ -43,13 +43,6 @@ function paymentStatusColor(s: string): string {
   return "gray";
 }
 
-function keyStatusColor(s: string): string {
-  if (s === "active") return "green";
-  if (s === "expired") return "gray";
-  if (s === "revoked") return "red";
-  return "dimmed";
-}
-
 export default function CabinetBillingPage() {
   const t = useTranslations("billingPage");
   const locale = useLocale();
@@ -167,9 +160,8 @@ export default function CabinetBillingPage() {
             })}
           </Text>
           <Text size="sm">
-            {t("devicesLine", {
-              used: data.entitlements.devices_in_use,
-              max: data.entitlements.devices_max,
+            {t("devicesConnectedOnly", {
+              count: data.entitlements.devices_in_use,
             })}
           </Text>
           <Text size="sm">
@@ -274,44 +266,35 @@ export default function CabinetBillingPage() {
         )}
       </Card>
 
-      <Card withBorder p="lg" radius="md" shadow="sm">
-        <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb="md">
-          {t("keysTitle")}
-        </Text>
-        {data.activation_keys.length === 0 ? (
-          <Text size="sm" c="dimmed">
-            {t("noKeys")}
+      {data.actions.on_demand_available === true ? (
+        <OnDemandUsageSection
+          onDemand={data.on_demand}
+          usedMonthUsd={usageOnDemandUsd}
+          onRefresh={async () => {
+            const b = await getBillingSummary();
+            setData(b);
+          }}
+        />
+      ) : (
+        <Card withBorder p="lg" radius="md" shadow="sm">
+          <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb="sm">
+            {t("odTitle")}
           </Text>
-        ) : (
-          <Stack gap="sm">
-            {data.activation_keys.map((k) => (
-              <Card key={k.id} withBorder p="sm" radius="sm">
-                <Group justify="space-between">
-                  <Text size="sm" ff="monospace">
-                    {k.masked_key}
-                  </Text>
-                  <Badge color={keyStatusColor(k.status)}>{k.status}</Badge>
-                </Group>
-                <Text size="sm">{k.plan_name}</Text>
-                <Text size="xs" c="dimmed">
-                  {t("keyActivated")}: {formatDate(k.issued_at, locale)}
-                  {k.valid_until &&
-                    ` · ${t("validUntil")}: ${formatDate(k.valid_until, locale)}`}
-                </Text>
-              </Card>
-            ))}
+          <Stack gap="md">
+            <Text size="sm">{t("odPaidOnlyHint")}</Text>
+            <Button
+              component={Link}
+              href={data.actions.pricing_path || "/marketing/pricing"}
+              variant="light"
+              size="sm"
+              className="btn-metallic btn-metallic-outline"
+              color="silver"
+            >
+              {t("odPaidOnlyCta")}
+            </Button>
           </Stack>
-        )}
-      </Card>
-
-      <OnDemandUsageSection
-        onDemand={data.on_demand}
-        usedMonthUsd={usageOnDemandUsd}
-        onRefresh={async () => {
-          const b = await getBillingSummary();
-          setData(b);
-        }}
-      />
+        </Card>
+      )}
     </Stack>
   );
 }

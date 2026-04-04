@@ -886,20 +886,8 @@ export type BillingSummary = {
     request_limit: number;
     device_limit: number;
   }>;
-  activation_keys: Array<{
-    id: number;
-    masked_key: string;
-    type: string;
-    plan_name: string;
-    status: string;
-    issued_at: string | null;
-    valid_from: string | null;
-    valid_until: string | null;
-    assigned_device_count: number | null;
-  }>;
   entitlements: {
     requests_per_month: number;
-    devices_max: number;
     sessions_max: number;
     devices_in_use: number;
     sessions_in_use: number;
@@ -908,7 +896,8 @@ export type BillingSummary = {
     show_upgrade: boolean;
     show_renew: boolean;
     pricing_path: string;
-    activate_key_path: string | null;
+    /** On-demand пополнение только при активной платной подписке (нет в старых ответах API — считать false). */
+    on_demand_available?: boolean;
   };
   on_demand: {
     balance_usd: string;
@@ -948,7 +937,6 @@ export type UsageDashboardResponse = {
     request_limit: number;
     requests_used_current_period: number;
     billing_period: string;
-    device_limit: number;
     devices_in_use: number;
     on_demand_used_usd?: string | null;
     on_demand_limit_type?: string | null;
@@ -956,7 +944,6 @@ export type UsageDashboardResponse = {
   };
   progress: {
     requests: { used: number; limit: number; percent: number };
-    devices: { used: number; limit: number; percent: number };
   };
   chart_points: Array<{
     date: string;

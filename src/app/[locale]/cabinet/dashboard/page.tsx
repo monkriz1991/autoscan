@@ -202,23 +202,6 @@ export default function CabinetDashboardPage() {
               radius="xl"
               mb="lg"
             />
-            <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb="md">
-              {t("progressDevices")}
-            </Text>
-            <Group justify="space-between" mb="xs">
-              <Text size="sm" fw={500}>
-                {data.limits.devices_in_use} / {data.limits.device_limit}
-              </Text>
-              <Text size="sm" fw={600}>
-                {Math.round(data.progress.devices.percent)}%
-              </Text>
-            </Group>
-            <Progress
-              value={data.progress.devices.percent}
-              color="blue"
-              size="md"
-              radius="xl"
-            />
             {data.limits.on_demand_limit_type != null && (
               <Text size="sm" c="dimmed" mt="md">
                 {t("onDemandUsageLine", {

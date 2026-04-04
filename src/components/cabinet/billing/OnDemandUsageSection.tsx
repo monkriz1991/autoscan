@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import {
   Badge,
   Button,
@@ -21,19 +21,9 @@ import {
   listOnDemandInvoices,
   listOnDemandTransactions,
 } from "@/lib/api";
+import { formatUsd } from "@/lib/formatUsd";
 
 const MIN_TOPUP_USD = 5;
-
-function formatUsd(amount: string | number): string {
-  const n = typeof amount === "string" ? Number.parseFloat(amount) : amount;
-  if (Number.isNaN(n)) return "$0.00";
-  return new Intl.NumberFormat(undefined, {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(n);
-}
 
 function invoiceStatusColor(s: string): string {
   if (s === "paid") return "green";
@@ -55,6 +45,7 @@ export function OnDemandUsageSection({
   onRefresh,
 }: Props) {
   const t = useTranslations("billingPage");
+  const locale = useLocale();
   const [amount, setAmount] = useState<number | string>(MIN_TOPUP_USD);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -148,13 +139,13 @@ export function OnDemandUsageSection({
         </Text>
         {usedMonthUsd != null && Number.parseFloat(usedMonthUsd) > 0 && (
           <Text size="sm" c="dimmed" mb="sm">
-            {t("odUsedMonth", { used: formatUsd(usedMonthUsd) })}
+            {t("odUsedMonth", { used: formatUsd(usedMonthUsd, locale) })}
           </Text>
         )}
         <Group justify="space-between" align="flex-start" wrap="wrap" mb="sm">
           <div>
             <Text size="xl" fw={700}>
-              {formatUsd(onDemand.balance_usd)}
+              {formatUsd(onDemand.balance_usd, locale)}
             </Text>
             <Text size="sm" c="dimmed">
               {balanceNum <= 0
@@ -170,7 +161,7 @@ export function OnDemandUsageSection({
             <Text size="sm">
               {t("odInvoiceNumber")}: {pending.invoice_number}
             </Text>
-            <Text size="sm">{formatUsd(pending.amount_usd)}</Text>
+            <Text size="sm">{formatUsd(pending.amount_usd, locale)}</Text>
             {pending.expired_at && (
               <Text size="xs" c="dimmed">
                 {t("odExpires")}: {new Date(pending.expired_at).toLocaleString()}
@@ -263,7 +254,7 @@ export function OnDemandUsageSection({
               {invoices.map((row) => (
                 <Table.Tr key={row.id}>
                   <Table.Td>{row.invoice_number}</Table.Td>
-                  <Table.Td>{formatUsd(row.amount_usd)}</Table.Td>
+                  <Table.Td>{formatUsd(row.amount_usd, locale)}</Table.Td>
                   <Table.Td>
                     {new Date(row.created_at).toLocaleDateString()}
                   </Table.Td>
@@ -304,8 +295,8 @@ export function OnDemandUsageSection({
                     {new Date(row.created_at).toLocaleString()}
                   </Table.Td>
                   <Table.Td>{t(`odTx_${row.transaction_type}`)}</Table.Td>
-                  <Table.Td>{formatUsd(row.amount_usd)}</Table.Td>
-                  <Table.Td>{formatUsd(row.balance_after_usd)}</Table.Td>
+                  <Table.Td>{formatUsd(row.amount_usd, locale)}</Table.Td>
+                  <Table.Td>{formatUsd(row.balance_after_usd, locale)}</Table.Td>
                 </Table.Tr>
               ))}
             </Table.Tbody>

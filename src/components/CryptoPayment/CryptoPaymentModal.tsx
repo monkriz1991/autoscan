@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   Modal,
   Text,
@@ -21,15 +22,16 @@ type Props = {
 };
 
 /**
- * Модалка оплаты USDT TRC-20 через Plisio:
- * создаёт инвойс и перенаправляет пользователя на страницу оплаты Plisio.
+ * Модалка оплаты через Plisio: инвойс без фиксированной валюты — монету и сеть пользователь выбирает на стороне Plisio.
  */
 export function CryptoPaymentModal({
   planId,
   planName,
   opened,
   onClose,
+  onSuccess,
 }: Props) {
+  const t = useTranslations("billingPage");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -39,19 +41,19 @@ export function CryptoPaymentModal({
     try {
       const data = await createPlisioInvoice(planId);
       if (data.invoice_url) {
+        onSuccess();
         window.location.href = data.invoice_url;
       } else {
-        setError("Не удалось получить ссылку на оплату.");
+        setError(t("cryptoNoInvoiceUrl"));
       }
     } catch (e: unknown) {
-      const msg = e instanceof ApiError ? e.message : "Не удалось создать платёж";
+      const msg = e instanceof ApiError ? e.message : t("cryptoCreateError");
       setError(msg);
     } finally {
       setLoading(false);
     }
-  }, [planId]);
+  }, [planId, t, onSuccess]);
 
-  // Запускаем создание инвойса при открытии модала
   useEffect(() => {
     if (!opened) {
       setError(null);
@@ -65,23 +67,26 @@ export function CryptoPaymentModal({
     <Modal
       opened={opened}
       onClose={onClose}
-      title={`Оплата ${planName} (USDT TRC-20)`}
+      title={t("cryptoModalTitle", { plan: planName })}
       size="sm"
     >
-      {loading && (
+      {loading && !error && (
         <Stack align="center" py="xl">
           <Loader />
-          <Text size="sm" c="dimmed">
-            Создаём счёт на оплату…
+          <Text size="sm" c="dimmed" ta="center">
+            {t("cryptoCreatingInvoice")}
+          </Text>
+          <Text size="xs" c="dimmed" ta="center">
+            {t("cryptoPlisioSelectHint")}
           </Text>
         </Stack>
       )}
 
-      {error && !loading && (
-        <Alert color="red" title="Ошибка">
+      {error && (
+        <Alert color="red" title={t("cryptoErrorTitle")}>
           {error}
           <Button variant="light" mt="sm" onClick={() => void startPayment()}>
-            Повторить
+            {t("cryptoRetry")}
           </Button>
         </Alert>
       )}
@@ -90,7 +95,7 @@ export function CryptoPaymentModal({
         <Stack align="center" py="md">
           <IconExternalLink size={40} color="var(--mantine-color-teal-6)" />
           <Text size="sm" ta="center" c="dimmed">
-            Перенаправляем на страницу оплаты Plisio…
+            {t("cryptoRedirecting")}
           </Text>
         </Stack>
       )}

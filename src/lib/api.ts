@@ -798,12 +798,29 @@ export type PlisioCreateInvoiceResponse = {
   invoice_url: string;
 };
 
+export type PlisioAllowedCurrency = { id: string; label: string };
+
+export type PlisioAllowedCurrenciesResponse = {
+  currencies: PlisioAllowedCurrency[];
+};
+
+export async function getPlisioAllowedCurrencies(): Promise<PlisioAllowedCurrenciesResponse> {
+  return request<PlisioAllowedCurrenciesResponse>(
+    "billing/plisio/allowed-currencies/",
+  );
+}
+
 export async function createPlisioInvoice(
   planId: number,
+  currency?: string | null,
 ): Promise<PlisioCreateInvoiceResponse> {
+  const body: Record<string, unknown> = { plan_id: planId };
+  if (currency != null && String(currency).trim() !== "") {
+    body.currency = String(currency).trim();
+  }
   return request<PlisioCreateInvoiceResponse>("billing/plisio/create-invoice/", {
     method: "POST",
-    body: JSON.stringify({ plan_id: planId }),
+    body: JSON.stringify(body),
   });
 }
 
@@ -847,8 +864,15 @@ export async function getUsageStatus(): Promise<UsageStatus> {
 
 export type BillingSummaryPayment = {
   id: number;
+  /** Сумма в USD (legacy; дублирует amount_usd). */
   amount: string;
+  /** Код валюты оплаты на стороне Plisio (крипто); дублирует pay_currency. */
   currency: string;
+  amount_usd?: string;
+  pay_currency?: string;
+  /** Человекочитаемое имя валюты Plisio (маппинг с бэка); неизвестный код = сам код. */
+  pay_currency_label?: string;
+  amount_crypto?: string | null;
   status: string;
   provider: string;
   plan_name: string;
@@ -1053,10 +1077,15 @@ export async function listOnDemandInvoices(): Promise<
 
 export async function createOnDemandInvoice(
   amount_usd: string,
+  currency?: string | null,
 ): Promise<OnDemandInvoiceCreated> {
+  const body: Record<string, unknown> = { amount_usd };
+  if (currency != null && String(currency).trim() !== "") {
+    body.currency = String(currency).trim();
+  }
   return request<OnDemandInvoiceCreated>("billing/on-demand/invoices/", {
     method: "POST",
-    body: JSON.stringify({ amount_usd }),
+    body: JSON.stringify(body),
   });
 }
 

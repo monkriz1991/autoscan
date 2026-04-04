@@ -242,7 +242,7 @@ export default function CheckoutPlanPage() {
                       label={
                         <Group gap="xs" wrap="nowrap">
                           <IconCurrencyBitcoin size={18} aria-hidden />
-                          <span>{t("methodCryptoTrc20")}</span>
+                          <span>{t("methodCryptoPlisio")}</span>
                         </Group>
                       }
                     />

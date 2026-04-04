@@ -21,7 +21,25 @@ import {
   getBillingSummary,
   getUsageStatus,
   type BillingSummary,
+  type BillingSummaryPayment,
 } from "@/lib/api";
+import { formatUsd } from "@/lib/formatUsd";
+
+function formatPaymentHistoryAmount(
+  p: BillingSummaryPayment,
+  locale: string,
+  label: (values: { usd: string; crypto: string }) => string,
+): string {
+  const fiat = p.amount_usd ?? p.amount;
+  const coinCode = p.pay_currency ?? p.currency;
+  const coin =
+    p.pay_currency_label?.trim() || coinCode;
+  const usd = formatUsd(fiat, locale);
+  const cryptoPart = p.amount_crypto?.trim()
+    ? `${p.amount_crypto.trim()} ${coin}`.trim()
+    : coin;
+  return label({ usd, crypto: cryptoPart });
+}
 
 function formatDate(iso: string | null | undefined, locale: string): string {
   if (!iso) return "—";
@@ -200,7 +218,9 @@ export default function CabinetBillingPage() {
                       {formatDate(p.paid_at ?? p.created_at, locale)}
                     </Table.Td>
                     <Table.Td>
-                      {p.amount} {p.currency}
+                      {formatPaymentHistoryAmount(p, locale, (v) =>
+                        t("paymentAmountDisplay", v),
+                      )}
                     </Table.Td>
                     <Table.Td>{p.provider}</Table.Td>
                     <Table.Td>

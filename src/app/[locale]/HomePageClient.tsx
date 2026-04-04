@@ -248,36 +248,72 @@ function CtaSection({ authenticated }: { authenticated: boolean }) {
 
   return (
     <Box
+      className="home-cta-section"
       style={{
-        background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+        position: "relative",
         borderRadius: 24,
-        padding: "56px 24px",
-        textAlign: "center",
+        overflow: "hidden",
         marginTop: 20,
         marginBottom: 40,
-        color: "white",
+        backgroundColor: "#0f172a",
+        minHeight: "clamp(260px, 34vw, 360px)",
       }}
     >
-      <Title order={2} c="white" mb="sm" style={{ fontWeight: 400, letterSpacing: "-0.03em" }}>
-        {t("ctaTitle")}
-      </Title>
-      <Text size="lg" mb="xl" style={{ color: "#cbd5e1" }} maw={600} mx="auto">
-        {t("ctaDesc")}
-      </Text>
+      <Box className="home-cta-section__media">
+        <Image
+          src="/fary.png"
+          alt=""
+          fill
+          className="home-cta-section__image"
+          sizes="(max-width: 768px) 100vw, min(1180px, 100vw)"
+          style={{ objectFit: "cover", objectPosition: "center 60%" }}
+        />
+      </Box>
+      {/* Затемнение: центр слабее для текста, по краям чуть сильнее — фары остаются заметными */}
+      <Box
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "radial-gradient(ellipse 72% 88% at 50% 42%, rgba(15,23,42,0.22) 0%, rgba(15,23,42,0.72) 62%, rgba(15,23,42,0.86) 100%)",
+          pointerEvents: "none",
+        }}
+      />
+      <Stack
+        gap="md"
+        align="center"
+        justify="center"
+        style={{
+          position: "relative",
+          zIndex: 1,
+          padding: "clamp(40px, 5vw, 56px) 24px",
+          minHeight: "clamp(260px, 34vw, 360px)",
+          textAlign: "center",
+          color: "white",
+        }}
+      >
+        <Title order={2} c="white" mb="sm" style={{ fontWeight: 400, letterSpacing: "-0.03em" }}>
+          {t("ctaTitle")}
+        </Title>
+        <Text size="lg" mb="xl" style={{ color: "#e2e8f0" }} maw={600} mx="auto">
+          {t("ctaDesc")}
+        </Text>
 
-      {!authenticated ? (
-        <Link href="/register" style={{ textDecoration: "none" }}>
-          <Button className="btn-metallic" color="silver" radius="xl" size="lg" px={40}>
-            {t("ctaButton")}
-          </Button>
-        </Link>
-      ) : (
-        <Link href="/cabinet/dashboard" style={{ textDecoration: "none" }}>
-          <Button className="btn-metallic" color="silver" radius="xl" size="lg" px={40}>
-            {t("heroStart")}
-          </Button>
-        </Link>
-      )}
+        {!authenticated ? (
+          <Link href="/register" style={{ textDecoration: "none" }}>
+            <Button className="btn-metallic" color="silver" radius="xl" size="lg" px={40}>
+              {t("ctaButton")}
+            </Button>
+          </Link>
+        ) : (
+          <Link href="/cabinet/dashboard" style={{ textDecoration: "none" }}>
+            <Button className="btn-metallic" color="silver" radius="xl" size="lg" px={40}>
+              {t("heroStart")}
+            </Button>
+          </Link>
+        )}
+      </Stack>
     </Box>
   );
 }

@@ -489,6 +489,34 @@ body {
   }
 }
 
+/* Главная: CTA — центр кадра ниже на 10%, базовый зум +20%; при hover ещё +20% */
+.home-cta-section__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.home-cta-section__image {
+  transition: transform 0.55s ease;
+  transform: scale(1.2);
+  transform-origin: 50% 60%;
+}
+
+.home-cta-section:hover .home-cta-section__image {
+  transform: scale(1.44);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-cta-section__image {
+    transition: none;
+  }
+
+  .home-cta-section:hover .home-cta-section__image {
+    transform: scale(1.2);
+  }
+}
+
 /* ========== Mobile (< 768px) ========== */
 @media (max-width: 767px) {
   .navbar {
@@ -575,6 +603,11 @@ body {
     -webkit-overflow-scrolling: touch;
     margin: 0 -12px;
     padding: 0 12px;
+  }
+
+  /* CTA главной: панорама с фарами по краям — на узком экране не обрезать края */
+  .home-cta-section .home-cta-section__image {
+    object-fit: contain !important;
   }
 
   /* CarHero: уменьшить отступы на мобильных */

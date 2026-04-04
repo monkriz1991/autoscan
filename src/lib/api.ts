@@ -190,6 +190,9 @@ export type RegisterPayload = {
   password2: string;
   captcha_token: string;
   captcha_answer: number;
+  accept_terms: boolean;
+  accept_privacy_policy: boolean;
+  accept_disclaimer: boolean;
 };
 
 export type RegisterResponse = {
@@ -412,6 +415,18 @@ export async function getAdminUser(id: string | number): Promise<AdminUser> {
 
 /* ========== Billing ========== */
 
+/** Флаги тарифа с API (ключи без префикса feature_). */
+export type PlanFeatures = {
+  unlimited_devices: boolean;
+  scan_errors: boolean;
+  view_params: boolean;
+  vehicle_config: boolean;
+  ai_chat_history: boolean;
+  record_params: boolean;
+  metrics_history: boolean;
+  realtime_analysis: boolean;
+};
+
 export type Plan = {
   id: number;
   name: string;
@@ -422,6 +437,7 @@ export type Plan = {
   max_devices: number;
   max_requests?: number;
   sort_order: number;
+  features?: PlanFeatures;
 };
 
 /** Идентификатор способа оплаты на checkout (расширяется при добавлении шлюзов). */

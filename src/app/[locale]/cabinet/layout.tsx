@@ -3,7 +3,6 @@ import React from "react";
 import Navbar from "@/components/ui/Navbar";
 import CabinetSidebar from "@/components/ui/CabinetSidebar";
 import DevBanner from "@/components/ui/DevBanner";
-import Footer from "@/components/ui/Footer";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -28,7 +27,6 @@ export default function CabinetLayout({
           </div>
         </main>
       </div>
-      <Footer />
     </div>
   );
 }

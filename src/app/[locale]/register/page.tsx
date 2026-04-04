@@ -3,16 +3,19 @@
 import { Suspense, useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { useRouter } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import {
-  Container,
+  Anchor,
   Card,
-  Title,
-  TextInput,
-  PasswordInput,
-  Button,
-  Stack,
+  Checkbox,
+  Container,
   Notification,
+  PasswordInput,
+  Stack,
+  Text,
+  TextInput,
+  Button,
+  Title,
 } from "@mantine/core";
 import { register, getCaptcha, ApiError } from "@/lib/api";
 
@@ -20,6 +23,7 @@ const DEFAULT_AFTER_AUTH = "/cabinet/dashboard";
 
 function RegisterForm() {
   const t = useTranslations("auth");
+  const tFooter = useTranslations("footer");
   const router = useRouter();
   const searchParams = useSearchParams();
   const nextUrl = searchParams.get("next") || DEFAULT_AFTER_AUTH;
@@ -29,6 +33,9 @@ function RegisterForm() {
   const [password2, setPassword2] = useState("");
   const [captchaAnswer, setCaptchaAnswer] = useState("");
   const [captcha, setCaptcha] = useState<{ a: number; b: number; c: number; token: string } | null>(null);
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [acceptPrivacy, setAcceptPrivacy] = useState(false);
+  const [acceptDisclaimer, setAcceptDisclaimer] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -77,6 +84,11 @@ function RegisterForm() {
       return;
     }
 
+    if (!acceptTerms || !acceptPrivacy || !acceptDisclaimer) {
+      setError(t("legalMustAcceptAll"));
+      return;
+    }
+
     try {
       setLoading(true);
 
@@ -86,6 +98,9 @@ function RegisterForm() {
         password2,
         captcha_token: captcha.token,
         captcha_answer: answer,
+        accept_terms: true,
+        accept_privacy_policy: true,
+        accept_disclaimer: true,
       });
 
       if (data.access && data.refresh) {
@@ -108,6 +123,14 @@ function RegisterForm() {
           Object.values(d.detail as Record<string, string[]>).flat().forEach((m) =>
             messages.push(String(m)),
           );
+        }
+        for (const [key, val] of Object.entries(d)) {
+          if (key === "detail") continue;
+          if (Array.isArray(val)) {
+            val.forEach((m) => messages.push(String(m)));
+          } else if (typeof val === "string") {
+            messages.push(val);
+          }
         }
         setError(messages.length > 0 ? messages.join(". ") : err.message);
       } else {
@@ -150,6 +173,45 @@ function RegisterForm() {
             value={password2}
             onChange={(e) => setPassword2(e.target.value)}
           />
+
+          <Stack gap="xs">
+            <Checkbox
+              checked={acceptTerms}
+              onChange={(e) => setAcceptTerms(e.currentTarget.checked)}
+              label={
+                <Text size="sm" component="span">
+                  {t("legalReadDoc")}{" "}
+                  <Anchor component={Link} href="/marketing/terms" size="sm" inherit underline="always">
+                    {tFooter("terms")}
+                  </Anchor>
+                </Text>
+              }
+            />
+            <Checkbox
+              checked={acceptPrivacy}
+              onChange={(e) => setAcceptPrivacy(e.currentTarget.checked)}
+              label={
+                <Text size="sm" component="span">
+                  {t("legalReadDoc")}{" "}
+                  <Anchor component={Link} href="/marketing/privacy" size="sm" inherit underline="always">
+                    {tFooter("privacy")}
+                  </Anchor>
+                </Text>
+              }
+            />
+            <Checkbox
+              checked={acceptDisclaimer}
+              onChange={(e) => setAcceptDisclaimer(e.currentTarget.checked)}
+              label={
+                <Text size="sm" component="span">
+                  {t("legalReadDoc")}{" "}
+                  <Anchor component={Link} href="/marketing/disclaimer" size="sm" inherit underline="always">
+                    {tFooter("disclaimer")}
+                  </Anchor>
+                </Text>
+              }
+            />
+          </Stack>
 
           {captcha && (
             <TextInput

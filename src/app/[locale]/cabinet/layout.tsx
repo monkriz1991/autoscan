@@ -3,6 +3,7 @@ import React from "react";
 import Navbar from "@/components/ui/Navbar";
 import CabinetSidebar from "@/components/ui/CabinetSidebar";
 import DevBanner from "@/components/ui/DevBanner";
+import UserLocaleSync from "@/components/ui/UserLocaleSync";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -17,6 +18,7 @@ export default function CabinetLayout({
 }) {
   return (
     <div className="layout layout--cabinet">
+      <UserLocaleSync />
       <Navbar />
       <div className="layout__body">
         <CabinetSidebar />

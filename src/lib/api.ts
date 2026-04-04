@@ -306,6 +306,7 @@ export type UserProfile = {
   first_name?: string;
   last_name?: string;
   avatar_url?: string;
+  interface_locale?: string;
   is_staff?: boolean;
   is_premium?: boolean;
   license?: unknown;
@@ -336,7 +337,7 @@ export async function deleteUserDeviceSession(id: number): Promise<void> {
 }
 
 export type UserProfileUpdate = Partial<
-  Pick<UserProfile, "first_name" | "last_name" | "avatar_url">
+  Pick<UserProfile, "first_name" | "last_name" | "avatar_url" | "interface_locale">
 >;
 
 export async function updateMe(payload: UserProfileUpdate): Promise<UserProfile> {

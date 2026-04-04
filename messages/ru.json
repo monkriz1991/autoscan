@@ -358,7 +358,17 @@
     "cryptoTotalHint": "Монету и сеть вы выберете на странице оплаты Plisio. Сумма в USD — как в итоге выше.",
     "requests": "Запросов в месяц",
     "freeNoPayment": "Бесплатный тариф не требует оплаты.",
-    "retry": "Повторить"
+    "retry": "Повторить",
+    "upgradeTitle": "Апгрейд — доплата с учётом остатка",
+    "upgradeTargetPlan": "Новый тариф: {plan}",
+    "upgradeFullNewPrice": "Полная цена нового тарифа",
+    "upgradeCreditTime": "Кредит за время ({days} из {total} дн. осталось)",
+    "upgradeCreditRequests": "Кредит за запросы ({used} / {limit} за месяц)",
+    "upgradeCreditApplied": "Итоговый кредит (максимум из двух)",
+    "upgradeAmountDue": "К доплате сейчас",
+    "upgradeFootnote": "В вашу пользу берётся больший из кредитов по времени и по запросам. На Plisio списывается сумма «к доплате».",
+    "upgradeCryptoHint": "На странице Plisio вы оплатите сумму к доплате (эквивалент в выбранной криптовалюте).",
+    "upgradeCalculating": "Считаем стоимость апгрейда…"
   },
   "vehicle": {
     "title": "Мои автомобили",

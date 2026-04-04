@@ -358,7 +358,17 @@
     "cryptoTotalHint": "You will choose the coin and network on the Plisio payment page. The USD total above is what you pay.",
     "requests": "Requests per month",
     "freeNoPayment": "The free plan does not require payment.",
-    "retry": "Retry"
+    "retry": "Retry",
+    "upgradeTitle": "Upgrade — prorated top-up",
+    "upgradeTargetPlan": "New plan: {plan}",
+    "upgradeFullNewPrice": "New plan list price",
+    "upgradeCreditTime": "Time credit ({days} of {total} days left)",
+    "upgradeCreditRequests": "Request credit ({used} / {limit} used this month)",
+    "upgradeCreditApplied": "Credit applied (max of the two)",
+    "upgradeAmountDue": "Amount due now",
+    "upgradeFootnote": "We apply the larger of the time-based and request-based credits in your favor. The charge on Plisio matches the amount due above.",
+    "upgradeCryptoHint": "You will pay the amount due on the Plisio page (USD equivalent of the top-up).",
+    "upgradeCalculating": "Checking upgrade pricing…"
   },
   "vehicle": {
     "title": "My vehicles",

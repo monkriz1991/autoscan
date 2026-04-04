@@ -11,7 +11,7 @@ import {
   Alert,
 } from "@mantine/core";
 import { IconExternalLink } from "@tabler/icons-react";
-import { ApiError, createPlisioInvoice } from "@/lib/api";
+import { ApiError, createPlisioInvoice, createUpgradeInvoice } from "@/lib/api";
 
 type Props = {
   planId: number;
@@ -19,6 +19,8 @@ type Props = {
   opened: boolean;
   onClose: () => void;
   onSuccess: () => void;
+  /** full — обычный инвойс на цену плана; upgrade — доплата по preview */
+  paymentMode?: "full" | "upgrade";
 };
 
 /**
@@ -30,6 +32,7 @@ export function CryptoPaymentModal({
   opened,
   onClose,
   onSuccess,
+  paymentMode = "full",
 }: Props) {
   const t = useTranslations("billingPage");
   const [loading, setLoading] = useState(false);
@@ -39,7 +42,10 @@ export function CryptoPaymentModal({
     setLoading(true);
     setError(null);
     try {
-      const data = await createPlisioInvoice(planId);
+      const data =
+        paymentMode === "upgrade"
+          ? await createUpgradeInvoice(planId)
+          : await createPlisioInvoice(planId);
       if (data.invoice_url) {
         onSuccess();
         window.location.href = data.invoice_url;
@@ -52,7 +58,7 @@ export function CryptoPaymentModal({
     } finally {
       setLoading(false);
     }
-  }, [planId, t, onSuccess]);
+  }, [planId, paymentMode, t, onSuccess]);
 
   useEffect(() => {
     if (!opened) {

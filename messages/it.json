@@ -358,7 +358,17 @@
     "cryptoTotalHint": "Moneta e rete le scegli nella pagina di pagamento Plisio. L'importo in USD è quello nel totale sopra.",
     "requests": "Richieste al mese",
     "freeNoPayment": "Il piano gratuito non richiede pagamento.",
-    "retry": "Riprova"
+    "retry": "Riprova",
+    "upgradeTitle": "Upgrade — integrazione proporzionale",
+    "upgradeTargetPlan": "Nuovo piano: {plan}",
+    "upgradeFullNewPrice": "Prezzo di listino del nuovo piano",
+    "upgradeCreditTime": "Credito tempo ({days} di {total} giorni rimanenti)",
+    "upgradeCreditRequests": "Credito richieste ({used} / {limit} usate questo mese)",
+    "upgradeCreditApplied": "Credito applicato (massimo dei due)",
+    "upgradeAmountDue": "Da pagare ora",
+    "upgradeFootnote": "Si applica il maggiore dei due crediti a vostro favore. Su Plisio l’addebito corrisponde all’importo sopra.",
+    "upgradeCryptoHint": "Su Plisio pagherete l’importo dovuto (equivalente USD).",
+    "upgradeCalculating": "Calcolo prezzo upgrade…"
   },
   "vehicle": {
     "title": "I miei veicoli",

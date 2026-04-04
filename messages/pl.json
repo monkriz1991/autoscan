@@ -358,7 +358,17 @@
     "cryptoTotalHint": "Monetę i sieć wybierzesz na stronie płatności Plisio. Kwota w USD — jak w podsumowaniu powyżej.",
     "requests": "Zapytań miesięcznie",
     "freeNoPayment": "Plan bezpłatny nie wymaga płatności.",
-    "retry": "Spróbuj ponownie"
+    "retry": "Spróbuj ponownie",
+    "upgradeTitle": "Ulepszenie — dopłata proporcjonalna",
+    "upgradeTargetPlan": "Nowy plan: {plan}",
+    "upgradeFullNewPrice": "Cena katalogowa nowego planu",
+    "upgradeCreditTime": "Kredyt czasowy ({days} z {total} dni pozostało)",
+    "upgradeCreditRequests": "Kredyt za zapytania ({used} / {limit} w tym miesiącu)",
+    "upgradeCreditApplied": "Zastosowany kredyt (większy z dwóch)",
+    "upgradeAmountDue": "Do zapłaty teraz",
+    "upgradeFootnote": "Stosujemy korzystniejszy dla Ciebie kredyt (czas lub zapytania). W Plisio pobierana jest kwota „do zapłaty”.",
+    "upgradeCryptoHint": "Na stronie Plisio zapłacisz kwotę do dopłaty (ekwiwalent w USD).",
+    "upgradeCalculating": "Obliczanie ceny ulepszenia…"
   },
   "vehicle": {
     "title": "Moje pojazdy",

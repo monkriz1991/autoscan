@@ -824,6 +824,56 @@ export async function createPlisioInvoice(
   });
 }
 
+/** Ответ GET billing/upgrade-preview/:id/ при eligible=true */
+export type UpgradePreview = {
+  current_plan_id: number;
+  target_plan_id: number;
+  p_old: string;
+  p_new: string;
+  currency: string;
+  d_total: number;
+  d_remaining: number;
+  credit_time: string;
+  request_limit: number;
+  requests_used: number;
+  credit_requests: string;
+  credit_applied: string;
+  upgrade_amount: string;
+};
+
+/**
+ * Если апгрейд недоступен (400) — null; иные ошибки пробрасываются.
+ */
+export async function getUpgradePreview(planId: number): Promise<UpgradePreview | null> {
+  try {
+    const data = await request<UpgradePreview & { eligible?: boolean }>(
+      `billing/upgrade-preview/${planId}/`,
+    );
+    if (data.eligible === false) return null;
+    return data;
+  } catch (e) {
+    if (e instanceof ApiError && e.status === 400) return null;
+    throw e;
+  }
+}
+
+export async function createUpgradeInvoice(
+  planId: number,
+  currency?: string | null,
+): Promise<PlisioCreateInvoiceResponse> {
+  const body: Record<string, unknown> = {};
+  if (currency != null && String(currency).trim() !== "") {
+    body.currency = String(currency).trim();
+  }
+  return request<PlisioCreateInvoiceResponse>(
+    `billing/upgrade/${planId}/create-invoice/`,
+    {
+      method: "POST",
+      body: JSON.stringify(body),
+    },
+  );
+}
+
 export type PlisioPaymentStatusResponse = {
   payment_id: number;
   plisio_invoice_id: string;

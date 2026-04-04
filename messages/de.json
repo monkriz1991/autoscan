@@ -358,7 +358,17 @@
     "cryptoTotalHint": "Coin und Netzwerk wählen Sie auf der Plisio-Zahlungsseite. Der USD-Betrag entspricht der Summe oben.",
     "requests": "Anfragen pro Monat",
     "freeNoPayment": "Der kostenlose Tarif erfordert keine Zahlung.",
-    "retry": "Erneut versuchen"
+    "retry": "Erneut versuchen",
+    "upgradeTitle": "Upgrade — anteilige Nachzahlung",
+    "upgradeTargetPlan": "Neuer Tarif: {plan}",
+    "upgradeFullNewPrice": "Listenpreis des neuen Tarifs",
+    "upgradeCreditTime": "Zeitguthaben ({days} von {total} Tagen verbleibend)",
+    "upgradeCreditRequests": "Anfrageguthaben ({used} / {limit} diesen Monat genutzt)",
+    "upgradeCreditApplied": "Angewandtes Guthaben (Maximum beider)",
+    "upgradeAmountDue": "Jetzt fällig",
+    "upgradeFootnote": "Es gilt das höhere der beiden Guthaben zu Ihren Gunsten. Bei Plisio entspricht die Belastung dem fälligen Betrag.",
+    "upgradeCryptoHint": "Auf der Plisio-Seite zahlen Sie den fälligen Betrag (USD-Äquivalent).",
+    "upgradeCalculating": "Upgrade-Preis wird berechnet…"
   },
   "vehicle": {
     "title": "Meine Fahrzeuge",

@@ -24,10 +24,13 @@ import { IconCurrencyBitcoin } from "@tabler/icons-react";
 import {
   ApiError,
   getPlanById,
+  getUpgradePreview,
   isAuthenticated,
   type PaymentMethodId,
   type Plan,
+  type UpgradePreview,
 } from "@/lib/api";
+import { UpgradePreviewCard } from "@/components/billing/UpgradePreviewCard";
 import { CryptoPaymentModal } from "@/components/CryptoPayment/CryptoPaymentModal";
 
 /** Способы оплаты на витрине; при добавлении шлюзов — новые элементы и ветки в handlePay. */
@@ -63,6 +66,8 @@ export default function CheckoutPlanPage() {
   const [loading, setLoading] = useState(true);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethodId>("crypto_trc20");
   const [cryptoModalOpen, setCryptoModalOpen] = useState(false);
+  const [upgradePreview, setUpgradePreview] = useState<UpgradePreview | null>(null);
+  const [upgradePreviewLoading, setUpgradePreviewLoading] = useState(false);
 
   const isFreeTier = plan ? plan.tier === "free" : false;
   const authenticated = isAuthenticated();
@@ -91,6 +96,29 @@ export default function CheckoutPlanPage() {
   useEffect(() => {
     void loadPlan();
   }, [loadPlan]);
+
+  useEffect(() => {
+    if (!authenticated || !plan || plan.tier === "free") {
+      setUpgradePreview(null);
+      setUpgradePreviewLoading(false);
+      return;
+    }
+    let cancelled = false;
+    setUpgradePreviewLoading(true);
+    void getUpgradePreview(plan.id)
+      .then((prev) => {
+        if (!cancelled) setUpgradePreview(prev);
+      })
+      .catch(() => {
+        if (!cancelled) setUpgradePreview(null);
+      })
+      .finally(() => {
+        if (!cancelled) setUpgradePreviewLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [authenticated, plan]);
 
   const defaultMethod = useMemo(() => {
     const first = PAYMENT_METHODS.find((m) => m.available);
@@ -204,18 +232,30 @@ export default function CheckoutPlanPage() {
           </Group>
           <Group justify="space-between">
             <Text fw={700} size="lg">
-              {t("total")}
+              {upgradePreview ? t("upgradeAmountDue") : t("total")}
             </Text>
             <Text fw={700} size="lg">
-              {p.price} {p.currency}
+              {upgradePreview
+                ? `${upgradePreview.upgrade_amount} ${upgradePreview.currency}`
+                : `${p.price} ${p.currency}`}
             </Text>
           </Group>
           {authenticated && !isFreeTier && (
             <Text size="xs" c="dimmed" mt="sm">
-              {t("cryptoTotalHint")}
+              {upgradePreview ? t("upgradeCryptoHint") : t("cryptoTotalHint")}
             </Text>
           )}
         </Card>
+
+        {authenticated && !isFreeTier && upgradePreviewLoading && (
+          <Text size="sm" c="dimmed">
+            {t("upgradeCalculating")}
+          </Text>
+        )}
+
+        {authenticated && !isFreeTier && upgradePreview && (
+          <UpgradePreviewCard preview={upgradePreview} targetPlanName={p.name} />
+        )}
 
         {isFreeTier ? (
           <Stack gap="md">
@@ -277,6 +317,7 @@ export default function CheckoutPlanPage() {
           planId={p.id}
           planName={p.name}
           opened={cryptoModalOpen}
+          paymentMode={upgradePreview ? "upgrade" : "full"}
           onClose={() => setCryptoModalOpen(false)}
           onSuccess={() => {
             setCryptoModalOpen(false);

@@ -17,13 +17,14 @@ export default function RootLayoutContent({
 }) {
   const pathname = usePathname();
   const useOwnLayout = hasOwnLayout(pathname ?? "");
+  const isHome = pathname === "/";
 
   if (useOwnLayout) {
     return <>{children}</>;
   }
 
   return (
-    <div className="layout">
+    <div className={`layout ${isHome ? "layout--home" : ""}`}>
       <Navbar />
       <main className="layout__main">
         <div className="container">{children}</div>

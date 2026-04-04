@@ -19,7 +19,7 @@ function HeroSection({ authenticated }: { authenticated: boolean }) {
   const t = useTranslations("home");
   return (
     <Box
-      className="car-hero"
+      className="car-hero home-hero"
       style={{
         width: "100vw",
         position: "relative",
@@ -29,7 +29,6 @@ function HeroSection({ authenticated }: { authenticated: boolean }) {
         marginRight: "-50vw",
         marginTop: "-40px",
         padding: "72px 24px 64px",
-        background: "#f4f5f7",
         overflow: "hidden",
       }}
     >
@@ -55,6 +54,7 @@ function HeroSection({ authenticated }: { authenticated: boolean }) {
         </Text>
 
         <Box
+          className="home-hero-media"
           style={{
             width: "min(920px, 100%)",
             position: "relative",
@@ -66,23 +66,12 @@ function HeroSection({ authenticated }: { authenticated: boolean }) {
             src="/car-hero.png"
             alt={t("heroTitle")}
             fill
+            className="home-hero-car-image"
             sizes="(max-width: 960px) 100vw, 920px"
             style={{ objectFit: "contain" }}
             priority
           />
-          <Box
-            aria-hidden
-            style={{
-              position: "absolute",
-              left: 0,
-              right: 0,
-              bottom: 0,
-              height: "55%",
-              background:
-                "linear-gradient(to bottom, transparent 0%, #f8f9fa 85%, #f8f9fa 100%)",
-              pointerEvents: "none",
-            }}
-          />
+          <Box aria-hidden className="home-hero-car-fade" />
         </Box>
 
         <Stack gap={10} align="center">
@@ -147,44 +136,70 @@ function FeaturesSection() {
   const t = useTranslations("home");
 
   return (
-    <Stack gap={32} py="xl">
-      <Title order={2} ta="center" style={{ fontWeight: 400, letterSpacing: "-0.03em" }}>
+    <Stack gap={32} py="xl" className="home-features-section">
+      <Title
+        order={2}
+        ta="center"
+        className="home-features-title"
+        style={{ fontWeight: 400, letterSpacing: "-0.03em" }}
+      >
         {t("featuresTitle")}
       </Title>
 
       <SimpleGrid cols={{ base: 1, md: 3 }} spacing="xl">
-        <Card withBorder shadow="sm" radius="md" padding="xl" style={{ border: "1px solid #eceef1" }}>
-          <ThemeIcon size={56} radius="md" variant="light" color="blue" mb="sm">
+        <Card withBorder shadow="sm" radius="md" padding="xl" className="home-feature-card">
+          <ThemeIcon
+            size={56}
+            radius="md"
+            variant="light"
+            color="blue"
+            mb="sm"
+            className="home-feature-icon"
+          >
             <IconBrain size={32} stroke={1.5} />
           </ThemeIcon>
-          <Text size="lg" fw={600} mb="xs">
+          <Text size="lg" fw={600} mb="xs" className="home-feature-card-title">
             {t("feature1Title")}
           </Text>
-          <Text size="sm" c="dimmed" style={{ lineHeight: 1.6 }}>
+          <Text size="sm" className="home-feature-card-desc">
             {t("feature1Desc")}
           </Text>
         </Card>
 
-        <Card withBorder shadow="sm" radius="md" padding="xl" style={{ border: "1px solid #eceef1" }}>
-          <ThemeIcon size={56} radius="md" variant="light" color="green" mb="sm">
+        <Card withBorder shadow="sm" radius="md" padding="xl" className="home-feature-card">
+          <ThemeIcon
+            size={56}
+            radius="md"
+            variant="light"
+            color="green"
+            mb="sm"
+            className="home-feature-icon"
+          >
             <IconActivity size={32} stroke={1.5} />
           </ThemeIcon>
-          <Text size="lg" fw={600} mb="xs">
+          <Text size="lg" fw={600} mb="xs" className="home-feature-card-title">
             {t("feature2Title")}
           </Text>
-          <Text size="sm" c="dimmed" style={{ lineHeight: 1.6 }}>
+          <Text size="sm" className="home-feature-card-desc">
             {t("feature2Desc")}
           </Text>
         </Card>
 
-        <Card withBorder shadow="sm" radius="md" padding="xl" style={{ border: "1px solid #eceef1" }}>
-          <ThemeIcon size={56} radius="md" variant="light" color="grape" mb="sm">
+        <Card withBorder shadow="sm" radius="md" padding="xl" className="home-feature-card">
+          <ThemeIcon
+            size={56}
+            radius="md"
+            variant="light"
+            color="grape"
+            mb="sm"
+            className="home-feature-icon"
+          >
             <IconBluetoothConnected size={32} stroke={1.5} />
           </ThemeIcon>
-          <Text size="lg" fw={600} mb="xs">
+          <Text size="lg" fw={600} mb="xs" className="home-feature-card-title">
             {t("feature3Title")}
           </Text>
-          <Text size="sm" c="dimmed" style={{ lineHeight: 1.6 }}>
+          <Text size="sm" className="home-feature-card-desc">
             {t("feature3Desc")}
           </Text>
         </Card>
@@ -197,47 +212,52 @@ function HowItWorksSection() {
   const t = useTranslations("home");
 
   return (
-    <Stack gap={32} py={40}>
-      <Title order={2} ta="center" style={{ fontWeight: 400, letterSpacing: "-0.03em" }}>
+    <Stack gap={32} py={40} className="home-how-section">
+      <Title
+        order={2}
+        ta="center"
+        className="home-how-title"
+        style={{ fontWeight: 400, letterSpacing: "-0.03em" }}
+      >
         {t("howItWorksTitle")}
       </Title>
 
       <SimpleGrid cols={{ base: 1, md: 3 }} spacing="xl">
-        <Box ta="center">
-          <ThemeIcon size={64} radius="xl" variant="filled" color="silver" mb="md" className="btn-metallic">
+        <Card withBorder shadow="sm" radius="md" padding="xl" className="home-how-card" ta="center">
+          <ThemeIcon size={64} radius="xl" variant="light" color="silver" mb="md" className="home-how-icon">
             <IconSettingsAutomation size={32} />
           </ThemeIcon>
-          <Title order={4} mb="xs">
+          <Title order={4} mb="xs" className="home-how-step-title">
             {t("step1Title")}
           </Title>
-          <Text size="sm" c="dimmed" maw={300} mx="auto">
+          <Text size="sm" maw={300} mx="auto" className="home-how-step-desc">
             {t("step1Desc")}
           </Text>
-        </Box>
+        </Card>
 
-        <Box ta="center">
-          <ThemeIcon size={64} radius="xl" variant="filled" color="silver" mb="md" className="btn-metallic">
+        <Card withBorder shadow="sm" radius="md" padding="xl" className="home-how-card" ta="center">
+          <ThemeIcon size={64} radius="xl" variant="light" color="silver" mb="md" className="home-how-icon">
             <IconDeviceDesktopAnalytics size={32} />
           </ThemeIcon>
-          <Title order={4} mb="xs">
+          <Title order={4} mb="xs" className="home-how-step-title">
             {t("step2Title")}
           </Title>
-          <Text size="sm" c="dimmed" maw={300} mx="auto">
+          <Text size="sm" maw={300} mx="auto" className="home-how-step-desc">
             {t("step2Desc")}
           </Text>
-        </Box>
+        </Card>
 
-        <Box ta="center">
-          <ThemeIcon size={64} radius="xl" variant="filled" color="silver" mb="md" className="btn-metallic">
+        <Card withBorder shadow="sm" radius="md" padding="xl" className="home-how-card" ta="center">
+          <ThemeIcon size={64} radius="xl" variant="light" color="silver" mb="md" className="home-how-icon">
             <IconCheck size={32} />
           </ThemeIcon>
-          <Title order={4} mb="xs">
+          <Title order={4} mb="xs" className="home-how-step-title">
             {t("step3Title")}
           </Title>
-          <Text size="sm" c="dimmed" maw={300} mx="auto">
+          <Text size="sm" maw={300} mx="auto" className="home-how-step-desc">
             {t("step3Desc")}
           </Text>
-        </Box>
+        </Card>
       </SimpleGrid>
     </Stack>
   );
@@ -248,14 +268,14 @@ function CtaSection({ authenticated }: { authenticated: boolean }) {
 
   return (
     <Box
-      className="home-cta-section"
+      className="home-cta-section home-cta-section--integrated"
       style={{
         position: "relative",
         borderRadius: 24,
         overflow: "hidden",
         marginTop: 20,
         marginBottom: 40,
-        backgroundColor: "#0f172a",
+        backgroundColor: "#070f1d",
         minHeight: "clamp(260px, 34vw, 360px)",
       }}
     >
@@ -276,7 +296,7 @@ function CtaSection({ authenticated }: { authenticated: boolean }) {
           position: "absolute",
           inset: 0,
           background:
-            "radial-gradient(ellipse 72% 88% at 50% 42%, rgba(15,23,42,0.22) 0%, rgba(15,23,42,0.72) 62%, rgba(15,23,42,0.86) 100%)",
+            "radial-gradient(ellipse 72% 88% at 50% 42%, rgba(7,15,29,0.28) 0%, rgba(7,15,29,0.8) 62%, rgba(7,15,29,0.94) 100%)",
           pointerEvents: "none",
         }}
       />
@@ -326,7 +346,7 @@ export default function HomePageClient() {
   }, []);
 
   return (
-    <Stack gap={0}>
+    <Stack gap={0} className="home-page">
       <HeroSection authenticated={authenticated} />
       <FeaturesSection />
       <HowItWorksSection />

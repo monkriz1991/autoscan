@@ -61,7 +61,7 @@ export default function PricingPage() {
       .then((data) => {
         const list = Array.isArray(data) ? data : data.results ?? [];
         const sorted = [...list].sort(
-          (a: Plan, b: Plan) => (a.sort_order ?? 0) - (b.sort_order ?? 0)
+          (a: Plan, b: Plan) => (b.sort_order ?? 0) - (a.sort_order ?? 0)
         );
         setPlans(sorted);
       })

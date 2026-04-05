@@ -771,7 +771,7 @@ export async function getPlans(): Promise<Plan[]> {
   if (!res.ok) throw new ApiError(res.status, await res.json().catch(() => ({})));
   const data = await res.json();
   const list = Array.isArray(data) ? data : (data as { results?: Plan[] }).results ?? [];
-  return [...list].sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+  return [...list].sort((a, b) => (b.sort_order ?? 0) - (a.sort_order ?? 0));
 }
 
 /** План по id из публичного списка тарифов (отдельного эндпоинта нет). */

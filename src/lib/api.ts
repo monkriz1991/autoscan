@@ -88,7 +88,9 @@ async function request<T>(
   const res = await fetch(url, { ...options, headers });
   const data = await res.json().catch(() => ({}));
 
-  const shouldTryRefresh = (res.status === 401 || res.status === 403) && !!getRefreshToken();
+  // Только 401 — истёк/невалиден access JWT. 403 — «нет прав»; refresh не помогает и при сбое refresh
+  // очищает cookies и разлогинивает пользователя без причины.
+  const shouldTryRefresh = res.status === 401 && !!getRefreshToken();
   if (shouldTryRefresh) {
     const refresh = getRefreshToken();
     if (refresh) {

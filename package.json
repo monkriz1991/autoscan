@@ -8,7 +8,7 @@
     "predev": "npm run validate:messages",
     "prebuild": "npm run validate:messages",
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
     "lint": "next lint"
   },

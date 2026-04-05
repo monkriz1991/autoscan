@@ -42,7 +42,7 @@ export default function PricingPageClient() {
   return (
     <section>
       <Box component="header" py={{ base: "xl", md: 80 }}>
-        <Container size="lg">
+        <Container size="xl" px={{ base: "md", sm: "lg" }}>
           <Stack gap="xl">
             <Box ta="center" mb="xl">
               <Title order={1} mb="md">

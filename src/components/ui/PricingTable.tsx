@@ -1,5 +1,6 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import {
@@ -53,9 +54,24 @@ export type PricingTableProps = {
   plans: Plan[];
 };
 
+/** Доля ширины первой колонки (фичи); остальное делится между планами поровну. */
+function labelColumnPercent(planCount: number): number {
+  if (planCount >= 5) return 22;
+  if (planCount >= 4) return 24;
+  return 26;
+}
+
 export function PricingTable({ plans }: PricingTableProps) {
   const t = useTranslations("pricing");
   const tNav = useTranslations("nav");
+  const n = plans.length;
+  const compact = n >= 4;
+  const tight = n >= 5;
+  const labelPct = labelColumnPercent(n);
+  const planPct = n > 0 ? (100 - labelPct) / n : 0;
+
+  const hSpacing = compact ? "sm" : "md";
+  const vSpacing = compact ? "xs" : "sm";
 
   function formatDuration(days: number | null): string {
     if (days === null) return t("unlimited");
@@ -65,55 +81,81 @@ export function PricingTable({ plans }: PricingTableProps) {
   }
 
   function BoolCell({ value }: { value: boolean }) {
+    const iconSize = tight ? 14 : compact ? 15 : 16;
+    const box = tight ? 24 : compact ? 26 : 28;
     if (value) {
       return (
-        <ThemeIcon size={28} radius="md" variant="light" color="teal" aria-label="yes">
-          <IconCheck size={16} stroke={2.5} />
+        <ThemeIcon size={box} radius="md" variant="light" color="teal" aria-label="yes">
+          <IconCheck size={iconSize} stroke={2.5} />
         </ThemeIcon>
       );
     }
     return (
-      <ThemeIcon size={28} radius="md" variant="light" color="gray" aria-label="no">
-        <IconMinus size={16} />
+      <ThemeIcon size={box} radius="md" variant="light" color="gray" aria-label="no">
+        <IconMinus size={iconSize} />
       </ThemeIcon>
     );
   }
 
+  const firstColStyle: CSSProperties = {
+    width: `${labelPct}%`,
+    maxWidth: tight ? 200 : compact ? 220 : 280,
+    fontWeight: 500,
+    whiteSpace: "normal",
+    background: "var(--mantine-color-body)",
+    position: "sticky",
+    left: 0,
+    zIndex: 2,
+    boxShadow: "4px 0 8px -6px rgba(0,0,0,0.12)",
+  };
+
+  const planColStyle: CSSProperties = {
+    width: `${planPct}%`,
+    verticalAlign: "top",
+    wordBreak: "break-word",
+  };
+
   return (
-    <ScrollArea type="scroll" offsetScrollbars>
+    <ScrollArea type="scroll" offsetScrollbars w="100%" maw="100%">
       <Table
         stickyHeader
-        horizontalSpacing="md"
-        verticalSpacing="sm"
+        horizontalSpacing={hSpacing}
+        verticalSpacing={vSpacing}
         striped
         highlightOnHover
-        miw={640}
+        style={{ width: "100%", tableLayout: "fixed", minWidth: 0 }}
       >
+        <colgroup>
+          <col style={{ width: `${labelPct}%` }} />
+          {plans.map((plan) => (
+            <col key={plan.id} style={{ width: `${planPct}%` }} />
+          ))}
+        </colgroup>
         <Table.Thead>
           <Table.Tr>
-            <Table.Th style={{ minWidth: 200, left: 0, zIndex: 2 }} />
+            <Table.Th style={firstColStyle} />
             {plans.map((plan) => {
               const tier = plan.tier.toLowerCase();
               const isPopular = tier === "pro";
               return (
-                <Table.Th key={plan.id} style={{ verticalAlign: "top", minWidth: 160 }}>
-                  <Stack gap="xs" align="flex-start">
+                <Table.Th key={plan.id} style={planColStyle}>
+                  <Stack gap={tight ? 4 : compact ? "xs" : "sm"} align="flex-start">
                     <Badge
-                      size="lg"
+                      size={tight ? "sm" : compact ? "md" : "lg"}
                       variant={isPopular ? "filled" : "light"}
                       color={isPopular ? "teal" : "blue"}
                       tt="capitalize"
                     >
                       {plan.tier}
                     </Badge>
-                    <Text fw={700} size="lg">
+                    <Text fw={700} size={tight ? "sm" : compact ? "md" : "lg"} lineClamp={2}>
                       {plan.name}
                     </Text>
                     <Group gap={4} align="baseline" wrap="nowrap">
-                      <Text size="xl" fw={700}>
+                      <Text size={tight ? "md" : compact ? "lg" : "xl"} fw={700}>
                         {plan.price}
                       </Text>
-                      <Text size="sm" c="dimmed">
+                      <Text size="xs" c="dimmed">
                         {plan.currency}
                       </Text>
                     </Group>
@@ -129,31 +171,28 @@ export function PricingTable({ plans }: PricingTableProps) {
         <Table.Tbody>
           {FEATURE_ROWS.map((row) => (
             <Table.Tr key={row.labelKey}>
-              <Table.Td
-                style={{
-                  fontWeight: 500,
-                  whiteSpace: "normal",
-                  maxWidth: 280,
-                  background: "var(--mantine-color-body)",
-                }}
-              >
+              <Table.Td style={firstColStyle}>
                 {row.kind === "requests" ? (
-                  <Text size="sm">{t(row.labelKey as "feature_ai_requests")}</Text>
+                  <Text size={tight ? "xs" : "sm"}>{t(row.labelKey as "feature_ai_requests")}</Text>
                 ) : (
-                  <Text size="sm">{t(row.labelKey as "feature_unlimited_devices")}</Text>
+                  <Text size={tight ? "xs" : "sm"}>
+                    {t(row.labelKey as "feature_unlimited_devices")}
+                  </Text>
                 )}
               </Table.Td>
               {plans.map((plan) => {
                 const f = planFeatures(plan);
                 if (row.kind === "requests") {
                   return (
-                    <Table.Td key={`${plan.id}-req`}>
-                      <Text fw={600}>{plan.max_requests ?? "—"}</Text>
+                    <Table.Td key={`${plan.id}-req`} style={planColStyle}>
+                      <Text fw={600} size={tight ? "sm" : "md"}>
+                        {plan.max_requests ?? "—"}
+                      </Text>
                     </Table.Td>
                   );
                 }
                 return (
-                  <Table.Td key={`${plan.id}-${row.flag}`}>
+                  <Table.Td key={`${plan.id}-${row.flag}`} style={planColStyle}>
                     <BoolCell value={f[row.flag]} />
                   </Table.Td>
                 );
@@ -161,18 +200,19 @@ export function PricingTable({ plans }: PricingTableProps) {
             </Table.Tr>
           ))}
           <Table.Tr>
-            <Table.Td style={{ background: "var(--mantine-color-body)" }} />
+            <Table.Td style={firstColStyle} />
             {plans.map((plan) => (
-              <Table.Td key={`cta-${plan.id}`}>
+              <Table.Td key={`cta-${plan.id}`} style={planColStyle}>
                 <Stack gap="xs">
                   {isAuthenticated() ? (
                     <Button
                       className="btn-metallic"
-                      size="sm"
+                      size={tight ? "xs" : "sm"}
                       color={plan.tier.toLowerCase() === "pro" ? "teal" : "blue"}
                       variant={plan.tier.toLowerCase() === "pro" ? "filled" : "light"}
                       component={Link}
                       href={`/checkout/${plan.id}`}
+                      fullWidth
                     >
                       {t("choose")}
                     </Button>
@@ -180,11 +220,12 @@ export function PricingTable({ plans }: PricingTableProps) {
                     <>
                       <Button
                         className="btn-metallic"
-                        size="sm"
+                        size={tight ? "xs" : "sm"}
                         color={plan.tier.toLowerCase() === "pro" ? "teal" : "blue"}
                         variant={plan.tier.toLowerCase() === "pro" ? "filled" : "light"}
                         component={Link}
                         href={`/login?next=${encodeURIComponent(`/checkout/${plan.id}`)}`}
+                        fullWidth
                       >
                         {t("loginForPayment")}
                       </Button>
@@ -195,6 +236,7 @@ export function PricingTable({ plans }: PricingTableProps) {
                         variant="subtle"
                         component={Link}
                         href="/register"
+                        fullWidth
                       >
                         {tNav("register")}
                       </Button>

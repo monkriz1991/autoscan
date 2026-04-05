@@ -20,12 +20,14 @@
     "@tabler/icons-react": "^3.37.1",
     "dayjs": "^1.11.19",
     "next": "^16.1.6",
-    "qrcode.react": "^4.2.0",
     "next-intl": "^4.8.3",
+    "qrcode.react": "^4.2.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "react-markdown": "^10.1.0",
     "react-router-dom": "^7.13.0",
     "recharts": "^2.15.3",
+    "remark-gfm": "^4.0.1",
     "sass": "^1.97.3"
   },
   "devDependencies": {

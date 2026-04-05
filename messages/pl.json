@@ -430,7 +430,14 @@
     "snapshotTechnical": "Dane techniczne (live data)",
     "snapshotDebugFull": "Pełny snapshot (debug, pola wewnętrzne)",
     "createdAt": "Utworzono",
-    "type": "Typ"
+    "type": "Typ",
+    "chatFollowupHint": "Wiadomość do czatu (strumień). Ctrl/Cmd+Enter — wyślij.",
+    "chatFollowupPlaceholder": "Wiadomość do modelu…",
+    "chatFollowupSend": "Wyślij",
+    "streamSteps": "Przebieg",
+    "streamReasoning": "Rozumowanie (strumień)",
+    "streamLiveAnswer": "Odpowiedź (strumień)",
+    "streamSources": "Źródła w sieci"
   },
   "analytics": {
     "title": "Analityka OBD",

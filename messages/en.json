@@ -430,7 +430,14 @@
     "snapshotTechnical": "Technical data (live data)",
     "snapshotDebugFull": "Full snapshot (debug, incl. internal fields)",
     "createdAt": "Created",
-    "type": "Type"
+    "type": "Type",
+    "chatFollowupHint": "Send a follow-up (streamed). Ctrl/Cmd+Enter to send.",
+    "chatFollowupPlaceholder": "Message to the model…",
+    "chatFollowupSend": "Send",
+    "streamSteps": "Progress",
+    "streamReasoning": "Reasoning (stream)",
+    "streamLiveAnswer": "Answer (streaming)",
+    "streamSources": "Web sources"
   },
   "cookieConsent": {
     "ariaLabel": "Cookie and privacy choices",

@@ -18,17 +18,26 @@ import {
   Flex,
   UnstyledButton,
   TextInput,
+  Textarea,
+  Collapse,
 } from "@mantine/core";
-import { IconMessageCircle, IconRefresh, IconSearch } from "@tabler/icons-react";
+import {
+  IconMessageCircle,
+  IconRefresh,
+  IconSearch,
+  IconSend,
+} from "@tabler/icons-react";
 import {
   getDiagnosticChatSession,
   getDiagnosticChatSessions,
   getDiagnosticHistory,
   getDiagnosticReport,
   isAuthenticated,
+  postDiagnosticChatMessageStream,
   type DiagnosticChatSessionDetail,
   type DiagnosticReportDetail,
 } from "@/lib/api";
+import { DiagnosticMarkdown } from "@/components/diagnostics/DiagnosticMarkdown";
 import { formatUserRequestFull } from "@/lib/diagnostic-report-format";
 import {
   isHistoryDebugMode,
@@ -142,6 +151,17 @@ export default function DiagnosticsHistoryPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const mainScrollRef = useRef<HTMLDivElement>(null);
+  const [streamDraft, setStreamDraft] = useState("");
+  const [streamBusy, setStreamBusy] = useState(false);
+  const [streamReasoning, setStreamReasoning] = useState("");
+  const [streamContent, setStreamContent] = useState("");
+  const [streamStatuses, setStreamStatuses] = useState<string[]>([]);
+  const [streamSources, setStreamSources] = useState<
+    { query?: string; url?: string; title?: string }[]
+  >([]);
+  const [streamError, setStreamError] = useState("");
+  const [streamStepsOpen, setStreamStepsOpen] = useState(true);
+  const [streamReasoningOpen, setStreamReasoningOpen] = useState(true);
 
   const load = useCallback(async () => {
     if (!isAuthenticated()) {
@@ -196,6 +216,40 @@ export default function DiagnosticsHistoryPage() {
     }
   }, [router, t]);
 
+  const refreshChatSession = useCallback(
+    async (sessionId: number) => {
+      try {
+        const detail = await getDiagnosticChatSession(sessionId);
+        setThreads((prev) => {
+          const next = prev.map((th) =>
+            th.kind === "chat" && th.detail.id === sessionId
+              ? {
+                  ...th,
+                  detail,
+                  sortKey: new Date(detail.updated_at).getTime(),
+                }
+              : th,
+          );
+          next.sort((a, b) => a.sortKey - b.sortKey);
+          return next;
+        });
+      } catch {
+        void load();
+      }
+    },
+    [load],
+  );
+
+  useEffect(() => {
+    setStreamDraft("");
+    setStreamBusy(false);
+    setStreamReasoning("");
+    setStreamContent("");
+    setStreamStatuses([]);
+    setStreamSources([]);
+    setStreamError("");
+  }, [selectedKey]);
+
   useEffect(() => {
     if (!isAuthenticated()) {
       router.replace("/login");
@@ -231,6 +285,51 @@ export default function DiagnosticsHistoryPage() {
     () => threads.find((x) => threadKey(x) === selectedKey) ?? null,
     [threads, selectedKey],
   );
+
+  const sendStreamFollowup = useCallback(async () => {
+    if (!selectedThread || selectedThread.kind !== "chat") return;
+    const text = streamDraft.trim();
+    if (!text || streamBusy) return;
+    const sid = selectedThread.detail.id;
+    setStreamBusy(true);
+    setStreamError("");
+    setStreamReasoning("");
+    setStreamContent("");
+    setStreamStatuses([]);
+    setStreamSources([]);
+    try {
+      await postDiagnosticChatMessageStream(sid, text, {
+        onEvent: (e) => {
+          if (e.event === "content_delta" && typeof e.data.text === "string") {
+            setStreamContent((p) => p + e.data.text);
+          } else if (e.event === "reasoning_delta" && typeof e.data.text === "string") {
+            setStreamReasoning((p) => p + e.data.text);
+          } else if (e.event === "status") {
+            setStreamStatuses((p) => [...p, JSON.stringify(e.data)]);
+          } else if (e.event === "sources") {
+            const ws = e.data.web_search_sources;
+            if (Array.isArray(ws)) {
+              setStreamSources(
+                ws as { query?: string; url?: string; title?: string }[],
+              );
+            }
+          } else if (e.event === "error") {
+            setStreamError(String(e.data.message ?? "error"));
+          }
+        },
+      });
+      setStreamDraft("");
+      await refreshChatSession(sid);
+    } catch (err) {
+      setStreamError(err instanceof Error ? err.message : t("loadError"));
+    } finally {
+      setStreamBusy(false);
+      setStreamReasoning("");
+      setStreamContent("");
+      setStreamStatuses([]);
+      setStreamSources([]);
+    }
+  }, [selectedThread, streamDraft, streamBusy, refreshChatSession, t]);
 
   const searchActive = Boolean(searchQuery.trim());
   const listShown = filteredSidebar.length;
@@ -292,9 +391,7 @@ export default function DiagnosticsHistoryPage() {
               <Text size="xs" c="dimmed" tt="uppercase" mb={4}>
                 {t("chatAi")}
               </Text>
-              <Text size="sm" lh={1.45} style={{ whiteSpace: "pre-wrap" }}>
-                {detail.ai_analysis}
-              </Text>
+              <DiagnosticMarkdown source={detail.ai_analysis} />
             </Box>
           </Box>
 
@@ -367,14 +464,141 @@ export default function DiagnosticsHistoryPage() {
                   <Text size="xs" c="dimmed" tt="uppercase" mb={4}>
                     {m.role === "user" ? t("chatYou") : t("chatAi")}
                   </Text>
-                  <Text size="sm" lh={1.45} style={{ whiteSpace: "pre-wrap" }}>
-                    {m.content}
-                  </Text>
+                  {m.role === "user" ? (
+                    <Text size="sm" lh={1.45} style={{ whiteSpace: "pre-wrap" }}>
+                      {m.content}
+                    </Text>
+                  ) : (
+                    <DiagnosticMarkdown source={m.content} />
+                  )}
                 </Box>
               </Box>
             ))}
           </Stack>
         )}
+
+        <Box mt="md" pt="sm" style={{ borderTop: "1px solid var(--mantine-color-default-border)" }}>
+          <Text size="xs" c="dimmed" mb={6}>
+            {t("chatFollowupHint")}
+          </Text>
+          {(streamBusy ||
+            streamStatuses.length > 0 ||
+            streamReasoning ||
+            streamContent ||
+            streamSources.length > 0) && (
+            <Stack gap="xs" mb="sm">
+              {streamStatuses.length > 0 && (
+                <Box>
+                  <UnstyledButton
+                    type="button"
+                    onClick={() => setStreamStepsOpen((o) => !o)}
+                    mb={4}
+                  >
+                    <Text size="xs" c="dimmed" td="underline">
+                      {t("streamSteps")} ({streamStatuses.length})
+                    </Text>
+                  </UnstyledButton>
+                  <Collapse in={streamStepsOpen}>
+                    <ScrollArea h={120}>
+                      <Stack gap={4}>
+                        {streamStatuses.map((s, i) => (
+                          <Text key={i} size="xs" ff="monospace" c="dimmed" lh={1.35}>
+                            {s}
+                          </Text>
+                        ))}
+                      </Stack>
+                    </ScrollArea>
+                  </Collapse>
+                </Box>
+              )}
+              {streamReasoning ? (
+                <Box>
+                  <UnstyledButton
+                    type="button"
+                    onClick={() => setStreamReasoningOpen((o) => !o)}
+                    mb={4}
+                  >
+                    <Text size="xs" c="dimmed" td="underline">
+                      {t("streamReasoning")}
+                    </Text>
+                  </UnstyledButton>
+                  <Collapse in={streamReasoningOpen}>
+                    <Text size="xs" ff="monospace" style={{ whiteSpace: "pre-wrap" }}>
+                      {streamReasoning}
+                    </Text>
+                  </Collapse>
+                </Box>
+              ) : null}
+              {streamContent ? (
+                <Box
+                  p="sm"
+                  style={{
+                    borderRadius: 8,
+                    background: "var(--mantine-color-default-hover)",
+                    border: "1px solid var(--mantine-color-default-border)",
+                  }}
+                >
+                  <Text size="xs" c="dimmed" tt="uppercase" mb={4}>
+                    {t("streamLiveAnswer")}
+                  </Text>
+                  <DiagnosticMarkdown source={streamContent} />
+                </Box>
+              ) : null}
+              {streamSources.length > 0 ? (
+                <Box>
+                  <Text size="xs" c="dimmed" mb={4}>
+                    {t("streamSources")}
+                  </Text>
+                  <Stack gap={4}>
+                    {streamSources.map((src, i) => (
+                      <Text key={i} size="xs">
+                        <a
+                          href={src.url || "#"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {src.title || src.url || "link"}
+                        </a>
+                      </Text>
+                    ))}
+                  </Stack>
+                </Box>
+              ) : null}
+            </Stack>
+          )}
+          {streamError ? (
+            <Text size="xs" c="red" mb="xs">
+              {streamError}
+            </Text>
+          ) : null}
+          <Group align="flex-end" gap="sm" wrap="nowrap">
+            <Textarea
+              style={{ flex: 1, minWidth: 0 }}
+              minRows={2}
+              maxRows={6}
+              autosize
+              placeholder={t("chatFollowupPlaceholder")}
+              value={streamDraft}
+              onChange={(e) => setStreamDraft(e.currentTarget.value)}
+              disabled={streamBusy}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+                  e.preventDefault();
+                  void sendStreamFollowup();
+                }
+              }}
+            />
+            <Button
+              leftSection={
+                streamBusy ? <Loader size={16} color="white" /> : <IconSend size={16} />
+              }
+              onClick={() => void sendStreamFollowup()}
+              disabled={streamBusy || !streamDraft.trim()}
+            >
+              {t("chatFollowupSend")}
+            </Button>
+          </Group>
+        </Box>
       </Stack>
     );
   };

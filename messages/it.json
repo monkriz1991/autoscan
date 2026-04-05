@@ -430,7 +430,14 @@
     "snapshotTechnical": "Dati tecnici (live data)",
     "snapshotDebugFull": "Snapshot completo (debug, campi interni)",
     "createdAt": "Creato",
-    "type": "Tipo"
+    "type": "Tipo",
+    "chatFollowupHint": "Messaggio di follow-up (streaming). Ctrl/Cmd+Invio per inviare.",
+    "chatFollowupPlaceholder": "Messaggio al modello…",
+    "chatFollowupSend": "Invia",
+    "streamSteps": "Avanzamento",
+    "streamReasoning": "Ragionamento (stream)",
+    "streamLiveAnswer": "Risposta (stream)",
+    "streamSources": "Fonti web"
   },
   "cookieConsent": {
     "ariaLabel": "Scelte su cookie e privacy",

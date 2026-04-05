@@ -1611,6 +1611,100 @@ export async function postDiagnosticChatMessage(
   );
 }
 
+/** Одно событие SSE из POST .../messages/stream/ */
+export type DiagnosticChatSseEvent = {
+  event: string;
+  data: Record<string, unknown>;
+};
+
+/**
+ * POST /api/v1/diagnostics/chat/sessions/<id>/messages/stream/ — поток SSE.
+ * События: `status`, `reasoning_delta`, `content_delta`, `sources`, `done`, `error`.
+ * `done` приходит после биллинга и содержит `ai_quota_mode`, `web_search_sources`, …
+ */
+export async function postDiagnosticChatMessageStream(
+  sessionId: number,
+  message: string,
+  options: {
+    onEvent: (e: DiagnosticChatSseEvent) => void;
+    signal?: AbortSignal;
+  },
+): Promise<void> {
+  const path = `diagnostics/chat/sessions/${sessionId}/messages/stream/`;
+  const url = path.startsWith("http")
+    ? path
+    : `${BASE_URL.replace(/\/$/, "")}/${path.replace(/^\//, "")}`;
+  const token = getToken();
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    Accept: "text/event-stream",
+    ...getLocaleHeaders(),
+  };
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ message }),
+    signal: options.signal,
+  });
+
+  if (!res.ok) {
+    const errBody = (await res.json().catch(() => ({}))) as Record<string, unknown>;
+    throw new ApiError(res.status, errBody);
+  }
+
+  const body = res.body;
+  if (!body) {
+    return;
+  }
+
+  const reader = body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+
+  const flushCompleteFrames = () => {
+    let sep: number;
+    while ((sep = buffer.indexOf("\n\n")) >= 0) {
+      const rawBlock = buffer.slice(0, sep);
+      buffer = buffer.slice(sep + 2);
+      if (!rawBlock.trim()) {
+        continue;
+      }
+      let evName = "";
+      const dataLines: string[] = [];
+      for (const line of rawBlock.split("\n")) {
+        if (line.startsWith("event:")) {
+          evName = line.slice(6).trim();
+        } else if (line.startsWith("data:")) {
+          dataLines.push(line.slice(5).trimStart());
+        }
+      }
+      if (!evName || dataLines.length === 0) {
+        continue;
+      }
+      try {
+        const data = JSON.parse(dataLines.join("\n")) as Record<string, unknown>;
+        options.onEvent({ event: evName, data });
+      } catch {
+        /* некорректный JSON в кадре */
+      }
+    }
+  };
+
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) {
+      flushCompleteFrames();
+      break;
+    }
+    buffer += decoder.decode(value, { stream: true });
+    flushCompleteFrames();
+  }
+}
+
 /* ========== Stub: services/specialists (нет в backend auto_ai_auth) ========== */
 
 export type ServiceStub = { _id: string; name: string; parent: string | null };

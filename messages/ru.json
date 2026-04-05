@@ -430,7 +430,14 @@
     "snapshotTechnical": "Технические данные (live data)",
     "snapshotDebugFull": "Полный снимок (отладка, служебные поля)",
     "createdAt": "Создано",
-    "type": "Тип"
+    "type": "Тип",
+    "chatFollowupHint": "Дополнительное сообщение в чат (стрим). Ctrl/Cmd+Enter — отправить.",
+    "chatFollowupPlaceholder": "Сообщение модели…",
+    "chatFollowupSend": "Отправить",
+    "streamSteps": "Ход",
+    "streamReasoning": "Рассуждения (стрим)",
+    "streamLiveAnswer": "Ответ (стрим)",
+    "streamSources": "Источники в сети"
   },
   "cookieConsent": {
     "ariaLabel": "Cookie и настройки конфиденциальности",

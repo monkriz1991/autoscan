@@ -430,7 +430,14 @@
     "snapshotTechnical": "Technische Daten (Live-Daten)",
     "snapshotDebugFull": "Vollständiger Snapshot (Debug, interne Felder)",
     "createdAt": "Erstellt",
-    "type": "Typ"
+    "type": "Typ",
+    "chatFollowupHint": "Nachricht an den Chat (Stream). Strg/Cmd+Enter zum Senden.",
+    "chatFollowupPlaceholder": "Nachricht an das Modell…",
+    "chatFollowupSend": "Senden",
+    "streamSteps": "Fortschritt",
+    "streamReasoning": "Reasoning (Stream)",
+    "streamLiveAnswer": "Antwort (Stream)",
+    "streamSources": "Web-Quellen"
   },
   "analytics": {
     "title": "OBD-Analytik",

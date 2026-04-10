@@ -514,6 +514,14 @@
     "title": "Haftungsausschluss",
     "lead": "Die Informationen auf dieser Website und Diagnoseergebnisse dienen nur der Orientierung und ersetzen keine fachkundige Prüfung. Details in den verlinkten Dokumenten; der vollständige Text wird von der Rechtsabteilung ergänzt."
   },
+  "privacyPage": {
+    "title": "Datenschutzerklärung",
+    "lead": "Hier wird beschrieben, wie AutoScan personenbezogene Daten erhebt, nutzt und schützt. Der vollständige Text ist in Arbeit; bei dringenden Datenschutzfragen nutzen Sie bitte die Kontaktmöglichkeiten auf der Kontaktseite."
+  },
+  "contactsPage": {
+    "title": "Kontakt",
+    "lead": "Wenden Sie sich an AutoScan für Support, Abrechnung und geschäftliche Anfragen. Wir richten dedizierte Kontaktwege ein; diese Seite wird mit E-Mail und Antwortzeiten ergänzt."
+  },
   "faqPage": {
     "title": "Häufig gestellte Fragen",
     "subtitle": "Suche in Frage und Kurzbeschreibung für die im Header gewählte Sprache.",

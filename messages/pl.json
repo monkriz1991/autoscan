@@ -514,6 +514,14 @@
     "title": "Wyłączenie odpowiedzialności",
     "lead": "Informacje w serwisie i wyniki diagnostyki mają charakter informacyjny i nie zastępują oględzin specjalisty. Szczegóły w powiązanych dokumentach; pełny tekst uzupełni dział prawny."
   },
+  "privacyPage": {
+    "title": "Polityka prywatności",
+    "lead": "Na tej stronie opiszemy, jak AutoScan zbiera, wykorzystuje i chroni dane osobowe. Pełny tekst jest w przygotowaniu; w pilnych sprawach dotyczących prywatności skorzystaj z danych na stronie Kontakt."
+  },
+  "contactsPage": {
+    "title": "Kontakt",
+    "lead": "Napisz do AutoScan w sprawie wsparcia, płatności i współpracy. Przygotowujemy dedykowane kanały; strona zostanie uzupełniona o e-mail i czas odpowiedzi."
+  },
   "faqPage": {
     "title": "Często zadawane pytania",
     "subtitle": "Wyszukiwanie w treści pytania i krótkim opisie w języku z nagłówka.",

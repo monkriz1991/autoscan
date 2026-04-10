@@ -514,6 +514,14 @@
     "title": "Descargo de responsabilidad",
     "lead": "La información del sitio y los resultados del diagnóstico son orientativos y no sustituyen una revisión profesional. Consulte los documentos enlazados; el texto legal completo lo ampliará el departamento jurídico."
   },
+  "privacyPage": {
+    "title": "Política de privacidad",
+    "lead": "Esta página describirá cómo AutoScan recopila, usa y protege los datos personales. El texto completo está en preparación; para consultas urgentes sobre privacidad, use los datos de contacto de la página de contacto."
+  },
+  "contactsPage": {
+    "title": "Contacto",
+    "lead": "Contacte con AutoScan para soporte, facturación y consultas comerciales. Estamos configurando canales dedicados; esta sección se actualizará con correo electrónico y plazos de respuesta."
+  },
   "faqPage": {
     "title": "Preguntas frecuentes",
     "subtitle": "Búsqueda en la pregunta y la descripción breve según el idioma del encabezado.",

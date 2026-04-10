@@ -514,6 +514,14 @@
     "title": "Disclaimer",
     "lead": "Information on this site and diagnostic results are for reference only and do not replace professional inspection. See the documents linked in the footer; legal will expand this section."
   },
+  "privacyPage": {
+    "title": "Privacy Policy",
+    "lead": "This page will outline how AutoScan collects, uses, stores, and protects personal data. The full text is being prepared; for urgent privacy questions, please use the contact options on the Contacts page."
+  },
+  "contactsPage": {
+    "title": "Contacts",
+    "lead": "Reach AutoScan for support, billing, and business inquiries. We are setting up dedicated contact channels; this section will be updated with email and response times."
+  },
   "faqPage": {
     "title": "Frequently asked questions",
     "subtitle": "Search matches the question and short description for the language you selected in the header.",

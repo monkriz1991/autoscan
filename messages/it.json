@@ -514,6 +514,14 @@
     "title": "Limitazione di responsabilità",
     "lead": "Le informazioni sul sito e i risultati diagnostici sono solo indicative e non sostituiscono un controllo professionale. Per i dettagli vedi i documenti nel piè di pagina; il testo completo sarà integrato dall’ufficio legale."
   },
+  "privacyPage": {
+    "title": "Informativa sulla privacy",
+    "lead": "Questa pagina descriverà come AutoScan raccoglie, utilizza e protegge i dati personali. Il testo completo è in preparazione; per domande urgenti sulla privacy usate i recapiti nella pagina Contatti."
+  },
+  "contactsPage": {
+    "title": "Contatti",
+    "lead": "Scrivete ad AutoScan per assistenza, fatturazione e richieste commerciali. Stiamo definendo i canali dedicati; la pagina sarà aggiornata con e-mail e tempi di risposta."
+  },
   "faqPage": {
     "title": "Domande frequenti",
     "subtitle": "Ricerca nel testo della domanda e nella breve descrizione nella lingua dell’intestazione.",

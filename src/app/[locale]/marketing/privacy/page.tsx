@@ -1,6 +1,25 @@
+import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import PrivacyPolicyContent from "@/components/marketing/PrivacyPolicyContent";
+import { getLegalSiteInfo } from "@/lib/legal-site";
+import { alternateLanguageUrls } from "@/lib/site-url";
 
-/** Локализованная заглушка; полный текст политики подготовит юридический отдел. */
+/** Полная политика конфиденциальности AutoScan; реквизиты оператора — через NEXT_PUBLIC_LEGAL_* (см. .env.example). */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const tSeo = await getTranslations({ locale, namespace: "seo" });
+  const path = "/marketing/privacy";
+  return {
+    title: tSeo("privacyTitle"),
+    description: tSeo("privacyDescription"),
+    alternates: { languages: alternateLanguageUrls(path) },
+  };
+}
+
 export default async function PrivacyPage({
   params,
 }: {
@@ -8,11 +27,7 @@ export default async function PrivacyPage({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "privacyPage" });
+  const info = getLegalSiteInfo();
 
-  return (
-    <div className="container" style={{ padding: "1rem 0 2rem", maxWidth: "48rem" }}>
-      <h1>{t("title")}</h1>
-      <p style={{ lineHeight: 1.65, color: "#495057" }}>{t("lead")}</p>
-    </div>
-  );
+  return <PrivacyPolicyContent t={t} info={info} />;
 }

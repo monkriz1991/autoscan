@@ -9,6 +9,7 @@ import { Notifications } from "@mantine/notifications";
 import JsonLd from "@/components/seo/JsonLd";
 import RootLayoutContent from "@/components/ui/RootLayoutContent";
 import CookieConsentBanner from "@/components/ui/CookieConsentBanner";
+import GoogleAdsTag from "@/components/ui/GoogleAdsTag";
 import GoogleAnalytics from "@/components/ui/GoogleAnalytics";
 import LocaleHtmlLang from "@/components/ui/LocaleHtmlLang";
 import { fetchStructuredData } from "@/lib/seo/structured-data";
@@ -92,6 +93,7 @@ export default async function LocaleLayout({
         <Notifications position="top-right" />
         <RootLayoutContent>{children}</RootLayoutContent>
         <GoogleAnalytics />
+        <GoogleAdsTag />
         <CookieConsentBanner />
       </MantineProvider>
     </NextIntlClientProvider>

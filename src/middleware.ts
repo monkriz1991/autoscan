@@ -7,11 +7,19 @@ const DEFAULT_AFTER_AUTH = "/cabinet/dashboard";
 
 const intlMiddleware = createMiddleware(routing);
 
+const localePathRe = new RegExp(`^\\/(${routing.locales.join("|")})(\\/|$)`);
+
 export default function middleware(request: NextRequest) {
+  // Сначала next-intl: префикс в URL, cookie NEXT_LOCALE, Accept-Language, иначе defaultLocale (en)
+  const intlResponse = intlMiddleware(request);
+  if (intlResponse.status >= 300 && intlResponse.status < 400) {
+    return intlResponse;
+  }
+
   const token = request.cookies.get("token")?.value;
   const { pathname } = request.nextUrl;
 
-  const localeMatch = pathname.match(/^\/(en|de|ru|pl|it|es)(\/|$)/);
+  const localeMatch = pathname.match(localePathRe);
   const pathWithoutLocale = localeMatch
     ? pathname.slice(localeMatch[1].length + 1) || "/"
     : pathname;
@@ -42,9 +50,10 @@ export default function middleware(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  return intlMiddleware(request);
+  return intlResponse;
 }
 
+// Список локалей должен совпадать с routing.locales (Next.js требует статический matcher)
 export const config = {
   matcher: [
     "/(en|de|ru|pl|it|es)/:path*",

@@ -1,6 +1,7 @@
 "use client";
 
 import Script from "next/script";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   COOKIE_CONSENT_CHANGE_EVENT,
@@ -21,10 +22,14 @@ function adsConversionId(): string | undefined {
 }
 
 /**
- * Google Ads (gtag.js) — только при согласии на маркетинг (cookieConsent.marketing).
+ * Google Ads (gtag.js):
+ * — на странице регистрации — всегда (AW-конверсии / ремаркетинг по запросу);
+ * — на остальных страницах — только при согласии на маркетинг (cookieConsent.marketing).
  */
 export default function GoogleAdsTag() {
   const id = adsConversionId();
+  const pathname = usePathname();
+  const onRegisterPage = Boolean(pathname?.includes("/register"));
   const [marketingAllowed, setMarketingAllowed] = useState(false);
 
   useEffect(() => {
@@ -42,7 +47,8 @@ export default function GoogleAdsTag() {
     return () => window.removeEventListener(COOKIE_CONSENT_CHANGE_EVENT, onConsentChange);
   }, []);
 
-  if (!id || !marketingAllowed) return null;
+  const shouldLoad = onRegisterPage || marketingAllowed;
+  if (!id || !shouldLoad) return null;
 
   return (
     <>

@@ -3,10 +3,18 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
-import { Title, Text, Button, Badge, Group, Container, Box } from "@mantine/core";
+import {
+  Title,
+  Text,
+  Button,
+  Badge,
+  Group,
+  Container,
+  Box,
+  Image,
+} from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { getBlogPost, type BlogPostDetail } from "@/lib/api";
-import Image from "next/image";
 
 export default function BlogPostContent({ slug }: { slug: string }) {
   const t = useTranslations("blogPage");
@@ -59,14 +67,16 @@ export default function BlogPostContent({ slug }: { slug: string }) {
         {t("backToList")}
       </Button>
 
+      {/* Mantine Image вместо next/image: обложка с API — внешний origin; next/image без remotePatterns даёт битую картинку, в списке уже обычный <img>. */}
       {post.cover_image_url && (
-        <Box mb="xl" style={{ position: "relative", width: "100%", height: 400, borderRadius: 8, overflow: "hidden" }}>
+        <Box mb="xl">
           <Image
             src={post.cover_image_url}
             alt={post.title}
-            fill
-            style={{ objectFit: "cover" }}
-            priority
+            h={400}
+            w="100%"
+            fit="cover"
+            radius="md"
           />
         </Box>
       )}

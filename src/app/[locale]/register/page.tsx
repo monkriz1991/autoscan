@@ -16,8 +16,16 @@ import {
   TextInput,
   Button,
   Title,
+  Divider,
 } from "@mantine/core";
-import { register, getCaptcha, ApiError } from "@/lib/api";
+import {
+  register,
+  getCaptcha,
+  ApiError,
+  getGoogleOAuthRedirectUrl,
+  POST_OAUTH_NEXT_STORAGE_KEY,
+  getApiErrorMessage,
+} from "@/lib/api";
 
 const DEFAULT_AFTER_AUTH = "/cabinet/dashboard";
 
@@ -38,6 +46,7 @@ function RegisterForm() {
   const [acceptDisclaimer, setAcceptDisclaimer] = useState(false);
 
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState("");
 
   const loadCaptcha = useCallback(async () => {
@@ -141,6 +150,27 @@ function RegisterForm() {
     }
   };
 
+  const handleGoogleRegister = async () => {
+    setError("");
+    if (!acceptTerms || !acceptPrivacy || !acceptDisclaimer) {
+      setError(t("legalMustAcceptAll"));
+      return;
+    }
+    setGoogleLoading(true);
+    try {
+      if (typeof window !== "undefined") {
+        window.sessionStorage.setItem(POST_OAUTH_NEXT_STORAGE_KEY, nextUrl);
+      }
+      const url = await getGoogleOAuthRedirectUrl();
+      window.location.href = url;
+    } catch (err) {
+      setGoogleLoading(false);
+      setError(
+        err instanceof ApiError ? getApiErrorMessage(err) : t("googleLoginError"),
+      );
+    }
+  };
+
   return (
     <Container size="xs" py="xl">
       <Card withBorder shadow="sm" radius="md" p="xl">
@@ -227,6 +257,17 @@ function RegisterForm() {
 
           <Button fullWidth loading={loading} onClick={handleSubmit}>
             {t("createAccount")}
+          </Button>
+
+          <Divider label={t("loginDividerOr")} labelPosition="center" />
+
+          <Button
+            fullWidth
+            variant="outline"
+            loading={googleLoading}
+            onClick={handleGoogleRegister}
+          >
+            {t("registerWithGoogle")}
           </Button>
         </Stack>
       </Card>

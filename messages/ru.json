@@ -108,6 +108,10 @@
   "auth": {
     "loginTitle": "Вход в систему",
     "loginButton": "Войти",
+    "loginWithGoogle": "Войти через Google",
+    "registerWithGoogle": "Зарегистрироваться через Google",
+    "googleLoginError": "Не удалось начать вход через Google",
+    "loginDividerOr": "или",
     "email": "Email",
     "password": "Пароль",
     "registerTitle": "Регистрация",

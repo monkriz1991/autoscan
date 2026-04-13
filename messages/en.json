@@ -108,6 +108,10 @@
   "auth": {
     "loginTitle": "Log in",
     "loginButton": "Log in",
+    "loginWithGoogle": "Continue with Google",
+    "registerWithGoogle": "Sign up with Google",
+    "googleLoginError": "Could not start Google sign-in",
+    "loginDividerOr": "or",
     "email": "Email",
     "password": "Password",
     "registerTitle": "Registration",

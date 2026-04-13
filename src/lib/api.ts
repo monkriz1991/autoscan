@@ -48,7 +48,8 @@ function getRefreshToken(): string | null {
   return match ? decodeURIComponent(match[1]) : null;
 }
 
-function setTokens(access: string, refresh?: string): void {
+/** Сохранить JWT в cookies (логин, OAuth callback с бэкенда). */
+export function setTokens(access: string, refresh?: string): void {
   if (typeof document === "undefined") return;
   document.cookie = `${TOKEN_COOKIE}=${encodeURIComponent(access)}; path=/; max-age=86400; samesite=lax`;
   if (refresh) {
@@ -177,6 +178,20 @@ export async function login(email: string, password: string): Promise<LoginRespo
   });
   setTokens(data.access, data.refresh);
   return data;
+}
+
+/** Ключ sessionStorage: целевой путь после OAuth Google/Apple (аналог ?next= на логине). */
+export const POST_OAUTH_NEXT_STORAGE_KEY = "post_oauth_next";
+
+/** URL редиректа на страницу согласия Google (серверный OAuth code flow). */
+export async function getGoogleOAuthRedirectUrl(): Promise<string> {
+  const data = await request<{ url?: string }>("auth/google/redirect/", {
+    method: "GET",
+  });
+  if (!data.url || typeof data.url !== "string") {
+    throw new ApiError(400, { detail: "No redirect URL from server" });
+  }
+  return data.url;
 }
 
 export type CaptchaResponse = {

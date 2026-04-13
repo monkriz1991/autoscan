@@ -15,8 +15,17 @@ import {
   Notification,
   Loader,
   Center,
+  Divider,
 } from "@mantine/core";
-import { login, ApiError, isAuthenticated, getMe } from "@/lib/api";
+import {
+  login,
+  ApiError,
+  isAuthenticated,
+  getMe,
+  getGoogleOAuthRedirectUrl,
+  POST_OAUTH_NEXT_STORAGE_KEY,
+  getApiErrorMessage,
+} from "@/lib/api";
 
 const DEFAULT_AFTER_AUTH = "/cabinet/dashboard";
 
@@ -29,6 +38,7 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
   const [error, setError] = useState("");
 
@@ -75,6 +85,23 @@ function LoginForm() {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    setError("");
+    setGoogleLoading(true);
+    try {
+      if (typeof window !== "undefined") {
+        window.sessionStorage.setItem(POST_OAUTH_NEXT_STORAGE_KEY, nextUrl);
+      }
+      const url = await getGoogleOAuthRedirectUrl();
+      window.location.href = url;
+    } catch (err) {
+      setGoogleLoading(false);
+      setError(
+        err instanceof ApiError ? getApiErrorMessage(err) : t("googleLoginError"),
+      );
+    }
+  };
+
   if (checkingSession) {
     return (
       <Container size="xs" py="xl">
@@ -113,6 +140,17 @@ function LoginForm() {
 
           <Button fullWidth loading={loading} onClick={handleSubmit}>
             {t("loginButton")}
+          </Button>
+
+          <Divider label={t("loginDividerOr")} labelPosition="center" />
+
+          <Button
+            fullWidth
+            variant="outline"
+            loading={googleLoading}
+            onClick={handleGoogleLogin}
+          >
+            {t("loginWithGoogle")}
           </Button>
         </Stack>
       </Card>

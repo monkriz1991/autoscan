@@ -36,10 +36,6 @@ export default function DownloadHero({ clientOs, versionLabel, asset }: Props) {
     const name =
       asset.download_label?.trim() ||
       `setup-${asset.os_type}-${asset.installer_type}`.replace(/[^a-z0-9._-]+/gi, "_");
-    if (asset.download_url) {
-      window.location.href = asset.download_url;
-      return;
-    }
     if (asset.download_api_url) {
       setBusy(true);
       try {
@@ -49,6 +45,10 @@ export default function DownloadHero({ clientOs, versionLabel, asset }: Props) {
       } finally {
         setBusy(false);
       }
+      return;
+    }
+    if (asset.download_url) {
+      window.location.href = asset.download_url;
     }
   }, [asset, t]);
 

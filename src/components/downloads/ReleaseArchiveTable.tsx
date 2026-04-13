@@ -35,10 +35,6 @@ function AssetButtons({ assets }: { assets: DownloadsAssetDto[] }) {
     const name =
       asset.download_label?.trim() ||
       `setup-${asset.os_type}-${asset.installer_type}`.replace(/[^a-z0-9._-]+/gi, "_");
-    if (asset.download_url) {
-      window.location.href = asset.download_url;
-      return;
-    }
     if (asset.download_api_url) {
       setBusyId(asset.id);
       try {
@@ -46,6 +42,10 @@ function AssetButtons({ assets }: { assets: DownloadsAssetDto[] }) {
       } finally {
         setBusyId(null);
       }
+      return;
+    }
+    if (asset.download_url) {
+      window.location.href = asset.download_url;
     }
   }, []);
 

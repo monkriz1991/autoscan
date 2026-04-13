@@ -24,10 +24,6 @@ export default function DownloadOptionsGrid({ assets }: Props) {
       const name =
         asset.download_label?.trim() ||
         `setup-${asset.os_type}-${asset.installer_type}`.replace(/[^a-z0-9._-]+/gi, "_");
-      if (asset.download_url) {
-        window.location.href = asset.download_url;
-        return;
-      }
       if (asset.download_api_url) {
         setBusyId(asset.id);
         try {
@@ -35,6 +31,10 @@ export default function DownloadOptionsGrid({ assets }: Props) {
         } finally {
           setBusyId(null);
         }
+        return;
+      }
+      if (asset.download_url) {
+        window.location.href = asset.download_url;
       }
     },
     [],

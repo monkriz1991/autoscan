@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
+import { MIDDLEWARE_PATHNAME_HEADER, getLayoutChromeKind } from "@/lib/middleware-pathname";
 import { notFound } from "next/navigation";
 import { getMetadataBase, localeToOpenGraphLocale } from "@/lib/site-url";
 import { MantineProvider, createTheme } from "@mantine/core";
@@ -65,6 +67,10 @@ export default async function LocaleLayout({
   const messages = await getMessages();
   const globalLd = await fetchStructuredData({ bundles: ["global"], locale });
 
+  const pathHeader = (await headers()).get(MIDDLEWARE_PATHNAME_HEADER);
+  const chromeKindFromServer =
+    pathHeader != null ? getLayoutChromeKind(pathHeader) : undefined;
+
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <JsonLd data={globalLd} />
@@ -91,7 +97,7 @@ export default async function LocaleLayout({
         defaultColorScheme="light"
       >
         <Notifications position="top-right" />
-        <RootLayoutContent>{children}</RootLayoutContent>
+        <RootLayoutContent chromeKindFromServer={chromeKindFromServer}>{children}</RootLayoutContent>
         <GoogleAnalytics />
         <GoogleAdsTag />
         <CookieConsentBanner />

@@ -30,36 +30,45 @@ export default function LanguageSwitcher() {
     router.replace(pathname, { locale: newLocale });
   };
 
-  // Mantine Menu/Popover may generate runtime ids that differ between SSR and client.
-  // Render it only after mount to avoid hydration mismatch.
-  if (!mounted) {
-    return null;
-  }
+  const label = LOCALE_NAMES[locale] ?? locale;
+
+  /* Кнопка того же размера, что и с Menu: слот не схлопывается до гидратации (иначе «прыгает» шапка).
+   * Menu ренерим только после mount — иначе id поповера расходятся SSR/клиент. */
+  const trigger = (
+    <Button
+      variant="subtle"
+      size="sm"
+      color="silver"
+      leftSection={<IconLanguage size={18} />}
+      aria-label="Switch language"
+      disabled={!mounted}
+      tabIndex={mounted ? undefined : -1}
+      style={!mounted ? { pointerEvents: "none" } : undefined}
+    >
+      {label}
+    </Button>
+  );
 
   return (
-    <Menu position="bottom-end" shadow="md" width={120}>
-      <Menu.Target>
-        <Button
-          variant="subtle"
-          size="sm"
-          color="silver"
-          leftSection={<IconLanguage size={18} />}
-          aria-label="Switch language"
-        >
-          {LOCALE_NAMES[locale] ?? locale}
-        </Button>
-      </Menu.Target>
-      <Menu.Dropdown>
-        {routing.locales.map((loc) => (
-          <Menu.Item
-            key={loc}
-            onClick={() => switchLocale(loc)}
-            disabled={locale === loc}
-          >
-            {LOCALE_NAMES[loc] ?? loc}
-          </Menu.Item>
-        ))}
-      </Menu.Dropdown>
-    </Menu>
+    <div className="navbar__lang-slot">
+      {!mounted ? (
+        trigger
+      ) : (
+        <Menu position="bottom-end" shadow="md" width={120}>
+          <Menu.Target>{trigger}</Menu.Target>
+          <Menu.Dropdown>
+            {routing.locales.map((loc) => (
+              <Menu.Item
+                key={loc}
+                onClick={() => switchLocale(loc)}
+                disabled={locale === loc}
+              >
+                {LOCALE_NAMES[loc] ?? loc}
+              </Menu.Item>
+            ))}
+          </Menu.Dropdown>
+        </Menu>
+      )}
+    </div>
   );
 }

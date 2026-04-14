@@ -1,39 +1,39 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
-import { setRequestLocale } from "next-intl/server";
-import { routing } from "@/i18n/routing";
-import JsonLd from "@/components/seo/JsonLd";
-import { buildLocalePageMetadata } from "@/lib/seo-metadata";
-import { fetchStructuredData } from "@/lib/seo/structured-data";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Stack, Title } from "@mantine/core";
+import FaqSection from "@/components/landing/FaqSection";
 import { alternateLanguageUrls } from "@/lib/site-url";
-import FaqPageContent from "./FaqPageContent";
 
-type Props = { params: Promise<{ locale: string }> };
+const PATH = "/faq";
 
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
-}
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
   const { locale } = await params;
-  return buildLocalePageMetadata(locale, "/faq", "faqTitle", "faqDescription");
+  const t = await getTranslations({ locale, namespace: "seo" });
+  return {
+    title: t("faqTitle"),
+    description: t("faqDescription"),
+    alternates: { languages: alternateLanguageUrls(PATH) },
+  };
 }
 
-export default async function FaqPage({ params }: Props) {
+export default async function FaqPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const pageUrl = alternateLanguageUrls("/faq")[locale];
-  const faqLd = await fetchStructuredData({
-    bundles: ["faq"],
-    locale,
-    pageUrl,
-  });
+  const t = await getTranslations({ locale, namespace: "landing.faq" });
   return (
-    <>
-      <JsonLd data={faqLd} />
-      <Suspense fallback={null}>
-        <FaqPageContent />
-      </Suspense>
-    </>
+    <Stack component="main" className="container faq-page marketing-page" gap="lg" py="xl" pb={72}>
+      <Title order={1} className="landing-section-title">
+        {t("title")}
+      </Title>
+      <FaqSection />
+    </Stack>
   );
 }

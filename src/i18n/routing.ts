@@ -4,7 +4,8 @@ export const routing = defineRouting({
   locales: ["en", "de", "ru", "pl", "it", "es"],
   /** Язык по умолчанию и фалбэк, если Accept-Language не совпал ни с одной локалью */
   defaultLocale: "en",
-  localePrefix: "always",
+  /** EN без префикса в URL (/), остальные локали — /de, /ru, … */
+  localePrefix: "as-needed",
   /** Cookie NEXT_LOCALE → Accept-Language → defaultLocale (см. next-intl middleware) */
   localeDetection: true,
 });

@@ -590,14 +590,7 @@ function parseDownloadsRelease(row: Record<string, unknown> | null): DownloadsRe
   };
 }
 
-/** GET /downloads/page/ — данные для страницы «Скачать» (JWT опционален). */
-export async function getDownloadsPage(clientOs: string): Promise<DownloadsPageDto> {
-  const params = new URLSearchParams();
-  const co = (clientOs || "unknown").trim().toLowerCase();
-  if (co) params.set("client_os", co.slice(0, 32));
-  const qs = params.toString();
-  const path = qs ? `downloads/page/?${qs}` : "downloads/page/";
-  const raw = await request<Record<string, unknown>>(path);
+function buildDownloadsPageFromRaw(raw: Record<string, unknown>): DownloadsPageDto {
   const archiveRaw = Array.isArray(raw.archive) ? raw.archive : [];
   return {
     client_os: String(raw.client_os ?? "unknown"),
@@ -622,6 +615,52 @@ export async function getDownloadsPage(clientOs: string): Promise<DownloadsPageD
       })
       .filter((x): x is DownloadsArchiveRow => x !== null),
   };
+}
+
+/** GET /downloads/page/ — данные для страницы «Скачать» (JWT опционален). */
+export async function getDownloadsPage(clientOs: string): Promise<DownloadsPageDto> {
+  const params = new URLSearchParams();
+  const co = (clientOs || "unknown").trim().toLowerCase();
+  if (co) params.set("client_os", co.slice(0, 32));
+  const qs = params.toString();
+  const path = qs ? `downloads/page/?${qs}` : "downloads/page/";
+  const raw = await request<Record<string, unknown>>(path);
+  return buildDownloadsPageFromRaw(raw);
+}
+
+/**
+ * SSR страницы «Скачать»: локаль и опционально Cookie (JWT) для персонализации доступа к файлам.
+ */
+export async function getDownloadsPageForLocale(
+  clientOs: string,
+  locale: string,
+  options?: { cookieHeader?: string | null },
+): Promise<DownloadsPageDto> {
+  const base = (process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8001/api/v1").replace(
+    /\/$/,
+    "",
+  );
+  const params = new URLSearchParams();
+  const co = (clientOs || "unknown").trim().toLowerCase();
+  if (co) params.set("client_os", co.slice(0, 32));
+  const qs = params.toString();
+  const path = qs ? `downloads/page/?${qs}` : "downloads/page/";
+  const url = `${base}/${path}`;
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    "Accept-Language": locale,
+    "X-Locale": locale,
+  };
+  const cookieHeader = options?.cookieHeader;
+  if (cookieHeader) {
+    headers.Cookie = cookieHeader;
+  }
+  const res = await fetch(url, { headers, next: { revalidate: 60 } });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new ApiError(res.status, data);
+  }
+  return buildDownloadsPageFromRaw(data as Record<string, unknown>);
 }
 
 /**
@@ -680,17 +719,7 @@ export type BlogPostDetail = BlogPostItem & {
   body_html: string;
 };
 
-export async function getBlogPosts(): Promise<BlogPostItem[]> {
-  const base = BASE_URL.replace(/\/$/, "");
-  const url = `${base}/blog/`;
-  const res = await fetch(url, {
-    credentials: "omit",
-    headers: getLocaleHeaders(),
-  });
-  if (!res.ok) {
-    throw new ApiError(res.status, await res.json().catch(() => ({})));
-  }
-  const data = await res.json();
+function mapBlogPostRows(data: unknown): BlogPostItem[] {
   if (!Array.isArray(data)) return [];
   return data.map((row: Record<string, unknown>) => ({
     slug: String(row.slug ?? ""),
@@ -707,6 +736,42 @@ export async function getBlogPosts(): Promise<BlogPostItem[]> {
         ? null
         : String(row.cover_image_url),
   }));
+}
+
+export async function getBlogPosts(): Promise<BlogPostItem[]> {
+  const base = BASE_URL.replace(/\/$/, "");
+  const url = `${base}/blog/`;
+  const res = await fetch(url, {
+    credentials: "omit",
+    headers: getLocaleHeaders(),
+  });
+  if (!res.ok) {
+    throw new ApiError(res.status, await res.json().catch(() => ({})));
+  }
+  const data = await res.json();
+  return mapBlogPostRows(data);
+}
+
+/** SSR списка блога с нужной локалью. */
+export async function getBlogPostsForLocale(locale: string): Promise<BlogPostItem[]> {
+  const base = (process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8001/api/v1").replace(
+    /\/$/,
+    "",
+  );
+  const res = await fetch(`${base}/blog/`, {
+    credentials: "omit",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept-Language": locale,
+      "X-Locale": locale,
+    },
+    next: { revalidate: 120 },
+  });
+  if (!res.ok) {
+    throw new ApiError(res.status, await res.json().catch(() => ({})));
+  }
+  const data = await res.json();
+  return mapBlogPostRows(data);
 }
 
 export async function getBlogPost(slug: string): Promise<BlogPostDetail> {

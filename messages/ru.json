@@ -1,6 +1,8 @@
 {
   "nav": {
     "menu": "Меню",
+    "badge": "ИИ · OBD2",
+    "ctaDownload": "Скачать",
     "home": "Главная",
     "blog": "Блог",
     "pricing": "Тарифы",
@@ -25,14 +27,14 @@
     "siteName": "AutoScan",
     "siteTitle": "AutoScan — ИИ-диагностика автомобилей и OBD-сканер",
     "defaultDescription": "Смартфон или ПК как OBD-сканер: коды ошибок, live data и подсказки ИИ по ремонту. Поддержка ELM327.",
-    "homeTitle": "ИИ-диагностика авто и платформа OBD",
-    "homeDescription": "Профессиональная автодиагностика с искусственным интеллектом. ELM327, живые данные, расшифровка DTC и шаги ремонта.",
-    "pricingTitle": "Подписка OBD2-сканера и цены на ИИ-диагностику авто",
-    "pricingDescription": "Сравните тарифы AutoScan: Live Data OBD2, сканирование DTC и ИИ-диагностика. Прозрачная подписка.",
+    "homeTitle": "Приложение ИИ-диагностики авто и OBD2-сканер — AutoScan",
+    "homeDescription": "AI car diagnostics app и OBD2-сканер: коды Check Engine, live data и подсказки как у ИИ-механика. Адаптеры ELM327. Android, iOS и ПК.",
+    "pricingTitle": "Цены на OBD2-приложение и тарифы ИИ-диагностики",
+    "pricingDescription": "Сравните подписки: live data OBD2, скан DTC и ИИ — как AutoScan выглядит среди типичных OBD2-приложений.",
     "faqTitle": "Частые вопросы (FAQ)",
     "faqDescription": "Ответы об AutoScan, OBD-диагностике, ИИ, оплате и устройствах.",
     "blogTitle": "Блог",
-    "blogDescription": "Статьи и новости про автодиагностику, OBD-II и обновления AutoScan.",
+    "blogDescription": "Гайды по кодам OBD2, настройке ELM327, live data PID, осмотру б/у авто и обновлениям AutoScan.",
     "loginTitle": "Вход",
     "loginDescription": "Войдите в аккаунт AutoScan: кабинет, устройства и оплата.",
     "registerTitle": "Регистрация",
@@ -47,13 +49,18 @@
     "disclaimerDescription": "Ограничение ответственности AutoScan за использование сервиса и информации на сайте.",
     "checkoutTitle": "Оформление заказа",
     "checkoutDescription": "Оплата выбранного тарифа AutoScan.",
-    "downloadTitle": "Скачать приложение",
-    "downloadDescription": "Скачайте десктоп-приложение AutoScan для Windows, macOS и Linux.",
-    "blogPostNotFoundTitle": "Статья не найдена"
+    "downloadTitle": "Скачать ИИ OBD2-сканер (ПК)",
+    "downloadDescription": "Десктоп AutoScan для Windows, macOS и Linux — ИИ-диагностика и OBD2 на компьютере.",
+    "blogPostNotFoundTitle": "Статья не найдена",
+    "homeKeywords": "AI car diagnostics app, AI OBD2 scanner, AI mechanic app, check engine light codes, OBD2 error codes, ELM327, приложение диагностики авто",
+    "homeOgTitle": "ИИ-диагностика авто и OBD2 — AutoScan",
+    "homeOgDescription": "Телефон или ПК как ИИ OBD2-сканер: коды Check Engine, live data и пошаговые подсказки.",
+    "compareObd2Title": "Лучшие OBD2-приложения 2026 — сравнение и выбор",
+    "compareObd2Description": "Сравнение OBD2-приложений: live data, глубина DTC, ИИ и заметки об альтернативах в духе Torque Pro."
   },
   "downloadPage": {
     "title": "Скачать",
-    "subtitle": "Установите десктоп-приложение под вашу платформу.",
+    "subtitle": "Установите десктоп AutoScan для Windows, macOS или Linux — те же ИИ-функции OBD2, что и в веб-версии.",
     "loadError": "Не удалось загрузить список файлов. Попробуйте позже.",
     "heroRecommendedWindows": "Рекомендуется для вашей системы — Windows",
     "heroRecommendedMac": "Рекомендуется для вашей системы — macOS",
@@ -508,11 +515,35 @@
     "chatError": "Ошибка чата"
   },
   "footer": {
+    "tagline": "ИИ-диагностика по OBD2, live data и подсказки по ремонту для водителей и сервисов.",
+    "colExplore": "Разделы",
+    "colLegal": "Правовая информация",
     "copyright": "© {year} {siteName}",
     "terms": "Условия использования",
     "privacy": "Политика конфиденциальности",
     "disclaimer": "Отказ от ответственности",
     "contacts": "Контакты"
+  },
+  "compareObd2Page": {
+    "title": "Лучшие OBD2-приложения в 2026 — сравнение",
+    "intro": "Выбор OBD2-приложения зависит от задач: быстрый сброс кода, глубокий live data, логирование или ИИ-подсказки. Ниже — критерии и место AutoScan. Упоминаем распространённые альтернативы (включая подход Torque Pro) для контекста, не как рекламу.",
+    "hCriteria": "По каким пунктам сравнивать",
+    "c1Title": "Платформа и адаптеры",
+    "c1Body": "Проверьте Android/iOS/ПК и стабильность с вашим ELM327 (USB, Bluetooth, Wi‑Fi). Часть приложений сильна только на одной ОС.",
+    "c2Title": "Глубина DTC",
+    "c2Body": "Бесплатные уровни часто дают общие P0xxx; для сложных случаев важны специфичные для производителя и постоянные коды. Смотрите сброс и readiness.",
+    "c3Title": "Live data и PID",
+    "c3Body": "Для настройки и неисправностей нужны дашборды, лог и ключевые PID (fuel trim, O2, пропуски). Важнее графики и экспорт, чем число параметров в списке.",
+    "c4Title": "ИИ и подсказки",
+    "c4Body": "Классические приложения показывают сырые значения; ИИ объясняет вероятные причины и шаги. Решите, нужен ли «сырой» сканер или ассистент.",
+    "c5Title": "Модель оплаты",
+    "c5Body": "Разовая покупка vs подписка: оцените стоимость во времени и обновления. Пробный период помогает проверить связку с адаптером.",
+    "hAutoScan": "Где AutoScan",
+    "autoScanBody": "AutoScan ориентирован на водителей и сервисы, которым нужны ИИ-пояснения поверх OBD2, live data и ELM327 — в том числе на ПК. Полные PID и чат с ИИ — на странице тарифов.",
+    "hAlternatives": "Torque Pro и аналоги",
+    "altBody": "Torque Pro популярен на Android как разовая покупка с дашбордами и логами. Если нужны кроссплатформа, ИИ-нарративы или удобный ПК — сравните с подписочными продуктами.",
+    "ctaPricing": "Тарифы AutoScan",
+    "ctaBlog": "Гайд по кодам OBD2"
   },
   "disclaimerPage": {
     "title": "Отказ от ответственности",
@@ -608,7 +639,7 @@
   },
   "blogPage": {
     "title": "Блог",
-    "subtitle": "Последние статьи и новости.",
+    "subtitle": "Гайды по кодам OBD2, ELM327, live data и обновлениям AutoScan — для водителей и сервисов.",
     "loading": "Загрузка…",
     "empty": "Пока нет статей.",
     "error": "Не удалось загрузить статьи. Попробуйте позже.",
@@ -626,5 +657,180 @@
     "cancelTitle": "Оплата отменена",
     "cancelBody": "Вы можете выбрать тариф снова в любое время.",
     "backToPricing": "К тарифам"
+  },
+  "landing": {
+    "schema": {
+      "softwareDescription": "Профессиональная диагностика авто с ИИ. Чтение кодов OBD2, анализ данных в реальном времени и инструкции по ремонту на основе ИИ.",
+      "ratingCount": "847"
+    },
+    "howTo": {
+      "name": "Как это работает",
+      "s1": {
+        "name": "Подключите сканер",
+        "text": "Вставьте адаптер в OBD-II разъём автомобиля."
+      },
+      "s2": {
+        "name": "Запустите приложение",
+        "text": "Подключитесь к адаптеру через AutoScan на телефоне, планшете или ПК."
+      },
+      "s3": {
+        "name": "Получите диагноз",
+        "text": "Изучите ИИ-отчёт по кодам ошибок, live-данным и рекомендациям по ремонту."
+      }
+    },
+    "hero": {
+      "badge": "OBD2 · ELM327 · Сканирование в реальном времени",
+      "headlineFree": "Бесплатная",
+      "headlineAi": "ИИ-",
+      "headlineSeconds": "диагностика авто за секунды — без очереди в сервисе",
+      "subheadline": "Подключите любой адаптер ELM327, читайте данные ЭБУ в реальном времени и получайте понятные объяснения кодов ошибок от ИИ.",
+      "ctaTryFree": "Попробовать бесплатно онлайн",
+      "ctaDownload": "Скачать приложение",
+      "ctaDashboard": "Открыть кабинет",
+      "socialProofCta": "10 000+ авто диагностировано в AutoScan",
+      "dashboardLink": "Перейти в кабинет →",
+      "visualAria": "Анимированная схема: OBD-порт, кабель адаптера, телефон с анализом ИИ",
+      "stepConnect": "Подключение",
+      "stepRead": "Считывание",
+      "stepAi": "Анализ ИИ",
+      "stepResult": "Результат",
+      "tooltipP0420": "ИИ: эффективность катализатора ниже нормы — сначала проверьте лямбда-зонды и подсос воздуха в выпуске.",
+      "tooltipP0171": "ИИ: бедная смесь (банк 1) — вероятен подсос, ДМРВ или давление топлива; короткие поездки обычно допустимы.",
+      "mockTitle": "Данные live",
+      "platformKicker": "Скачать для",
+      "platformWindowsLabel": "Windows",
+      "platformMacLabel": "macOS",
+      "platformLinuxLabel": "Linux",
+      "platformWindowsAria": "Перейти к загрузке: установщик Windows",
+      "platformMacAria": "Перейти к загрузке: установщик macOS",
+      "platformLinuxAria": "Перейти к загрузке: Linux",
+      "carouselAria": "Скриншоты десктоп-приложения",
+      "slidePreviewVideoAlt": "Видео-превью: десктоп-приложение AutoScan в работе",
+      "slidePreviewVideoTab": "Показать видео-превью продукта",
+      "slideLiveAlt": "AutoScan для ПК: живые данные авто, обороты, скорость и датчики",
+      "slideDiagnosticsAlt": "AutoScan для ПК: диагностика, коды OBD-II и ИИ-ассистент",
+      "slideLiveTab": "Показать скриншот живых данных",
+      "slideDiagnosticsTab": "Показать скриншот диагностики и ИИ",
+      "carouselPrev": "Предыдущий скриншот",
+      "carouselNext": "Следующий скриншот"
+    },
+    "features": {
+      "sectionTitle": "Everything you need to stay ahead of repairs",
+      "chatLeadTitle": "Коды ошибок и чат с ботом — в одном окне",
+      "chatLeadBody": "Видите сбой, живые параметры и задаёте вопросы ассистенту, не прыгая между экранами. Всё для решения по ремонту — в одном интерфейсе.",
+      "chatVideoAria": "Запись экрана: диагностика и чат с ИИ в одном окне приложения",
+      "f2": {
+        "tag": "PRO",
+        "title": "Predict problems before they happen",
+        "body": "AIScanAuto monitors engine patterns over time and alerts you before minor issues become expensive repairs. Know your car's health at a glance.",
+        "learnMore": "Learn more →"
+      },
+      "f3": {
+        "tag": "PRO",
+        "title": "Instant repair cost estimate",
+        "body": "See the estimated repair cost for your region before you visit a mechanic. Stop overpaying — know the fair price for any job.",
+        "learnMore": "Learn more →"
+      },
+      "f4": {
+        "tag": "PRO",
+        "title": "Live engine data, beautifully displayed",
+        "body": "Monitor 70+ real-time engine parameters. Customisable dashboard, freeze frame data, and sensor history graphs.",
+        "learnMore": "Learn more →"
+      }
+    },
+    "contentLinks": {
+      "title": "Подробнее",
+      "obd2Codes": "Коды OBD2 и индикатор Check Engine",
+      "compareApps": "Лучшие OBD2-приложения 2026 — сравнение"
+    },
+    "cars": {
+      "title": "Works with 10,000+ car models",
+      "subtitle": "Any petrol or diesel car manufactured after 1996 (OBD2 standard)",
+      "footnote": "+ any other OBD2-compatible vehicle (1996+)",
+      "brands": {
+        "toyota": "Toyota",
+        "bmw": "BMW",
+        "mercedes": "Mercedes-Benz",
+        "ford": "Ford",
+        "volkswagen": "Volkswagen",
+        "honda": "Honda",
+        "audi": "Audi",
+        "hyundai": "Hyundai",
+        "kia": "Kia",
+        "nissan": "Nissan",
+        "chevrolet": "Chevrolet",
+        "subaru": "Subaru",
+        "mazda": "Mazda",
+        "volvo": "Volvo",
+        "peugeot": "Peugeot",
+        "renault": "Renault"
+      }
+    },
+    "pricing": {
+      "title": "Simple, honest pricing",
+      "subtitle": "Start free. Upgrade when you need more.",
+      "monthly": "Monthly",
+      "annual": "Annual",
+      "savePct": "Save 33%",
+      "free": {
+        "name": "Free",
+        "price": "$0 / forever",
+        "f1": "Read & clear fault codes (DTCs)",
+        "f2": "Basic live sensor data (10 parameters)",
+        "f3": "Vehicle info (VIN decoder)",
+        "f4": "Readiness monitors",
+        "f5": "Works with any ELM327 adapter",
+        "n1": "AI fault code explanations",
+        "n2": "Repair cost estimates",
+        "n3": "Predictive maintenance",
+        "n4": "AI mechanic chat",
+        "n5": "Full live data (70+ params)",
+        "cta": "Download Free"
+      },
+      "pro": {
+        "badge": "Most Popular",
+        "name": "Pro",
+        "priceMonthly": "$4.99 / month",
+        "priceAnnual": "$39.99 / year",
+        "p1": "Everything in Free",
+        "p2": "AI fault code explanations",
+        "p3": "Repair cost estimates (by region)",
+        "p4": "Predictive maintenance alerts",
+        "p5": "AI mechanic chat (unlimited)",
+        "p6": "Full live data (70+ parameters)",
+        "p7": "Data export (CSV, PDF)",
+        "p8": "Multi-vehicle support (up to 5 cars)",
+        "p9": "Priority support",
+        "cta": "Start Free Trial"
+      },
+      "footnote": "🔒 Cancel anytime. No hidden fees. 7-day free trial on Pro."
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "q1": {
+        "q": "Do I need a special OBD2 adapter?",
+        "a": "AIScanAuto works with any standard ELM327 Bluetooth or Wi-Fi adapter. You can find reliable adapters on Amazon for $5–$30. We recommend Bluetooth 4.0+ adapters for the best experience."
+      },
+      "q2": {
+        "q": "Which cars are supported?",
+        "a": "All petrol and diesel vehicles manufactured after 1996 are supported (OBD2 standard). This includes virtually every car sold in the US, EU, and most other markets. Electric vehicles with OBD2 ports are also partially supported."
+      },
+      "q3": {
+        "q": "What does the AI actually do?",
+        "a": "When a fault code is detected, our AI explains the cause in plain language, rates the severity (can I drive? should I stop immediately?), lists likely causes in order of probability, and gives step-by-step repair guidance."
+      },
+      "q4": {
+        "q": "Is the Free plan really free?",
+        "a": "Yes, forever. The Free plan lets you read and clear fault codes, view basic sensor data, and decode your VIN — at no cost. The Pro plan unlocks AI analysis and advanced features."
+      },
+      "q5": {
+        "q": "Does it work on iPhone?",
+        "a": "Yes. AIScanAuto is available on both Android (Google Play) and iOS (App Store). You need a Wi-Fi ELM327 adapter for iPhone since iOS does not support Bluetooth SPP protocol."
+      },
+      "q6": {
+        "q": "What is a DTC / fault code?",
+        "a": "A DTC (Diagnostic Trouble Code) is a code stored by your car's ECU when it detects a problem. Common examples: P0300 (engine misfire), P0171 (lean fuel mixture). AIScanAuto reads these codes and explains what each one means for your specific car."
+      }
+    }
   }
 }

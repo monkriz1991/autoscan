@@ -11,21 +11,43 @@ export function getMetadataBase(): URL {
 }
 
 /**
+ * Нормализованный путь без префикса локали: "" для главной, иначе "/faq", "/blog/slug".
+ */
+export function pathWithoutLocaleSegment(pathWithoutLocale: string): string {
+  if (pathWithoutLocale === "" || pathWithoutLocale === "/") {
+    return "";
+  }
+  return pathWithoutLocale.startsWith("/") ? pathWithoutLocale : `/${pathWithoutLocale}`;
+}
+
+/**
+ * Путь с префиксом локали для редиректов (localePrefix: as-needed — defaultLocale без префикса).
+ */
+export function localizedPath(locale: string, pathWithoutLocale: string): string {
+  const path = pathWithoutLocaleSegment(pathWithoutLocale);
+  if (locale === routing.defaultLocale) {
+    return path === "" ? "/" : path;
+  }
+  return path === "" ? `/${locale}` : `/${locale}${path}`;
+}
+
+/**
  * Путь без префикса локали, с ведущим слэшем или пустая строка для главной.
  * Пример: "", "/marketing/pricing", "/faq", "/blog/post-slug"
+ * Включает ключ x-default (URL defaultLocale) для hreflang.
  */
 export function alternateLanguageUrls(pathWithoutLocale: string): Record<string, string> {
   const origin = getSiteOrigin();
-  const path =
-    pathWithoutLocale === "" || pathWithoutLocale === "/"
-      ? ""
-      : pathWithoutLocale.startsWith("/")
-        ? pathWithoutLocale
-        : `/${pathWithoutLocale}`;
+  const path = pathWithoutLocaleSegment(pathWithoutLocale);
   const out: Record<string, string> = {};
   for (const locale of routing.locales) {
-    out[locale] = `${origin}/${locale}${path}`;
+    if (locale === routing.defaultLocale) {
+      out[locale] = path === "" ? `${origin}/` : `${origin}${path}`;
+    } else {
+      out[locale] = path === "" ? `${origin}/${locale}` : `${origin}/${locale}${path}`;
+    }
   }
+  out["x-default"] = out[routing.defaultLocale];
   return out;
 }
 

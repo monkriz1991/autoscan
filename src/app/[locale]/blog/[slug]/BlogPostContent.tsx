@@ -1,112 +1,66 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { useRouter } from "@/i18n/navigation";
-import {
-  Title,
-  Text,
-  Button,
-  Badge,
-  Group,
-  Container,
-  Box,
-  Image,
-} from "@mantine/core";
+import { Link } from "@/i18n/navigation";
+import { Title, Text, Badge, Group, Button, Image, Box } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
-import { getBlogPost, type BlogPostDetail } from "@/lib/api";
+import type { BlogPostDetail } from "@/lib/api";
 
-export default function BlogPostContent({ slug }: { slug: string }) {
+type Props = { post: BlogPostDetail };
+
+export default function BlogPostContent({ post }: Props) {
   const t = useTranslations("blogPage");
-  const router = useRouter();
-  const [post, setPost] = useState<BlogPostDetail | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function fetchPost() {
-      setLoading(true);
-      try {
-        const data = await getBlogPost(slug);
-        setPost(data);
-      } catch (err: any) {
-        if (err.status === 404) {
-          setError(t("notFound"));
-        } else {
-          setError(t("error"));
-        }
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchPost();
-  }, [slug, t]);
-
-  if (loading) {
-    return (
-      <Container size="md" py="xl">
-        <Text size="sm" c="dimmed">{t("loading")}</Text>
-      </Container>
-    );
-  }
-
-  if (error || !post) {
-    return (
-      <Container size="md" py="xl">
-        <Button variant="subtle" leftSection={<IconArrowLeft size={16} />} onClick={() => router.push("/blog")} mb="lg">
-          {t("backToList")}
-        </Button>
-        <Text size="sm" c="dimmed">{error}</Text>
-      </Container>
-    );
-  }
 
   return (
-    <Container size="md" py="xl" className="blog-post">
-      <Button variant="subtle" leftSection={<IconArrowLeft size={16} />} onClick={() => router.push("/blog")} mb="lg">
+    <article className="blog-post-page marketing-page">
+      <Button
+        component={Link}
+        href="/blog"
+        variant="subtle"
+        leftSection={<IconArrowLeft size={16} />}
+        mb="lg"
+        className="blog-post-page__back"
+        c="dimmed"
+      >
         {t("backToList")}
       </Button>
 
-      {/* Mantine Image вместо next/image: обложка с API — внешний origin; next/image без remotePatterns даёт битую картинку, в списке уже обычный <img>. */}
-      {post.cover_image_url && (
-        <Box mb="xl">
+      {post.cover_image_url ? (
+        <Box className="blog-post-page__cover">
           <Image
             src={post.cover_image_url}
             alt={post.title}
-            h={400}
+            h={380}
             w="100%"
             fit="cover"
-            radius="md"
+            radius={0}
           />
         </Box>
-      )}
+      ) : null}
 
-      <Title order={1} mb="sm" size="h1" fw={800}>
-        {post.title}
-      </Title>
-
-      <Group mb="xl">
-        <Text size="sm" c="dimmed">
-          {new Date(post.published_at).toLocaleDateString()}
-        </Text>
+      <div className="blog-post-page__meta">
+        <time dateTime={post.published_at}>
+          {post.published_at ? new Date(post.published_at).toLocaleDateString() : ""}
+        </time>
         {post.available_locales.length > 0 && (
           <Badge color="gray" variant="light" size="xs">
             {post.available_locales.map((l) => l.toUpperCase()).join(", ")}
           </Badge>
         )}
-      </Group>
+      </div>
 
-      {post.excerpt && (
-        <Text size="lg" mb="xl" fw={500}>
-          {post.excerpt}
-        </Text>
-      )}
+      <Title order={1} className="blog-post-page__title">
+        {post.title}
+      </Title>
+
+      {post.excerpt ? (
+        <p className="blog-post-page__excerpt">{post.excerpt}</p>
+      ) : null}
 
       <div
         className="ck-content"
-        style={{ marginTop: "2rem", lineHeight: 1.6 }}
         dangerouslySetInnerHTML={{ __html: post.body_html }}
       />
-    </Container>
+    </article>
   );
 }

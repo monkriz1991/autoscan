@@ -1,40 +1,48 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
-import { setRequestLocale } from "next-intl/server";
+import { headers } from "next/headers";
+import { notFound } from "next/navigation";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
-import JsonLd from "@/components/seo/JsonLd";
-import { buildLocalePageMetadata } from "@/lib/seo-metadata";
-import { fetchStructuredData } from "@/lib/seo/structured-data";
+import { getDownloadsPageForLocale } from "@/lib/api";
+import { detectClientOsFromUserAgent } from "@/lib/detectClientOs";
 import { alternateLanguageUrls } from "@/lib/site-url";
-import DownloadPageContent from "./DownloadPageContent";
+import DownloadPageClient from "./DownloadPageClient";
+
+const PATH = "/download";
 
 type Props = { params: Promise<{ locale: string }> };
 
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  return buildLocalePageMetadata(locale, "/download", "downloadTitle", "downloadDescription");
+  const t = await getTranslations({ locale, namespace: "seo" });
+  return {
+    title: t("downloadTitle"),
+    description: t("downloadDescription"),
+    alternates: { languages: alternateLanguageUrls(PATH) },
+  };
 }
 
 export default async function DownloadPage({ params }: Props) {
   const { locale } = await params;
+  if (!routing.locales.includes(locale as (typeof routing.locales)[number])) {
+    notFound();
+  }
   setRequestLocale(locale);
-  const pageUrl = alternateLanguageUrls("/download")[locale];
-  const downloadLd = await fetchStructuredData({
-    bundles: ["download"],
-    locale,
-    pageUrl,
-    clientOs: "unknown",
-  });
-  return (
-    <>
-      <JsonLd data={downloadLd} />
-      <Suspense fallback={null}>
-        <DownloadPageContent />
-      </Suspense>
-    </>
-  );
+
+  const h = await headers();
+  const ua = h.get("user-agent");
+  const cookie = h.get("cookie");
+  const detected = detectClientOsFromUserAgent(ua);
+
+  let initialData = null;
+  let loadFailed = false;
+  try {
+    initialData = await getDownloadsPageForLocale(detected, locale, {
+      cookieHeader: cookie,
+    });
+  } catch {
+    loadFailed = true;
+  }
+
+  return <DownloadPageClient initialData={initialData} loadFailed={loadFailed} />;
 }

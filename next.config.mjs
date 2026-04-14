@@ -11,6 +11,8 @@ const backendBase = process.env.NEXT_PUBLIC_BACKEND_BASE ||
 const nextConfig = {
   output: "standalone",
   reactStrictMode: true,
+  /** ESM-пакет Swiper: явная трансформация снижает сбои бандлера (webpack / Turbopack). */
+  transpilePackages: ["swiper"],
   // Снижает риск «старый HTML + новые/удалённые чанки» после деплоя (webpack .call на undefined).
   // Для `/_next/static/*` ниже задаётся immutable — он перекрывает общее правило (в Next побеждает последнее совпадение).
   async headers() {
@@ -25,9 +27,9 @@ const nextConfig = {
       },
     ];
   },
-  // OAuth redirect_uri в БД без префикса локали — /auth/callback → страница под [locale]
+  // OAuth: redirect_uri без префикса локали — при as-needed страница доступна как /auth/callback
   async redirects() {
-    return [{ source: "/auth/callback", destination: "/en/auth/callback", permanent: false }];
+    return [];
   },
   async rewrites() {
     return [

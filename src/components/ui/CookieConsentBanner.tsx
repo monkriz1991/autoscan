@@ -90,7 +90,7 @@ export default function CookieConsentBanner() {
         p={{ base: "sm", sm: "md" }}
         radius="md"
         withBorder
-        maw={900}
+        maw={1920}
         mx="auto"
       >
         <Stack gap="sm">

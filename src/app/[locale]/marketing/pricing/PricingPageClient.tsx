@@ -14,7 +14,7 @@ import {
 } from "@mantine/core";
 import { getPlans } from "@/lib/api";
 import type { Plan } from "@/lib/api";
-import { PricingTable } from "@/components/ui/PricingTable";
+import { PricingPageContent } from "@/components/marketing/PricingPageContent";
 
 export default function PricingPageClient() {
   const t = useTranslations("pricing");
@@ -67,7 +67,7 @@ export default function PricingPageClient() {
 
             {!error && plans.length > 0 && (
               <Box component="section" aria-label={t("title")}>
-                <PricingTable plans={plans} />
+                <PricingPageContent plans={plans} />
               </Box>
             )}
           </Stack>

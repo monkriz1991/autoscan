@@ -62,6 +62,10 @@ export function isFeaturedPlan(plan: Plan): boolean {
   return plan.duration_days !== 365;
 }
 
+function tierRank(plan: Plan): number {
+  return TIER_ORDER[plan.tier.toLowerCase()] ?? 99;
+}
+
 type FeatureRowProps = { yes: boolean; compact?: boolean };
 
 function FeatureRowYesNo({ yes, compact }: FeatureRowProps) {
@@ -118,6 +122,10 @@ export function PlanCard({ plan, compact }: PlanCardProps) {
 
   const priceMain = free ? t("freePriceDisplay") : `${plan.price} ${plan.currency}`;
   const aiCount = plan.max_requests ?? 0;
+  const proOrHigher = tierRank(plan) >= TIER_ORDER.pro;
+  const predictiveMaintenance = f.predictive_maintenance_alerts ?? proOrHigher;
+  const aiBlogSearch = f.ai_blog_search ?? proOrHigher;
+  const aiChatAssistant = f.ai_chat_assistant ?? proOrHigher;
 
   return (
     <Box
@@ -172,6 +180,18 @@ export function PlanCard({ plan, compact }: PlanCardProps) {
         <Group gap="sm" wrap="nowrap" align="flex-start">
           <FeatureRowYesNo yes={f.metrics_history} compact={compact} />
           <Text size="sm">{t("compare_history")}</Text>
+        </Group>
+        <Group gap="sm" wrap="nowrap" align="flex-start">
+          <FeatureRowYesNo yes={predictiveMaintenance} compact={compact} />
+          <Text size="sm">{t("feature_predictive_maintenance")}</Text>
+        </Group>
+        <Group gap="sm" wrap="nowrap" align="flex-start">
+          <FeatureRowYesNo yes={aiBlogSearch} compact={compact} />
+          <Text size="sm">{t("feature_ai_blog_search")}</Text>
+        </Group>
+        <Group gap="sm" wrap="nowrap" align="flex-start">
+          <FeatureRowYesNo yes={aiChatAssistant} compact={compact} />
+          <Text size="sm">{t("feature_ai_chat_assistant")}</Text>
         </Group>
         <Group gap="sm" wrap="nowrap" align="flex-start">
           <FeatureRowYesNo yes={!free} compact={compact} />

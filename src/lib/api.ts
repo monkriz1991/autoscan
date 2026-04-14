@@ -443,6 +443,9 @@ export type PlanFeatures = {
   record_params: boolean;
   metrics_history: boolean;
   realtime_analysis: boolean;
+  predictive_maintenance_alerts?: boolean;
+  ai_blog_search?: boolean;
+  ai_chat_assistant?: boolean;
 };
 
 export type Plan = {

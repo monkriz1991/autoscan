@@ -21,7 +21,8 @@ export async function generateMetadata({
   const base = await buildLocalePageMetadata(locale, "", "homeTitle", "homeDescription");
   const t = await getTranslations({ locale, namespace: "seo" });
   const origin = getSiteOrigin();
-  const pageUrl = alternateLanguageUrls("")[locale];
+  const canonicalUrl = alternateLanguageUrls("")[locale];
+  const pageUrl = canonicalUrl.replace(/\/$/, "");
   const keywords = t("homeKeywords")
     .split(",")
     .map((s) => s.trim())
@@ -29,6 +30,10 @@ export async function generateMetadata({
   return {
     ...base,
     title: { absolute: t("homeTitle") },
+    alternates: {
+      ...base.alternates,
+      canonical: canonicalUrl,
+    },
     keywords,
     openGraph: {
       ...base.openGraph,
@@ -40,8 +45,8 @@ export async function generateMetadata({
     twitter: {
       ...base.twitter,
       card: "summary_large_image",
-      title: t("homeOgTitle"),
-      description: t("homeOgDescription"),
+      title: t("homeTwitterTitle"),
+      description: t("homeTwitterDescription"),
       images: [`${origin}/og-image.png`],
     },
   };

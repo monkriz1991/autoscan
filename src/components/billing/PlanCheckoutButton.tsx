@@ -5,14 +5,9 @@ import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Alert, Button, Stack } from "@mantine/core";
 import { Link } from "@/i18n/navigation";
-import {
-  createPlisioInvoice,
-  getApiErrorMessage,
-  isAuthenticated,
-  type Plan,
-} from "@/lib/api";
+import { createPlisioInvoice, getApiErrorMessage, isAuthenticated, type Plan } from "@/lib/api";
 
-export type PlanCheckoutPlan = Pick<Plan, "id" | "price">;
+export type PlanCheckoutPlan = Pick<Plan, "id" | "price" | "name" | "tier">;
 
 function isFreePlan(price: string | number): boolean {
   const n = typeof price === "string" ? parseFloat(price) : Number(price);
@@ -34,6 +29,16 @@ export default function PlanCheckoutButton({ plan }: { plan: PlanCheckoutPlan })
 
   const free = isFreePlan(plan.price);
   const loginHref = `/login?next=${encodeURIComponent(pathname)}`;
+  const tier = (plan.tier || "").trim().toLowerCase();
+
+  const startPlanCta =
+    tier === "lite"
+      ? t("startLitePlan")
+      : tier === "basic"
+        ? t("startBasicPlan")
+        : tier === "pro"
+          ? t("startProPlan")
+          : t("startPlan", { plan: plan.name });
 
   const handlePay = async () => {
     setError("");
@@ -85,7 +90,7 @@ export default function PlanCheckoutButton({ plan }: { plan: PlanCheckoutPlan })
         variant="filled"
         mt="auto"
       >
-        {t("loginToPay")}
+        {startPlanCta}
       </Button>
     );
   }

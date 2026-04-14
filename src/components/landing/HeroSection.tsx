@@ -153,6 +153,7 @@ export default function HeroSection({ authenticated }: Props) {
           {/* Переливающийся градиент — только в SCSS (clip на h1), без filter у предков — иначе артефакты в Chrome/YaBrowser */}
           <Title
             order={1}
+            component="h1"
             className="landing-hero__title"
             style={{
               fontFamily: "var(--landing-font-display)",

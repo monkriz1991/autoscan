@@ -3,7 +3,10 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
+import StaticJsonLd from "@/components/landing/StaticJsonLd";
+import JsonLd from "@/components/seo/JsonLd";
 import { getBlogPostsForLocale } from "@/lib/api";
+import { fetchStructuredData } from "@/lib/seo/structured-data";
 import { alternateLanguageUrls } from "@/lib/site-url";
 
 const PATH = "/blog";
@@ -27,6 +30,24 @@ export default async function BlogIndexPage({ params }: Props) {
   }
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "blogPage" });
+  const tNav = await getTranslations({ locale, namespace: "nav" });
+  const tSeo = await getTranslations({ locale, namespace: "seo" });
+  const pageUrl = alternateLanguageUrls(PATH)[locale];
+  const blogLd = await fetchStructuredData({
+    bundles: ["blog_list", "webpage"],
+    locale,
+    pageUrl,
+    title: tSeo("blogTitle"),
+    description: tSeo("blogDescription"),
+  });
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: tNav("home"), item: alternateLanguageUrls("")[locale] },
+      { "@type": "ListItem", position: 2, name: t("title"), item: pageUrl },
+    ],
+  };
 
   let posts: Awaited<ReturnType<typeof getBlogPostsForLocale>> = [];
   let failed = false;
@@ -38,59 +59,67 @@ export default async function BlogIndexPage({ params }: Props) {
 
   if (failed) {
     return (
-      <div className="marketing-page marketing-page--wide">
-        <div className="marketing-page__hero">
-          <h1 className="marketing-page__hero-title">{t("title")}</h1>
-          <p className="marketing-page__hero-sub">{t("error")}</p>
+      <>
+        <JsonLd data={blogLd} />
+        <StaticJsonLd data={breadcrumbLd} />
+        <div className="marketing-page marketing-page--wide">
+          <div className="marketing-page__hero">
+            <h1 className="marketing-page__hero-title">{t("title")}</h1>
+            <p className="marketing-page__hero-sub">{t("error")}</p>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="marketing-page marketing-page--wide">
-      <div className="marketing-page__hero">
-        <h1 className="marketing-page__hero-title">{t("title")}</h1>
-        <p className="marketing-page__hero-sub">{t("subtitle")}</p>
-      </div>
-
-      {posts.length === 0 ? (
-        <p className="marketing-page__hero-sub" style={{ textAlign: "center" }}>
-          {t("empty")}
-        </p>
-      ) : (
-        <div className="blog-card-grid">
-          {posts.map((post) => (
-            <Link key={post.slug} href={`/blog/${post.slug}`} className="blog-card">
-              <div className="blog-card__media">
-                {post.cover_image_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element -- внешний URL с API
-                  <img src={post.cover_image_url} alt={post.title} width={640} height={360} />
-                ) : (
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      minHeight: 160,
-                      background:
-                        "linear-gradient(135deg, rgba(59,130,246,0.25), rgba(147,51,234,0.2))",
-                    }}
-                  />
-                )}
-              </div>
-              <div className="blog-card__body">
-                <time className="blog-card__date" dateTime={post.published_at}>
-                  {post.published_at
-                    ? new Date(post.published_at).toLocaleDateString(locale)
-                    : ""}
-                </time>
-                <h2 className="blog-card__title">{post.title}</h2>
-                {post.excerpt ? <p className="blog-card__excerpt">{post.excerpt}</p> : null}
-              </div>
-            </Link>
-          ))}
+    <>
+      <JsonLd data={blogLd} />
+      <StaticJsonLd data={breadcrumbLd} />
+      <div className="marketing-page marketing-page--wide">
+        <div className="marketing-page__hero">
+          <h1 className="marketing-page__hero-title">{t("title")}</h1>
+          <p className="marketing-page__hero-sub">{t("subtitle")}</p>
         </div>
-      )}
-    </div>
+
+        {posts.length === 0 ? (
+          <p className="marketing-page__hero-sub" style={{ textAlign: "center" }}>
+            {t("empty")}
+          </p>
+        ) : (
+          <div className="blog-card-grid">
+            {posts.map((post) => (
+              <Link key={post.slug} href={`/blog/${post.slug}`} className="blog-card">
+                <div className="blog-card__media">
+                  {post.cover_image_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element -- внешний URL с API
+                    <img src={post.cover_image_url} alt={post.title} width={640} height={360} />
+                  ) : (
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        minHeight: 160,
+                        background:
+                          "linear-gradient(135deg, rgba(59,130,246,0.25), rgba(147,51,234,0.2))",
+                      }}
+                    />
+                  )}
+                </div>
+                <div className="blog-card__body">
+                  <time className="blog-card__date" dateTime={post.published_at}>
+                    {post.published_at
+                      ? new Date(post.published_at).toLocaleDateString(locale)
+                      : ""}
+                  </time>
+                  <h2 className="blog-card__title">{post.title}</h2>
+                  {post.excerpt ? <p className="blog-card__excerpt">{post.excerpt}</p> : null}
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+    </>
   );
 }

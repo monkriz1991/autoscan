@@ -2,7 +2,12 @@ import { routing } from "@/i18n/routing";
 
 /** Базовый origin сайта для canonical, Open Graph и sitemap (NEXT_PUBLIC_SITE_URL). */
 export function getSiteOrigin(): string {
-  const raw = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const raw = (
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    process.env.SITE_URL ||
+    process.env.FRONTEND_BASE_URL ||
+    "https://aiscanauto.com"
+  ).trim();
   return raw.replace(/\/$/, "");
 }
 

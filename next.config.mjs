@@ -11,6 +11,20 @@ const backendBase = process.env.NEXT_PUBLIC_BACKEND_BASE ||
 const nextConfig = {
   output: "standalone",
   reactStrictMode: true,
+  // Снижает риск «старый HTML + новые/удалённые чанки» после деплоя (webpack .call на undefined).
+  // Для `/_next/static/*` ниже задаётся immutable — он перекрывает общее правило (в Next побеждает последнее совпадение).
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [{ key: "Cache-Control", value: "private, no-cache, must-revalidate" }],
+      },
+      {
+        source: "/_next/static/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
+    ];
+  },
   // OAuth redirect_uri в БД без префикса локали — /auth/callback → страница под [locale]
   async redirects() {
     return [{ source: "/auth/callback", destination: "/en/auth/callback", permanent: false }];

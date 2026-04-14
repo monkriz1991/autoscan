@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="360" viewBox="0 0 560 360" fill="none">
+  <rect width="560" height="360" rx="16" fill="#f1f5f9"/>
+  <rect x="24" y="24" width="512" height="312" rx="12" fill="#fff" stroke="#e2e8f0"/>
+  <text x="44" y="56" fill="#0f172a" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="700">Live data</text>
+  <rect x="44" y="76" width="220" height="100" rx="10" fill="#0f172a"/>
+  <text x="60" y="108" fill="#94a3b8" font-family="Inter,system-ui,sans-serif" font-size="9">RPM</text>
+  <text x="60" y="140" fill="#f8fafc" font-family="Inter,system-ui,sans-serif" font-size="22" font-weight="800">2,840</text>
+  <rect x="284" y="76" width="232" height="100" rx="10" fill="#0f172a"/>
+  <text x="300" y="108" fill="#94a3b8" font-family="Inter,system-ui,sans-serif" font-size="9">Coolant °C</text>
+  <text x="300" y="140" fill="#f8fafc" font-family="Inter,system-ui,sans-serif" font-size="22" font-weight="800">92</text>
+  <rect x="44" y="192" width="472" height="120" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <path d="M60 280 L100 240 L140 260 L200 200 L260 230 L320 180 L380 210 L460 160" stroke="#22c55e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <text x="60" y="308" fill="#64748b" font-family="Inter,system-ui,sans-serif" font-size="9">O2 sensor B1S1 — last 60s</text>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="360" viewBox="0 0 560 360" fill="none">
+  <rect width="560" height="360" rx="16" fill="#f1f5f9"/>
+  <rect x="24" y="24" width="512" height="312" rx="12" fill="#fff" stroke="#e2e8f0"/>
+  <text x="44" y="56" fill="#0f172a" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="700">Maintenance</text>
+  <rect x="44" y="76" width="472" height="40" rx="8" fill="#ecfdf5" stroke="#6ee7b7"/>
+  <text x="60" y="100" fill="#065f46" font-family="Inter,system-ui,sans-serif" font-size="10">Oil change due in 420 km</text>
+  <rect x="44" y="128" width="472" height="40" rx="8" fill="#fff7ed" stroke="#fdba74"/>
+  <text x="60" y="152" fill="#9a3412" font-family="Inter,system-ui,sans-serif" font-size="10">Coolant temp trending high — inspect thermostat</text>
+  <rect x="44" y="180" width="472" height="120" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <path d="M60 260 L120 200 L180 220 L240 160 L300 200 L360 140 L420 180 L480 150" stroke="#2563eb" stroke-width="3" fill="none" stroke-linecap="round"/>
+</svg>

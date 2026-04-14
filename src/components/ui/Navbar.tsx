@@ -93,7 +93,7 @@ export default function Navbar() {
               href="/download"
               size="sm"
               leftSection={<IconDownload size={16} />}
-              className="btn-metallic"
+              className="btn-cta-primary"
             >
               {t("ctaDownload")}
             </Button>
@@ -213,7 +213,7 @@ export default function Navbar() {
           <Button
             component={Link}
             href="/download"
-            className="btn-metallic"
+            className="btn-cta-primary"
             leftSection={<IconDownload size={18} />}
             mt="md"
             fullWidth

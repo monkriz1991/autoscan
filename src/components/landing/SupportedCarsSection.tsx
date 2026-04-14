@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Box, Stack, Text, Title } from "@mantine/core";
 
+// Логотипы в public/landing/brands/*.svg (источник: Simple Icons; Mercedes — пакет v14, т.к. убрали с CDN).
 const BRANDS: { slug: string; labelKey: string }[] = [
   { slug: "toyota", labelKey: "toyota" },
   { slug: "bmw", labelKey: "bmw" },
@@ -30,7 +31,7 @@ function BrandItem({ slug, label }: { slug: string; label: string }) {
   }
   return (
     <img
-      src={`https://cdn.simpleicons.org/${slug}`}
+      src={`/landing/brands/${slug}.svg`}
       width={40}
       height={40}
       alt=""

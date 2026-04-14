@@ -44,7 +44,7 @@ export default function CompareObd2AppsContent({ t }: { t: CompareT }) {
         </List.Item>
       </List>
 
-      <Title order={2}>{t("hAutoScan")}</Title>
+      <Title order={2}>{t("hAIscanAuto")}</Title>
       <Text style={{ lineHeight: 1.7, color: "var(--text-muted)" }}>{t("autoScanBody")}</Text>
 
       <Title order={2}>{t("hAlternatives")}</Title>

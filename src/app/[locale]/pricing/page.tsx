@@ -2,16 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
-import {
-  Container,
-  Title,
-  Text,
-  Stack,
-  Loader,
-  Center,
-  Notification,
-  Box,
-} from "@mantine/core";
+import { Container, Text, Stack, Loader, Center, Notification } from "@mantine/core";
 import { getPlans } from "@/lib/api";
 import type { Plan } from "@/lib/api";
 import { PricingPageContent } from "@/components/marketing/PricingPageContent";
@@ -44,17 +35,13 @@ export default function PricingPage() {
       size="xl"
       py="xl"
       px={{ base: "md", sm: "lg" }}
-      className="marketing-page marketing-page--wide"
+      className="marketing-page marketing-page--wide pricing-page"
     >
       <Stack gap="xl">
-        <Box ta="center">
-          <Title order={1} mb="md">
-            {t("title")}
-          </Title>
-          <Text c="dimmed" size="lg" maw={640} mx="auto">
-            {t("subtitle")}
-          </Text>
-        </Box>
+        <div className="marketing-page__hero">
+          <h1 className="marketing-page__hero-title">{t("title")}</h1>
+          <p className="marketing-page__hero-sub">{t("subtitle")}</p>
+        </div>
 
         {error ? (
           <Notification color="red" onClose={() => setError("")}>

@@ -2,9 +2,11 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
-import { Container } from "@mantine/core";
-import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
+import { Card, Stack, Text, Button, Anchor } from "@mantine/core";
+import { Link, useRouter } from "@/i18n/navigation";
 import { setTokens, POST_OAUTH_NEXT_STORAGE_KEY } from "@/lib/api";
+import AuthPageShell from "@/components/auth/AuthPageShell";
 
 const DEFAULT_AFTER_AUTH = "/cabinet/dashboard";
 
@@ -41,6 +43,7 @@ function redirectAfterSocialLogin(
 }
 
 function OAuthCallbackInner() {
+  const t = useTranslations("auth");
   const searchParams = useSearchParams();
   const params = useParams();
   const locale = typeof params.locale === "string" ? params.locale : "en";
@@ -85,9 +88,7 @@ function OAuthCallbackInner() {
     const state = searchParams.get("state");
 
     if (!code || !state) {
-      setError(
-        "Нет параметров входа. Ожидались access_token и refresh_token (Google/Apple) или code и state (сканер).",
-      );
+      setError(t("callbackMissingParams"));
       return;
     }
 
@@ -102,40 +103,56 @@ function OAuthCallbackInner() {
       used_redirect_uri: usedRedirectUri,
     });
     window.location.href = `${SCANNER_ORIGIN}/auth/callback?${fwd.toString()}`;
-  }, [searchParams, locale, router]);
+  }, [searchParams, locale, router, t]);
 
   if (error) {
     return (
-      <Container size="xs" py="xl">
-        <div style={{ textAlign: "center", padding: "2rem" }}>
-          <p style={{ color: "var(--mantine-color-red-6)", marginBottom: "1rem" }}>{error}</p>
-          <a href={`/${locale}/login`} style={{ textDecoration: "underline", marginRight: "1rem" }}>
-            На страницу входа
-          </a>
-          <a href={SCANNER_ORIGIN} style={{ textDecoration: "underline" }}>
-            Вернуться в приложение
-          </a>
-        </div>
-      </Container>
+      <AuthPageShell title={t("oauth2Error")} subtitle={t("callbackErrorSubtitle")}>
+        <Card className="auth-card" radius="lg" p="xl" withBorder={false}>
+          <Stack gap="md" align="center">
+            <Text size="sm" c="red" ta="center">
+              {error}
+            </Text>
+            <Button component={Link} href="/login" size="sm" className="btn-cta-primary">
+              {t("callbackBackLogin")}
+            </Button>
+            <Anchor
+              href={SCANNER_ORIGIN}
+              size="sm"
+              rel="noopener noreferrer"
+              className="auth-page__footer-link"
+            >
+              {t("callbackOpenApp")}
+            </Anchor>
+          </Stack>
+        </Card>
+      </AuthPageShell>
     );
   }
 
   return (
-    <Container size="xs" py="xl">
-      <div style={{ textAlign: "center", padding: "2rem" }}>
-        Перенаправление…
-      </div>
-    </Container>
+    <AuthPageShell title={t("oauthEntry.title")} subtitle={t("callbackRedirecting")}>
+      <Card className="auth-card" radius="lg" p="xl" withBorder={false}>
+        <Text ta="center" size="sm" c="dimmed">
+          {t("callbackRedirecting")}
+        </Text>
+      </Card>
+    </AuthPageShell>
   );
 }
 
 export default function AuthCallbackPage() {
+  const t = useTranslations("auth");
   return (
     <Suspense
       fallback={
-        <Container size="xs" py="xl">
-          <div style={{ textAlign: "center" }}>Загрузка…</div>
-        </Container>
+        <AuthPageShell title={t("oauthEntry.title")} subtitle={t("loading")}>
+          <Card className="auth-card" radius="lg" p="xl" withBorder={false}>
+            <Text ta="center" size="sm" c="dimmed">
+              {t("loading")}
+            </Text>
+          </Card>
+        </AuthPageShell>
       }
     >
       <OAuthCallbackInner />

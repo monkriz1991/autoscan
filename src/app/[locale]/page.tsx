@@ -35,7 +35,7 @@ export async function generateMetadata({
       title: t("homeOgTitle"),
       description: t("homeOgDescription"),
       url: pageUrl,
-      images: [{ url: `${origin}/og-image.png`, width: 1200, height: 630, alt: "AutoScan" }],
+      images: [{ url: `${origin}/og-image.png`, width: 1200, height: 630, alt: "AIscanAuto" }],
     },
     twitter: {
       ...base.twitter,
@@ -71,7 +71,7 @@ export default async function HomePage({
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "@id": `${pageUrlNoSlash}/#softwareapplication`,
-    name: "AutoScan",
+    name: "AIscanAuto",
     applicationCategory: "UtilitiesApplication",
     operatingSystem: "Windows, macOS, Linux",
     offers: {

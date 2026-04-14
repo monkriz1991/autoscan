@@ -50,7 +50,7 @@ export default function DownloadPageClient({ initialData, loadFailed }: Props) {
       {initialData.latest?.release_notes_full ? (
         <Stack gap="sm" mt="md">
           <h2 className="marketing-page__section-title">{t("whatsNewTitle")}</h2>
-          <Text size="sm" style={{ color: "var(--mp-text-muted)", lineHeight: 1.65 }}>
+          <Text size="sm" className="marketing-page__release-notes" style={{ lineHeight: 1.65 }}>
             {initialData.latest.release_notes_full}
           </Text>
         </Stack>

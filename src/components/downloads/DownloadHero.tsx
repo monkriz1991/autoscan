@@ -87,7 +87,7 @@ export default function DownloadHero({ clientOs, versionLabel, asset }: Props) {
               leftSection={<IconDownload size={20} />}
               onClick={() => void runDownload()}
               loading={busy}
-              className="btn-metallic"
+              className="btn-cta-primary"
             >
               {t("ctaDownload")}
             </Button>

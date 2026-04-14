@@ -3,11 +3,10 @@
 import { Suspense, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { useRouter } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import {
-  Container,
+  Anchor,
   Card,
-  Title,
   TextInput,
   PasswordInput,
   Button,
@@ -16,6 +15,7 @@ import {
   Loader,
   Center,
   Divider,
+  Text,
 } from "@mantine/core";
 import {
   login,
@@ -26,6 +26,7 @@ import {
   POST_OAUTH_NEXT_STORAGE_KEY,
   getApiErrorMessage,
 } from "@/lib/api";
+import AuthPageShell from "@/components/auth/AuthPageShell";
 
 const DEFAULT_AFTER_AUTH = "/cabinet/dashboard";
 
@@ -102,24 +103,35 @@ function LoginForm() {
     }
   };
 
+  const registerHref = `/register?next=${encodeURIComponent(nextUrl)}`;
+
   if (checkingSession) {
     return (
-      <Container size="xs" py="xl">
-        <Center py="xl">
-          <Loader size="lg" />
-        </Center>
-      </Container>
+      <AuthPageShell title={t("loginTitle")} subtitle={t("loginSubtitle")}>
+        <Card className="auth-card" radius="lg" p="xl" withBorder={false}>
+          <Center py="lg">
+            <Loader size="lg" color="gray" />
+          </Center>
+        </Card>
+      </AuthPageShell>
     );
   }
 
   return (
-    <Container size="xs" py="xl">
-      <Card withBorder shadow="sm" radius="md" p="xl">
-        <Stack>
-          <Title order={3} ta="center">
-            {t("loginTitle")}
-          </Title>
-
+    <AuthPageShell
+      title={t("loginTitle")}
+      subtitle={t("loginSubtitle")}
+      footer={
+        <Text component="span" size="sm" c="inherit">
+          {t("noAccount")}{" "}
+          <Anchor component={Link} href={registerHref} size="sm" inherit>
+            {t("linkRegister")}
+          </Anchor>
+        </Text>
+      }
+    >
+      <Card className="auth-card" radius="lg" p="xl" withBorder={false}>
+        <Stack gap="md">
           {error && (
             <Notification color="red" onClose={() => setError("")}>
               {error}
@@ -130,15 +142,23 @@ function LoginForm() {
             label={t("email")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
           />
 
           <PasswordInput
             label={t("password")}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            autoComplete="current-password"
           />
 
-          <Button fullWidth loading={loading} onClick={handleSubmit}>
+          <Button
+            fullWidth
+            size="md"
+            className="btn-cta-primary"
+            loading={loading}
+            onClick={handleSubmit}
+          >
             {t("loginButton")}
           </Button>
 
@@ -146,7 +166,9 @@ function LoginForm() {
 
           <Button
             fullWidth
+            size="md"
             variant="outline"
+            className="auth-page__btn-outline"
             loading={googleLoading}
             onClick={handleGoogleLogin}
           >
@@ -154,14 +176,24 @@ function LoginForm() {
           </Button>
         </Stack>
       </Card>
-    </Container>
+    </AuthPageShell>
   );
 }
 
 export default function LoginPage() {
   const t = useTranslations("auth");
   return (
-    <Suspense fallback={<Container size="xs" py="xl">{t("loading")}</Container>}>
+    <Suspense
+      fallback={
+        <AuthPageShell title={t("loading")}>
+          <Card className="auth-card" radius="lg" p="xl" withBorder={false}>
+            <Center py="lg">
+              <Loader size="md" color="gray" />
+            </Center>
+          </Card>
+        </AuthPageShell>
+      }
+    >
       <LoginForm />
     </Suspense>
   );

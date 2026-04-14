@@ -1,31 +1,45 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Box, Stack, Text, Title } from "@mantine/core";
+import PredictProblemsFeature from "./PredictProblemsFeature";
+import RepairCostEstimateFeature from "./RepairCostEstimateFeature";
 import { useRevealOnScroll } from "./useRevealOnScroll";
 
 /** Видео чата в левой колонке split-блока */
 const FEATURES_HEADING_VIDEO_SRC = "/vidio/chatvideo.mp4";
+/** Видео блока «Live engine data»: MP4 для Chrome/Firefox; MOV — запас для Safari */
+const FEATURE_F4_LIVE_VIDEO_MP4 = "/vidio/realtime.mp4";
+const FEATURE_F4_LIVE_VIDEO_MOV = "/vidio/realtime.mov";
+/** Постер и запас, если декодер не подхватил ролик */
+const FEATURE_F4_VIDEO_POSTER = "/landing/hero-slide-live.png";
+const FEATURE_F4_FALLBACK_IMAGE = "/landing/feature-live.svg";
 
-const FEATURES = [
-  { key: "f2" as const, image: "/landing/feature-predict.svg", imageLeft: false },
-  { key: "f3" as const, image: "/landing/feature-cost.svg", imageLeft: true },
-  { key: "f4" as const, image: "/landing/feature-live.svg", imageLeft: false },
-] as const;
+const FEATURE_F4_SOURCES = [FEATURE_F4_LIVE_VIDEO_MP4, FEATURE_F4_LIVE_VIDEO_MOV] as const;
 
 function FeatureBlock({
   featureKey,
   image,
+  videoSources,
+  videoAriaLabel,
   imageLeft,
+  mountVideo,
 }: {
-  featureKey: (typeof FEATURES)[number]["key"];
-  image: string;
+  featureKey: "f4";
+  image?: string;
+  videoSources?: readonly string[];
+  videoAriaLabel?: string;
   imageLeft: boolean;
+  mountVideo: boolean;
 }) {
   const t = useTranslations(`landing.features.${featureKey}`);
   const { ref, visible } = useRevealOnScroll<HTMLDivElement>();
+  const [videoFailed, setVideoFailed] = useState(false);
+  const onVideoError = useCallback(() => {
+    setVideoFailed(true);
+  }, []);
 
   const tag = t("tag");
 
@@ -35,7 +49,52 @@ function FeatureBlock({
       className={`landing-feature ${visible ? "landing-feature--visible" : ""} ${imageLeft ? "" : "landing-feature--image-right"}`}
     >
       <Box className="landing-feature__media">
-        <img src={image} width={560} height={360} loading="lazy" alt="" className="landing-feature__img" />
+        {videoSources ? (
+          <Box
+            className="landing-feature__video-shell"
+            role="img"
+            aria-label={videoAriaLabel}
+          >
+            <div className="landing-feature__video-stage">
+              <div className="landing-feature__video-wrap" aria-hidden>
+                {videoFailed ? (
+                  <img
+                    src={FEATURE_F4_FALLBACK_IMAGE}
+                    width={560}
+                    height={360}
+                    alt=""
+                    className="landing-feature__video-fallback"
+                  />
+                ) : mountVideo ? (
+                  <video
+                    className="landing-feature__video"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="auto"
+                    poster={FEATURE_F4_VIDEO_POSTER}
+                    onError={onVideoError}
+                    aria-hidden
+                  >
+                    <source src={videoSources[0]} type="video/mp4" />
+                    {videoSources[1] ? <source src={videoSources[1]} type="video/quicktime" /> : null}
+                  </video>
+                ) : (
+                  <img
+                    src={FEATURE_F4_VIDEO_POSTER}
+                    width={560}
+                    height={360}
+                    alt=""
+                    className="landing-feature__video-poster-hold"
+                  />
+                )}
+              </div>
+            </div>
+          </Box>
+        ) : image ? (
+          <img src={image} width={560} height={360} loading="lazy" alt="" className="landing-feature__img" />
+        ) : null}
       </Box>
       <Stack gap="md" className="landing-feature__stack" style={{ textAlign: "left" }}>
         <Box style={{ position: "relative" }}>
@@ -123,9 +182,17 @@ export default function FeaturesSection() {
         </Box>
       </Box>
 
-      {FEATURES.map((f) => (
-        <FeatureBlock key={f.key} featureKey={f.key} image={f.image} imageLeft={f.imageLeft} />
-      ))}
+      <PredictProblemsFeature />
+
+      <RepairCostEstimateFeature />
+
+      <FeatureBlock
+        featureKey="f4"
+        videoSources={FEATURE_F4_SOURCES}
+        videoAriaLabel={t("liveDataVideoAria")}
+        imageLeft={false}
+        mountVideo={mountVideo}
+      />
       <Text size="sm" mt="md" style={{ color: "var(--text-muted)", lineHeight: 1.65 }}>
         <span style={{ fontWeight: 600, color: "var(--text-color)" }}>{tLinks("title")}</span>{" "}
         <Link href="/blog/obd2-check-engine-light-codes-guide" className="landing-learn-more" style={{ marginRight: 8 }}>

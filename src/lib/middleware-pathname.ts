@@ -8,12 +8,20 @@ export function isHomeNormalizedPath(pathWithoutLocale: string): boolean {
 }
 
 /** Публичные страницы с тем же визуальным chrome, что и лендинг (градиент, шапка/футер как на главной). */
-const LANDING_CHROME_EXACT = new Set(["/blog", "/download", "/faq", "/pricing"]);
+const LANDING_CHROME_EXACT = new Set([
+  "/blog",
+  "/download",
+  "/faq",
+  "/pricing",
+  "/login",
+  "/register",
+]);
 
 export function isLandingChromePath(pathWithoutLocale: string): boolean {
   const n = pathWithoutLocale.replace(/\/+$/, "") || "/";
   if (LANDING_CHROME_EXACT.has(n)) return true;
   if (n.startsWith("/blog/")) return true;
+  if (n.startsWith("/auth/")) return true;
   return false;
 }
 

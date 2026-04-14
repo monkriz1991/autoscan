@@ -17,50 +17,50 @@
     "settings": "Настройки",
     "analytics": "Аналитика",
     "billing": "Платежи и лицензии",
-    "brand": "Autoscan",
+    "brand": "AIscanAuto",
     "aiHistory": "История ИИ-диагностики",
     "requestHistory": "История запросов",
     "faq": "FAQ",
     "download": "Скачать"
   },
   "seo": {
-    "siteName": "AutoScan",
-    "siteTitle": "AutoScan — ИИ-диагностика автомобилей и OBD-сканер",
+    "siteName": "AIscanAuto",
+    "siteTitle": "AIscanAuto — ИИ-диагностика автомобилей и OBD-сканер",
     "defaultDescription": "Смартфон или ПК как OBD-сканер: коды ошибок, live data и подсказки ИИ по ремонту. Поддержка ELM327.",
-    "homeTitle": "Приложение ИИ-диагностики авто и OBD2-сканер — AutoScan",
+    "homeTitle": "Приложение ИИ-диагностики авто и OBD2-сканер — AIscanAuto",
     "homeDescription": "AI car diagnostics app и OBD2-сканер: коды Check Engine, live data и подсказки как у ИИ-механика. Адаптеры ELM327. Android, iOS и ПК.",
     "pricingTitle": "Цены на OBD2-приложение и тарифы ИИ-диагностики",
-    "pricingDescription": "Сравните подписки: live data OBD2, скан DTC и ИИ — как AutoScan выглядит среди типичных OBD2-приложений.",
+    "pricingDescription": "Сравните подписки: live data OBD2, скан DTC и ИИ — как AIscanAuto выглядит среди типичных OBD2-приложений.",
     "faqTitle": "Частые вопросы (FAQ)",
-    "faqDescription": "Ответы об AutoScan, OBD-диагностике, ИИ, оплате и устройствах.",
+    "faqDescription": "Ответы об AIscanAuto, OBD-диагностике, ИИ, оплате и устройствах.",
     "blogTitle": "Блог",
-    "blogDescription": "Гайды по кодам OBD2, настройке ELM327, live data PID, осмотру б/у авто и обновлениям AutoScan.",
+    "blogDescription": "Гайды по кодам OBD2, настройке ELM327, live data PID, осмотру б/у авто и обновлениям AIscanAuto.",
     "loginTitle": "Вход",
-    "loginDescription": "Войдите в аккаунт AutoScan: кабинет, устройства и оплата.",
+    "loginDescription": "Войдите в аккаунт AIscanAuto: кабинет, устройства и оплата.",
     "registerTitle": "Регистрация",
-    "registerDescription": "Регистрация в AutoScan: ИИ-диагностика, приложение сканера и тарифы.",
+    "registerDescription": "Регистрация в AIscanAuto: ИИ-диагностика, приложение сканера и тарифы.",
     "termsTitle": "Условия использования",
-    "termsDescription": "Условия использования платформы и сервисов AutoScan.",
+    "termsDescription": "Условия использования платформы и сервисов AIscanAuto.",
     "privacyTitle": "Политика конфиденциальности",
-    "privacyDescription": "Как AutoScan обрабатывает и защищает персональные данные.",
+    "privacyDescription": "Как AIscanAuto обрабатывает и защищает персональные данные.",
     "contactsTitle": "Контакты",
-    "contactsDescription": "Связаться с AutoScan: поддержка и деловые запросы.",
+    "contactsDescription": "Связаться с AIscanAuto: поддержка и деловые запросы.",
     "disclaimerTitle": "Отказ от ответственности",
-    "disclaimerDescription": "Ограничение ответственности AutoScan за использование сервиса и информации на сайте.",
+    "disclaimerDescription": "Ограничение ответственности AIscanAuto за использование сервиса и информации на сайте.",
     "checkoutTitle": "Оформление заказа",
-    "checkoutDescription": "Оплата выбранного тарифа AutoScan.",
+    "checkoutDescription": "Оплата выбранного тарифа AIscanAuto.",
     "downloadTitle": "Скачать ИИ OBD2-сканер (ПК)",
-    "downloadDescription": "Десктоп AutoScan для Windows, macOS и Linux — ИИ-диагностика и OBD2 на компьютере.",
+    "downloadDescription": "Десктоп AIscanAuto для Windows, macOS и Linux — ИИ-диагностика и OBD2 на компьютере.",
     "blogPostNotFoundTitle": "Статья не найдена",
     "homeKeywords": "AI car diagnostics app, AI OBD2 scanner, AI mechanic app, check engine light codes, OBD2 error codes, ELM327, приложение диагностики авто",
-    "homeOgTitle": "ИИ-диагностика авто и OBD2 — AutoScan",
+    "homeOgTitle": "ИИ-диагностика авто и OBD2 — AIscanAuto",
     "homeOgDescription": "Телефон или ПК как ИИ OBD2-сканер: коды Check Engine, live data и пошаговые подсказки.",
     "compareObd2Title": "Лучшие OBD2-приложения 2026 — сравнение и выбор",
     "compareObd2Description": "Сравнение OBD2-приложений: live data, глубина DTC, ИИ и заметки об альтернативах в духе Torque Pro."
   },
   "downloadPage": {
     "title": "Скачать",
-    "subtitle": "Установите десктоп AutoScan для Windows, macOS или Linux — те же ИИ-функции OBD2, что и в веб-версии.",
+    "subtitle": "Установите десктоп AIscanAuto для Windows, macOS или Linux — те же ИИ-функции OBD2, что и в веб-версии.",
     "loadError": "Не удалось загрузить список файлов. Попробуйте позже.",
     "heroRecommendedWindows": "Рекомендуется для вашей системы — Windows",
     "heroRecommendedMac": "Рекомендуется для вашей системы — macOS",
@@ -89,7 +89,7 @@
     "colFiles": "Файлы"
   },
   "home": {
-    "brand": "AutoScan",
+    "brand": "AIscanAuto",
     "heroTitle": "Профессиональная автодиагностика с искусственным интеллектом",
     "heroSubtitle": "Превратите ваш смартфон или ПК в мощный сканер. Читайте ошибки, анализируйте живые данные и получайте пошаговые инструкции по ремонту от ИИ.",
     "heroStart": "В кабинет",
@@ -105,7 +105,7 @@
     "step1Title": "Подключите сканер",
     "step1Desc": "Вставьте адаптер в OBD-II разъем вашего автомобиля.",
     "step2Title": "Запустите приложение",
-    "step2Desc": "Подключитесь к адаптеру через AutoScan.",
+    "step2Desc": "Подключитесь к адаптеру через AIscanAuto.",
     "step3Title": "Получите диагноз",
     "step3Desc": "Изучите ИИ-отчет о состоянии авто и ошибках.",
     "ctaTitle": "Хватит гадать. Начните точную диагностику.",
@@ -139,7 +139,7 @@
     "registerSuccess": "Регистрация успешна. Проверьте email для подтверждения аккаунта.",
     "legalReadDoc": "Я ознакомился(ась) с",
     "legalMustAcceptAll": "Отметьте подтверждение по всем трём документам, чтобы продолжить.",
-    "oauth2ConsentTitle": "Разрешить AutoScan AI Desktop доступ к вашему аккаунту?",
+    "oauth2ConsentTitle": "Разрешить AIscanAuto AI Desktop доступ к вашему аккаунту?",
     "sessionsCount": "{used} из {limit} активных сессий",
     "sessionLimitReached": "Достигнут лимит сессий",
     "sessionLimitReachedDesc": "Отключите неиспользуемое устройство в настройках аккаунта.",
@@ -153,6 +153,17 @@
     "connectAppButton": "Подключить приложение",
     "oauth2Error": "Ошибка авторизации",
     "loading": "Загрузка...",
+    "loginSubtitle": "Войдите в аккаунт, чтобы продолжить.",
+    "registerSubtitle": "Создайте аккаунт для диагностики и веб-кабинета.",
+    "noAccount": "Ещё нет аккаунта?",
+    "linkRegister": "Зарегистрироваться",
+    "haveAccount": "Уже есть аккаунт?",
+    "linkLogin": "Войти",
+    "callbackRedirecting": "Перенаправление…",
+    "callbackMissingParams": "Нет параметров входа. Ожидались access_token и refresh_token (Google/Apple) или code и state (приложение сканера).",
+    "callbackBackLogin": "На страницу входа",
+    "callbackOpenApp": "Открыть приложение сканера",
+    "callbackErrorSubtitle": "Попробуйте снова или обратитесь в поддержку, если ошибка повторяется.",
     "oauthEntry": {
       "title": "Продолжить вход",
       "missingNext": "Нет параметра перенаправления (next).",
@@ -349,7 +360,35 @@
     "feature_ai_chat_history": "История чата с ИИ",
     "feature_record_params": "Запись параметров",
     "feature_metrics_history": "История метрик",
-    "feature_realtime_analysis": "Анализ в реальном времени"
+    "feature_realtime_analysis": "Анализ в реальном времени",
+    "badgeMostPopular": "Популярный",
+    "freePriceDisplay": "Бесплатно",
+    "freeForever": "Навсегда бесплатно",
+    "periodBilledMonthly": "в месяц, помесячная оплата",
+    "periodBilledYearly": "в год, годовая оплата",
+    "devicesUnlimited_explained": "Любое число телефонов и планшетов может одновременно оставаться в аккаунте — без непонятного лимита устройств.",
+    "devicesLimited_explained": "До {count} устройств одновременно в аккаунте (например, телефон и планшет на одном аккаунте).",
+    "cardLine_ai": "До {count} ИИ-анализов в месяц",
+    "freeNoCreditCard": "Банковская карта не требуется",
+    "compareTitle": "Сравнение возможностей",
+    "compareCol_feature": "Функция",
+    "compare_ai": "ИИ-анализы (в месяц)",
+    "compare_live": "Live Data",
+    "compare_export": "Экспорт и запись",
+    "compare_history": "История и облачные отчёты",
+    "compare_support": "Поддержка",
+    "supportCommunity": "Сообщество и справочный центр",
+    "supportStandard": "Поддержка по email",
+    "supportPriority": "Приоритетная поддержка по email",
+    "faqTitle": "Вопросы по тарифам",
+    "faq_switch_q": "Можно ли сменить тариф в любой момент?",
+    "faq_switch_a": "Да. Можно перейти на более высокий тариф, когда нужно больше ИИ-анализов или функций Pro. Следующий счёт будет по новому тарифу; пропорциональный перерасчёт отображается при оформлении, если применим.",
+    "faq_trial_q": "Есть ли бесплатный пробный период для Pro?",
+    "faq_trial_a": "Можно пользоваться бесплатным тарифом с реальным сканированием и Live Data, чтобы оценить AIscanAuto. Переходите на Pro, когда понадобятся большие лимиты, экспорт и полная история.",
+    "faq_limit_q": "Что будет при исчерпании лимита сканирований?",
+    "faq_limit_a": "Новые ИИ-анализы приостанавливаются до сброса месячной квоты или апгрейда. Автомобили и сохранённые данные остаются доступны; остальные функции — в рамках вашего тарифа.",
+    "faq_annual_q": "Есть ли годовая оплата со скидкой?",
+    "faq_annual_a": "Годовая оплата в планах. Сейчас тарифы продлеваются помесячно — напишите нам для команды или годовой сметы."
   },
   "checkout": {
     "title": "Оформление заказа",
@@ -526,7 +565,7 @@
   },
   "compareObd2Page": {
     "title": "Лучшие OBD2-приложения в 2026 — сравнение",
-    "intro": "Выбор OBD2-приложения зависит от задач: быстрый сброс кода, глубокий live data, логирование или ИИ-подсказки. Ниже — критерии и место AutoScan. Упоминаем распространённые альтернативы (включая подход Torque Pro) для контекста, не как рекламу.",
+    "intro": "Выбор OBD2-приложения зависит от задач: быстрый сброс кода, глубокий live data, логирование или ИИ-подсказки. Ниже — критерии и место AIscanAuto. Упоминаем распространённые альтернативы (включая подход Torque Pro) для контекста, не как рекламу.",
     "hCriteria": "По каким пунктам сравнивать",
     "c1Title": "Платформа и адаптеры",
     "c1Body": "Проверьте Android/iOS/ПК и стабильность с вашим ELM327 (USB, Bluetooth, Wi‑Fi). Часть приложений сильна только на одной ОС.",
@@ -538,11 +577,11 @@
     "c4Body": "Классические приложения показывают сырые значения; ИИ объясняет вероятные причины и шаги. Решите, нужен ли «сырой» сканер или ассистент.",
     "c5Title": "Модель оплаты",
     "c5Body": "Разовая покупка vs подписка: оцените стоимость во времени и обновления. Пробный период помогает проверить связку с адаптером.",
-    "hAutoScan": "Где AutoScan",
-    "autoScanBody": "AutoScan ориентирован на водителей и сервисы, которым нужны ИИ-пояснения поверх OBD2, live data и ELM327 — в том числе на ПК. Полные PID и чат с ИИ — на странице тарифов.",
+    "hAIscanAuto": "Где AIscanAuto",
+    "autoScanBody": "AIscanAuto ориентирован на водителей и сервисы, которым нужны ИИ-пояснения поверх OBD2, live data и ELM327 — в том числе на ПК. Полные PID и чат с ИИ — на странице тарифов.",
     "hAlternatives": "Torque Pro и аналоги",
     "altBody": "Torque Pro популярен на Android как разовая покупка с дашбордами и логами. Если нужны кроссплатформа, ИИ-нарративы или удобный ПК — сравните с подписочными продуктами.",
-    "ctaPricing": "Тарифы AutoScan",
+    "ctaPricing": "Тарифы AIscanAuto",
     "ctaBlog": "Гайд по кодам OBD2"
   },
   "disclaimerPage": {
@@ -554,7 +593,7 @@
   },
   "privacyPage": {
     "title": "Политика конфиденциальности",
-    "lead": "Настоящая Политика описывает, как AutoScan обрабатывает персональные данные при использовании вами нашего веб-сайта и связанных сервисов. Актуальные контакты для связи — на странице «Контакты».",
+    "lead": "Настоящая Политика описывает, как AIscanAuto обрабатывает персональные данные при использовании вами нашего веб-сайта и связанных сервисов. Актуальные контакты для связи — на странице «Контакты».",
     "regPart": ", регистрационный номер {reg}",
     "fallbackAddress": "см. страницу «Контакты»",
     "fallbackEmail": "см. страницу «Контакты»",
@@ -624,7 +663,7 @@
   },
   "contactsPage": {
     "title": "Контакты",
-    "lead": "Свяжитесь с AutoScan по вопросам поддержки, оплаты и сотрудничества. Выделенные каналы связи добавим позже; раздел обновим адресами электронной почты и сроками ответа."
+    "lead": "Свяжитесь с AIscanAuto по вопросам поддержки, оплаты и сотрудничества. Выделенные каналы связи добавим позже; раздел обновим адресами электронной почты и сроками ответа."
   },
   "faqPage": {
     "title": "Часто задаваемые вопросы",
@@ -639,7 +678,7 @@
   },
   "blogPage": {
     "title": "Блог",
-    "subtitle": "Гайды по кодам OBD2, ELM327, live data и обновлениям AutoScan — для водителей и сервисов.",
+    "subtitle": "Гайды по кодам OBD2, ELM327, live data и обновлениям AIscanAuto — для водителей и сервисов.",
     "loading": "Загрузка…",
     "empty": "Пока нет статей.",
     "error": "Не удалось загрузить статьи. Попробуйте позже.",
@@ -671,7 +710,7 @@
       },
       "s2": {
         "name": "Запустите приложение",
-        "text": "Подключитесь к адаптеру через AutoScan на телефоне, планшете или ПК."
+        "text": "Подключитесь к адаптеру через AIscanAuto на телефоне, планшете или ПК."
       },
       "s3": {
         "name": "Получите диагноз",
@@ -687,7 +726,7 @@
       "ctaTryFree": "Попробовать бесплатно онлайн",
       "ctaDownload": "Скачать приложение",
       "ctaDashboard": "Открыть кабинет",
-      "socialProofCta": "10 000+ авто диагностировано в AutoScan",
+      "socialProofCta": "Подходит к ~99% автомобилей — стандарт OBD2 (с 1996 г.)",
       "dashboardLink": "Перейти в кабинет →",
       "visualAria": "Анимированная схема: OBD-порт, кабель адаптера, телефон с анализом ИИ",
       "stepConnect": "Подключение",
@@ -705,10 +744,10 @@
       "platformMacAria": "Перейти к загрузке: установщик macOS",
       "platformLinuxAria": "Перейти к загрузке: Linux",
       "carouselAria": "Скриншоты десктоп-приложения",
-      "slidePreviewVideoAlt": "Видео-превью: десктоп-приложение AutoScan в работе",
+      "slidePreviewVideoAlt": "Видео-превью: десктоп-приложение AIscanAuto в работе",
       "slidePreviewVideoTab": "Показать видео-превью продукта",
-      "slideLiveAlt": "AutoScan для ПК: живые данные авто, обороты, скорость и датчики",
-      "slideDiagnosticsAlt": "AutoScan для ПК: диагностика, коды OBD-II и ИИ-ассистент",
+      "slideLiveAlt": "AIscanAuto для ПК: живые данные авто, обороты, скорость и датчики",
+      "slideDiagnosticsAlt": "AIscanAuto для ПК: диагностика, коды OBD-II и ИИ-ассистент",
       "slideLiveTab": "Показать скриншот живых данных",
       "slideDiagnosticsTab": "Показать скриншот диагностики и ИИ",
       "carouselPrev": "Предыдущий скриншот",
@@ -719,17 +758,41 @@
       "chatLeadTitle": "Коды ошибок и чат с ботом — в одном окне",
       "chatLeadBody": "Видите сбой, живые параметры и задаёте вопросы ассистенту, не прыгая между экранами. Всё для решения по ремонту — в одном интерфейсе.",
       "chatVideoAria": "Запись экрана: диагностика и чат с ИИ в одном окне приложения",
+      "liveDataVideoAria": "Запись экрана: панель живых данных двигателя в приложении",
       "f2": {
         "tag": "PRO",
-        "title": "Predict problems before they happen",
-        "body": "AIScanAuto monitors engine patterns over time and alerts you before minor issues become expensive repairs. Know your car's health at a glance.",
-        "learnMore": "Learn more →"
+        "title": "Предугадывайте поломки\nдо того, как они случатся",
+        "body": "AIscanAuto отслеживает поведение мотора со временем и предупреждает, пока мелочь не превратилась в дорогой ремонт. Состояние авто — с первого взгляда.",
+        "learnMore": "Подробнее →",
+        "cardTitle": "Обслуживание",
+        "notifGreen": "Замена масла через 420 км",
+        "notifAmber": "Температура ОЖ растёт — проверьте термостат",
+        "chartMon": "пн",
+        "chartWed": "ср",
+        "chartFri": "пт",
+        "chartSun": "вс"
       },
       "f3": {
         "tag": "PRO",
-        "title": "Instant repair cost estimate",
-        "body": "See the estimated repair cost for your region before you visit a mechanic. Stop overpaying — know the fair price for any job.",
-        "learnMore": "Learn more →"
+        "title": "ИИ находит посты в блогах\nпо вашей же проблеме",
+        "body": "Появился код ошибки? AIScanAuto просматривает форумы, блоги о ремонте и сообщества и показывает реальные решения от тех, кто уже сталкивался с тем же — до визита к механику.",
+        "learnMore": "Подробнее",
+        "cardTitle": "Поиск статей в блогах",
+        "cardSub": "P0420 — эффективность катализатора",
+        "searchQuery": "P0420 эффективность катализатора ремонт",
+        "aiLabel": "ИИ нашёл 14 статей на форумах и в блогах",
+        "art1Source": "Reddit · r/MechanicAdvice",
+        "art1Title": "P0420 без замены катализатора — мне помогло",
+        "art1Meta": "847 комментариев · 3 дня назад",
+        "art1Match": "96% совпадение",
+        "art2Source": "Сообщество Car Talk",
+        "art2Title": "Эффективность катализатора ниже порога — датчик O2?",
+        "art2Meta": "112 ответов · неделю назад",
+        "art2Match": "91% совпадение",
+        "art3Source": "Блог Motor1",
+        "art3Title": "Как диагностировать P0420 до визита в сервис",
+        "art3Meta": "5 мин чтения · 2 недели назад",
+        "art3Match": "78% совпадение"
       },
       "f4": {
         "tag": "PRO",
@@ -803,13 +866,13 @@
         "p9": "Priority support",
         "cta": "Start Free Trial"
       },
-      "footnote": "🔒 Cancel anytime. No hidden fees. 7-day free trial on Pro."
+      "footnote": ""
     },
     "faq": {
       "title": "Frequently Asked Questions",
       "q1": {
         "q": "Do I need a special OBD2 adapter?",
-        "a": "AIScanAuto works with any standard ELM327 Bluetooth or Wi-Fi adapter. You can find reliable adapters on Amazon for $5–$30. We recommend Bluetooth 4.0+ adapters for the best experience."
+        "a": "AIscanAuto works with any standard ELM327 Bluetooth or Wi-Fi adapter. You can find reliable adapters on Amazon for $5–$30. We recommend Bluetooth 4.0+ adapters for the best experience."
       },
       "q2": {
         "q": "Which cars are supported?",
@@ -824,12 +887,12 @@
         "a": "Yes, forever. The Free plan lets you read and clear fault codes, view basic sensor data, and decode your VIN — at no cost. The Pro plan unlocks AI analysis and advanced features."
       },
       "q5": {
-        "q": "Does it work on iPhone?",
-        "a": "Yes. AIScanAuto is available on both Android (Google Play) and iOS (App Store). You need a Wi-Fi ELM327 adapter for iPhone since iOS does not support Bluetooth SPP protocol."
+        "q": "What is a DTC / fault code?",
+        "a": "A DTC (Diagnostic Trouble Code) is a code stored by your car's ECU when it detects a problem. Common examples: P0300 (engine misfire), P0171 (lean fuel mixture). AIscanAuto reads these codes and explains what each one means for your specific car."
       },
       "q6": {
-        "q": "What is a DTC / fault code?",
-        "a": "A DTC (Diagnostic Trouble Code) is a code stored by your car's ECU when it detects a problem. Common examples: P0300 (engine misfire), P0171 (lean fuel mixture). AIScanAuto reads these codes and explains what each one means for your specific car."
+        "q": "Is my vehicle data secure?",
+        "a": "We encrypt data in transit, use secure infrastructure, and do not sell your diagnostic data to third parties. You can review details in our Privacy Policy and manage or delete data from your account settings."
       }
     }
   }

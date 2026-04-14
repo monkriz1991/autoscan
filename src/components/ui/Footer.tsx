@@ -27,7 +27,7 @@ export default function Footer() {
               href="/download"
               size="sm"
               leftSection={<IconDownload size={16} />}
-              className="btn-metallic footer__cta"
+              className="btn-cta-primary footer__cta"
             >
               {tNav("ctaDownload")}
             </Button>

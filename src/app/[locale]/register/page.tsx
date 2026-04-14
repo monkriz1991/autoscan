@@ -8,14 +8,12 @@ import {
   Anchor,
   Card,
   Checkbox,
-  Container,
   Notification,
   PasswordInput,
   Stack,
   Text,
   TextInput,
   Button,
-  Title,
   Divider,
 } from "@mantine/core";
 import {
@@ -26,6 +24,7 @@ import {
   POST_OAUTH_NEXT_STORAGE_KEY,
   getApiErrorMessage,
 } from "@/lib/api";
+import AuthPageShell from "@/components/auth/AuthPageShell";
 
 const DEFAULT_AFTER_AUTH = "/cabinet/dashboard";
 
@@ -171,14 +170,23 @@ function RegisterForm() {
     }
   };
 
-  return (
-    <Container size="xs" py="xl">
-      <Card withBorder shadow="sm" radius="md" p="xl">
-        <Stack>
-          <Title order={3} ta="center">
-            {t("registerBusiness")}
-          </Title>
+  const loginHref = `/login?next=${encodeURIComponent(nextUrl)}`;
 
+  return (
+    <AuthPageShell
+      title={t("registerBusiness")}
+      subtitle={t("registerSubtitle")}
+      footer={
+        <Text component="span" size="sm" c="inherit">
+          {t("haveAccount")}{" "}
+          <Anchor component={Link} href={loginHref} size="sm" inherit>
+            {t("linkLogin")}
+          </Anchor>
+        </Text>
+      }
+    >
+      <Card className="auth-card" radius="lg" p="xl" withBorder={false}>
+        <Stack gap="md">
           {error && (
             <Notification color="red" onClose={() => setError("")}>
               {error}
@@ -189,6 +197,7 @@ function RegisterForm() {
             label={t("email")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
           />
 
           <PasswordInput
@@ -196,12 +205,14 @@ function RegisterForm() {
             placeholder={t("passwordPlaceholder")}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            autoComplete="new-password"
           />
 
           <PasswordInput
             label={t("password2")}
             value={password2}
             onChange={(e) => setPassword2(e.target.value)}
+            autoComplete="new-password"
           />
 
           <Stack gap="xs">
@@ -255,7 +266,13 @@ function RegisterForm() {
             />
           )}
 
-          <Button fullWidth loading={loading} onClick={handleSubmit}>
+          <Button
+            fullWidth
+            size="md"
+            className="btn-cta-primary"
+            loading={loading}
+            onClick={handleSubmit}
+          >
             {t("createAccount")}
           </Button>
 
@@ -263,7 +280,9 @@ function RegisterForm() {
 
           <Button
             fullWidth
+            size="md"
             variant="outline"
+            className="auth-page__btn-outline"
             loading={googleLoading}
             onClick={handleGoogleRegister}
           >
@@ -271,14 +290,24 @@ function RegisterForm() {
           </Button>
         </Stack>
       </Card>
-    </Container>
+    </AuthPageShell>
   );
 }
 
 export default function RegisterPage() {
   const t = useTranslations("auth");
   return (
-    <Suspense fallback={<Container size="xs" py="xl">{t("loading")}</Container>}>
+    <Suspense
+      fallback={
+        <AuthPageShell title={t("loading")}>
+          <Card className="auth-card" radius="lg" p="xl" withBorder={false}>
+            <Text ta="center" size="sm" c="dimmed">
+              {t("loading")}
+            </Text>
+          </Card>
+        </AuthPageShell>
+      }
+    >
       <RegisterForm />
     </Suspense>
   );

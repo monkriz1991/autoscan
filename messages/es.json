@@ -17,50 +17,50 @@
     "settings": "Ajustes",
     "analytics": "Analítica",
     "billing": "Pagos y licencias",
-    "brand": "Autoscan",
+    "brand": "AIscanAuto",
     "aiHistory": "Historial de diagnóstico IA",
     "requestHistory": "Historial de solicitudes",
     "faq": "FAQ",
     "download": "Descargar"
   },
   "seo": {
-    "siteName": "AutoScan",
-    "siteTitle": "AutoScan — Diagnóstico con IA y escáner OBD",
+    "siteName": "AIscanAuto",
+    "siteTitle": "AIscanAuto — Diagnóstico con IA y escáner OBD",
     "defaultDescription": "Móvil o PC como escáner OBD: códigos, datos en vivo y guía de reparación con IA. ELM327.",
-    "homeTitle": "App de diagnóstico IA para coches y escáner OBD2 — AutoScan",
+    "homeTitle": "App de diagnóstico IA para coches y escáner OBD2 — AIscanAuto",
     "homeDescription": "App de diagnóstico con IA y escáner OBD2: códigos testigo, datos en vivo y guía tipo mecánico IA. Adaptadores ELM327. Android, iOS y escritorio.",
     "pricingTitle": "Precios app OBD2 y planes de diagnóstico IA",
-    "pricingDescription": "Compara suscripciones: datos en vivo OBD2, DTC e IA — cómo encaja AutoScan frente a apps OBD2 habituales.",
+    "pricingDescription": "Compara suscripciones: datos en vivo OBD2, DTC e IA — cómo encaja AIscanAuto frente a apps OBD2 habituales.",
     "faqTitle": "FAQ",
-    "faqDescription": "Respuestas sobre AutoScan, OBD, IA, facturación y dispositivos.",
+    "faqDescription": "Respuestas sobre AIscanAuto, OBD, IA, facturación y dispositivos.",
     "blogTitle": "Blog",
-    "blogDescription": "Guías sobre códigos OBD2, configuración ELM327, PIDs en vivo, inspección de coches usados y novedades AutoScan.",
+    "blogDescription": "Guías sobre códigos OBD2, configuración ELM327, PIDs en vivo, inspección de coches usados y novedades AIscanAuto.",
     "loginTitle": "Iniciar sesión",
-    "loginDescription": "Accede a tu cuenta AutoScan: panel, dispositivos y pagos.",
+    "loginDescription": "Accede a tu cuenta AIscanAuto: panel, dispositivos y pagos.",
     "registerTitle": "Crear cuenta",
-    "registerDescription": "Registro en AutoScan: diagnóstico IA, app del escáner y planes.",
+    "registerDescription": "Registro en AIscanAuto: diagnóstico IA, app del escáner y planes.",
     "termsTitle": "Términos de uso",
-    "termsDescription": "Términos de uso de la plataforma AutoScan.",
+    "termsDescription": "Términos de uso de la plataforma AIscanAuto.",
     "privacyTitle": "Privacidad",
-    "privacyDescription": "Cómo AutoScan trata y protege tus datos personales.",
+    "privacyDescription": "Cómo AIscanAuto trata y protege tus datos personales.",
     "contactsTitle": "Contacto",
-    "contactsDescription": "Contactar con AutoScan: soporte y consultas comerciales.",
+    "contactsDescription": "Contactar con AIscanAuto: soporte y consultas comerciales.",
     "disclaimerTitle": "Descargo de responsabilidad",
-    "disclaimerDescription": "Limitación de responsabilidad de AutoScan por el uso del servicio y el contenido del sitio.",
+    "disclaimerDescription": "Limitación de responsabilidad de AIscanAuto por el uso del servicio y el contenido del sitio.",
     "checkoutTitle": "Pago",
-    "checkoutDescription": "Completar la compra del plan AutoScan.",
+    "checkoutDescription": "Completar la compra del plan AIscanAuto.",
     "downloadTitle": "Descargar app escáner OBD2 con IA (escritorio)",
-    "downloadDescription": "AutoScan escritorio para Windows, macOS y Linux — diagnóstico IA y OBD2 en PC.",
+    "downloadDescription": "AIscanAuto escritorio para Windows, macOS y Linux — diagnóstico IA y OBD2 en PC.",
     "blogPostNotFoundTitle": "Artículo no encontrado",
     "homeKeywords": "AI car diagnostics app, AI OBD2 scanner, AI mechanic app, check engine light codes, OBD2 error codes, ELM327, app diagnóstico coche",
-    "homeOgTitle": "Diagnóstico IA y OBD2 — AutoScan",
+    "homeOgTitle": "Diagnóstico IA y OBD2 — AIscanAuto",
     "homeOgDescription": "Móvil o PC como escáner OBD2 con IA: códigos, datos en vivo y pasos de reparación.",
     "compareObd2Title": "Mejores apps OBD2 2026 — comparación y elección",
     "compareObd2Description": "Comparativa de apps OBD2: datos en vivo, profundidad DTC, IA y notas sobre alternativas estilo Torque Pro."
   },
   "downloadPage": {
     "title": "Descargar",
-    "subtitle": "Instala AutoScan en Windows, macOS o Linux — el mismo diagnóstico OBD2 con IA que en la web.",
+    "subtitle": "Instala AIscanAuto en Windows, macOS o Linux — el mismo diagnóstico OBD2 con IA que en la web.",
     "loadError": "No se pudieron cargar las descargas.",
     "heroRecommendedWindows": "Recomendado para tu sistema — Windows",
     "heroRecommendedMac": "Recomendado para tu sistema — macOS",
@@ -89,7 +89,7 @@
     "colFiles": "Descargas"
   },
   "home": {
-    "brand": "AutoScan",
+    "brand": "AIscanAuto",
     "heroTitle": "Diagnóstico profesional de coches con Inteligencia Artificial",
     "heroSubtitle": "Convierte tu smartphone o PC en un potente escáner. Lee errores, analiza datos en tiempo real y recibe instrucciones de reparación paso a paso de la IA.",
     "heroStart": "Panel",
@@ -105,7 +105,7 @@
     "step1Title": "Conecta el escáner",
     "step1Desc": "Inserta el adaptador en el puerto OBD-II de tu coche.",
     "step2Title": "Inicia la aplicación",
-    "step2Desc": "Conéctate al adaptador a través de AutoScan.",
+    "step2Desc": "Conéctate al adaptador a través de AIscanAuto.",
     "step3Title": "Obtén el diagnóstico",
     "step3Desc": "Explora el informe de la IA sobre el estado de tu coche y los errores.",
     "ctaTitle": "Deja de adivinar. Inicia un diagnóstico preciso.",
@@ -139,7 +139,7 @@
     "registerSuccess": "Registro exitoso. Revisa tu email para verificar la cuenta.",
     "legalReadDoc": "He leído:",
     "legalMustAcceptAll": "Confirma que has leído y aceptas todos los documentos legales.",
-    "oauth2ConsentTitle": "¿Permitir que AutoScan AI Desktop acceda a tu cuenta?",
+    "oauth2ConsentTitle": "¿Permitir que AIscanAuto AI Desktop acceda a tu cuenta?",
     "sessionsCount": "{used} de {limit} sesiones activas",
     "sessionLimitReached": "Límite de sesiones alcanzado",
     "sessionLimitReachedDesc": "Elimina un dispositivo no utilizado en la configuración de la cuenta.",
@@ -153,6 +153,17 @@
     "connectAppButton": "Conectar a la app",
     "oauth2Error": "Error de autorización",
     "loading": "Cargando...",
+    "loginSubtitle": "Inicia sesión en tu cuenta para continuar.",
+    "registerSubtitle": "Crea una cuenta para usar el diagnóstico y el panel web.",
+    "noAccount": "¿No tienes cuenta?",
+    "linkRegister": "Regístrate",
+    "haveAccount": "¿Ya tienes cuenta?",
+    "linkLogin": "Iniciar sesión",
+    "callbackRedirecting": "Redirigiendo…",
+    "callbackMissingParams": "Faltan parámetros de acceso. Se esperaban access_token y refresh_token (Google/Apple) o code y state (app escáner).",
+    "callbackBackLogin": "Volver al inicio de sesión",
+    "callbackOpenApp": "Abrir la app del escáner",
+    "callbackErrorSubtitle": "Inténtalo de nuevo o contacta con soporte si el problema continúa.",
     "oauthEntry": {
       "title": "Continuar inicio de sesión",
       "missingNext": "Falta el parámetro de redirección (next).",
@@ -373,14 +384,11 @@
     "faq_switch_q": "¿Puedo cambiar de plan en cualquier momento?",
     "faq_switch_a": "Sí. Puedes pasar a un plan superior cuando necesites más análisis con IA o funciones Pro. La siguiente factura sigue el nuevo plan; el prorrateo aparece en el checkout si aplica.",
     "faq_trial_q": "¿Hay prueba gratis para Pro?",
-    "faq_trial_a": "El plan gratuito ya incluye escaneo real y Live Data para evaluar AutoScan. Pasa a Pro cuando necesites límites mayores, exportación e historial completo.",
+    "faq_trial_a": "El plan gratuito ya incluye escaneo real y Live Data para evaluar AIscanAuto. Pasa a Pro cuando necesites límites mayores, exportación e historial completo.",
     "faq_limit_q": "¿Qué pasa si alcanzo el límite de escaneos?",
     "faq_limit_a": "Los nuevos análisis con IA se pausan hasta el reinicio mensual de la cuota o hasta que mejores el plan. Los vehículos y datos guardados se mantienen; el resto depende de tu plan.",
     "faq_annual_q": "¿Ofrecen facturación anual con descuento?",
-    "faq_annual_a": "La facturación anual está en la hoja de ruta. Hoy los planes se renuevan mensualmente — escríbenos para un presupuesto anual o de equipo.",
-    "trust_moneyBack": "Garantía de devolución de 30 días en suscripciones de pago elegibles",
-    "trust_securePay": "Pago seguro — checkout cifrado",
-    "trust_payLabel": "Paga con tarjetas principales o criptomonedas a través de nuestro proveedor de pagos."
+    "faq_annual_a": "La facturación anual está en la hoja de ruta. Hoy los planes se renuevan mensualmente — escríbenos para un presupuesto anual o de equipo."
   },
   "checkout": {
     "title": "Pago",
@@ -557,7 +565,7 @@
   },
   "compareObd2Page": {
     "title": "Mejores apps OBD2 en 2026 — comparación",
-    "intro": "La elección depende: códigos rápidos, live data profundo, registro o diagnóstico con IA. Aquí un marco y el papel de AutoScan. Las alternativas (incl. estilo Torque Pro) son contexto, no respaldo comercial.",
+    "intro": "La elección depende: códigos rápidos, live data profundo, registro o diagnóstico con IA. Aquí un marco y el papel de AIscanAuto. Las alternativas (incl. estilo Torque Pro) son contexto, no respaldo comercial.",
     "hCriteria": "Qué comparar",
     "c1Title": "Plataforma y adaptadores",
     "c1Body": "Android/iOS/escritorio y estabilidad con tu ELM327 (USB, BT, Wi‑Fi). Algunas apps brillan solo en un sistema.",
@@ -569,11 +577,11 @@
     "c4Body": "Las apps clásicas muestran valores; las de IA explican causas y pasos. Decide: escáner crudo o asistente.",
     "c5Title": "Modelo de precio",
     "c5Body": "Compra única vs suscripción: coste a largo plazo y actualizaciones. Las pruebas validan el adaptador.",
-    "hAutoScan": "Dónde encaja AutoScan",
-    "autoScanBody": "AutoScan apunta a quien quiere explicaciones IA sobre OBD2, live data y ELM327 — también en PC. PIDs completos e IA en precios.",
+    "hAIscanAuto": "Dónde encaja AIscanAuto",
+    "autoScanBody": "AIscanAuto apunta a quien quiere explicaciones IA sobre OBD2, live data y ELM327 — también en PC. PIDs completos e IA en precios.",
     "hAlternatives": "Torque Pro y similares",
     "altBody": "Torque Pro es popular en Android como compra única con paneles. Si necesitas multiplataforma, narrativa IA o PC, compara suscripciones.",
-    "ctaPricing": "Precios AutoScan",
+    "ctaPricing": "Precios AIscanAuto",
     "ctaBlog": "Guía códigos OBD2"
   },
   "disclaimerPage": {
@@ -585,7 +593,7 @@
   },
   "privacyPage": {
     "title": "Política de privacidad",
-    "lead": "Esta política explica cómo AutoScan trata los datos personales cuando utiliza nuestro sitio web y los servicios relacionados. Los datos de contacto operativos están en la página de contacto.",
+    "lead": "Esta política explica cómo AIscanAuto trata los datos personales cuando utiliza nuestro sitio web y los servicios relacionados. Los datos de contacto operativos están en la página de contacto.",
     "regPart": ", registration number {reg}",
     "fallbackAddress": "ver la página de contacto",
     "fallbackEmail": "ver la página de contacto",
@@ -655,7 +663,7 @@
   },
   "contactsPage": {
     "title": "Contacto",
-    "lead": "Contacte con AutoScan para soporte, facturación y consultas comerciales. Estamos configurando canales dedicados; esta sección se actualizará con correo electrónico y plazos de respuesta."
+    "lead": "Contacte con AIscanAuto para soporte, facturación y consultas comerciales. Estamos configurando canales dedicados; esta sección se actualizará con correo electrónico y plazos de respuesta."
   },
   "faqPage": {
     "title": "Preguntas frecuentes",
@@ -670,7 +678,7 @@
   },
   "blogPage": {
     "title": "Blog",
-    "subtitle": "Guías sobre códigos OBD2, ELM327, datos en vivo y novedades de AutoScan — para conductores y talleres.",
+    "subtitle": "Guías sobre códigos OBD2, ELM327, datos en vivo y novedades de AIscanAuto — para conductores y talleres.",
     "loading": "Cargando…",
     "empty": "Aún no hay artículos.",
     "error": "No se pudieron cargar las entradas. Inténtelo más tarde.",
@@ -702,7 +710,7 @@
       },
       "s2": {
         "name": "Abre la app",
-        "text": "Conéctate al adaptador con AutoScan en el móvil, tablet u ordenador."
+        "text": "Conéctate al adaptador con AIscanAuto en el móvil, tablet u ordenador."
       },
       "s3": {
         "name": "Obtén el diagnóstico",
@@ -718,7 +726,7 @@
       "ctaTryFree": "Try Free Online",
       "ctaDownload": "Download App",
       "ctaDashboard": "Open dashboard",
-      "socialProofCta": "10,000+ cars diagnosed with AutoScan",
+      "socialProofCta": "Para ~99 % de coches — OBD2 estándar (desde 1996)",
       "dashboardLink": "Go to dashboard →",
       "visualAria": "Animated diagram: OBD port, adapter cable, phone with AI analysis",
       "stepConnect": "Connect",
@@ -736,10 +744,10 @@
       "platformMacAria": "Ir a descargas: instalador macOS",
       "platformLinuxAria": "Ir a descargas: Linux",
       "carouselAria": "Capturas de la aplicación de escritorio",
-      "slidePreviewVideoAlt": "Vídeo de vista previa: aplicación de escritorio AutoScan en acción",
+      "slidePreviewVideoAlt": "Vídeo de vista previa: aplicación de escritorio AIscanAuto en acción",
       "slidePreviewVideoTab": "Mostrar vídeo de vista previa del producto",
-      "slideLiveAlt": "AutoScan escritorio: datos en vivo, RPM, velocidad y sensores",
-      "slideDiagnosticsAlt": "AutoScan escritorio: diagnóstico, códigos OBD-II y asistente IA",
+      "slideLiveAlt": "AIscanAuto escritorio: datos en vivo, RPM, velocidad y sensores",
+      "slideDiagnosticsAlt": "AIscanAuto escritorio: diagnóstico, códigos OBD-II y asistente IA",
       "slideLiveTab": "Ver captura de datos en vivo",
       "slideDiagnosticsTab": "Ver captura de diagnóstico e IA",
       "carouselPrev": "Captura anterior",
@@ -750,17 +758,41 @@
       "chatLeadTitle": "Códigos de fallo y chat con IA — una sola pantalla",
       "chatLeadBody": "Ve los datos en vivo, entiende el problema y pregunta al bot sin cambiar de ventana. Todo para decidir la reparación en un solo lugar.",
       "chatVideoAria": "Grabación: diagnóstico y chat con IA en una ventana de la app",
+      "liveDataVideoAria": "Grabación: panel de datos del motor en vivo en la app",
       "f2": {
         "tag": "PRO",
-        "title": "Predict problems before they happen",
-        "body": "AIScanAuto monitors engine patterns over time and alerts you before minor issues become expensive repairs. Know your car's health at a glance.",
-        "learnMore": "Learn more →"
+        "title": "Anticipe problemas\nantes de que ocurran",
+        "body": "AIscanAuto supervisa el comportamiento del motor y le avisa antes de que un fallo menor se convierta en una reparación cara. El estado del coche, de un vistazo.",
+        "learnMore": "Más información →",
+        "cardTitle": "Mantenimiento",
+        "notifGreen": "Cambio de aceite en 420 km",
+        "notifAmber": "Temperatura de refrigerante en alza — revise el termostato",
+        "chartMon": "lun",
+        "chartWed": "mié",
+        "chartFri": "vie",
+        "chartSun": "dom"
       },
       "f3": {
         "tag": "PRO",
-        "title": "Instant repair cost estimate",
-        "body": "See the estimated repair cost for your region before you visit a mechanic. Stop overpaying — know the fair price for any job.",
-        "learnMore": "Learn more →"
+        "title": "La IA encuentra entradas de blog\ncon su mismo problema",
+        "body": "¿Código DTC? AIScanAuto escanea foros, blogs de reparación y comunidades para mostrar soluciones reales de quienes pasaron por lo mismo — antes de pagar al mecánico.",
+        "learnMore": "Más información",
+        "cardTitle": "Búsqueda en blogs",
+        "cardSub": "P0420 — Eficiencia del catalizador",
+        "searchQuery": "P0420 eficiencia catalizador arreglo",
+        "aiLabel": "La IA encontró 14 artículos en foros y blogs",
+        "art1Source": "Reddit · r/MechanicAdvice",
+        "art1Title": "Arreglo P0420 sin cambiar el catalizador — me funcionó",
+        "art1Meta": "847 comentarios · hace 3 días",
+        "art1Match": "96 % coincidencia",
+        "art2Source": "Car Talk Community",
+        "art2Title": "Eficiencia del catalizador baja — ¿sensor O2 barato?",
+        "art2Meta": "112 respuestas · hace 1 semana",
+        "art2Match": "91 % coincidencia",
+        "art3Source": "Motor1 Blog",
+        "art3Title": "Cómo diagnosticar P0420 antes del taller",
+        "art3Meta": "5 min de lectura · hace 2 semanas",
+        "art3Match": "78 % coincidencia"
       },
       "f4": {
         "tag": "PRO",
@@ -834,13 +866,13 @@
         "p9": "Priority support",
         "cta": "Start Free Trial"
       },
-      "footnote": "🔒 Cancel anytime. No hidden fees. 7-day free trial on Pro."
+      "footnote": ""
     },
     "faq": {
       "title": "Frequently Asked Questions",
       "q1": {
         "q": "Do I need a special OBD2 adapter?",
-        "a": "AIScanAuto works with any standard ELM327 Bluetooth or Wi-Fi adapter. You can find reliable adapters on Amazon for $5–$30. We recommend Bluetooth 4.0+ adapters for the best experience."
+        "a": "AIscanAuto works with any standard ELM327 Bluetooth or Wi-Fi adapter. You can find reliable adapters on Amazon for $5–$30. We recommend Bluetooth 4.0+ adapters for the best experience."
       },
       "q2": {
         "q": "Which cars are supported?",
@@ -855,12 +887,12 @@
         "a": "Yes, forever. The Free plan lets you read and clear fault codes, view basic sensor data, and decode your VIN — at no cost. The Pro plan unlocks AI analysis and advanced features."
       },
       "q5": {
-        "q": "Does it work on iPhone?",
-        "a": "Yes. AIScanAuto is available on both Android (Google Play) and iOS (App Store). You need a Wi-Fi ELM327 adapter for iPhone since iOS does not support Bluetooth SPP protocol."
+        "q": "What is a DTC / fault code?",
+        "a": "A DTC (Diagnostic Trouble Code) is a code stored by your car's ECU when it detects a problem. Common examples: P0300 (engine misfire), P0171 (lean fuel mixture). AIscanAuto reads these codes and explains what each one means for your specific car."
       },
       "q6": {
-        "q": "What is a DTC / fault code?",
-        "a": "A DTC (Diagnostic Trouble Code) is a code stored by your car's ECU when it detects a problem. Common examples: P0300 (engine misfire), P0171 (lean fuel mixture). AIScanAuto reads these codes and explains what each one means for your specific car."
+        "q": "Is my vehicle data secure?",
+        "a": "We encrypt data in transit, use secure infrastructure, and do not sell your diagnostic data to third parties. You can review details in our Privacy Policy and manage or delete data from your account settings."
       }
     }
   }

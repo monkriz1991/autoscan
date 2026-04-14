@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { Box, Stack, Text, Title } from "@mantine/core";
+import { Stack, Text, Title } from "@mantine/core";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
 
 const FAQ_IDS = [1, 2, 3, 4, 5, 6] as const;
@@ -17,11 +17,12 @@ export default function FaqSection() {
         {t("title")}
       </Title>
 
-      <Box component="div" role="list" style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+      {/* div вместо Mantine Box: у Box на клиенте иначе мержатся className/стили → hydration mismatch */}
+      <div role="list" className="landing-faq__list">
         {FAQ_IDS.map((id) => {
           const isOpen = openId === id;
           return (
-            <Box key={id} className="landing-faq__item" role="listitem">
+            <div key={id} className="landing-faq__item" role="listitem">
               <button
                 type="button"
                 id={`faq-trigger-${id}`}
@@ -37,23 +38,23 @@ export default function FaqSection() {
                   {isOpen ? <IconMinus size={20} stroke={2} /> : <IconPlus size={20} stroke={2} />}
                 </span>
               </button>
-              <Box
+              <div
                 id={`faq-panel-${id}`}
                 role="region"
                 aria-labelledby={`faq-trigger-${id}`}
                 className="landing-faq__panel"
-                data-open={isOpen}
+                data-open={isOpen || undefined}
               >
-                <Box className="landing-faq__panel-inner">
+                <div className="landing-faq__panel-inner">
                   <Text size="sm" style={{ color: "var(--text-muted)", lineHeight: 1.65 }}>
                     {t(`q${id}.a`)}
                   </Text>
-                </Box>
-              </Box>
-            </Box>
+                </div>
+              </div>
+            </div>
           );
         })}
-      </Box>
+      </div>
     </Stack>
   );
 }

@@ -179,6 +179,9 @@
     "title": "Projekt in Entwicklung",
     "body": "Wir arbeiten aktiv an der Plattform. Über die Veröffentlichung informieren wir Sie — verfolgen Sie Aktualisierungen im persönlichen Bereich und per E-Mail."
   },
+  "notifications": {
+    "markRead": "Verstanden"
+  },
   "dashboard": {
     "planUsage": "Tarif & Nutzung",
     "currentPlan": "Aktueller Tarif",

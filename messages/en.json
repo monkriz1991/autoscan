@@ -179,6 +179,9 @@
     "title": "Project in development",
     "body": "We are actively working on the platform. We will definitely notify you about the release — follow updates in your personal cabinet and on the email provided during registration."
   },
+  "notifications": {
+    "markRead": "Got it"
+  },
   "dashboard": {
     "planUsage": "Plan & Usage",
     "currentPlan": "Current Plan",

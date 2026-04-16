@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import React from "react";
 import Navbar from "@/components/ui/Navbar";
 import CabinetSidebar from "@/components/ui/CabinetSidebar";
-import DevBanner from "@/components/ui/DevBanner";
+import UserNotifications from "@/components/ui/UserNotifications";
 import UserLocaleSync from "@/components/ui/UserLocaleSync";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -24,7 +24,7 @@ export default function CabinetLayout({
         <CabinetSidebar />
         <main className="layout__main">
           <div className="layout__content">
-            <DevBanner />
+            <UserNotifications />
             {children}
           </div>
         </main>

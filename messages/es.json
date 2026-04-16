@@ -179,6 +179,9 @@
     "title": "Proyecto en desarrollo",
     "body": "Estamos trabajando activamente en la plataforma. Te avisaremos del lanzamiento — sigue las actualizaciones en tu panel y en el email indicado."
   },
+  "notifications": {
+    "markRead": "Entendido"
+  },
   "dashboard": {
     "planUsage": "Plan y uso",
     "currentPlan": "Plan actual",

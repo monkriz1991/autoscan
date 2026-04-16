@@ -431,6 +431,145 @@ export async function getAdminUser(id: string | number): Promise<AdminUser> {
   return request<AdminUser>(`admin/users/${id}/`);
 }
 
+/* ========== Notifications ========== */
+
+export type UserNotificationDisplayMode = "one_time" | "banner";
+
+export type UserNotification = {
+  id: number;
+  title: string;
+  body: string;
+  display_mode: UserNotificationDisplayMode;
+  starts_at: string | null;
+  ends_at: string | null;
+  created_at: string;
+  is_read: boolean;
+};
+
+export type NotificationsInboxResponse = {
+  items: UserNotification[];
+  last_id: number;
+};
+
+function normalizeNotificationDisplayMode(raw: unknown): UserNotificationDisplayMode {
+  return String(raw ?? "").trim().toLowerCase() === "one_time" ? "one_time" : "banner";
+}
+
+function parseUserNotification(row: Record<string, unknown>): UserNotification {
+  return {
+    id: Number(row.id ?? 0),
+    title: String(row.title ?? ""),
+    body: String(row.body ?? ""),
+    display_mode: normalizeNotificationDisplayMode(row.display_mode),
+    starts_at: row.starts_at ? String(row.starts_at) : null,
+    ends_at: row.ends_at ? String(row.ends_at) : null,
+    created_at: String(row.created_at ?? ""),
+    is_read: Boolean(row.is_read),
+  };
+}
+
+export async function getNotificationsInbox(options?: {
+  afterId?: number;
+  limit?: number;
+}): Promise<NotificationsInboxResponse> {
+  const params = new URLSearchParams();
+  const afterId = options?.afterId ?? 0;
+  if (afterId > 0) params.set("after_id", String(afterId));
+  const limit = options?.limit ?? 50;
+  if (limit > 0) params.set("limit", String(limit));
+  const path = `notifications/inbox/${params.toString() ? `?${params.toString()}` : ""}`;
+  const raw = await request<{ items?: Record<string, unknown>[]; last_id?: number }>(path);
+  const rows = Array.isArray(raw.items) ? raw.items : [];
+  return {
+    items: rows.map(parseUserNotification),
+    last_id: Number(raw.last_id ?? 0),
+  };
+}
+
+export async function markNotificationRead(id: number): Promise<{ ok: boolean; created: boolean }> {
+  return request<{ ok: boolean; created: boolean }>(`notifications/${id}/read/`, {
+    method: "POST",
+    body: JSON.stringify({}),
+  });
+}
+
+export type NotificationSseEvent = {
+  event: "notification" | "done" | string;
+  data: Record<string, unknown>;
+};
+
+export async function subscribeNotificationsStream(options: {
+  afterId?: number;
+  onEvent: (event: NotificationSseEvent) => void;
+  signal?: AbortSignal;
+}): Promise<void> {
+  const params = new URLSearchParams();
+  const afterId = options.afterId ?? 0;
+  if (afterId > 0) params.set("after_id", String(afterId));
+  const path = `notifications/stream/${params.toString() ? `?${params.toString()}` : ""}`;
+  const url = `${BASE_URL.replace(/\/$/, "")}/${path.replace(/^\//, "")}`;
+  const token = getToken();
+  const headers: Record<string, string> = {
+    Accept: "text/event-stream",
+    ...getLocaleHeaders(),
+  };
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+  const res = await fetch(url, {
+    method: "GET",
+    headers,
+    signal: options.signal,
+  });
+  if (!res.ok) {
+    const errBody = (await res.json().catch(() => ({}))) as Record<string, unknown>;
+    throw new ApiError(res.status, errBody);
+  }
+
+  if (!res.body) {
+    return;
+  }
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+
+  const flushFrames = () => {
+    let sep: number;
+    while ((sep = buffer.indexOf("\n\n")) >= 0) {
+      const frame = buffer.slice(0, sep);
+      buffer = buffer.slice(sep + 2);
+      if (!frame.trim()) continue;
+
+      let eventName = "";
+      const dataLines: string[] = [];
+      for (const line of frame.split("\n")) {
+        if (line.startsWith("event:")) {
+          eventName = line.slice(6).trim();
+        } else if (line.startsWith("data:")) {
+          dataLines.push(line.slice(5).trimStart());
+        }
+      }
+      if (!eventName || dataLines.length === 0) continue;
+      try {
+        const data = JSON.parse(dataLines.join("\n")) as Record<string, unknown>;
+        options.onEvent({ event: eventName, data });
+      } catch {
+        /* ignore malformed frame */
+      }
+    }
+  };
+
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) {
+      flushFrames();
+      break;
+    }
+    buffer += decoder.decode(value, { stream: true });
+    flushFrames();
+  }
+}
+
 /* ========== Billing ========== */
 
 /** Флаги тарифа с API (ключи без префикса feature_). */

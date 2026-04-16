@@ -179,6 +179,9 @@
     "title": "Progetto in sviluppo",
     "body": "Stiamo lavorando attivamente sulla piattaforma. Ti avviseremo certamente del rilascio — segui gli aggiornamenti nella tua area personale e sull'email indicata."
   },
+  "notifications": {
+    "markRead": "Capito"
+  },
   "dashboard": {
     "planUsage": "Piano e utilizzo",
     "currentPlan": "Piano attuale",

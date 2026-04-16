@@ -560,6 +560,13 @@ export type DownloadsPageDto = {
   archive: DownloadsArchiveRow[];
 };
 
+function normalizeDownloadAssetAccess(raw: unknown): DownloadAssetAccess {
+  const s = typeof raw === "string" ? raw.trim().toLowerCase() : "";
+  if (s === "login_required") return "login_required";
+  if (s === "paid_required") return "paid_required";
+  return "download";
+}
+
 function parseDownloadsAsset(row: Record<string, unknown>): DownloadsAssetDto {
   return {
     id: Number(row.id ?? 0),
@@ -571,9 +578,7 @@ function parseDownloadsAsset(row: Record<string, unknown>): DownloadsAssetDto {
     file_size: Number(row.file_size ?? 0),
     checksum_sha256: String(row.checksum_sha256 ?? ""),
     download_label: String(row.download_label ?? ""),
-    access: (row.access === "login_required" || row.access === "paid_required"
-      ? row.access
-      : "download") as DownloadAssetAccess,
+    access: normalizeDownloadAssetAccess(row.access),
     download_url: row.download_url ? String(row.download_url) : null,
     download_api_url: row.download_api_url ? String(row.download_api_url) : null,
   };

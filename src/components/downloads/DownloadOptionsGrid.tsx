@@ -12,6 +12,17 @@ type Props = {
   assets: DownloadsAssetDto[];
 };
 
+/** Какую CTA показать для вторичного установщика (учёт битого/устаревшего access из кэша). */
+function secondaryAssetCta(
+  asset: DownloadsAssetDto,
+): "download" | "login_required" | "paid_required" {
+  if (asset.access === "login_required") return "login_required";
+  if (asset.access === "paid_required") return "paid_required";
+  if (asset.access === "download") return "download";
+  if (asset.download_api_url || asset.download_url) return "download";
+  return "login_required";
+}
+
 export default function DownloadOptionsGrid({ assets }: Props) {
   const t = useTranslations("downloadPage");
   const pathname = usePathname();
@@ -48,41 +59,53 @@ export default function DownloadOptionsGrid({ assets }: Props) {
         {t("otherDownloadsTitle")}
       </Text>
       <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="md">
-        {assets.map((asset) => (
-          <Card key={asset.id} withBorder shadow="xs" padding="md" radius="md" className="download-option-card">
-            <Stack gap="xs">
-              <Text fw={600} size="sm">
-                {asset.os_label}
-              </Text>
-              <Text size="xs" c="dimmed">
-                {asset.installer_label} · {formatFileSize(asset.file_size)}
-              </Text>
-              <Group gap="xs" mt="auto">
-                {asset.access === "download" && (
-                  <Button
-                    size="xs"
-                    variant="light"
-                    leftSection={<IconDownload size={14} />}
-                    loading={busyId === asset.id}
-                    onClick={() => void downloadOne(asset)}
-                  >
-                    {t("ctaDownload")}
-                  </Button>
-                )}
-                {asset.access === "login_required" && (
-                  <Button size="xs" component={Link} href={loginHref} variant="light">
-                    {t("ctaLoginRequired")}
-                  </Button>
-                )}
-                {asset.access === "paid_required" && (
-                  <Button size="xs" component={Link} href="/marketing/pricing" variant="light">
-                    {t("ctaPaidRequired")}
-                  </Button>
-                )}
+        {assets.map((asset) => {
+          const cta = secondaryAssetCta(asset);
+          return (
+            <Card key={asset.id}
+              withBorder
+              shadow="xs"
+              padding="md"
+              radius="md"
+              className="download-option-card"
+            >
+              <Group justify="space-between" align="flex-start" wrap="nowrap" gap="md">
+                <Stack gap={4} style={{ flex: 1, minWidth: 0 }}>
+                  <Text fw={600} size="sm">
+                    {asset.os_label}
+                  </Text>
+                  <Text size="xs" c="dimmed">
+                    {asset.installer_label} · {formatFileSize(asset.file_size)}
+                  </Text>
+                </Stack>
+                <Group gap="xs" wrap="nowrap" style={{ flexShrink: 0 }}>
+                  {cta === "download" && (
+                    <Button
+                      size="xs"
+                      variant="filled"
+                      className="btn-cta-primary"
+                      leftSection={<IconDownload size={14} />}
+                      loading={busyId === asset.id}
+                      onClick={() => void downloadOne(asset)}
+                    >
+                      {t("ctaDownload")}
+                    </Button>
+                  )}
+                  {cta === "login_required" && (
+                    <Button size="xs" component={Link} href={loginHref} variant="default">
+                      {t("ctaLoginRequired")}
+                    </Button>
+                  )}
+                  {cta === "paid_required" && (
+                    <Button size="xs" component={Link} href="/marketing/pricing" variant="default">
+                      {t("ctaPaidRequired")}
+                    </Button>
+                  )}
+                </Group>
               </Group>
-            </Stack>
-          </Card>
-        ))}
+            </Card>
+          );
+        })}
       </SimpleGrid>
     </Stack>
   );

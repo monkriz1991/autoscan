@@ -716,6 +716,48 @@ export async function getPublicFaq(options?: {
   }));
 }
 
+/** SSR FAQ с явной локалью: без document.documentElement на сервере иначе всегда будет DEFAULT_LOCALE. */
+export async function getPublicFaqForLocale(
+  locale: string,
+  options?: { q?: string },
+): Promise<FaqPublicItem[]> {
+  const base = BASE_URL.replace(/\/$/, "");
+  const params = new URLSearchParams();
+  const q = (options?.q ?? "").trim();
+  if (q) params.set("q", q.slice(0, 200));
+  const qs = params.toString();
+  const url = qs ? `${base}/faq/?${qs}` : `${base}/faq/`;
+  const res = await fetch(url, {
+    credentials: "omit",
+    headers: {
+      "Accept-Language": locale,
+      "X-Locale": locale,
+    },
+    next: { revalidate: 120 },
+  });
+  if (!res.ok) {
+    throw new ApiError(res.status, await res.json().catch(() => ({})));
+  }
+  const data = await res.json();
+  if (!Array.isArray(data)) return [];
+  return data.map((row: Record<string, unknown>) => ({
+    slug: String(row.slug ?? ""),
+    question: String(row.question ?? ""),
+    excerpt: String(row.excerpt ?? ""),
+    answer_html: String(row.answer_html ?? ""),
+    sort_order: Number(row.sort_order ?? 0),
+    available_locales: Array.isArray(row.available_locales)
+      ? (row.available_locales as string[]).filter((x) => typeof x === "string")
+      : [],
+    cover_image_url:
+      row.cover_image_url === null ||
+      row.cover_image_url === undefined ||
+      row.cover_image_url === ""
+        ? null
+        : String(row.cover_image_url),
+  }));
+}
+
 /** Состояние доступа к файлу установщика (как в API downloads). */
 export type DownloadAssetAccess = "download" | "login_required" | "paid_required";
 

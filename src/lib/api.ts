@@ -205,8 +205,9 @@ export type RegisterPayload = {
   email: string;
   password1: string;
   password2: string;
-  captcha_token: string;
-  captcha_answer: number;
+  /** Если не переданы — регистрация без капчи (бэкенд может потребовать повтор с капчей). */
+  captcha_token?: string;
+  captcha_answer?: number;
   accept_terms: boolean;
   accept_privacy_policy: boolean;
   accept_disclaimer: boolean;
@@ -223,6 +224,48 @@ export async function getCaptcha(): Promise<CaptchaResponse> {
   return request<CaptchaResponse>("auth/captcha/");
 }
 
+/** true — email уже занят; false — можно регистрировать или проверка недоступна (404/500/сеть). */
+export async function checkEmailExists(email: string): Promise<boolean> {
+  try {
+    const data = await request<{ exists?: boolean }>("auth/email-check/", {
+      method: "POST",
+      body: JSON.stringify({ email: email.trim().toLowerCase() }),
+    });
+    return data.exists === true;
+  } catch (e) {
+    if (e instanceof ApiError) {
+      if (e.status === 404 || e.status >= 500) {
+        return false;
+      }
+      throw e;
+    }
+    return false;
+  }
+}
+
+export type MagicLinkVerifyResponse = {
+  access: string;
+  refresh: string;
+  user: UserProfile;
+};
+
+export async function verifyMagicLink(
+  token: string,
+): Promise<MagicLinkVerifyResponse> {
+  const q = new URLSearchParams({ token: token.trim() });
+  return request<MagicLinkVerifyResponse>(
+    `auth/magic-link/verify/?${q.toString()}`,
+    { method: "GET" },
+  );
+}
+
+export async function requestMagicLink(email: string): Promise<void> {
+  await request<unknown>("auth/magic-link/", {
+    method: "POST",
+    body: JSON.stringify({ email: email.trim().toLowerCase() }),
+  });
+}
+
 export async function register(
   payload: RegisterPayload,
   options?: { storeTokens?: boolean },
@@ -231,9 +274,24 @@ export async function register(
     ...payload,
     email: payload.email.trim().toLowerCase(),
   };
+  const body: Record<string, unknown> = {
+    email: normalizedPayload.email,
+    password1: normalizedPayload.password1,
+    password2: normalizedPayload.password2,
+    accept_terms: normalizedPayload.accept_terms,
+    accept_privacy_policy: normalizedPayload.accept_privacy_policy,
+    accept_disclaimer: normalizedPayload.accept_disclaimer,
+  };
+  if (
+    normalizedPayload.captcha_token != null &&
+    normalizedPayload.captcha_answer != null
+  ) {
+    body.captcha_token = normalizedPayload.captcha_token;
+    body.captcha_answer = normalizedPayload.captcha_answer;
+  }
   const data = await request<RegisterResponse>("auth/register/", {
     method: "POST",
-    body: JSON.stringify(normalizedPayload),
+    body: JSON.stringify(body),
   });
   if (options?.storeTokens !== false && data.access && data.refresh) {
     setTokens(data.access, data.refresh);

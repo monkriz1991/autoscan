@@ -1,9 +1,9 @@
 "use client";
 
-import { Suspense, useState, useEffect } from "react";
+import { Suspense, useState, useEffect, useCallback, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { Link, useRouter } from "@/i18n/navigation";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import {
   Anchor,
   Card,
@@ -16,7 +16,9 @@ import {
   Center,
   Divider,
   Text,
+  Popover,
 } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 import {
   login,
   ApiError,
@@ -25,14 +27,17 @@ import {
   getGoogleOAuthRedirectUrl,
   POST_OAUTH_NEXT_STORAGE_KEY,
   getApiErrorMessage,
+  requestMagicLink,
 } from "@/lib/api";
 import AuthPageShell from "@/components/auth/AuthPageShell";
+import GoogleIcon from "@/components/auth/GoogleIcon";
 
 const DEFAULT_AFTER_AUTH = "/cabinet/dashboard";
 
 function LoginForm() {
   const t = useTranslations("auth");
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const nextUrl = searchParams.get("next") || DEFAULT_AFTER_AUTH;
 
@@ -42,6 +47,10 @@ function LoginForm() {
   const [googleLoading, setGoogleLoading] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
   const [error, setError] = useState("");
+  const [magicPopoverOpened, setMagicPopoverOpened] = useState(false);
+  const [popoverEmail, setPopoverEmail] = useState("");
+  const [magicSending, setMagicSending] = useState(false);
+  const emailExistsNoticeShown = useRef(false);
 
   useEffect(() => {
     if (!isAuthenticated()) {
@@ -62,6 +71,64 @@ function LoginForm() {
         setCheckingSession(false);
       });
   }, [router, nextUrl]);
+
+  useEffect(() => {
+    if (searchParams.get("notice") !== "email_exists") {
+      return;
+    }
+    if (emailExistsNoticeShown.current) {
+      return;
+    }
+    emailExistsNoticeShown.current = true;
+    notifications.show({
+      color: "blue",
+      message: t("emailAlreadyExists"),
+    });
+    const q = new URLSearchParams();
+    const n = searchParams.get("next");
+    if (n) {
+      q.set("next", n);
+    }
+    const qs = q.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname);
+  }, [searchParams, pathname, router, t]);
+
+  const sendMagicLinkTo = useCallback(
+    async (targetEmail: string) => {
+      const trimmed = targetEmail.trim().toLowerCase();
+      if (!trimmed) {
+        return;
+      }
+      setMagicSending(true);
+      setError("");
+      try {
+        await requestMagicLink(trimmed);
+        notifications.show({
+          color: "teal",
+          message: t("magicLinkSent", { email: trimmed }),
+        });
+        setMagicPopoverOpened(false);
+        setPopoverEmail("");
+      } catch (err) {
+        setError(
+          err instanceof ApiError ? getApiErrorMessage(err) : t("loginError"),
+        );
+      } finally {
+        setMagicSending(false);
+      }
+    },
+    [t],
+  );
+
+  const handleMagicLinkAnchorClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const trimmed = email.trim();
+    if (trimmed) {
+      void sendMagicLinkTo(trimmed);
+    } else {
+      setMagicPopoverOpened((o) => !o);
+    }
+  };
 
   const handleSubmit = async () => {
     setError("");
@@ -138,6 +205,25 @@ function LoginForm() {
             </Notification>
           )}
 
+          <Button
+            fullWidth
+            size="md"
+            leftSection={<GoogleIcon />}
+            loading={googleLoading}
+            onClick={handleGoogleLogin}
+            styles={{
+              root: {
+                backgroundColor: "#fff",
+                color: "#1f1f1f",
+                border: "1px solid #747775",
+              },
+            }}
+          >
+            {t("loginWithGoogleFirst")}
+          </Button>
+
+          <Divider label={t("continueWithEmail")} labelPosition="center" />
+
           <TextInput
             label={t("email")}
             value={email}
@@ -155,25 +241,50 @@ function LoginForm() {
           <Button
             fullWidth
             size="md"
-            className="btn-cta-primary"
+            variant="outline"
+            className="auth-page__btn-outline"
             loading={loading}
             onClick={handleSubmit}
           >
             {t("loginButton")}
           </Button>
 
-          <Divider label={t("loginDividerOr")} labelPosition="center" />
-
-          <Button
-            fullWidth
-            size="md"
-            variant="outline"
-            className="auth-page__btn-outline"
-            loading={googleLoading}
-            onClick={handleGoogleLogin}
-          >
-            {t("loginWithGoogle")}
-          </Button>
+          <Text size="xs" c="dimmed" ta="center">
+            {t("forgotPasswordPrompt")}{" "}
+            <Popover
+              width={300}
+              position="bottom"
+              withArrow
+              shadow="md"
+              opened={magicPopoverOpened}
+              onChange={setMagicPopoverOpened}
+            >
+              <Popover.Target>
+                <Anchor size="xs" href="#" onClick={handleMagicLinkAnchorClick}>
+                  {t("requestMagicLink")}
+                </Anchor>
+              </Popover.Target>
+              <Popover.Dropdown>
+                <Stack gap="sm">
+                  <TextInput
+                    label={t("email")}
+                    value={popoverEmail}
+                    onChange={(e) => setPopoverEmail(e.target.value)}
+                    type="email"
+                    autoComplete="email"
+                  />
+                  <Button
+                    size="sm"
+                    className="btn-cta-primary"
+                    loading={magicSending}
+                    onClick={() => void sendMagicLinkTo(popoverEmail)}
+                  >
+                    {t("requestMagicLink")}
+                  </Button>
+                </Stack>
+              </Popover.Dropdown>
+            </Popover>
+          </Text>
         </Stack>
       </Card>
     </AuthPageShell>

@@ -42,6 +42,10 @@ Thumbs.db
 .parcel-cache
 .eslintcache
 
+# TypeScript build cache
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
 # Testing
 coverage
 

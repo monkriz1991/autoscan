@@ -45,9 +45,19 @@ export async function generateMetadata({
       siteName: t("siteName"),
       locale: localeToOpenGraphLocale(locale),
       alternateLocale: alternateLocales,
+      url: getMetadataBase().toString(),
+      images: [
+        {
+          url: "/og-image.png",
+          width: 1200,
+          height: 630,
+          alt: t("siteName"),
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
+      images: ["/og-image.png"],
     },
   };
 }

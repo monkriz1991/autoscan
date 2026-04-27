@@ -1,38 +1,36 @@
 import type { MetadataRoute } from "next";
-import { fetchBlogSlugsForSitemap } from "@/lib/blog-sitemap";
+import { getSiteOrigin, localizedPath } from "@/lib/site-url";
 import { routing } from "@/i18n/routing";
-import { alternateLanguageUrls } from "@/lib/site-url";
 
-/** Публичные маршруты без префикса локали (главная — ""). */
 const STATIC_PATHS = [
   "",
   "/faq",
   "/download",
   "/marketing/pricing",
   "/marketing/compare-obd2-apps",
+  "/marketing/contacts",
+  "/marketing/privacy",
+  "/marketing/terms",
+  "/marketing/disclaimer",
+  "/business",
 ];
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const items: MetadataRoute.Sitemap = [];
+export default function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const origin = getSiteOrigin();
+  const lastModified = process.env.NEXT_PUBLIC_LAST_MODIFIED_DATE
+    ? new Date(process.env.NEXT_PUBLIC_LAST_MODIFIED_DATE)
+    : new Date();
 
+  const entries: MetadataRoute.Sitemap = [];
   for (const path of STATIC_PATHS) {
-    const languages = alternateLanguageUrls(path);
-    items.push({
-      url: languages[routing.defaultLocale],
-      lastModified: new Date(),
-      alternates: { languages },
-    });
+    for (const locale of routing.locales) {
+      const pathname = localizedPath(locale, path);
+      entries.push({
+        url: `${origin}${pathname}`,
+        lastModified,
+      });
+    }
   }
 
-  const slugs = await fetchBlogSlugsForSitemap();
-  for (const slug of slugs) {
-    const languages = alternateLanguageUrls(`/blog/${slug}`);
-    items.push({
-      url: languages[routing.defaultLocale],
-      lastModified: new Date(),
-      alternates: { languages },
-    });
-  }
-
-  return items;
+  return Promise.resolve(entries);
 }

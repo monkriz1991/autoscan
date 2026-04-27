@@ -3,7 +3,20 @@ import { getSiteOrigin } from "@/lib/site-url";
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: "*", allow: "/" },
+    rules: [
+      {
+        userAgent: "*",
+        allow: "/",
+        disallow: [
+          "/cabinet/",
+          "/account/",
+          "/superadmin/",
+          "/checkout/",
+          "/widget/",
+          "/api/",
+        ],
+      },
+    ],
     sitemap: `${getSiteOrigin()}/sitemap.xml`,
   };
 }

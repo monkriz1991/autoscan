@@ -249,26 +249,70 @@ export default async function HomePageShell({ locale }: Props) {
           <p className="landing-pricing__lead" style={{ lineHeight: 1.65 }}>{t("pricing.subtitle")}</p>
         </div>
         <div className="landing-pricing__grid">
-          <article className="landing-pricing-card">
-            <h3>{t("pricing.free.name")}</h3>
-            <p className="landing-pricing-card__price">{t("pricing.free.price")}</p>
-            <ul>
+          <article className="landing-pricing-card" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <div>
+              <h3 style={{ margin: 0, color: "#0f172a", fontSize: "1.25rem", fontWeight: 800 }}>{t("pricing.free.name")}</h3>
+              <div className="landing-pricing-card__price-wrap">
+                <p className="landing-pricing-card__price" style={{ margin: "8px 0 0", fontWeight: 800 }}>{t("pricing.free.price")}</p>
+              </div>
+            </div>
+            <ul style={{ display: "grid", gap: 10, margin: 0, padding: 0, listStyle: "none", color: "#334155" }}>
               {[1, 2, 3, 4, 5].map((n) => (
-                <li key={n}>{t(`pricing.free.f${n}` as never)}</li>
+                <li key={n} style={{ display: "grid", gridTemplateColumns: "22px 1fr", gap: 10, alignItems: "start" }}>
+                  <span className="landing-pricing-icon-yes" aria-hidden>✓</span>
+                  <span>{t(`pricing.free.f${n}` as never)}</span>
+                </li>
               ))}
             </ul>
-            <a href={localizedPath(locale, "/download")} className="btn-cta-primary">{t("pricing.free.cta")}</a>
+            <a
+              href={localizedPath(locale, "/download")}
+              className="landing-pricing-cta landing-pricing-cta--outline"
+              style={{
+                marginTop: "auto",
+                display: "inline-flex",
+                justifyContent: "center",
+                alignItems: "center",
+                minHeight: 44,
+                borderRadius: 12,
+                fontWeight: 800,
+                textDecoration: "none",
+              }}
+            >
+              {t("pricing.free.cta")}
+            </a>
           </article>
-          <article className="landing-pricing-card landing-pricing-card--pro">
-            <span className="landing-pricing-card__ribbon">{t("pricing.pro.badge")}</span>
-            <h3>{t("pricing.pro.name")}</h3>
-            <p className="landing-pricing-card__price">{t("pricing.pro.priceMonthly")}</p>
-            <ul>
-              {[1, 2, 3, 4, 5, 6].map((n) => (
-                <li key={n}>{t(`pricing.pro.p${n}` as never)}</li>
+          <article className="landing-pricing-card landing-pricing-card--pro" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <span className="landing-pricing-card__ribbon" style={{ fontWeight: 800 }}>{t("pricing.pro.badge")}</span>
+            <div>
+              <h3 style={{ margin: 0, color: "#0f172a", fontSize: "1.25rem", fontWeight: 800 }}>{t("pricing.pro.name")}</h3>
+              <div className="landing-pricing-card__price-wrap">
+                <p className="landing-pricing-card__price" style={{ margin: "8px 0 0", fontWeight: 800 }}>{t("pricing.pro.priceMonthly")}</p>
+              </div>
+            </div>
+            <ul style={{ display: "grid", gap: 10, margin: 0, padding: 0, listStyle: "none", color: "#334155" }}>
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
+                <li key={n} style={{ display: "grid", gridTemplateColumns: "22px 1fr", gap: 10, alignItems: "start" }}>
+                  <span className="landing-pricing-icon-yes" aria-hidden>✓</span>
+                  <span>{t(`pricing.pro.p${n}` as never)}</span>
+                </li>
               ))}
             </ul>
-            <a href={localizedPath(locale, "/marketing/pricing")} className="btn-cta-primary">{tNav("pricing")}</a>
+            <a
+              href={localizedPath(locale, "/marketing/pricing")}
+              className="landing-pricing-cta landing-pricing-cta--primary"
+              style={{
+                marginTop: "auto",
+                display: "inline-flex",
+                justifyContent: "center",
+                alignItems: "center",
+                minHeight: 44,
+                borderRadius: 12,
+                fontWeight: 800,
+                textDecoration: "none",
+              }}
+            >
+              {t("pricing.pro.cta")}
+            </a>
           </article>
         </div>
       </section>

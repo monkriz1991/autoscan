@@ -11,7 +11,7 @@ import {
   withStructuredDataFallback,
 } from "@/lib/seo/structured-data";
 import { buildStaticHomeStructuredData } from "@/lib/seo/static-structured-data";
-import { alternateLanguageUrls } from "@/lib/site-url";
+import { alternateLanguageUrls, getSiteOrigin } from "@/lib/site-url";
 import HomePageClient from "./HomePageClient";
 
 export function generateStaticParams() {
@@ -23,7 +23,10 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const { locale } = await params;
+  const { locale: rawLocale } = await params;
+  const locale = routing.locales.includes(rawLocale as (typeof routing.locales)[number])
+    ? rawLocale
+    : routing.defaultLocale;
   const base = await buildLocalePageMetadata(locale, "", "homeTitle", "homeDescription");
   const t = await getTranslations({ locale, namespace: "seo" });
   const canonicalUrl = await getCanonicalUrlFromRequestHeaders(locale);
@@ -62,12 +65,16 @@ export default async function HomePage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
+  const { locale: rawLocale } = await params;
+  const locale = routing.locales.includes(rawLocale as (typeof routing.locales)[number])
+    ? rawLocale
+    : routing.defaultLocale;
   setRequestLocale(locale);
   const tSeo = await getTranslations({ locale, namespace: "seo" });
   const tLand = await getTranslations({ locale, namespace: "landing" });
   const tNav = await getTranslations({ locale, namespace: "nav" });
-  const pageUrl = alternateLanguageUrls("")[locale];
+  const homeAlternates = alternateLanguageUrls("");
+  const pageUrl = homeAlternates[locale] || homeAlternates[routing.defaultLocale] || `${getSiteOrigin()}/`;
   const pageUrlNoSlash = pageUrl.replace(/\/$/, "");
   const homeTitle = tSeo("homeTitle");
   const homeDescription = tSeo("homeDescription");

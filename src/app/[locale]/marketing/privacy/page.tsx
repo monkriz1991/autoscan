@@ -13,10 +13,14 @@ export async function generateMetadata({
   const { locale } = await params;
   const tSeo = await getTranslations({ locale, namespace: "seo" });
   const path = "/marketing/privacy";
+  const languages = alternateLanguageUrls(path);
   return {
     title: tSeo("privacyTitle"),
     description: tSeo("privacyDescription"),
-    alternates: { languages: alternateLanguageUrls(path) },
+    alternates: {
+      canonical: languages[locale],
+      languages,
+    },
   };
 }
 

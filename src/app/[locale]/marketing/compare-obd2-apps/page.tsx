@@ -12,10 +12,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const tSeo = await getTranslations({ locale, namespace: "seo" });
+  const languages = alternateLanguageUrls(PATH);
   return {
     title: tSeo("compareObd2Title"),
     description: tSeo("compareObd2Description"),
-    alternates: { languages: alternateLanguageUrls(PATH) },
+    alternates: {
+      canonical: languages[locale],
+      languages,
+    },
   };
 }
 

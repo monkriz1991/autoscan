@@ -17,10 +17,11 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   const post = await getBlogPostForLocale(slug, locale);
-  const t = await getTranslations({ locale, namespace: "seo" });
+  /** Нет поста — тот же 404, что и в странице: без hreflang/canonical на несуществующий slug. */
   if (!post) {
-    return { title: t("blogPostNotFoundTitle") };
+    notFound();
   }
+  const t = await getTranslations({ locale, namespace: "seo" });
   const languages = alternateLanguageUrls(`/blog/${slug}`);
   const url = languages[locale];
   const description = post.excerpt?.trim() || t("blogDescription");

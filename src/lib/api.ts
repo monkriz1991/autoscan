@@ -86,7 +86,7 @@ async function request<T>(
     headers.Authorization = `Bearer ${token}`;
   }
 
-  const res = await fetch(url, { ...options, headers });
+  const res = await fetch(url, { ...options, headers, credentials: "omit" });
   const data = await res.json().catch(() => ({}));
 
   // Только 401 — истёк/невалиден access JWT. 403 — «нет прав»; refresh не помогает и при сбое refresh
@@ -99,6 +99,7 @@ async function request<T>(
         const base = BASE_URL.replace(/\/$/, "");
         const refreshRes = await fetch(`${base}/auth/token/refresh/`, {
           method: "POST",
+          credentials: "omit",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ refresh }),
         });
@@ -107,7 +108,7 @@ async function request<T>(
           const newRefresh = refreshData.refresh ?? refresh;
           setTokens(refreshData.access, newRefresh);
           headers.Authorization = `Bearer ${refreshData.access}`;
-          const retry = await fetch(url, { ...options, headers });
+          const retry = await fetch(url, { ...options, headers, credentials: "omit" });
           const retryData = await retry.json().catch(() => ({}));
           if (!retry.ok) throw new ApiError(retry.status, retryData);
           return retryData as T;

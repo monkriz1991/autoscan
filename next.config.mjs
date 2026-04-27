@@ -3,7 +3,7 @@ import createNextIntlPlugin from "next-intl/plugin";
 /**
  * Международная маршрутизация (App Router): ключ `i18n` в next.config не используется —
  * он относится к старому Pages Router. Здесь локали задаются в `src/i18n/routing.ts`,
- * префиксы URL и Accept-Language обрабатывает `src/middleware.ts` (next-intl + кастомная логика).
+ * префиксы URL и cookie локали обрабатывает `src/middleware.ts` (next-intl + кастомная логика).
  * Домен по умолчанию для canonical/OG: NEXT_PUBLIC_SITE_URL → https://aiscanauto.com
  */
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");

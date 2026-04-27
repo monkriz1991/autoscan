@@ -6,9 +6,13 @@ import StaticJsonLd from "@/components/landing/StaticJsonLd";
 import { buildOpenGraphTwitterBlock, staticOpenGraphImageAbsoluteUrl } from "@/lib/og-metadata";
 import { getCanonicalUrlFromRequestHeaders } from "@/lib/request-canonical";
 import { buildLocalePageMetadata } from "@/lib/seo-metadata";
-import { fetchStructuredData } from "@/lib/seo/structured-data";
+import {
+  fetchStructuredData,
+  withStructuredDataFallback,
+} from "@/lib/seo/structured-data";
+import { buildStaticHomeStructuredData } from "@/lib/seo/static-structured-data";
 import { alternateLanguageUrls } from "@/lib/site-url";
-import HomePageShell from "@/components/landing/HomePageShell";
+import HomePageClient from "./HomePageClient";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -65,13 +69,23 @@ export default async function HomePage({
   const tNav = await getTranslations({ locale, namespace: "nav" });
   const pageUrl = alternateLanguageUrls("")[locale];
   const pageUrlNoSlash = pageUrl.replace(/\/$/, "");
-  const homeLd = await fetchStructuredData({
+  const homeTitle = tSeo("homeTitle");
+  const homeDescription = tSeo("homeDescription");
+  const homeLdRaw = await fetchStructuredData({
     bundles: ["home"],
     locale,
     pageUrl,
-    title: tSeo("homeTitle"),
-    description: tSeo("homeDescription"),
+    title: homeTitle,
+    description: homeDescription,
   });
+  const homeLd = withStructuredDataFallback(
+    homeLdRaw,
+    buildStaticHomeStructuredData({
+      pageUrl,
+      title: homeTitle,
+      description: homeDescription,
+    }),
+  );
 
   const softwareApplicationLd = {
     "@context": "https://schema.org",
@@ -124,7 +138,7 @@ export default async function HomePage({
       <StaticJsonLd data={softwareApplicationLd} />
       <StaticJsonLd data={howToLd} />
       <StaticJsonLd data={breadcrumbLd} />
-      <HomePageShell locale={locale} />
+      <HomePageClient />
     </>
   );
 }

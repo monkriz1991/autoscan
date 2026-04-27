@@ -791,7 +791,7 @@
       "carouselNext": "Следующий скриншот"
     },
     "features": {
-      "sectionTitle": "Everything you need to stay ahead of repairs",
+      "sectionTitle": "Всё, чтобы предупреждать ремонт заранее",
       "chatLeadTitle": "Коды ошибок и чат с ботом — в одном окне",
       "chatLeadBody": "Видите сбой, живые параметры и задаёте вопросы ассистенту, не прыгая между экранами. Всё для решения по ремонту — в одном интерфейсе.",
       "chatVideoAria": "Запись экрана: диагностика и чат с ИИ в одном окне приложения",
@@ -812,7 +812,7 @@
       "f3": {
         "tag": "PRO",
         "title": "ИИ находит посты в блогах\nпо вашей же проблеме",
-        "body": "Появился код ошибки? AIScanAuto просматривает форумы, блоги о ремонте и сообщества и показывает реальные решения от тех, кто уже сталкивался с тем же — до визита к механику.",
+        "body": "Появился код ошибки? AIscanAuto просматривает форумы, блоги о ремонте и сообщества и показывает реальные решения от тех, кто уже сталкивался с тем же — до визита к механику.",
         "learnMore": "Подробнее",
         "cardTitle": "Поиск статей в блогах",
         "cardSub": "P0420 — эффективность катализатора",
@@ -833,9 +833,9 @@
       },
       "f4": {
         "tag": "PRO",
-        "title": "Live engine data, beautifully displayed",
-        "body": "Monitor 70+ real-time engine parameters. Customisable dashboard, freeze frame data, and sensor history graphs.",
-        "learnMore": "Learn more →"
+        "title": "Живые данные двигателя в понятном виде",
+        "body": "Отслеживайте более 70 параметров двигателя в реальном времени. Настраиваемая панель, freeze frame и графики истории датчиков.",
+        "learnMore": "Подробнее →"
       }
     },
     "contentLinks": {
@@ -844,9 +844,9 @@
       "compareApps": "Лучшие OBD2-приложения 2026 — сравнение"
     },
     "cars": {
-      "title": "Works with 10,000+ car models",
-      "subtitle": "Any petrol or diesel car manufactured after 1996 (OBD2 standard)",
-      "footnote": "+ any other OBD2-compatible vehicle (1996+)",
+      "title": "Работает с 10 000+ моделей авто",
+      "subtitle": "Любой бензиновый или дизельный автомобиль после 1996 года (стандарт OBD2)",
+      "footnote": "+ любой другой OBD2-совместимый автомобиль (1996+)",
       "brands": {
         "toyota": "Toyota",
         "bmw": "BMW",

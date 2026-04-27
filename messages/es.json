@@ -757,22 +757,22 @@
     "hero": {
       "badge": "OBD2 · ELM327 · Real-time scan",
       "headlineFree": "Free",
-      "headlineAi": "AI",
-      "headlineSeconds": "car diagnostics in seconds — not at the dealership",
-      "subheadline": "Plug in any ELM327 adapter, read live ECU data, and get plain-language AI explanations for fault codes.",
-      "ctaTryFree": "Try Free Online",
-      "ctaDownload": "Download App",
+      "headlineAi": "Diagnóstico con IA",
+      "headlineSeconds": "del coche en segundos — sin pasar por el taller",
+      "subheadline": "Conecte cualquier adaptador ELM327, lea datos en vivo de la ECU y obtenga explicaciones de IA claras para los códigos de fallo.",
+      "ctaTryFree": "Probar gratis online",
+      "ctaDownload": "Descargar app",
       "ctaDashboard": "Open dashboard",
       "socialProofCta": "Para ~99 % de coches — OBD2 estándar (desde 1996)",
-      "dashboardLink": "Go to dashboard →",
-      "visualAria": "Animated diagram: OBD port, adapter cable, phone with AI analysis",
-      "stepConnect": "Connect",
-      "stepRead": "Read data",
-      "stepAi": "AI analysis",
-      "stepResult": "Results",
-      "tooltipP0420": "AI: catalyst efficiency below threshold — check O2 sensors & exhaust leaks first.",
-      "tooltipP0171": "AI: lean bank 1 — vacuum leak, MAF, or fuel pressure likely; safe to drive short trips.",
-      "mockTitle": "Live data",
+      "dashboardLink": "Ir al panel →",
+      "visualAria": "Diagrama animado: puerto OBD, cable adaptador, teléfono con análisis de IA",
+      "stepConnect": "Conectar",
+      "stepRead": "Leer datos",
+      "stepAi": "Análisis IA",
+      "stepResult": "Resultado",
+      "tooltipP0420": "IA: eficiencia del catalizador por debajo del umbral — revise primero sensores O2 y fugas de escape.",
+      "tooltipP0171": "IA: mezcla pobre banco 1 — probable fuga de vacío, MAF o presión de combustible; los trayectos cortos suelen ser posibles.",
+      "mockTitle": "Datos en vivo",
       "platformKicker": "Descargar para",
       "platformWindowsLabel": "Windows",
       "platformMacLabel": "macOS",
@@ -791,7 +791,7 @@
       "carouselNext": "Captura siguiente"
     },
     "features": {
-      "sectionTitle": "Everything you need to stay ahead of repairs",
+      "sectionTitle": "Todo lo necesario para anticiparse a las reparaciones",
       "chatLeadTitle": "Códigos de fallo y chat con IA — una sola pantalla",
       "chatLeadBody": "Ve los datos en vivo, entiende el problema y pregunta al bot sin cambiar de ventana. Todo para decidir la reparación en un solo lugar.",
       "chatVideoAria": "Grabación: diagnóstico y chat con IA en una ventana de la app",
@@ -812,7 +812,7 @@
       "f3": {
         "tag": "PRO",
         "title": "La IA encuentra entradas de blog\ncon su mismo problema",
-        "body": "¿Código DTC? AIScanAuto escanea foros, blogs de reparación y comunidades para mostrar soluciones reales de quienes pasaron por lo mismo — antes de pagar al mecánico.",
+        "body": "¿Código DTC? AIscanAuto escanea foros, blogs de reparación y comunidades para mostrar soluciones reales de quienes pasaron por lo mismo — antes de pagar al mecánico.",
         "learnMore": "Más información",
         "cardTitle": "Búsqueda en blogs",
         "cardSub": "P0420 — Eficiencia del catalizador",
@@ -833,9 +833,9 @@
       },
       "f4": {
         "tag": "PRO",
-        "title": "Live engine data, beautifully displayed",
-        "body": "Monitor 70+ real-time engine parameters. Customisable dashboard, freeze frame data, and sensor history graphs.",
-        "learnMore": "Learn more →"
+        "title": "Datos del motor en vivo, presentados con claridad",
+        "body": "Supervise más de 70 parámetros del motor en tiempo real. Panel personalizable, datos freeze frame y gráficos del historial de sensores.",
+        "learnMore": "Más información →"
       }
     },
     "contentLinks": {
@@ -844,9 +844,9 @@
       "compareApps": "Mejores apps OBD2 2026 — comparación"
     },
     "cars": {
-      "title": "Works with 10,000+ car models",
-      "subtitle": "Any petrol or diesel car manufactured after 1996 (OBD2 standard)",
-      "footnote": "+ any other OBD2-compatible vehicle (1996+)",
+      "title": "Funciona con más de 10.000 modelos de coche",
+      "subtitle": "Cualquier coche de gasolina o diésel fabricado después de 1996 (estándar OBD2)",
+      "footnote": "+ cualquier otro vehículo compatible con OBD2 (1996+)",
       "brands": {
         "toyota": "Toyota",
         "bmw": "BMW",

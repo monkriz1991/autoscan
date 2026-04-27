@@ -45,9 +45,17 @@ const nextConfig = {
       { source: "/(ru|de|pl|es|it)/account/:path*", headers: privateAuthPages },
     ];
   },
-  // OAuth: redirect_uri без префикса локали — при as-needed страница доступна как /auth/callback
+  // SEO: старый /pricing не должен конкурировать с канонической страницей /marketing/pricing.
   async redirects() {
-    return [];
+    return [
+      { source: "/pricing", destination: "/marketing/pricing", permanent: true },
+      { source: "/en/pricing", destination: "/marketing/pricing", permanent: true },
+      {
+        source: "/:locale(ru|de|pl|es|it)/pricing",
+        destination: "/:locale/marketing/pricing",
+        permanent: true,
+      },
+    ];
   },
   async rewrites() {
     return [

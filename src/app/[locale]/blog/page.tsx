@@ -1,7 +1,5 @@
-import { Badge, Card, Group, Image, SimpleGrid, Stack, Text, Title } from "@mantine/core";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { buildLocalePageMetadata } from "@/lib/seo-metadata";
 import { generateCanonicalUrl, localizedPath } from "@/lib/site-url";
@@ -72,63 +70,90 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
   });
 
   return (
-    <Stack component="section" gap="lg" className="marketing-page marketing-page--wide">
+    <section className="marketing-page marketing-page--wide">
       <div className="marketing-page__hero">
         <h1 className="marketing-page__hero-title">{t("title")}</h1>
         <p className="marketing-page__hero-sub">{tSeo("blogDescription")}</p>
       </div>
 
       {posts === null ? (
-        <Text c="red">{t("error")}</Text>
+        <p style={{ color: "#b91c1c" }}>{t("error")}</p>
       ) : posts.length === 0 ? (
-        <Text c="dimmed">{t("empty")}</Text>
+        <p style={{ color: "#64748b" }}>{t("empty")}</p>
       ) : (
-        <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))",
+            gap: "1rem",
+          }}
+        >
           {posts.map((post) => (
-            <Link
+            <a
               key={post.slug}
-              href={`/blog/${post.slug}`}
+              href={localizedPath(locale, `/blog/${post.slug}`)}
               style={{ textDecoration: "none", color: "inherit", display: "block" }}
             >
-              <Card
-                padding="lg"
-                radius="lg"
-                withBorder
+              <article
                 className="download-option-card"
+                style={{
+                  minHeight: "100%",
+                  overflow: "hidden",
+                  padding: "1.25rem",
+                  borderRadius: "1rem",
+                }}
               >
                 {post.cover_image_url ? (
-                  <Card.Section>
-                    <Image src={post.cover_image_url} alt={post.title} h={180} fit="cover" />
-                  </Card.Section>
+                  <img
+                    src={post.cover_image_url}
+                    alt={post.title}
+                    loading="lazy"
+                    style={{
+                      display: "block",
+                      width: "calc(100% + 2.5rem)",
+                      height: 180,
+                      objectFit: "cover",
+                      margin: "-1.25rem -1.25rem 1rem",
+                    }}
+                  />
                 ) : null}
 
-                <Stack gap="sm" mt={post.cover_image_url ? "md" : 0}>
-                  <Group gap="xs">
+                <div style={{ display: "grid", gap: "0.65rem" }}>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", alignItems: "center" }}>
                     {post.published_at ? (
-                      <Text size="xs" c="dimmed">
+                      <span style={{ fontSize: "0.75rem", color: "#64748b" }}>
                         {new Date(post.published_at).toLocaleDateString(locale)}
-                      </Text>
+                      </span>
                     ) : null}
                     {post.available_locales.length > 0 ? (
-                      <Badge variant="light" color="gray" size="xs">
+                      <span
+                        style={{
+                          borderRadius: 999,
+                          background: "rgba(15, 23, 42, 0.08)",
+                          color: "#475569",
+                          fontSize: "0.7rem",
+                          fontWeight: 700,
+                          padding: "0.15rem 0.45rem",
+                        }}
+                      >
                         {post.available_locales.map((l) => l.toUpperCase()).join(", ")}
-                      </Badge>
+                      </span>
                     ) : null}
-                  </Group>
-                  <Title order={2} fz="h3">
+                  </div>
+                  <h2 style={{ fontSize: "1.25rem", lineHeight: 1.25, margin: 0 }}>
                     {post.title}
-                  </Title>
+                  </h2>
                   {post.excerpt ? (
-                    <Text size="sm" c="dimmed">
+                    <p style={{ color: "#64748b", fontSize: "0.95rem", lineHeight: 1.6, margin: 0 }}>
                       {post.excerpt}
-                    </Text>
+                    </p>
                   ) : null}
-                </Stack>
-              </Card>
-            </Link>
+                </div>
+              </article>
+            </a>
           ))}
-        </SimpleGrid>
+        </div>
       )}
-    </Stack>
+    </section>
   );
 }

@@ -1,7 +1,8 @@
 import { defineRouting } from "next-intl/routing";
 
 export const routing = defineRouting({
-  locales: ["en", "de", "ru", "pl", "it", "es"],
+  /** Порядок: default (en), затем остальные — для sitemap/hreflang в едином порядке */
+  locales: ["en", "ru", "de", "pl", "es", "it"],
   /** Язык по умолчанию и фалбэк, если Accept-Language не совпал ни с одной локалью */
   defaultLocale: "en",
   /** EN без префикса в URL (/), остальные локали — /de, /ru, … */

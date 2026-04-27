@@ -1,6 +1,9 @@
 /** Имя заголовка запроса: путь без префикса локали (выставляет middleware, читает [locale]/layout). */
 export const MIDDLEWARE_PATHNAME_HEADER = "x-pathname";
 
+/** Query без UTM/ref — для canonical в layout (сохраняет page и др.). */
+export const MIDDLEWARE_CANONICAL_SEARCH_HEADER = "x-canonical-search";
+
 /** Главная [locale]/page.tsx — нормализованный путь равен "/". */
 export function isHomeNormalizedPath(pathWithoutLocale: string): boolean {
   const n = pathWithoutLocale.replace(/\/+$/, "") || "/";

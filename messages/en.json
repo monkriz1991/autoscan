@@ -58,7 +58,9 @@
     "homeTwitterTitle": "AIscanAuto — Free AI Car Diagnostics",
     "homeTwitterDescription": "AI OBD2 scanner for desktop. Free fault code reading + AI repair guidance.",
     "compareObd2Title": "Best OBD2 apps 2026 — comparison & how to choose",
-    "compareObd2Description": "OBD2 app comparison: live data, DTC depth, AI features, and fair notes on popular alternatives including Torque-style tools."
+    "compareObd2Description": "OBD2 app comparison: live data, DTC depth, AI features, and fair notes on popular alternatives including Torque-style tools.",
+    "dtcTitle": "DTC {code} — OBD2 diagnostic trouble code",
+    "dtcDescription": "OBD2 diagnostic trouble code {code}: typical causes, symptoms, and how to read and clear the code with AIscanAuto and an ELM327 scanner."
   },
   "downloadPage": {
     "title": "Download",

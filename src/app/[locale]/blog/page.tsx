@@ -1,125 +1,75 @@
+import { Container, Stack, Text, Title } from "@mantine/core";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
-import StaticJsonLd from "@/components/landing/StaticJsonLd";
-import JsonLd from "@/components/seo/JsonLd";
-import { getBlogPostsForLocale } from "@/lib/api";
-import { fetchStructuredData } from "@/lib/seo/structured-data";
-import { alternateLanguageUrls } from "@/lib/site-url";
+import { buildLocalePageMetadata } from "@/lib/seo-metadata";
+import { generateCanonicalUrl, localizedPath } from "@/lib/site-url";
 
-const PATH = "/blog";
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
 
-type Props = { params: Promise<{ locale: string }> };
+function firstPageParam(page: string | string[] | undefined): string | undefined {
+  if (typeof page === "string" && page.length > 0) return page;
+  if (Array.isArray(page) && page[0]) return page[0];
+  return undefined;
+}
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ page?: string | string[] }>;
+}): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "seo" });
+  const sp = await searchParams;
+  const page = firstPageParam(sp.page);
+  const base = await buildLocalePageMetadata(
+    locale,
+    "/blog",
+    "blogTitle",
+    "blogDescription",
+    page ? { canonicalQuery: { page } } : undefined,
+  );
+
+  if (!page) {
+    return base;
+  }
+
+  const qSuffix = `?${new URLSearchParams({ page })}`;
+  const languages: Record<string, string> = {};
+  for (const loc of routing.locales) {
+    languages[loc] = generateCanonicalUrl(`${localizedPath(loc, "/blog")}${qSuffix}`);
+  }
+  languages["x-default"] = languages[routing.defaultLocale];
+  const canonical = languages[locale];
+
   return {
-    title: t("blogTitle"),
-    description: t("blogDescription"),
-    alternates: { languages: alternateLanguageUrls(PATH) },
+    ...base,
+    alternates: {
+      ...base.alternates,
+      canonical,
+      languages,
+    },
+    openGraph: {
+      ...base.openGraph,
+      url: canonical,
+    },
   };
 }
 
-export default async function BlogIndexPage({ params }: Props) {
+export default async function BlogIndexPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  if (!routing.locales.includes(locale as (typeof routing.locales)[number])) {
-    notFound();
-  }
   setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: "blogPage" });
-  const tNav = await getTranslations({ locale, namespace: "nav" });
-  const tSeo = await getTranslations({ locale, namespace: "seo" });
-  const pageUrl = alternateLanguageUrls(PATH)[locale];
-  const blogLd = await fetchStructuredData({
-    bundles: ["blog_list", "webpage"],
-    locale,
-    pageUrl,
-    title: tSeo("blogTitle"),
-    description: tSeo("blogDescription"),
-  });
-  const breadcrumbLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: tNav("home"), item: alternateLanguageUrls("")[locale] },
-      { "@type": "ListItem", position: 2, name: t("title"), item: pageUrl },
-    ],
-  };
-
-  let posts: Awaited<ReturnType<typeof getBlogPostsForLocale>> = [];
-  let failed = false;
-  try {
-    posts = await getBlogPostsForLocale(locale);
-  } catch {
-    failed = true;
-  }
-
-  if (failed) {
-    return (
-      <>
-        <JsonLd data={blogLd} />
-        <StaticJsonLd data={breadcrumbLd} />
-        <div className="marketing-page marketing-page--wide">
-          <div className="marketing-page__hero">
-            <h1 className="marketing-page__hero-title">{t("title")}</h1>
-            <p className="marketing-page__hero-sub">{t("error")}</p>
-          </div>
-        </div>
-      </>
-    );
-  }
+  const t = await getTranslations({ locale, namespace: "seo" });
 
   return (
-    <>
-      <JsonLd data={blogLd} />
-      <StaticJsonLd data={breadcrumbLd} />
-      <div className="marketing-page marketing-page--wide">
-        <div className="marketing-page__hero">
-          <h1 className="marketing-page__hero-title">{t("title")}</h1>
-          <p className="marketing-page__hero-sub">{t("subtitle")}</p>
-        </div>
-
-        {posts.length === 0 ? (
-          <p className="marketing-page__hero-sub" style={{ textAlign: "center" }}>
-            {t("empty")}
-          </p>
-        ) : (
-          <div className="blog-card-grid">
-            {posts.map((post) => (
-              <Link key={post.slug} href={`/blog/${post.slug}`} className="blog-card">
-                <div className="blog-card__media">
-                  {post.cover_image_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element -- внешний URL с API
-                    <img src={post.cover_image_url} alt={post.title} width={640} height={360} />
-                  ) : (
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        minHeight: 160,
-                        background:
-                          "linear-gradient(135deg, rgba(59,130,246,0.25), rgba(147,51,234,0.2))",
-                      }}
-                    />
-                  )}
-                </div>
-                <div className="blog-card__body">
-                  <time className="blog-card__date" dateTime={post.published_at}>
-                    {post.published_at
-                      ? new Date(post.published_at).toLocaleDateString(locale)
-                      : ""}
-                  </time>
-                  <h2 className="blog-card__title">{post.title}</h2>
-                  {post.excerpt ? <p className="blog-card__excerpt">{post.excerpt}</p> : null}
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
-      </div>
-    </>
+    <Container size="md" py="xl">
+      <Stack gap="md">
+        <Title order={1}>{t("blogTitle")}</Title>
+        <Text c="dimmed">{t("blogDescription")}</Text>
+      </Stack>
+    </Container>
   );
 }

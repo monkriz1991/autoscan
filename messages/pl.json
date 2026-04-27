@@ -58,7 +58,9 @@
     "homeTwitterTitle": "Diagnostyka AI i OBD2 — AIscanAuto",
     "homeTwitterDescription": "Telefon lub PC jako skaner OBD2 z AI: kody, dane na żywo i kroki naprawy.",
     "compareObd2Title": "Najlepsze aplikacje OBD2 2026 — porównanie i wybór",
-    "compareObd2Description": "Porównanie aplikacji OBD2: live data, głębokość DTC, AI i uwagi o alternatywach w stylu Torque Pro."
+    "compareObd2Description": "Porównanie aplikacji OBD2: live data, głębokość DTC, AI i uwagi o alternatywach w stylu Torque Pro.",
+    "dtcTitle": "Kod błędu OBD2 {code}",
+    "dtcDescription": "Kod usterki {code}: znaczenie, typowe przyczyny i odczyt skanerem OBD2 / ELM327 w AIscanAuto."
   },
   "downloadPage": {
     "title": "Pobierz",

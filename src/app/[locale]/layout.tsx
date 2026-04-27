@@ -4,8 +4,10 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { MIDDLEWARE_PATHNAME_HEADER, getLayoutChromeKind } from "@/lib/middleware-pathname";
+import { getCanonicalUrlFromRequestHeaders } from "@/lib/request-canonical";
 import { notFound } from "next/navigation";
-import { getMetadataBase, localeToOpenGraphLocale } from "@/lib/site-url";
+import { staticOpenGraphImageAbsoluteUrl } from "@/lib/og-metadata";
+import { alternateLanguageUrls, getMetadataBase, localeToOpenGraphLocale } from "@/lib/site-url";
 import { MantineProvider, createTheme } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import JsonLd from "@/components/seo/JsonLd";
@@ -33,6 +35,15 @@ export async function generateMetadata({
   const alternateLocales = routing.locales
     .filter((l) => l !== locale)
     .map((l) => localeToOpenGraphLocale(l));
+  const ogImageUrl = staticOpenGraphImageAbsoluteUrl(locale);
+
+  const pathHeader = (await headers()).get(MIDDLEWARE_PATHNAME_HEADER) || "/";
+  const pathForAlternates = pathHeader === "/" || pathHeader === "" ? "" : pathHeader;
+  const canonicalUrl = await getCanonicalUrlFromRequestHeaders(locale);
+  /** hreflang: см. `getAlternateLanguages` в `@/lib/site-url` (здесь — запись для Metadata `alternates.languages`). */
+  const languages = alternateLanguageUrls(pathForAlternates);
+  const ogUrl = canonicalUrl;
+
   return {
     metadataBase: getMetadataBase(),
     title: {
@@ -40,24 +51,25 @@ export async function generateMetadata({
       template: `%s | ${t("siteName")}`,
     },
     description: t("defaultDescription"),
+    alternates: {
+      canonical: canonicalUrl,
+      languages,
+    },
     openGraph: {
       type: "website",
-      siteName: t("siteName"),
+      siteName: "AIscanAuto",
+      title: t("siteTitle"),
+      description: t("defaultDescription"),
       locale: localeToOpenGraphLocale(locale),
       alternateLocale: alternateLocales,
-      url: getMetadataBase().toString(),
-      images: [
-        {
-          url: "/og-image.png",
-          width: 1200,
-          height: 630,
-          alt: t("siteName"),
-        },
-      ],
+      url: ogUrl,
+      images: [{ url: ogImageUrl, width: 1200, height: 630, alt: t("siteName") }],
     },
     twitter: {
       card: "summary_large_image",
-      images: ["/og-image.png"],
+      title: t("siteTitle"),
+      description: t("defaultDescription"),
+      images: [ogImageUrl],
     },
   };
 }

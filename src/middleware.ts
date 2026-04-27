@@ -1,8 +1,8 @@
 import createMiddleware from "next-intl/middleware";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { MIDDLEWARE_PATHNAME_HEADER } from "@/lib/middleware-pathname";
-import { localizedPath } from "@/lib/site-url";
+import { MIDDLEWARE_CANONICAL_SEARCH_HEADER, MIDDLEWARE_PATHNAME_HEADER } from "@/lib/middleware-pathname";
+import { localizedPath, stripTrackingSearchParams } from "@/lib/site-url";
 import { routing } from "./i18n/routing";
 
 const DEFAULT_AFTER_AUTH = "/cabinet/dashboard";
@@ -14,12 +14,50 @@ const localePathRe = new RegExp(`^\\/(${routing.locales.join("|")})(\\/|$)`);
 export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const localeMatch = pathname.match(localePathRe);
+  /** Путь без префикса локали: "" = главная этой локали (не смешивать с "/"). */
   const pathWithoutLocale = localeMatch
-    ? pathname.slice(localeMatch[1].length + 1) || "/"
-    : pathname;
-  const normalizedPathForHeader = pathWithoutLocale.replace(/\/+$/, "") || "/";
+    ? (() => {
+        const rest = pathname.slice(localeMatch[0].length);
+        if (rest === "" || rest === "/") return "";
+        return rest.startsWith("/") ? rest : `/${rest}`;
+      })()
+    : pathname === "/" || pathname === ""
+      ? ""
+      : pathname;
+  const normalizedPathForHeader =
+    pathWithoutLocale === "" ? "/" : pathWithoutLocale.replace(/\/+$/, "") || "/";
 
-  // Сначала next-intl: префикс в URL, cookie NEXT_LOCALE, Accept-Language, иначе defaultLocale (en)
+  /**
+   * Явный префикс defaultLocale в URL (напр. /en) дублирует as-needed каноник (/).
+   * 301 на путь без префикса /en — одна версия для индекса (англ. = без префикса).
+   * SEO: одна каноническая английская версия + hreflang `en` и `x-default` на тот же URL.
+   */
+  if (
+    localeMatch?.[1] === routing.defaultLocale &&
+    (pathname === `/${routing.defaultLocale}` || pathname.startsWith(`/${routing.defaultLocale}/`))
+  ) {
+    const prefix = `/${routing.defaultLocale}`;
+    const rest = pathname === prefix ? "/" : pathname.slice(prefix.length) || "/";
+    const destUrl = new URL(rest.startsWith("/") ? rest : `/${rest}`, request.url);
+    destUrl.search = stripTrackingSearchParams(request.nextUrl.searchParams).toString();
+    return NextResponse.redirect(destUrl, 301);
+  }
+
+  // OBD2 DTC: канонический регистр кода (301: /dtc/p0420 → /dtc/P0420)
+  const dtcMatch = pathWithoutLocale.match(/^\/dtc\/([PpBbCcUu][0-9A-Fa-f]{4})\/?$/);
+  if (dtcMatch) {
+    const codeRaw = dtcMatch[1];
+    const codeUpper = codeRaw.toUpperCase();
+    if (codeRaw !== codeUpper) {
+      const locale = localeMatch?.[1] || routing.defaultLocale;
+      return NextResponse.redirect(
+        new URL(localizedPath(locale, `/dtc/${codeUpper}`), request.url),
+        301,
+      );
+    }
+  }
+
+  // Сначала next-intl: префикс в URL, cookie NEXT_LOCALE, заголовок Accept-Language, иначе defaultLocale (en)
   const intlResponse = intlMiddleware(request);
   if (intlResponse.status >= 300 && intlResponse.status < 400) {
     return intlResponse;
@@ -55,6 +93,10 @@ export default function middleware(request: NextRequest) {
 
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set(MIDDLEWARE_PATHNAME_HEADER, normalizedPathForHeader);
+  requestHeaders.set(
+    MIDDLEWARE_CANONICAL_SEARCH_HEADER,
+    stripTrackingSearchParams(request.nextUrl.searchParams).toString(),
+  );
 
   const out = NextResponse.next({
     request: {
@@ -84,7 +126,7 @@ export default function middleware(request: NextRequest) {
 // Список локалей должен совпадать с routing.locales (Next.js требует статический matcher)
 export const config = {
   matcher: [
-    "/(en|de|ru|pl|it|es)/:path*",
+    "/(en|ru|de|pl|es|it)/:path*",
     "/((?!api|_next|_vercel|.*\\..*).*)",
   ],
 };

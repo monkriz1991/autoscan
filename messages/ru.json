@@ -58,7 +58,9 @@
     "homeTwitterTitle": "ИИ-диагностика авто и OBD2 — AIscanAuto",
     "homeTwitterDescription": "Телефон или ПК как ИИ OBD2-сканер: коды Check Engine, live data и пошаговые подсказки.",
     "compareObd2Title": "Лучшие OBD2-приложения 2026 — сравнение и выбор",
-    "compareObd2Description": "Сравнение OBD2-приложений: live data, глубина DTC, ИИ и заметки об альтернативах в духе Torque Pro."
+    "compareObd2Description": "Сравнение OBD2-приложений: live data, глубина DTC, ИИ и заметки об альтернативах в духе Torque Pro.",
+    "dtcTitle": "Код ошибки OBD2 {code}",
+    "dtcDescription": "Диагностический код неисправности {code}: значение, типичные причины и как считать код сканером ELM327 в AIscanAuto."
   },
   "downloadPage": {
     "title": "Скачать",

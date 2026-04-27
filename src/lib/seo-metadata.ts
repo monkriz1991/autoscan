@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { alternateLanguageUrls, localeToOpenGraphLocale } from "@/lib/site-url";
+import { buildOpenGraphTwitterBlock, staticOpenGraphImageAbsoluteUrl } from "@/lib/og-metadata";
+import {
+  alternateLanguageUrls,
+  generateCanonicalUrl,
+  localizedPath,
+} from "@/lib/site-url";
 
 /**
  * Локализованные title/description + canonical/hreflang для публичных страниц.
@@ -35,32 +40,40 @@ export async function buildLocalePageMetadata(
     | "disclaimerDescription"
     | "checkoutDescription"
     | "downloadDescription",
-  options?: { noindex?: boolean },
+  options?: { noindex?: boolean; canonicalQuery?: Record<string, string | undefined> },
 ): Promise<Metadata> {
   const t = await getTranslations({ locale, namespace: "seo" });
   const title = t(titleKey);
   const description = t(descriptionKey);
   const languages = alternateLanguageUrls(pathWithoutLocale);
-  const url = languages[locale];
+  let canonical = languages[locale];
+  if (options?.canonicalQuery) {
+    const qs = new URLSearchParams();
+    for (const [k, v] of Object.entries(options.canonicalQuery)) {
+      if (v) qs.set(k, v);
+    }
+    const q = qs.toString();
+    if (q) {
+      canonical = generateCanonicalUrl(`${localizedPath(locale, pathWithoutLocale)}?${q}`);
+    }
+  }
+
+  const ogTw = buildOpenGraphTwitterBlock({
+    locale,
+    title,
+    description,
+    url: canonical,
+    imageUrl: staticOpenGraphImageAbsoluteUrl(locale),
+  });
+
   return {
     title,
     description,
     alternates: {
-      canonical: url,
+      canonical,
       languages,
     },
-    openGraph: {
-      title,
-      description,
-      url,
-      locale: localeToOpenGraphLocale(locale),
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-    },
+    ...ogTw,
     ...(options?.noindex
       ? { robots: { index: false, follow: false, googleBot: { index: false, follow: false } } }
       : {}),

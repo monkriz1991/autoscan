@@ -58,7 +58,9 @@
     "homeTwitterTitle": "KI Auto-Diagnose & OBD2 — AIscanAuto",
     "homeTwitterDescription": "Smartphone oder PC als KI-OBD2-Scanner: Codes, Live-Daten und Schritt-für-Schritt-Hilfe.",
     "compareObd2Title": "Beste OBD2-Apps 2026 — Vergleich & Auswahl",
-    "compareObd2Description": "OBD2-App-Vergleich: Live-Daten, DTC-Tiefe, KI-Features und Hinweise zu Alternativen im Torque-Pro-Stil."
+    "compareObd2Description": "OBD2-App-Vergleich: Live-Daten, DTC-Tiefe, KI-Features und Hinweise zu Alternativen im Torque-Pro-Stil.",
+    "dtcTitle": "OBD2-Fehlercode {code}",
+    "dtcDescription": "Diagnosefehlercode {code}: Bedeutung, typische Ursachen und Auslesen mit ELM327 und AIscanAuto."
   },
   "downloadPage": {
     "title": "Download",

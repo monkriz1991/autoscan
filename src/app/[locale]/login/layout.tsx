@@ -7,9 +7,9 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  return buildLocalePageMetadata(locale, "/login", "loginTitle", "loginDescription");
+  return buildLocalePageMetadata(locale, "/login", "loginTitle", "loginDescription", { noindex: true });
 }
 
-export default function LoginLayout({ children }: { children: React.ReactNode }) {
+export default function LoginSegmentLayout({ children }: { children: React.ReactNode }) {
   return children;
 }

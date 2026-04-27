@@ -1,36 +1,26 @@
 import type { MetadataRoute } from "next";
-import { getSiteOrigin, localizedPath } from "@/lib/site-url";
-import { routing } from "@/i18n/routing";
+import { getSiteOrigin } from "@/lib/site-url";
+import { allLocalizedSitemapPaths } from "@/lib/sitemap-static-paths";
 
-const STATIC_PATHS = [
-  "",
-  "/faq",
-  "/download",
-  "/marketing/pricing",
-  "/marketing/compare-obd2-apps",
-  "/marketing/contacts",
-  "/marketing/privacy",
-  "/marketing/terms",
-  "/marketing/disclaimer",
-  "/business",
-];
+function priorityForPath(path: string): number {
+  if (path === "/" || path.match(/^\/(ru|de|pl|es|it)\/?$/)) return path === "/" ? 1 : 0.95;
+  if (path.includes("/marketing/pricing")) return 0.9;
+  if (path.includes("/dtc/")) return 0.7;
+  return 0.8;
+}
 
-export default function sitemap(): Promise<MetadataRoute.Sitemap> {
+export default function sitemap(): MetadataRoute.Sitemap {
   const origin = getSiteOrigin();
-  const lastModified = process.env.NEXT_PUBLIC_LAST_MODIFIED_DATE
-    ? new Date(process.env.NEXT_PUBLIC_LAST_MODIFIED_DATE)
-    : new Date();
+  const now = new Date();
+  const paths = allLocalizedSitemapPaths();
 
-  const entries: MetadataRoute.Sitemap = [];
-  for (const path of STATIC_PATHS) {
-    for (const locale of routing.locales) {
-      const pathname = localizedPath(locale, path);
-      entries.push({
-        url: `${origin}${pathname}`,
-        lastModified,
-      });
-    }
-  }
-
-  return Promise.resolve(entries);
+  return paths.map((path) => {
+    const url = path === "/" ? `${origin}/` : `${origin}${path}`;
+    return {
+      url,
+      lastModified: now,
+      changeFrequency: path.includes("/dtc/") ? ("monthly" as const) : ("weekly" as const),
+      priority: priorityForPath(path),
+    };
+  });
 }

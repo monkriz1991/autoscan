@@ -6,7 +6,8 @@ import StaticJsonLd from "@/components/landing/StaticJsonLd";
 import JsonLd from "@/components/seo/JsonLd";
 import { getBlogPostForLocale } from "@/lib/api";
 import { fetchStructuredData } from "@/lib/seo/structured-data";
-import { alternateLanguageUrls, localeToOpenGraphLocale } from "@/lib/site-url";
+import { buildOpenGraphTwitterBlock, blogPostOpenGraphImageAbsoluteUrl } from "@/lib/og-metadata";
+import { alternateLanguageUrls } from "@/lib/site-url";
 import BlogPostContent from "./BlogPostContent";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
@@ -25,22 +26,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const languages = alternateLanguageUrls(`/blog/${slug}`);
   const url = languages[locale];
   const description = post.excerpt?.trim() || t("blogDescription");
+  const ogTw = buildOpenGraphTwitterBlock({
+    locale,
+    title: post.title,
+    description,
+    url,
+    imageUrl: blogPostOpenGraphImageAbsoluteUrl(locale, slug),
+    type: "article",
+  });
   return {
     title: post.title,
     description,
     alternates: { canonical: url, languages },
-    openGraph: {
-      title: post.title,
-      description,
-      url,
-      type: "article",
-      locale: localeToOpenGraphLocale(locale),
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: post.title,
-      description,
-    },
+    ...ogTw,
   };
 }
 

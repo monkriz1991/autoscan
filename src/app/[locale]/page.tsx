@@ -3,9 +3,11 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import JsonLd from "@/components/seo/JsonLd";
 import StaticJsonLd from "@/components/landing/StaticJsonLd";
+import { buildOpenGraphTwitterBlock, staticOpenGraphImageAbsoluteUrl } from "@/lib/og-metadata";
+import { getCanonicalUrlFromRequestHeaders } from "@/lib/request-canonical";
 import { buildLocalePageMetadata } from "@/lib/seo-metadata";
 import { fetchStructuredData } from "@/lib/seo/structured-data";
-import { alternateLanguageUrls, getSiteOrigin } from "@/lib/site-url";
+import { alternateLanguageUrls } from "@/lib/site-url";
 import HomePageClient from "./HomePageClient";
 
 export function generateStaticParams() {
@@ -20,13 +22,20 @@ export async function generateMetadata({
   const { locale } = await params;
   const base = await buildLocalePageMetadata(locale, "", "homeTitle", "homeDescription");
   const t = await getTranslations({ locale, namespace: "seo" });
-  const origin = getSiteOrigin();
-  const canonicalUrl = alternateLanguageUrls("")[locale];
-  const pageUrl = canonicalUrl.replace(/\/$/, "");
+  const canonicalUrl = await getCanonicalUrlFromRequestHeaders(locale);
   const keywords = t("homeKeywords")
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean);
+
+  const ogTw = buildOpenGraphTwitterBlock({
+    locale,
+    title: t("homeOgTitle"),
+    description: t("homeOgDescription"),
+    url: canonicalUrl,
+    imageUrl: staticOpenGraphImageAbsoluteUrl(locale),
+  });
+
   return {
     ...base,
     title: { absolute: t("homeTitle") },
@@ -35,19 +44,11 @@ export async function generateMetadata({
       canonical: canonicalUrl,
     },
     keywords,
-    openGraph: {
-      ...base.openGraph,
-      title: t("homeOgTitle"),
-      description: t("homeOgDescription"),
-      url: pageUrl,
-      images: [{ url: `${origin}/og-image.png`, width: 1200, height: 630, alt: "AIscanAuto" }],
-    },
+    ...ogTw,
     twitter: {
-      ...base.twitter,
-      card: "summary_large_image",
+      ...ogTw.twitter,
       title: t("homeTwitterTitle"),
       description: t("homeTwitterDescription"),
-      images: [`${origin}/og-image.png`],
     },
   };
 }

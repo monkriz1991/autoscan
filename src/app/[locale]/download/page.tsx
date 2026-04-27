@@ -1,48 +1,45 @@
+import { Anchor, Container, Stack, Text, Title } from "@mantine/core";
 import type { Metadata } from "next";
-import { headers } from "next/headers";
-import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
-import { getDownloadsPageForLocale } from "@/lib/api";
-import { detectClientOsFromUserAgent } from "@/lib/detectClientOs";
-import { alternateLanguageUrls } from "@/lib/site-url";
-import DownloadPageClient from "./DownloadPageClient";
+import { buildLocalePageMetadata } from "@/lib/seo-metadata";
+import { localizedPath } from "@/lib/site-url";
 
-const PATH = "/download";
-
-type Props = { params: Promise<{ locale: string }> };
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "seo" });
-  return {
-    title: t("downloadTitle"),
-    description: t("downloadDescription"),
-    alternates: { languages: alternateLanguageUrls(PATH) },
-  };
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
 }
 
-export default async function DownloadPage({ params }: Props) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
   const { locale } = await params;
-  if (!routing.locales.includes(locale as (typeof routing.locales)[number])) {
-    notFound();
-  }
+  return buildLocalePageMetadata(locale, "/download", "downloadTitle", "downloadDescription");
+}
+
+export default async function DownloadPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   setRequestLocale(locale);
+  const tSeo = await getTranslations({ locale, namespace: "seo" });
+  const tDown = await getTranslations({ locale, namespace: "downloadPage" });
 
-  const h = await headers();
-  const ua = h.get("user-agent");
-  const cookie = h.get("cookie");
-  const detected = detectClientOsFromUserAgent(ua);
-
-  let initialData = null;
-  let loadFailed = false;
-  try {
-    initialData = await getDownloadsPageForLocale(detected, locale, {
-      cookieHeader: cookie,
-    });
-  } catch {
-    loadFailed = true;
-  }
-
-  return <DownloadPageClient initialData={initialData} loadFailed={loadFailed} />;
+  return (
+    <Container size="md" py="xl">
+      <Stack gap="md">
+        <Title order={1}>{tDown("title")}</Title>
+        <Text c="dimmed">{tDown("subtitle")}</Text>
+        <Text size="sm">{tSeo("downloadDescription")}</Text>
+        <Text size="sm">
+          {/*
+           * Не передавать `component={Link}` из RSC в Mantine Anchor (клиентский компонент) —
+           * только plain props. Локализованный URL тот же, что у next-intl Link.
+           */}
+          <Anchor href={localizedPath(locale, "/marketing/pricing")} size="sm">
+            {tDown("ctaUpgrade")}
+          </Anchor>
+        </Text>
+      </Stack>
+    </Container>
+  );
 }

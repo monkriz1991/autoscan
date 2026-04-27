@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Title, Text, Badge, Group, Button, Image, Box } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
@@ -8,8 +8,14 @@ import type { BlogPostDetail } from "@/lib/api";
 
 type Props = { post: BlogPostDetail };
 
+/** Текст даты для <time> — с явной локалью next-intl, иначе SSR/браузер дадут разный toLocaleDateString() и сорвут гидратацию. */
+function formatPostDate(iso: string, locale: string): string {
+  return new Intl.DateTimeFormat(locale, { year: "numeric", month: "short", day: "numeric" }).format(new Date(iso));
+}
+
 export default function BlogPostContent({ post }: Props) {
   const t = useTranslations("blogPage");
+  const locale = useLocale();
 
   return (
     <article className="blog-post-page marketing-page">
@@ -40,7 +46,7 @@ export default function BlogPostContent({ post }: Props) {
 
       <div className="blog-post-page__meta">
         <time dateTime={post.published_at}>
-          {post.published_at ? new Date(post.published_at).toLocaleDateString() : ""}
+          {post.published_at ? formatPostDate(post.published_at, locale) : ""}
         </time>
         {post.available_locales.length > 0 && (
           <Badge color="gray" variant="light" size="xs">

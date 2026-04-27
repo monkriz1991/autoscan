@@ -85,45 +85,47 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
       ) : (
         <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
           {posts.map((post) => (
-            <Card
+            <Link
               key={post.slug}
-              component={Link}
               href={`/blog/${post.slug}`}
-              padding="lg"
-              radius="lg"
-              withBorder
-              className="download-option-card"
-              style={{ textDecoration: "none" }}
+              style={{ textDecoration: "none", color: "inherit", display: "block" }}
             >
-              {post.cover_image_url ? (
-                <Card.Section>
-                  <Image src={post.cover_image_url} alt={post.title} h={180} fit="cover" />
-                </Card.Section>
-              ) : null}
+              <Card
+                padding="lg"
+                radius="lg"
+                withBorder
+                className="download-option-card"
+              >
+                {post.cover_image_url ? (
+                  <Card.Section>
+                    <Image src={post.cover_image_url} alt={post.title} h={180} fit="cover" />
+                  </Card.Section>
+                ) : null}
 
-              <Stack gap="sm" mt={post.cover_image_url ? "md" : 0}>
-                <Group gap="xs">
-                  {post.published_at ? (
-                    <Text size="xs" c="dimmed">
-                      {new Date(post.published_at).toLocaleDateString(locale)}
+                <Stack gap="sm" mt={post.cover_image_url ? "md" : 0}>
+                  <Group gap="xs">
+                    {post.published_at ? (
+                      <Text size="xs" c="dimmed">
+                        {new Date(post.published_at).toLocaleDateString(locale)}
+                      </Text>
+                    ) : null}
+                    {post.available_locales.length > 0 ? (
+                      <Badge variant="light" color="gray" size="xs">
+                        {post.available_locales.map((l) => l.toUpperCase()).join(", ")}
+                      </Badge>
+                    ) : null}
+                  </Group>
+                  <Title order={2} fz="h3">
+                    {post.title}
+                  </Title>
+                  {post.excerpt ? (
+                    <Text size="sm" c="dimmed">
+                      {post.excerpt}
                     </Text>
                   ) : null}
-                  {post.available_locales.length > 0 ? (
-                    <Badge variant="light" color="gray" size="xs">
-                      {post.available_locales.map((l) => l.toUpperCase()).join(", ")}
-                    </Badge>
-                  ) : null}
-                </Group>
-                <Title order={2} fz="h3">
-                  {post.title}
-                </Title>
-                {post.excerpt ? (
-                  <Text size="sm" c="dimmed">
-                    {post.excerpt}
-                  </Text>
-                ) : null}
-              </Stack>
-            </Card>
+                </Stack>
+              </Card>
+            </Link>
           ))}
         </SimpleGrid>
       )}

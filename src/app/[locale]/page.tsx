@@ -12,7 +12,7 @@ import {
 } from "@/lib/seo/structured-data";
 import { buildStaticHomeStructuredData } from "@/lib/seo/static-structured-data";
 import { alternateLanguageUrls, getSiteOrigin } from "@/lib/site-url";
-import HomePageClient from "./HomePageClient";
+import HomePageShell from "@/components/landing/HomePageShell";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -145,7 +145,7 @@ export default async function HomePage({
       <StaticJsonLd data={softwareApplicationLd} />
       <StaticJsonLd data={howToLd} />
       <StaticJsonLd data={breadcrumbLd} />
-      <HomePageClient />
+      <HomePageShell locale={locale} />
     </>
   );
 }

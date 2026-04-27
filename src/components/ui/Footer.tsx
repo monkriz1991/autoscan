@@ -45,7 +45,7 @@ export default function Footer() {
               <Link href="/download" className="footer__col-link">
                 {tNav("download")}
               </Link>
-              <Link href="/marketing/pricing" className="footer__col-link">
+              <Link href="/pricing" className="footer__col-link">
                 {tNav("pricing")}
               </Link>
               <Link href="/faq" className="footer__col-link">

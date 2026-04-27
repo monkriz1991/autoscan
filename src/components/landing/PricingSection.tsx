@@ -7,7 +7,7 @@ import { getPlans, type Plan } from "@/lib/api";
 import { PricingPlansGrid } from "@/components/marketing/PricingPlanCards";
 
 /**
- * Тарифы с главной: тот же источник и полный набор, что и на /marketing/pricing
+ * Тарифы с главной: тот же источник и полный набор, что и на /pricing
  * (GET /billing/plans/, без фильтрации по периоду — как PricingPageContent).
  */
 export default function PricingSection() {

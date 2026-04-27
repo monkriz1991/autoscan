@@ -144,7 +144,7 @@ export default function CabinetBillingPage() {
             {data.actions.show_upgrade && (
               <Button
                 component={Link}
-                href="/marketing/pricing"
+                href="/pricing"
                 variant="light"
                 size="sm"
                 className="btn-metallic btn-metallic-outline"
@@ -156,7 +156,7 @@ export default function CabinetBillingPage() {
             {data.actions.show_renew && (
               <Button
                 component={Link}
-                href="/marketing/pricing"
+                href="/pricing"
                 variant="filled"
                 size="sm"
               >
@@ -304,7 +304,7 @@ export default function CabinetBillingPage() {
             <Text size="sm">{t("odPaidOnlyHint")}</Text>
             <Button
               component={Link}
-              href={data.actions.pricing_path || "/marketing/pricing"}
+              href={data.actions.pricing_path || "/pricing"}
               variant="light"
               size="sm"
               className="btn-metallic btn-metallic-outline"

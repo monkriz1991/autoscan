@@ -174,7 +174,7 @@ export function getAlternateLanguages(currentPath: string): AlternateLanguageLin
 
 /**
  * Путь без префикса локали, с ведущим слэшем или пустая строка для главной.
- * Пример: "", "/marketing/pricing", "/faq", "/blog/post-slug"
+ * Пример: "", "/pricing", "/faq", "/blog/post-slug"
  * Включает ключ x-default (URL defaultLocale) для hreflang.
  */
 export function alternateLanguageUrls(pathWithoutLocale: string): Record<string, string> {

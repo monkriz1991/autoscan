@@ -9,7 +9,7 @@ import {
 
 /**
  * Локализованные title/description + canonical/hreflang для публичных страниц.
- * pathWithoutLocale: "" для главной, иначе "/marketing/pricing", "/faq" и т.д.
+ * pathWithoutLocale: "" для главной, иначе "/pricing", "/faq" и т.д.
  */
 export async function buildLocalePageMetadata(
   locale: string,

@@ -120,7 +120,7 @@ function FeatureBlock({
         <Text className="landing-feature__body" size="md" style={{ lineHeight: 1.65, color: "var(--text-muted)" }}>
           {t("body")}
         </Text>
-        <Link href="/marketing/pricing" className="landing-learn-more">
+        <Link href="/pricing" className="landing-learn-more">
           {t("learnMore")}
         </Link>
       </Stack>

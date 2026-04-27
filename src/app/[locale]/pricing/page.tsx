@@ -1,14 +1,43 @@
-import { permanentRedirect } from "next/navigation";
+import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import JsonLd from "@/components/seo/JsonLd";
+import { fetchStructuredData } from "@/lib/seo/structured-data";
+import { buildLocalePageMetadata } from "@/lib/seo-metadata";
+import { alternateLanguageUrls } from "@/lib/site-url";
 import { routing } from "@/i18n/routing";
+import PricingPageClient from "./PricingPageClient";
 
-export default async function PricingRedirectPage({
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return buildLocalePageMetadata(locale, "/pricing", "pricingTitle", "pricingDescription");
+}
+
+export default async function PricingPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const prefix = locale === routing.defaultLocale ? "" : `/${locale}`;
-  permanentRedirect(`${prefix}/marketing/pricing`);
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: "seo" });
+  const pageUrl = alternateLanguageUrls("/pricing")[locale];
+  const pricingLd = await fetchStructuredData({
+    bundles: ["pricing"],
+    locale,
+    pageUrl,
+    title: t("pricingTitle"),
+    description: t("pricingDescription"),
+  });
+  return (
+    <>
+      <JsonLd data={pricingLd} />
+      <PricingPageClient />
+    </>
+  );
 }
 
 export function generateStaticParams() {

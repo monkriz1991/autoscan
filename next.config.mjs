@@ -45,14 +45,14 @@ const nextConfig = {
       { source: "/(ru|de|pl|es|it)/account/:path*", headers: privateAuthPages },
     ];
   },
-  // SEO: старый /pricing не должен конкурировать с канонической страницей /marketing/pricing.
+  // SEO: канонический URL — /pricing; легаси /marketing/pricing редиректится в приложении и здесь для запросов без локали-префикса и т.д.
   async redirects() {
     return [
-      { source: "/pricing", destination: "/marketing/pricing", permanent: true },
-      { source: "/en/pricing", destination: "/marketing/pricing", permanent: true },
+      { source: "/marketing/pricing", destination: "/pricing", permanent: true },
+      { source: "/en/marketing/pricing", destination: "/pricing", permanent: true },
       {
-        source: "/:locale(ru|de|pl|es|it)/pricing",
-        destination: "/:locale/marketing/pricing",
+        source: "/:locale(ru|de|pl|es|it)/marketing/pricing",
+        destination: "/:locale/pricing",
         permanent: true,
       },
     ];

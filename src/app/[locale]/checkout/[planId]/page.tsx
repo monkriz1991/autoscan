@@ -156,7 +156,7 @@ export default function CheckoutPlanPage() {
             <Button variant="light" onClick={() => void loadPlan()}>
               {t("retry")}
             </Button>
-            <Button component={Link} href="/marketing/pricing" variant="default">
+            <Button component={Link} href="/pricing" variant="default">
               {t("back")}
             </Button>
           </Group>
@@ -171,7 +171,7 @@ export default function CheckoutPlanPage() {
         <Stack gap="md">
           <Title order={2}>{t("title")}</Title>
           <Alert color="red">{t("notFound")}</Alert>
-          <Button component={Link} href="/marketing/pricing" variant="light">
+          <Button component={Link} href="/pricing" variant="light">
             {t("back")}
           </Button>
         </Stack>
@@ -260,7 +260,7 @@ export default function CheckoutPlanPage() {
         {isFreeTier ? (
           <Stack gap="md">
             <Alert color="blue">{t("freeNoPayment")}</Alert>
-            <Button component={Link} href="/marketing/pricing" variant="light">
+            <Button component={Link} href="/pricing" variant="light">
               {t("back")}
             </Button>
           </Stack>
@@ -294,7 +294,7 @@ export default function CheckoutPlanPage() {
             <Group>
               <Button
                 component={Link}
-                href="/marketing/pricing"
+                href="/pricing"
                 variant="default"
               >
                 {t("back")}

@@ -371,7 +371,7 @@ export default function BlogFinderPanel({ namespace }: Props) {
             {t("body")}
           </p>
           <Link
-            href="/marketing/pricing"
+            href="/pricing"
             className={`landing-blog-finder__learn-more ${anim.learnMore ? "landing-blog-finder__learn-more--visible" : ""}`}
           >
             {t("learnMore")}{" "}

@@ -102,7 +102,7 @@ export default function DownloadHero({ clientOs, versionLabel, asset }: Props) {
               <Button size="lg" component={Link} href={loginHref} variant="default">
                 {t("ctaLogin")}
               </Button>
-              <Button size="lg" component={Link} href="/marketing/pricing" variant="filled">
+              <Button size="lg" component={Link} href="/pricing" variant="filled">
                 {t("ctaUpgrade")}
               </Button>
             </Group>

@@ -7,7 +7,7 @@ import { localizedPath } from "@/lib/site-url";
  */
 export const SITEMAP_PATHS_WITHOUT_LOCALE = [
   "",
-  "/marketing/pricing",
+  "/pricing",
   "/marketing/terms",
   "/marketing/privacy",
   "/marketing/contacts",

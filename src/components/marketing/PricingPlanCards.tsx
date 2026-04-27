@@ -213,7 +213,7 @@ export function PlanCard({ plan, compact }: PlanCardProps) {
 
 export type PricingPlansGridProps = { plans: Plan[] };
 
-/** Сетка карточек тарифов (как верх страницы /marketing/pricing). */
+/** Сетка карточек тарифов (как верх страницы /pricing). */
 export function PricingPlansGrid({ plans }: PricingPlansGridProps) {
   const sorted = sortPlansForDisplay(plans);
   const n = sorted.length;

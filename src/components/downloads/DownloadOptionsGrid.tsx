@@ -97,7 +97,7 @@ export default function DownloadOptionsGrid({ assets }: Props) {
                     </Button>
                   )}
                   {cta === "paid_required" && (
-                    <Button size="xs" component={Link} href="/marketing/pricing" variant="default">
+                    <Button size="xs" component={Link} href="/pricing" variant="default">
                       {t("ctaPaidRequired")}
                     </Button>
                   )}

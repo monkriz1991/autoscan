@@ -19,7 +19,7 @@ import LanguageSwitcher from "./LanguageSwitcher";
 
 const NAV_HREFS = [
   { href: "/", key: "home" as const },
-  { href: "/marketing/pricing", key: "pricing" as const },
+  { href: "/pricing", key: "pricing" as const },
   { href: "/faq", key: "faq" as const },
   { href: "/download", key: "download" as const },
   { href: "/blog", key: "blog" as const },

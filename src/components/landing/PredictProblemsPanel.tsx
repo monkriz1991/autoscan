@@ -156,7 +156,7 @@ export default function PredictProblemsPanel({ namespace }: Props) {
             {t("body")}
           </p>
           <Link
-            href="/marketing/pricing"
+            href="/pricing"
             className={`landing-predict-feature__learn-more ${anim.learnMore ? "landing-predict-feature__learn-more--visible" : ""}`}
           >
             {t("learnMore")}

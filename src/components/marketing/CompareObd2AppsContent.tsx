@@ -51,7 +51,7 @@ export default function CompareObd2AppsContent({ t }: { t: CompareT }) {
       <Text style={{ lineHeight: 1.7, color: "var(--text-muted)" }}>{t("altBody")}</Text>
 
       <Stack gap="sm" pt="md">
-        <Link href="/marketing/pricing" className="landing-learn-more">
+        <Link href="/pricing" className="landing-learn-more">
           {t("ctaPricing")}
         </Link>
         <Link href="/blog/obd2-check-engine-light-codes-guide" className="landing-learn-more">

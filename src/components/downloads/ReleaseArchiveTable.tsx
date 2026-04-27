@@ -70,7 +70,7 @@ function AssetButtons({ assets }: { assets: DownloadsAssetDto[] }) {
             </Button>
           )}
           {asset.access === "paid_required" && (
-            <Button size="compact-xs" component={Link} href="/marketing/pricing" variant="default">
+            <Button size="compact-xs" component={Link} href="/pricing" variant="default">
               {asset.os_label} ({t("ctaPaidRequired")})
             </Button>
           )}

@@ -274,7 +274,7 @@ export default async function HomePageShell({ locale }: Props) {
             <p className="landing-feature__body" style={{ color: "var(--text-muted)", lineHeight: 1.65, margin: 0 }}>
               {t("features.f4.body")}
             </p>
-            <a href={localizedPath(locale, "/marketing/pricing")} className="landing-learn-more">
+            <a href={localizedPath(locale, "/pricing")} className="landing-learn-more">
               {t("features.f4.learnMore")}
             </a>
           </div>

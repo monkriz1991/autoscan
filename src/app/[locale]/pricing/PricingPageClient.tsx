@@ -7,6 +7,7 @@ import { getPlans } from "@/lib/api";
 import type { Plan } from "@/lib/api";
 import { PricingPageContent } from "@/components/marketing/PricingPageContent";
 
+/** Клиентская часть страницы тарифов (планы из API). */
 export default function PricingPageClient() {
   const t = useTranslations("pricing");
   const [plans, setPlans] = useState<Plan[]>([]);

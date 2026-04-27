@@ -185,8 +185,12 @@ export async function login(email: string, password: string): Promise<LoginRespo
 export const POST_OAUTH_NEXT_STORAGE_KEY = "post_oauth_next";
 
 /** URL редиректа на страницу согласия Google (серверный OAuth code flow). */
-export async function getGoogleOAuthRedirectUrl(): Promise<string> {
-  const data = await request<{ url?: string }>("auth/google/redirect/", {
+export async function getGoogleOAuthRedirectUrl(next?: string | null): Promise<string> {
+  const path =
+    next != null && String(next).trim() !== ""
+      ? `auth/google/redirect/?next=${encodeURIComponent(String(next).trim())}`
+      : "auth/google/redirect/";
+  const data = await request<{ url?: string }>(path, {
     method: "GET",
   });
   if (!data.url || typeof data.url !== "string") {
@@ -391,6 +395,58 @@ export type UserProfile = {
 
 export async function getMe(): Promise<UserProfile> {
   return request<UserProfile>("users/me/");
+}
+
+/** Ответ POST /auth/email-check/ — способы входа по email. */
+export type EmailCheckResponse = {
+  exists: boolean;
+  auth_methods: string[];
+  is_blocked?: boolean;
+};
+
+export async function checkEmailAuthMethods(
+  email: string,
+): Promise<EmailCheckResponse> {
+  return request<EmailCheckResponse>("auth/email-check/", {
+    method: "POST",
+    body: JSON.stringify({ email: email.trim().toLowerCase() }),
+  });
+}
+
+/**
+ * Способы входа для email текущего пользователя: getMe() + checkEmailAuthMethods.
+ * Используется, когда в UserProfile нет has_password.
+ */
+export async function getAuthMethods(): Promise<{
+  auth_methods: string[];
+  is_blocked?: boolean;
+}> {
+  const me = await getMe();
+  const res = await checkEmailAuthMethods(me.email);
+  return { auth_methods: res.auth_methods, is_blocked: res.is_blocked };
+}
+
+export type ChangePasswordPayload = {
+  old_password?: string;
+  new_password1: string;
+  new_password2: string;
+};
+
+export async function changePassword(
+  payload: ChangePasswordPayload,
+): Promise<{ detail: string }> {
+  const body: Record<string, string> = {
+    new_password1: payload.new_password1,
+    new_password2: payload.new_password2,
+  };
+  const old = (payload.old_password ?? "").trim();
+  if (old) {
+    body.old_password = old;
+  }
+  return request<{ detail: string }>("users/me/password/", {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
 }
 
 /** Подключённые приложения (OAuth2-сессии), GET /users/me/devices/ */

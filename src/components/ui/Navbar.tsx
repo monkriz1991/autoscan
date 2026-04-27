@@ -151,7 +151,7 @@ export default function Navbar() {
                 <Menu.Item
                   leftSection={<IconSettings size={16} />}
                   component={Link}
-                  href="/cabinet/dashboard/settings"
+                  href="/account"
                 >
                   {t("settings")}
                 </Menu.Item>

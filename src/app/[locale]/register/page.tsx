@@ -234,7 +234,7 @@ function RegisterForm() {
       if (typeof window !== "undefined") {
         window.sessionStorage.setItem(POST_OAUTH_NEXT_STORAGE_KEY, nextUrl);
       }
-      const url = await getGoogleOAuthRedirectUrl();
+      const url = await getGoogleOAuthRedirectUrl(nextUrl);
       window.location.href = url;
     } catch (err) {
       setGoogleLoading(false);

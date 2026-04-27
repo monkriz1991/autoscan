@@ -20,6 +20,17 @@ const SCANNER_ORIGIN =
     ? (process.env.NEXT_PUBLIC_SCANNER_APP_ORIGIN || "http://localhost:3000").replace(/\/$/, "")
     : "http://localhost:3000";
 
+/** Deep link desktop/Tauri: отдаём на ОС, чтобы сфокусировать/запустить нативное окно. */
+const _scannerDeepLinkRaw =
+  (typeof process !== "undefined" && (process.env.NEXT_PUBLIC_SCANNER_APP_DEEP_LINK || "").trim()) || "";
+const SCANNER_DEEP_LINK = _scannerDeepLinkRaw ? _scannerDeepLinkRaw.replace(/\/$/, "") : "";
+
+function isSafeAppDeepLink(href: string): boolean {
+  const t = (href || "").trim();
+  if (!t) return false;
+  return /^obd-ai-scanner:\/\//i.test(t) || /^scanner:\/\//i.test(t);
+}
+
 function isSafeInternalNextPath(path: string): boolean {
   const p = path.split("?")[0] || "";
   if (!p.startsWith("/") || p.startsWith("//")) return false;
@@ -33,6 +44,10 @@ function redirectAfterSocialLogin(
   router: { replace: (href: string) => void },
 ): boolean {
   if (typeof window === "undefined") return false;
+  if (isSafeAppDeepLink(path)) {
+    window.location.replace(path);
+    return true;
+  }
   if (!isSafeInternalNextPath(path)) return false;
   if (/^\/(en|de|ru|pl|it|es)\//.test(path)) {
     window.location.replace(path);
@@ -117,7 +132,7 @@ function OAuthCallbackInner() {
               {t("callbackBackLogin")}
             </Button>
             <Anchor
-              href={SCANNER_ORIGIN}
+              href={SCANNER_DEEP_LINK || SCANNER_ORIGIN}
               size="sm"
               rel="noopener noreferrer"
               className="auth-page__footer-link"

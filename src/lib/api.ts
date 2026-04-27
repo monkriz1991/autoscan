@@ -1102,6 +1102,23 @@ export async function getPlans(): Promise<Plan[]> {
   return [...list].sort((a, b) => (b.sort_order ?? 0) - (a.sort_order ?? 0));
 }
 
+/** SSR тарифов с явной локалью: на сервере getLocaleHeaders() не видит document.lang. */
+export async function getPlansForLocale(locale: string): Promise<Plan[]> {
+  const base = BASE_URL.replace(/\/$/, "");
+  const res = await fetch(`${base}/billing/plans/`, {
+    credentials: "omit",
+    headers: {
+      "Accept-Language": locale,
+      "X-Locale": locale,
+    },
+    next: { revalidate: 120 },
+  });
+  if (!res.ok) throw new ApiError(res.status, await res.json().catch(() => ({})));
+  const data = await res.json();
+  const list = Array.isArray(data) ? data : (data as { results?: Plan[] }).results ?? [];
+  return [...list].sort((a, b) => (b.sort_order ?? 0) - (a.sort_order ?? 0));
+}
+
 /** План по id из публичного списка тарифов (отдельного эндпоинта нет). */
 export async function getPlanById(planId: number): Promise<Plan | null> {
   const plans = await getPlans();

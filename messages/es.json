@@ -23,6 +23,11 @@
     "faq": "FAQ",
     "download": "Descargar"
   },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "Esta página no existe o la URL ha cambiado.",
+    "backHome": "Volver al inicio"
+  },
   "seo": {
     "siteName": "AIscanAuto",
     "siteTitle": "AIscanAuto — Diagnóstico con IA y escáner OBD",

@@ -23,6 +23,11 @@
     "faq": "FAQ",
     "download": "Скачать"
   },
+  "notFound": {
+    "title": "Страница не найдена",
+    "description": "Такой страницы нет или адрес изменился.",
+    "backHome": "На главную"
+  },
   "seo": {
     "siteName": "AIscanAuto",
     "siteTitle": "AIscanAuto — ИИ-диагностика автомобилей и OBD-сканер",

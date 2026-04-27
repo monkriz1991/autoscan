@@ -23,6 +23,11 @@
     "faq": "FAQ",
     "download": "Download"
   },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "description": "Diese Seite existiert nicht oder die URL hat sich geändert.",
+    "backHome": "Zur Startseite"
+  },
   "seo": {
     "siteName": "AIscanAuto",
     "siteTitle": "AIscanAuto — KI-Fahrzeugdiagnose & OBD-Scanner",

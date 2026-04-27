@@ -1,7 +1,11 @@
 import createMiddleware from "next-intl/middleware";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { MIDDLEWARE_CANONICAL_SEARCH_HEADER, MIDDLEWARE_PATHNAME_HEADER } from "@/lib/middleware-pathname";
+import {
+  MIDDLEWARE_CANONICAL_SEARCH_HEADER,
+  MIDDLEWARE_PATHNAME_HEADER,
+  MIDDLEWARE_REQUEST_PATHNAME_HEADER,
+} from "@/lib/middleware-pathname";
 import { localizedPath, stripTrackingSearchParams } from "@/lib/site-url";
 import { routing } from "./i18n/routing";
 
@@ -93,6 +97,7 @@ export default function middleware(request: NextRequest) {
 
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set(MIDDLEWARE_PATHNAME_HEADER, normalizedPathForHeader);
+  requestHeaders.set(MIDDLEWARE_REQUEST_PATHNAME_HEADER, pathname);
   requestHeaders.set(
     MIDDLEWARE_CANONICAL_SEARCH_HEADER,
     stripTrackingSearchParams(request.nextUrl.searchParams).toString(),

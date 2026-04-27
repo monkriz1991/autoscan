@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { getLocaleFromRequestPathname } from "@/lib/request-locale";
 import { getMetadataBase } from "@/lib/site-url";
 
 /** Детальные title/description задаются в [locale]/layout и страницах. */
@@ -16,13 +17,15 @@ export const viewport: Viewport = {
   maximumScale: 5,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const lang = await getLocaleFromRequestPathname();
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={lang} suppressHydrationWarning>
       <body>{children}</body>
     </html>
   );

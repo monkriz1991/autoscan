@@ -8,7 +8,7 @@ import { getCanonicalUrlFromRequestHeaders } from "@/lib/request-canonical";
 import { buildLocalePageMetadata } from "@/lib/seo-metadata";
 import { fetchStructuredData } from "@/lib/seo/structured-data";
 import { alternateLanguageUrls } from "@/lib/site-url";
-import HomePageClient from "./HomePageClient";
+import HomePageShell from "@/components/landing/HomePageShell";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -124,7 +124,7 @@ export default async function HomePage({
       <StaticJsonLd data={softwareApplicationLd} />
       <StaticJsonLd data={howToLd} />
       <StaticJsonLd data={breadcrumbLd} />
-      <HomePageClient />
+      <HomePageShell locale={locale} />
     </>
   );
 }

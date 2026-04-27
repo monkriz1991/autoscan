@@ -1,6 +1,13 @@
 /** Имя заголовка запроса: путь без префикса локали (выставляет middleware, читает [locale]/layout). */
 export const MIDDLEWARE_PATHNAME_HEADER = "x-pathname";
 
+/**
+ * Полный pathname запроса (напр. `/de/faq`, `/`) — для `<html lang>` в root layout.
+ * В `headers()` иногда видно как `x-url-pathname`, иногда как `x-middleware-request-x-url-pathname`.
+ * Читать после `await connection()` в `app/layout.tsx`, иначе при пререндере нет данных middleware.
+ */
+export const MIDDLEWARE_REQUEST_PATHNAME_HEADER = "x-url-pathname";
+
 /** Query без UTM/ref — для canonical в layout (сохраняет page и др.). */
 export const MIDDLEWARE_CANONICAL_SEARCH_HEADER = "x-canonical-search";
 

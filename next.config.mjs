@@ -19,18 +19,30 @@ const nextConfig = {
   reactStrictMode: true,
   /** ESM-пакет Swiper: явная трансформация снижает сбои бандлера (webpack / Turbopack). */
   transpilePackages: ["swiper"],
-  // Снижает риск «старый HTML + новые/удалённые чанки» после деплоя (webpack .call на undefined).
-  // Для `/_next/static/*` ниже задаётся immutable — он перекрывает общее правило (в Next побеждает последнее совпадение).
+  // CDN (s-maxage): публичные HTML/страницы; «последнее совпадение» переопределяет Cache-Control для того же ключа.
+  // Динамика под авторизацией — отдельные правила ниже (private, no-cache).
   async headers() {
+    const privateAuthPages = [
+      { key: "Cache-Control", value: "private, no-cache, must-revalidate" },
+    ];
     return [
-      {
-        source: "/:path*",
-        headers: [{ key: "Cache-Control", value: "private, no-cache, must-revalidate" }],
-      },
       {
         source: "/_next/static/:path*",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
+      {
+        source: "/((?!api/|_next/|favicon\\.ico|.*\\..*).*)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, s-maxage=300, stale-while-revalidate=60",
+          },
+        ],
+      },
+      { source: "/cabinet/:path*", headers: privateAuthPages },
+      { source: "/account/:path*", headers: privateAuthPages },
+      { source: "/(ru|de|pl|es|it)/cabinet/:path*", headers: privateAuthPages },
+      { source: "/(ru|de|pl|es|it)/account/:path*", headers: privateAuthPages },
     ];
   },
   // OAuth: redirect_uri без префикса локали — при as-needed страница доступна как /auth/callback

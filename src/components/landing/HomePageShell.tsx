@@ -4,6 +4,7 @@ import { localizedPath } from "@/lib/site-url";
 import AuthDashboardLink from "./AuthDashboardLink";
 import LandingVideo from "./LandingVideo";
 import HomePricingSection, { LandingPricingSkeleton } from "./HomePricingSection";
+import HomePopularDtcSection from "./HomePopularDtcSection";
 
 type Props = { locale: string };
 
@@ -247,6 +248,8 @@ export default async function HomePageShell({ locale }: Props) {
         </div>
         <p style={{ color: "var(--text-muted)", fontSize: "0.875rem", margin: 0 }}>{t("cars.footnote")}</p>
       </section>
+
+      <HomePopularDtcSection locale={locale} />
 
       <Suspense fallback={<LandingPricingSkeleton />}>
         <HomePricingSection locale={locale} />

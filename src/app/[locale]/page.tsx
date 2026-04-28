@@ -94,11 +94,6 @@ export default async function HomePage({
       priceCurrency: "USD",
     },
     description: tLand("schema.softwareDescription"),
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.5",
-      ratingCount: tLand("schema.ratingCount"),
-    },
   };
 
   const howToLd = {

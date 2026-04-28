@@ -21,7 +21,8 @@
     "aiHistory": "Historial de diagnóstico IA",
     "requestHistory": "Historial de solicitudes",
     "faq": "FAQ",
-    "download": "Descargar"
+    "download": "Descargar",
+    "dtc": "Códigos DTC"
   },
   "notFound": {
     "title": "Página no encontrada",
@@ -37,7 +38,7 @@
     "pricingTitle": "Precios app OBD2 y planes de diagnóstico IA",
     "pricingDescription": "Compara suscripciones: datos en vivo OBD2, DTC e IA — cómo encaja AIscanAuto frente a apps OBD2 habituales.",
     "faqTitle": "Preguntas frecuentes del escáner OBD2 — respuestas",
-    "faqDescription": "Respuestas sobre AIscanAuto, OBD, IA, facturación y dispositivos.",
+    "faqDescription": "Respuestas sobre AIscanAuto: diagnóstico OBD2, funciones con IA, adaptadores ELM327, facturación, dispositivos y preguntas frecuentes del escáner.",
     "blogTitle": "Guías OBD2 y artículos de diagnóstico del coche",
     "blogDescription": "Guías sobre códigos OBD2, configuración ELM327, PIDs en vivo, inspección de coches usados y novedades AIscanAuto.",
     "loginTitle": "Iniciar sesión",
@@ -65,7 +66,9 @@
     "compareObd2Title": "Mejores apps OBD2 2026 — comparación y elección",
     "compareObd2Description": "Comparativa de apps OBD2: datos en vivo, profundidad DTC, IA y notas sobre alternativas estilo Torque Pro.",
     "dtcTitle": "Código error OBD2 {code}",
-    "dtcDescription": "Código de avería {code}: significado, causas frecuentes y lectura con escáner OBD2 ELM327 en AIscanAuto."
+    "dtcDescription": "Código de avería {code}: significado, causas frecuentes y lectura con escáner OBD2 ELM327 en AIscanAuto.",
+    "dtcIndexTitle": "Lista de códigos DTC OBD2 — códigos de avería",
+    "dtcIndexDescription": "Busca en tren motriz (P), carrocería (B), chasis (C) y red (U). Descripciones breves y artículos si hay."
   },
   "downloadPage": {
     "title": "Descargar",
@@ -727,6 +730,9 @@
   },
   "faqPage": {
     "title": "Preguntas frecuentes",
+    "dtcSectionTitle": "Códigos de error OBD2 habituales",
+    "dtcSectionLead": "Consulta miles de códigos DTC (P, B, C, U): descripción, causas habituales y qué comprobar.",
+    "dtcHubLink": "Lista completa de códigos DTC",
     "subtitle": "Búsqueda en la pregunta y la descripción breve según el idioma del encabezado.",
     "searchLabel": "Buscar en preguntas",
     "searchPlaceholder": "Escriba para filtrar…",
@@ -739,11 +745,44 @@
   "blogPage": {
     "title": "Blog",
     "subtitle": "Guías sobre códigos OBD2, ELM327, datos en vivo y novedades de AIscanAuto — para conductores y talleres.",
+    "dtcArticleCta": "DTC {code} — página de referencia",
+    "dtcArticleDescription": "Abrir la página dedicada a este código en nuestra biblioteca OBD2.",
     "loading": "Cargando…",
     "empty": "Aún no hay artículos.",
     "error": "No se pudieron cargar las entradas. Inténtelo más tarde.",
     "notFound": "Entrada no encontrada.",
     "backToList": "Volver al listado"
+  },
+  "dtcPage": {
+    "title": "Códigos DTC",
+    "subtitle": "Lista de códigos OBD2 (P, B, C, U). Busca por código o texto.",
+    "searchPlaceholder": "Código o texto…",
+    "familyLabel": "Familia",
+    "familyAll": "Todas",
+    "familyP": "P — tren motriz",
+    "familyB": "B — carrocería",
+    "familyC": "C — chasis",
+    "familyU": "U — red",
+    "hasArticlesLabel": "Artículos",
+    "hasArticlesAll": "Todos",
+    "hasArticlesYes": "Con artículos",
+    "hasArticlesNo": "Sin artículos",
+    "submitSearch": "Aplicar",
+    "reset": "Restablecer",
+    "loading": "Cargando…",
+    "empty": "Sin resultados.",
+    "error": "No se pudo cargar la lista DTC.",
+    "openCode": "Abrir",
+    "pageLabel": "Páginas",
+    "prevPage": "Anterior",
+    "nextPage": "Siguiente",
+    "pageSummary": "Página {current} de {total} · {count} códigos",
+    "articlesBadge": "Artículos",
+    "detailIntro": "Resumen y artículos sobre este código.",
+    "summaryLabel": "Resumen"
+  },
+  "dtcDetail": {
+    "sourceEn": "Definición (EN)"
   },
   "billing": {
     "successTitle": "Pago",
@@ -888,6 +927,11 @@
         "peugeot": "Peugeot",
         "renault": "Renault"
       }
+    },
+    "dtcPopular": {
+      "title": "Códigos de fallo OBD2 frecuentes",
+      "subtitle": "Accesos rápidos a códigos comunes del testigo de motor. La lista completa y búsqueda — en el hub DTC.",
+      "hubLink": "Ver todos los códigos DTC →"
     },
     "pricing": {
       "title": "Precios simples y transparentes",

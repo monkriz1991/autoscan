@@ -42,6 +42,9 @@ export default function Footer() {
               <Link href="/blog" className="footer__col-link">
                 {tNav("blog")}
               </Link>
+              <Link href="/dtc" className="footer__col-link">
+                {tNav("dtc")}
+              </Link>
               <Link href="/download" className="footer__col-link">
                 {tNav("download")}
               </Link>

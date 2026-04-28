@@ -25,12 +25,14 @@ const LANDING_CHROME_EXACT = new Set([
   "/pricing",
   "/login",
   "/register",
+  "/dtc",
 ]);
 
 export function isLandingChromePath(pathWithoutLocale: string): boolean {
   const n = pathWithoutLocale.replace(/\/+$/, "") || "/";
   if (LANDING_CHROME_EXACT.has(n)) return true;
   if (n.startsWith("/blog/")) return true;
+  if (n.startsWith("/dtc/")) return true;
   if (n.startsWith("/auth/")) return true;
   return false;
 }

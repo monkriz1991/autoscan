@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "validate:messages": "node scripts/validate-messages.mjs",
+    "generate:dtc-sitemap-fallback": "node scripts/generate-dtc-sitemap-fallback.mjs",
     "predev": "npm run validate:messages",
-    "prebuild": "npm run validate:messages",
+    "prebuild": "npm run validate:messages && npm run generate:dtc-sitemap-fallback",
     "dev": "next dev --webpack",
     "dev:turbo": "npm run validate:messages && next dev",
     "build": "next build --webpack",

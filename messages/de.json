@@ -21,7 +21,8 @@
     "aiHistory": "KI-Diagnoseverlauf",
     "requestHistory": "Anfrageverlauf",
     "faq": "FAQ",
-    "download": "Download"
+    "download": "Download",
+    "dtc": "DTC-Codes"
   },
   "notFound": {
     "title": "Seite nicht gefunden",
@@ -37,7 +38,7 @@
     "pricingTitle": "OBD2-App-Preise & KI-Diagnose-Tarife",
     "pricingDescription": "Abos vergleichen: OBD2 Live Data, DTC-Scans und KI — wie AIscanAuto zu typischen OBD2-Apps passt.",
     "faqTitle": "OBD2-Scanner — häufige Fragen & Antworten",
-    "faqDescription": "Antworten zu AIscanAuto, OBD-Diagnose, KI, Abrechnung und Geräten.",
+    "faqDescription": "Antworten und Ratgeber zu AIscanAuto: OBD2-Diagnose, KI-Reparaturtipps, ELM327-Adapter, Abonnements und Geräte — häufige Fragen zum Scanner und zur Software.",
     "blogTitle": "OBD2-Ratgeber & Artikel zur Fahrzeugdiagnose",
     "blogDescription": "Guides zu OBD2-Fehlercodes, ELM327-Einrichtung, Live-Daten-PIDs, Gebrauchtwagen-Check und AIscanAuto-Updates.",
     "loginTitle": "Anmelden",
@@ -65,7 +66,9 @@
     "compareObd2Title": "Beste OBD2-Apps 2026 — Vergleich & Auswahl",
     "compareObd2Description": "OBD2-App-Vergleich: Live-Daten, DTC-Tiefe, KI-Features und Hinweise zu Alternativen im Torque-Pro-Stil.",
     "dtcTitle": "OBD2-Fehlercode {code}",
-    "dtcDescription": "Diagnosefehlercode {code}: Bedeutung, typische Ursachen und Auslesen mit ELM327 und AIscanAuto."
+    "dtcDescription": "Diagnosefehlercode {code}: Bedeutung, typische Ursachen und Auslesen mit ELM327 und AIscanAuto.",
+    "dtcIndexTitle": "OBD2 DTC-Code-Liste — Diagnosefehlercodes",
+    "dtcIndexDescription": "Suche in Antrieb (P), Karosserie (B), Fahrwerk (C) und Netzwerk (U). Kurzbeschreibungen und Artikel, falls vorhanden."
   },
   "downloadPage": {
     "title": "Download",
@@ -727,6 +730,9 @@
   },
   "faqPage": {
     "title": "Häufig gestellte Fragen",
+    "dtcSectionTitle": "Häufige OBD2-Fehlercodes",
+    "dtcSectionLead": "Tausende Diagnose-Codes (P, B, C, U) mit Kurzinfo, typischen Ursachen und nächsten Schritten.",
+    "dtcHubLink": "Vollständige DTC-Liste",
     "subtitle": "Suche in Frage und Kurzbeschreibung für die im Header gewählte Sprache.",
     "searchLabel": "Fragen durchsuchen",
     "searchPlaceholder": "Suchbegriff eingeben…",
@@ -739,11 +745,44 @@
   "blogPage": {
     "title": "Blog",
     "subtitle": "Leitfäden zu OBD2-Codes, ELM327, Live-Daten und AIscanAuto-Updates — für Fahrer und Werkstätten.",
+    "dtcArticleCta": "DTC {code} — Referenzseite",
+    "dtcArticleDescription": "Die Detailseite zu diesem Code in unserer OBD2-Bibliothek öffnen.",
     "loading": "Wird geladen…",
     "empty": "Noch keine Artikel.",
     "error": "Blog-Beiträge konnten nicht geladen werden. Bitte später erneut versuchen.",
     "notFound": "Beitrag nicht gefunden.",
     "backToList": "Zurück zur Übersicht"
+  },
+  "dtcPage": {
+    "title": "DTC-Codes",
+    "subtitle": "OBD2-Fehlercodes (P, B, C, U). Suche nach Code oder Text.",
+    "searchPlaceholder": "Code oder Text…",
+    "familyLabel": "Familie",
+    "familyAll": "Alle",
+    "familyP": "P — Antrieb",
+    "familyB": "B — Karosserie",
+    "familyC": "C — Fahrwerk",
+    "familyU": "U — Netzwerk",
+    "hasArticlesLabel": "Artikel",
+    "hasArticlesAll": "Alle",
+    "hasArticlesYes": "Mit Artikeln",
+    "hasArticlesNo": "Ohne Artikel",
+    "submitSearch": "Anwenden",
+    "reset": "Zurücksetzen",
+    "loading": "Laden…",
+    "empty": "Keine Treffer.",
+    "error": "DTC-Liste konnte nicht geladen werden.",
+    "openCode": "Öffnen",
+    "pageLabel": "Seiten",
+    "prevPage": "Zurück",
+    "nextPage": "Weiter",
+    "pageSummary": "Seite {current} von {total} · {count} Codes",
+    "articlesBadge": "Artikel",
+    "detailIntro": "Kurzbeschreibung und Artikel zu diesem Code.",
+    "summaryLabel": "Kurzbeschreibung"
+  },
+  "dtcDetail": {
+    "sourceEn": "Definition (EN)"
   },
   "billing": {
     "successTitle": "Zahlung",
@@ -888,6 +927,11 @@
         "peugeot": "Peugeot",
         "renault": "Renault"
       }
+    },
+    "dtcPopular": {
+      "title": "Beliebte OBD2-Fehlercodes",
+      "subtitle": "Schnellzugriff auf häufige Check-Engine-Codes. Die vollständige, durchsuchbare Liste finden Sie im DTC-Hub.",
+      "hubLink": "Alle DTC-Codes →"
     },
     "pricing": {
       "title": "Einfache und transparente Preise",

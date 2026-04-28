@@ -21,7 +21,8 @@
     "aiHistory": "Cronologia diagnostica AI",
     "requestHistory": "Cronologia richieste",
     "faq": "FAQ",
-    "download": "Scarica"
+    "download": "Scarica",
+    "dtc": "Codici DTC"
   },
   "notFound": {
     "title": "Pagina non trovata",
@@ -33,13 +34,13 @@
     "siteTitle": "AIscanAuto — Diagnostica AI e scanner OBD",
     "defaultDescription": "Smartphone o PC come scanner OBD: codici errore, dati live e guida riparazioni AI. ELM327.",
     "homeTitle": "App diagnostica auto IA e scanner OBD2 — AIscanAuto",
-    "homeDescription": "App diagnostica IA e scanner OBD2: codici spia, dati live e guida stile meccanico IA. Adattatori ELM327. Android, iOS e desktop.",
+    "homeDescription": "App diagnostica IA e scanner OBD2: codici spia, dati live e guida stile meccanico IA. ELM327, Android, iOS e desktop. Compatibile col 99% delle auto dal 1996.",
     "pricingTitle": "Prezzi app OBD2 e piani diagnostica IA",
     "pricingDescription": "Confronta abbonamenti: dati live OBD2, DTC e IA — come AIscanAuto si colloca tra le app OBD2 tipiche.",
     "faqTitle": "Domande sullo scanner OBD2 — risposte chiare",
-    "faqDescription": "Risposte su AIscanAuto, OBD, IA, fatturazione e dispositivi.",
+    "faqDescription": "Risposte su AIscanAuto: diagnostica OBD2, funzioni IA, adattatori ELM327, abbonamenti, dispositivi e domande frequenti sullo scanner e sull'app.",
     "blogTitle": "Guide OBD2 e articoli sulla diagnostica auto",
-    "blogDescription": "Guide su codici OBD2, setup ELM327, PID live, controllo auto usate e novità AIscanAuto.",
+    "blogDescription": "Guide su codici errore OBD2, setup ELM327, PID e dati live, checklist per auto usate, consigli di riparazione e novità AIscanAuto — per autisti e officine.",
     "loginTitle": "Accedi",
     "loginDescription": "Accedi ad AIscanAuto: dashboard, dispositivi e pagamenti.",
     "registerTitle": "Crea account",
@@ -65,7 +66,9 @@
     "compareObd2Title": "Migliori app OBD2 2026 — confronto e scelta",
     "compareObd2Description": "Confronto app OBD2: dati live, profondità DTC, IA e note su alternative stile Torque Pro.",
     "dtcTitle": "Codice errore OBD2 {code}",
-    "dtcDescription": "Codice guasto {code}: significato, cause tipiche e lettura con scanner OBD2 ELM327 in AIscanAuto."
+    "dtcDescription": "Codice guasto {code}: significato, cause tipiche e lettura con scanner OBD2 ELM327 in AIscanAuto.",
+    "dtcIndexTitle": "Elenco codici DTC OBD2 — codici guasto",
+    "dtcIndexDescription": "Cerca tra powertrain (P), carrozzeria (B), telaio (C) e rete (U). Breve descrizione e articoli se disponibili."
   },
   "downloadPage": {
     "title": "Scarica",
@@ -727,6 +730,9 @@
   },
   "faqPage": {
     "title": "Domande frequenti",
+    "dtcSectionTitle": "Codici di errore OBD2 comuni",
+    "dtcSectionLead": "Consulta migliaia di codici DTC: powertrain, carrozzeria, telaio, rete — significato, cause tipiche e cosa verificare.",
+    "dtcHubLink": "Elenco completo codici DTC",
     "subtitle": "Ricerca nel testo della domanda e nella breve descrizione nella lingua dell’intestazione.",
     "searchLabel": "Cerca nelle domande",
     "searchPlaceholder": "Digita per filtrare…",
@@ -739,11 +745,44 @@
   "blogPage": {
     "title": "Blog",
     "subtitle": "Guide su codici OBD2, ELM327, dati live e aggiornamenti AIscanAuto — per automobilisti e officine.",
+    "dtcArticleCta": "DTC {code} — pagina di riferimento",
+    "dtcArticleDescription": "Apri la pagina dedicata al codice nella biblioteca OBD2.",
     "loading": "Caricamento…",
     "empty": "Nessun articolo per ora.",
     "error": "Impossibile caricare gli articoli. Riprova più tardi.",
     "notFound": "Articolo non trovato.",
     "backToList": "Torna all'elenco"
+  },
+  "dtcPage": {
+    "title": "Codici DTC",
+    "subtitle": "Elenco codici OBD2 (P, B, C, U). Cerca per codice o testo.",
+    "searchPlaceholder": "Codice o testo…",
+    "familyLabel": "Famiglia",
+    "familyAll": "Tutte",
+    "familyP": "P — powertrain",
+    "familyB": "B — carrozzeria",
+    "familyC": "C — telaio",
+    "familyU": "U — rete",
+    "hasArticlesLabel": "Articoli",
+    "hasArticlesAll": "Tutti",
+    "hasArticlesYes": "Con articoli",
+    "hasArticlesNo": "Senza articoli",
+    "submitSearch": "Applica",
+    "reset": "Reimposta",
+    "loading": "Caricamento…",
+    "empty": "Nessun risultato.",
+    "error": "Impossibile caricare l’elenco DTC.",
+    "openCode": "Apri",
+    "pageLabel": "Pagine",
+    "prevPage": "Indietro",
+    "nextPage": "Avanti",
+    "pageSummary": "Pagina {current} di {total} · {count} codici",
+    "articlesBadge": "Articoli",
+    "detailIntro": "Riepilogo e articoli su questo codice.",
+    "summaryLabel": "Riepilogo"
+  },
+  "dtcDetail": {
+    "sourceEn": "Definizione (EN)"
   },
   "billing": {
     "successTitle": "Pagamento",
@@ -888,6 +927,11 @@
         "peugeot": "Peugeot",
         "renault": "Renault"
       }
+    },
+    "dtcPopular": {
+      "title": "Codici di errore OBD2 più comuni",
+      "subtitle": "Collegamenti rapidi ai codici check engine frequenti. Elenco completo e ricerca nell’hub DTC.",
+      "hubLink": "Tutti i codici DTC →"
     },
     "pricing": {
       "title": "Prezzi semplici e trasparenti",

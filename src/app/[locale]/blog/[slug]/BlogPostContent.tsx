@@ -5,6 +5,8 @@ import { Link } from "@/i18n/navigation";
 import { Title, Text, Badge, Group, Button, Image, Box } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
 import type { BlogPostDetail } from "@/lib/api";
+import { extractDtcCodeFromSlug } from "@/lib/dtc-slug";
+import { localizedPath } from "@/lib/site-url";
 
 type Props = { post: BlogPostDetail };
 
@@ -16,6 +18,7 @@ function formatPostDate(iso: string, locale: string): string {
 export default function BlogPostContent({ post }: Props) {
   const t = useTranslations("blogPage");
   const locale = useLocale();
+  const dtcFromSlug = extractDtcCodeFromSlug(post.slug);
 
   return (
     <article className="blog-post-page marketing-page">
@@ -61,6 +64,31 @@ export default function BlogPostContent({ post }: Props) {
 
       {post.excerpt ? (
         <p className="blog-post-page__excerpt">{post.excerpt}</p>
+      ) : null}
+
+      {dtcFromSlug ? (
+        <Box
+          className="blog-post-page__dtc-cta"
+          mb="lg"
+          p="md"
+          style={{
+            borderRadius: 8,
+            border: "1px solid color-mix(in srgb, var(--mantine-color-gray-5) 40%, transparent)",
+            backgroundColor: "color-mix(in srgb, var(--mantine-color-gray-1) 80%, transparent)",
+          }}
+        >
+          <Text size="sm" c="dimmed" mb="xs">
+            {t("dtcArticleDescription")}
+          </Text>
+          <Button
+            component={Link}
+            href={localizedPath(locale, `/dtc/${dtcFromSlug}`)}
+            variant="light"
+            size="sm"
+          >
+            {t("dtcArticleCta", { code: dtcFromSlug })}
+          </Button>
+        </Box>
       ) : null}
 
       <div

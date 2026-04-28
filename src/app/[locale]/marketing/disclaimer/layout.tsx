@@ -11,7 +11,10 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  return buildLocalePageMetadata(locale, "/marketing/disclaimer", "disclaimerTitle", "disclaimerDescription");
+  return buildLocalePageMetadata(locale, "/marketing/disclaimer", "disclaimerTitle", "disclaimerDescription", {
+    noindex: true,
+    robotsFollowWhenNoindex: true,
+  });
 }
 
 export default async function DisclaimerLayout({

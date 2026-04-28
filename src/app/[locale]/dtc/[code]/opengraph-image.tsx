@@ -1,22 +1,11 @@
 import { ImageResponse } from "next/og";
-import { routing } from "@/i18n/routing";
 
 export const alt = "AIscanAuto DTC";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-/** Синхронно со страницей DTC (пример кодов). */
-const EXAMPLE_DTC_CODES = ["P0420"] as const;
-
-export function generateStaticParams() {
-  const out: { locale: string; code: string }[] = [];
-  for (const locale of routing.locales) {
-    for (const code of EXAMPLE_DTC_CODES) {
-      out.push({ locale, code });
-    }
-  }
-  return out;
-}
+/** OG на лету для любого кода (см. страница DTC, ISR). */
+export const dynamic = "force-dynamic";
 
 /**
  * Динамический OG для DTC: логотип + код + краткий текст + предупреждение.

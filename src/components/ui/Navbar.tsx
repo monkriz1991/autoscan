@@ -23,6 +23,7 @@ const NAV_HREFS = [
   { href: "/faq", key: "faq" as const },
   { href: "/download", key: "download" as const },
   { href: "/blog", key: "blog" as const },
+  { href: "/dtc", key: "dtc" as const },
 ];
 
 export default function Navbar() {

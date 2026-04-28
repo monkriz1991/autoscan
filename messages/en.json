@@ -21,7 +21,8 @@
     "aiHistory": "AI diagnostics history",
     "requestHistory": "Request history",
     "faq": "FAQ",
-    "download": "Download"
+    "download": "Download",
+    "dtc": "DTC Codes"
   },
   "notFound": {
     "title": "Page not found",
@@ -33,7 +34,7 @@
     "siteTitle": "AIscanAuto — AI car diagnostics & OBD scanner",
     "defaultDescription": "Turn your phone or PC into an OBD scanner: read DTCs, live data, and get AI repair guidance. ELM327 support.",
     "homeTitle": "AI Car Diagnostics App & OBD2 Scanner — AIscanAuto",
-    "homeDescription": "Free AI-powered OBD2 scanner for Windows, macOS & Linux. Plug in any ELM327 adapter, read fault codes, monitor live engine data, and get plain-language repair guidance from AI. Works with 99% of cars (1996+).",
+    "homeDescription": "Free AI OBD2 scanner for Windows, macOS & Linux. Plug in ELM327, read fault codes, and get AI repair guidance. Works with 99% of cars (1996+).",
     "pricingTitle": "OBD2 app pricing & AI car diagnostics plans",
     "pricingDescription": "Compare subscription plans for OBD2 live data, DTC scans, and AI diagnostics—see how AIscanAuto stacks up versus typical OBD2 scanner apps.",
     "faqTitle": "OBD2 Scanner FAQ — Common Questions Answered",
@@ -65,7 +66,9 @@
     "compareObd2Title": "Best OBD2 apps 2026 — comparison & how to choose",
     "compareObd2Description": "OBD2 app comparison: live data, DTC depth, AI features, and fair notes on popular alternatives including Torque-style tools.",
     "dtcTitle": "DTC {code} — OBD2 diagnostic trouble code",
-    "dtcDescription": "OBD2 diagnostic trouble code {code}: typical causes, symptoms, and how to read and clear the code with AIscanAuto and an ELM327 scanner."
+    "dtcDescription": "OBD2 diagnostic trouble code {code}: typical causes, symptoms, and how to read and clear the code with AIscanAuto and an ELM327 scanner.",
+    "dtcIndexTitle": "OBD2 DTC code list — diagnostic trouble codes",
+    "dtcIndexDescription": "Search powertrain (P), body (B), chassis (C), and network (U) OBD2 diagnostic trouble codes. Short descriptions and in-depth articles where available."
   },
   "downloadPage": {
     "title": "Download",
@@ -727,6 +730,9 @@
   },
   "faqPage": {
     "title": "Frequently asked questions",
+    "dtcSectionTitle": "Common OBD2 error codes",
+    "dtcSectionLead": "Look up thousands of powertrain, body, chassis, and network diagnostic trouble codes — definitions, typical causes, and next steps.",
+    "dtcHubLink": "Full DTC code list",
     "subtitle": "Search matches the question and short description for the language you selected in the header.",
     "searchLabel": "Search questions",
     "searchPlaceholder": "Type to filter…",
@@ -739,11 +745,44 @@
   "blogPage": {
     "title": "Blog",
     "subtitle": "Guides on OBD2 codes, ELM327, live data, and AIscanAuto updates — written for drivers and shops.",
+    "dtcArticleCta": "DTC {code} — reference page",
+    "dtcArticleDescription": "Open the dedicated code page in our OBD2 library.",
     "loading": "Loading…",
     "empty": "No articles yet.",
     "error": "Could not load blog posts. Try again later.",
     "notFound": "Post not found.",
     "backToList": "Back to list"
+  },
+  "dtcPage": {
+    "title": "DTC codes",
+    "subtitle": "Browse OBD2 diagnostic trouble codes (P, B, C, U). Search by code or description.",
+    "searchPlaceholder": "Search code or text…",
+    "familyLabel": "Family",
+    "familyAll": "All",
+    "familyP": "P — Powertrain",
+    "familyB": "B — Body",
+    "familyC": "C — Chassis",
+    "familyU": "U — Network",
+    "hasArticlesLabel": "Articles",
+    "hasArticlesAll": "All",
+    "hasArticlesYes": "With articles",
+    "hasArticlesNo": "Without articles",
+    "submitSearch": "Apply",
+    "reset": "Reset",
+    "loading": "Loading…",
+    "empty": "No codes match your filters.",
+    "error": "Could not load DTC list. Try again later.",
+    "openCode": "Open",
+    "pageLabel": "Pagination",
+    "prevPage": "Previous",
+    "nextPage": "Next",
+    "pageSummary": "Page {current} of {total} · {count} codes",
+    "articlesBadge": "Articles",
+    "detailIntro": "Summary and articles for this diagnostic trouble code.",
+    "summaryLabel": "Summary"
+  },
+  "dtcDetail": {
+    "sourceEn": "Definition (EN)"
   },
   "billing": {
     "successTitle": "Payment",
@@ -888,6 +927,11 @@
         "peugeot": "Peugeot",
         "renault": "Renault"
       }
+    },
+    "dtcPopular": {
+      "title": "Popular OBD2 fault codes",
+      "subtitle": "Quick links to common check-engine codes. Open the full searchable library from the DTC hub.",
+      "hubLink": "Browse all DTC codes →"
     },
     "pricing": {
       "title": "Simple, honest pricing",

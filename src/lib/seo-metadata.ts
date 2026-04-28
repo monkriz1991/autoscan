@@ -40,7 +40,12 @@ export async function buildLocalePageMetadata(
     | "disclaimerDescription"
     | "checkoutDescription"
     | "downloadDescription",
-  options?: { noindex?: boolean; canonicalQuery?: Record<string, string | undefined> },
+  options?: {
+    noindex?: boolean;
+    /** При noindex: true — noindex,follow (юридические страницы в футере); иначе noindex,nofollow как у login. */
+    robotsFollowWhenNoindex?: boolean;
+    canonicalQuery?: Record<string, string | undefined>;
+  },
 ): Promise<Metadata> {
   const t = await getTranslations({ locale, namespace: "seo" });
   const title = t(titleKey);
@@ -66,6 +71,16 @@ export async function buildLocalePageMetadata(
     imageUrl: staticOpenGraphImageAbsoluteUrl(locale),
   });
 
+  let robotsNoindex: Metadata["robots"] | undefined;
+  if (options?.noindex === true) {
+    const follow = options.robotsFollowWhenNoindex === true;
+    robotsNoindex = {
+      index: false,
+      follow,
+      googleBot: { index: false, follow },
+    };
+  }
+
   return {
     title,
     description,
@@ -74,8 +89,6 @@ export async function buildLocalePageMetadata(
       languages,
     },
     ...ogTw,
-    ...(options?.noindex
-      ? { robots: { index: false, follow: false, googleBot: { index: false, follow: false } } }
-      : {}),
+    ...(robotsNoindex !== undefined ? { robots: robotsNoindex } : {}),
   };
 }

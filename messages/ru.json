@@ -21,7 +21,8 @@
     "aiHistory": "История ИИ-диагностики",
     "requestHistory": "История запросов",
     "faq": "FAQ",
-    "download": "Скачать"
+    "download": "Скачать",
+    "dtc": "Коды DTC"
   },
   "notFound": {
     "title": "Страница не найдена",
@@ -32,8 +33,8 @@
     "siteName": "AIscanAuto",
     "siteTitle": "AIscanAuto — ИИ-диагностика автомобилей и OBD-сканер",
     "defaultDescription": "Смартфон или ПК как OBD-сканер: коды ошибок, live data и подсказки ИИ по ремонту. Поддержка ELM327.",
-    "homeTitle": "Приложение ИИ-диагностики авто и OBD2-сканер — AIscanAuto",
-    "homeDescription": "AI car diagnostics app и OBD2-сканер: коды Check Engine, live data и подсказки как у ИИ-механика. Адаптеры ELM327. Android, iOS и ПК.",
+    "homeTitle": "ИИ-диагностика авто и OBD2-сканер — AIscanAuto",
+    "homeDescription": "ИИ OBD2-сканер для Windows, macOS и Linux: коды Check Engine, live data и пошаговые подсказки по ремонту. Адаптеры ELM327. Подходит для ~99% авто с 1996 года.",
     "pricingTitle": "Цены на OBD2-приложение и тарифы ИИ-диагностики",
     "pricingDescription": "Сравните подписки: live data OBD2, скан DTC и ИИ — как AIscanAuto выглядит среди типичных OBD2-приложений.",
     "faqTitle": "Частые вопросы по OBD2-сканеру — ответы",
@@ -65,7 +66,9 @@
     "compareObd2Title": "Лучшие OBD2-приложения 2026 — сравнение и выбор",
     "compareObd2Description": "Сравнение OBD2-приложений: live data, глубина DTC, ИИ и заметки об альтернативах в духе Torque Pro.",
     "dtcTitle": "Код ошибки OBD2 {code}",
-    "dtcDescription": "Диагностический код неисправности {code}: значение, типичные причины и как считать код сканером ELM327 в AIscanAuto."
+    "dtcDescription": "Диагностический код неисправности {code}: значение, типичные причины и как считать код сканером ELM327 в AIscanAuto.",
+    "dtcIndexTitle": "Список кодов OBD2 DTC — диагностические коды неисправностей",
+    "dtcIndexDescription": "Поиск кодов DTC: силовой агрегат (P), кузов (B), шасси (C), сеть (U). Краткие описания и статьи, если доступны."
   },
   "downloadPage": {
     "title": "Скачать",
@@ -727,6 +730,9 @@
   },
   "faqPage": {
     "title": "Часто задаваемые вопросы",
+    "dtcSectionTitle": "Типичные коды ошибок OBD2",
+    "dtcSectionLead": "Справочник по тысячам кодов DTC: силовой агрегат, кузов, шасси, сеть — описание, причины и что проверить.",
+    "dtcHubLink": "Полный список кодов DTC",
     "subtitle": "Поиск по тексту вопроса и краткому описанию для языка, выбранного в шапке сайта.",
     "searchLabel": "Поиск по вопросам",
     "searchPlaceholder": "Введите запрос…",
@@ -739,11 +745,44 @@
   "blogPage": {
     "title": "Блог",
     "subtitle": "Гайды по кодам OBD2, ELM327, live data и обновлениям AIscanAuto — для водителей и сервисов.",
+    "dtcArticleCta": "Код {code} — страница справочника",
+    "dtcArticleDescription": "Открыть отдельную страницу кода в библиотеке OBD2.",
     "loading": "Загрузка…",
     "empty": "Пока нет статей.",
     "error": "Не удалось загрузить статьи. Попробуйте позже.",
     "notFound": "Статья не найдена.",
     "backToList": "Назад к списку"
+  },
+  "dtcPage": {
+    "title": "Коды DTC",
+    "subtitle": "Справочник кодов OBD2 (P, B, C, U). Поиск по коду или тексту.",
+    "searchPlaceholder": "Код или текст…",
+    "familyLabel": "Семейство",
+    "familyAll": "Все",
+    "familyP": "P — силовой агрегат",
+    "familyB": "B — кузов",
+    "familyC": "C — шасси",
+    "familyU": "U — сеть",
+    "hasArticlesLabel": "Статьи",
+    "hasArticlesAll": "Все",
+    "hasArticlesYes": "Со статьями",
+    "hasArticlesNo": "Без статей",
+    "submitSearch": "Применить",
+    "reset": "Сброс",
+    "loading": "Загрузка…",
+    "empty": "Нет кодов по фильтрам.",
+    "error": "Не удалось загрузить список DTC.",
+    "openCode": "Открыть",
+    "pageLabel": "Страницы",
+    "prevPage": "Назад",
+    "nextPage": "Вперёд",
+    "pageSummary": "Страница {current} из {total} · кодов: {count}",
+    "articlesBadge": "Статьи",
+    "detailIntro": "Кратко и материалы по этому коду.",
+    "summaryLabel": "Краткое описание"
+  },
+  "dtcDetail": {
+    "sourceEn": "Определение (EN)"
   },
   "billing": {
     "successTitle": "Оплата",
@@ -888,6 +927,11 @@
         "peugeot": "Peugeot",
         "renault": "Renault"
       }
+    },
+    "dtcPopular": {
+      "title": "Популярные коды ошибок OBD2",
+      "subtitle": "Быстрые ссылки на частые коды Check Engine. Полный поиск — в разделе со всеми DTC.",
+      "hubLink": "Все коды DTC →"
     },
     "pricing": {
       "title": "Простые и прозрачные цены",

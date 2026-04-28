@@ -21,7 +21,8 @@
     "aiHistory": "Historia diagnostyki AI",
     "requestHistory": "Historia zapytań",
     "faq": "FAQ",
-    "download": "Pobierz"
+    "download": "Pobierz",
+    "dtc": "Kody DTC"
   },
   "notFound": {
     "title": "Nie znaleziono strony",
@@ -65,7 +66,9 @@
     "compareObd2Title": "Najlepsze aplikacje OBD2 2026 — porównanie i wybór",
     "compareObd2Description": "Porównanie aplikacji OBD2: live data, głębokość DTC, AI i uwagi o alternatywach w stylu Torque Pro.",
     "dtcTitle": "Kod błędu OBD2 {code}",
-    "dtcDescription": "Kod usterki {code}: znaczenie, typowe przyczyny i odczyt skanerem OBD2 / ELM327 w AIscanAuto."
+    "dtcDescription": "Kod usterki {code}: znaczenie, typowe przyczyny i odczyt skanerem OBD2 / ELM327 w AIscanAuto.",
+    "dtcIndexTitle": "Lista kodów DTC OBD2 — kody usterkowe",
+    "dtcIndexDescription": "Wyszukaj kody: układ napędowy (P), nadwozie (B), podwozie (C), sieć (U). Krótki opis i artykuły, jeśli są."
   },
   "downloadPage": {
     "title": "Pobierz",
@@ -727,6 +730,9 @@
   },
   "faqPage": {
     "title": "Często zadawane pytania",
+    "dtcSectionTitle": "Typowe kody błędów OBD2",
+    "dtcSectionLead": "Tysiące kodów DTC (P, B, C, U): opis, typowe przyczyny i co sprawdzić dalej.",
+    "dtcHubLink": "Pełna lista kodów DTC",
     "subtitle": "Wyszukiwanie w treści pytania i krótkim opisie w języku z nagłówka.",
     "searchLabel": "Szukaj w pytaniach",
     "searchPlaceholder": "Wpisz zapytanie…",
@@ -739,11 +745,44 @@
   "blogPage": {
     "title": "Blog",
     "subtitle": "Poradniki o kodach OBD2, ELM327, danych na żywo i aktualizacjach AIscanAuto — dla kierowców i warsztatów.",
+    "dtcArticleCta": "Kod DTC {code} — strona w bazie",
+    "dtcArticleDescription": "Otwórz dedykowaną stronę kodu w bibliotece OBD2.",
     "loading": "Ładowanie…",
     "empty": "Brak artykułów.",
     "error": "Nie udało się załadować wpisów. Spróbuj później.",
     "notFound": "Wpis nie znaleziony.",
     "backToList": "Wróć do listy"
+  },
+  "dtcPage": {
+    "title": "Kody DTC",
+    "subtitle": "Lista kodów OBD2 (P, B, C, U). Szukaj po kodzie lub tekście.",
+    "searchPlaceholder": "Kod lub tekst…",
+    "familyLabel": "Rodzina",
+    "familyAll": "Wszystkie",
+    "familyP": "P — napęd",
+    "familyB": "B — nadwozie",
+    "familyC": "C — podwozie",
+    "familyU": "U — sieć",
+    "hasArticlesLabel": "Artykuły",
+    "hasArticlesAll": "Wszystkie",
+    "hasArticlesYes": "Z artykułami",
+    "hasArticlesNo": "Bez artykułów",
+    "submitSearch": "Zastosuj",
+    "reset": "Wyczyść",
+    "loading": "Ładowanie…",
+    "empty": "Brak wyników.",
+    "error": "Nie udało się załadować listy DTC.",
+    "openCode": "Otwórz",
+    "pageLabel": "Strony",
+    "prevPage": "Poprzednia",
+    "nextPage": "Następna",
+    "pageSummary": "Strona {current} z {total} · {count} kodów",
+    "articlesBadge": "Artykuły",
+    "detailIntro": "Opis i artykuły dla tego kodu.",
+    "summaryLabel": "Opis"
+  },
+  "dtcDetail": {
+    "sourceEn": "Definicja (EN)"
   },
   "billing": {
     "successTitle": "Płatność",
@@ -888,6 +927,11 @@
         "peugeot": "Peugeot",
         "renault": "Renault"
       }
+    },
+    "dtcPopular": {
+      "title": "Popularne kody błędów OBD2",
+      "subtitle": "Szybkie linki do częstych kodów kontrolki silnika. Pełna wyszukiwalna lista — w hubie DTC.",
+      "hubLink": "Wszystkie kody DTC →"
     },
     "pricing": {
       "title": "Prosty i uczciwy cennik",

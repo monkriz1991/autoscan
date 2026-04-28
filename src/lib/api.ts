@@ -1145,6 +1145,166 @@ export async function getBlogPostForLocale(
   return mapBlogPostDetail(data);
 }
 
+/** ---------- DTC справочник OBD2 ---------- */
+
+export type DtcCodeListItem = {
+  code: string;
+  family: string;
+  title: string;
+  excerpt: string;
+  available_locales: string[];
+  has_articles: boolean;
+  updated_at: string;
+};
+
+export type DtcListResponse = {
+  results: DtcCodeListItem[];
+  count: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
+};
+
+export type DtcArticleApi = {
+  slug: string;
+  title: string;
+  excerpt: string;
+  body_html: string;
+  available_locales: string[];
+  sort_order: number;
+  updated_at: string;
+};
+
+export type DtcCodeDetail = {
+  code: string;
+  family: string;
+  source_description: string;
+  summary: string;
+  meta_title: string;
+  meta_description: string;
+  available_locales: string[];
+  articles: DtcArticleApi[];
+  updated_at: string;
+};
+
+function mapDtcListRow(row: Record<string, unknown>): DtcCodeListItem {
+  return {
+    code: String(row.code ?? ""),
+    family: String(row.family ?? ""),
+    title: String(row.title ?? ""),
+    excerpt: String(row.excerpt ?? ""),
+    available_locales: Array.isArray(row.available_locales)
+      ? (row.available_locales as string[]).filter((x) => typeof x === "string")
+      : [],
+    has_articles: Boolean(row.has_articles),
+    updated_at: String(row.updated_at ?? ""),
+  };
+}
+
+export type DtcListQuery = {
+  q?: string;
+  family?: string;
+  has_articles?: string;
+  page?: number;
+  page_size?: number;
+};
+
+export async function getDtcListForLocale(
+  locale: string,
+  query: DtcListQuery = {},
+): Promise<DtcListResponse> {
+  const base = (process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8001/api/v1").replace(
+    /\/$/,
+    "",
+  );
+  const sp = new URLSearchParams();
+  if (query.q) sp.set("q", query.q);
+  if (query.family) sp.set("family", query.family);
+  if (query.has_articles) sp.set("has_articles", query.has_articles);
+  if (query.page != null) sp.set("page", String(query.page));
+  if (query.page_size != null) sp.set("page_size", String(query.page_size));
+  const qs = sp.toString();
+  const url = `${base}/dtc/${qs ? `?${qs}` : ""}`;
+  const res = await logSsrFetchMs(`dtc/ list locale=${locale}`, () =>
+    fetch(url, {
+      credentials: "omit",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Accept-Language": locale,
+        "X-Locale": locale,
+      },
+      next: { revalidate: 120 },
+    }),
+  );
+  if (!res.ok) {
+    throw new ApiError(res.status, await res.json().catch(() => ({})));
+  }
+  const data = (await res.json()) as Record<string, unknown>;
+  const resultsRaw = data.results;
+  const results = Array.isArray(resultsRaw)
+    ? (resultsRaw as Record<string, unknown>[]).map(mapDtcListRow)
+    : [];
+  return {
+    results,
+    count: Number(data.count ?? 0),
+    page: Number(data.page ?? 1),
+    page_size: Number(data.page_size ?? 24),
+    total_pages: Number(data.total_pages ?? 0),
+  };
+}
+
+export async function getDtcCodeForLocale(
+  locale: string,
+  code: string,
+): Promise<DtcCodeDetail | null> {
+  const base = (process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8001/api/v1").replace(
+    /\/$/,
+    "",
+  );
+  const c = encodeURIComponent(code.trim().toUpperCase());
+  const res = await fetch(`${base}/dtc/${c}/`, {
+    credentials: "omit",
+    headers: {
+      "Accept-Language": locale,
+      "X-Locale": locale,
+    },
+    next: { revalidate: 300 },
+  });
+  if (res.status === 404) return null;
+  if (!res.ok) {
+    throw new ApiError(res.status, await res.json().catch(() => ({})));
+  }
+  const row = (await res.json()) as Record<string, unknown>;
+  const artsRaw = row.articles;
+  const articles: DtcArticleApi[] = Array.isArray(artsRaw)
+    ? (artsRaw as Record<string, unknown>[]).map((a) => ({
+        slug: String(a.slug ?? ""),
+        title: String(a.title ?? ""),
+        excerpt: String(a.excerpt ?? ""),
+        body_html: String(a.body_html ?? ""),
+        available_locales: Array.isArray(a.available_locales)
+          ? (a.available_locales as string[]).filter((x) => typeof x === "string")
+          : [],
+        sort_order: Number(a.sort_order ?? 0),
+        updated_at: String(a.updated_at ?? ""),
+      }))
+    : [];
+  return {
+    code: String(row.code ?? ""),
+    family: String(row.family ?? ""),
+    source_description: String(row.source_description ?? ""),
+    summary: String(row.summary ?? ""),
+    meta_title: String(row.meta_title ?? ""),
+    meta_description: String(row.meta_description ?? ""),
+    available_locales: Array.isArray(row.available_locales)
+      ? (row.available_locales as string[]).filter((x) => typeof x === "string")
+      : [],
+    articles,
+    updated_at: String(row.updated_at ?? ""),
+  };
+}
+
 export async function getPlans(): Promise<Plan[]> {
   const base = BASE_URL.replace(/\/$/, "");
   const res = await fetch(`${base}/billing/plans/`, {

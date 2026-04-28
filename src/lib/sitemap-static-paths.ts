@@ -14,10 +14,8 @@ export const SITEMAP_PATHS_WITHOUT_LOCALE = [
   "/faq",
   "/download",
   "/blog",
+  "/dtc",
 ] as const;
-
-/** Коды DTC в sitemap; расширять из БД. Синхронизировано с примером в app/[locale]/dtc/[code]/page.tsx. */
-export const DTC_CODES_FOR_SITEMAP: string[] = ["P0420"];
 
 export function allLocalizedSitemapPaths(): string[] {
   const out: string[] = [];
@@ -25,12 +23,6 @@ export function allLocalizedSitemapPaths(): string[] {
     const segment = p === "" ? "" : p;
     for (const locale of routing.locales) {
       out.push(localizedPath(locale, segment));
-    }
-  }
-  for (const code of DTC_CODES_FOR_SITEMAP) {
-    const dtcPath = `/dtc/${code.toUpperCase()}`;
-    for (const locale of routing.locales) {
-      out.push(localizedPath(locale, dtcPath));
     }
   }
   return out;

@@ -71,6 +71,22 @@ const nextConfig = {
         destination: "/:locale/pricing",
         permanent: true,
       },
+      // Легаси slug с верхним регистром (middleware тоже нормализует /blog/*)
+      {
+        source: "/blog/OBD2-PID-Reference",
+        destination: "/blog/obd2-pid-reference",
+        permanent: true,
+      },
+      {
+        source: "/en/blog/OBD2-PID-Reference",
+        destination: "/blog/obd2-pid-reference",
+        permanent: true,
+      },
+      {
+        source: "/:locale(ru|de|pl|es|it)/blog/OBD2-PID-Reference",
+        destination: "/:locale/blog/obd2-pid-reference",
+        permanent: true,
+      },
     ];
   },
   async rewrites() {

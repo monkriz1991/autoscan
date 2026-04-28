@@ -1,12 +1,14 @@
 import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
 import { getBlogPostsForLocale } from "@/lib/api";
+import { getDtcCodesForSitemap } from "@/lib/dtc-sitemap";
 import { allLocalizedSitemapPaths } from "@/lib/sitemap-static-paths";
 import { getSiteOrigin, localizedPath } from "@/lib/site-url";
 
 function priorityForPath(path: string): number {
   if (path === "/" || path.match(/^\/(ru|de|pl|es|it)\/?$/)) return path === "/" ? 1 : 0.95;
   if (path === "/pricing" || /^\/(ru|de|pl|es|it)\/pricing$/.test(path)) return 0.9;
+  if (path === "/dtc" || /^\/(ru|de|pl|es|it)\/dtc$/.test(path)) return 0.75;
   if (path.includes("/dtc/")) return 0.7;
   return 0.8;
 }
@@ -40,6 +42,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     posts = [];
   }
 
+  let dtcEntries: MetadataRoute.Sitemap = [];
+  try {
+    const dtcRows = await getDtcCodesForSitemap();
+    for (const row of dtcRows) {
+      if (!row.code) continue;
+      const lm = row.updated_at ? new Date(row.updated_at) : now;
+      for (const locale of routing.locales) {
+        const path = localizedPath(locale, `/dtc/${row.code.toUpperCase()}`);
+        const url = path === "/" ? `${origin}/` : `${origin}${path}`;
+        dtcEntries.push({
+          url,
+          lastModified: Number.isNaN(lm.getTime()) ? now : lm,
+          changeFrequency: "monthly",
+          priority: 0.7,
+        });
+      }
+    }
+  } catch {
+    dtcEntries = [];
+  }
+
   const blogEntries: MetadataRoute.Sitemap = [];
   for (const post of posts) {
     if (!post.slug) continue;
@@ -56,5 +79,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  return [...staticEntries, ...blogEntries];
+  return [...staticEntries, ...dtcEntries, ...blogEntries];
 }

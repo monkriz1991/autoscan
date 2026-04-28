@@ -61,6 +61,19 @@ export default function middleware(request: NextRequest) {
     }
   }
 
+  // Блог: slug только в lowercase (301: /blog/OBD2-PID-Reference → /blog/obd2-pid-reference)
+  const blogSlugMatch = pathWithoutLocale.match(/^\/blog\/([^/]+)\/?$/);
+  if (blogSlugMatch) {
+    const slugSeg = blogSlugMatch[1];
+    const slugLower = slugSeg.toLowerCase();
+    if (slugSeg !== slugLower) {
+      const locale = localeMatch?.[1] || routing.defaultLocale;
+      const destUrl = new URL(localizedPath(locale, `/blog/${slugLower}`), request.url);
+      destUrl.search = stripTrackingSearchParams(request.nextUrl.searchParams).toString();
+      return NextResponse.redirect(destUrl, 301);
+    }
+  }
+
   // Сначала next-intl: префикс в URL (localeCookie: false — без Set-Cookie для CDN-кэша HTML)
   const intlResponse = intlMiddleware(request);
   if (intlResponse.status >= 300 && intlResponse.status < 400) {

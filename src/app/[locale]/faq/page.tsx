@@ -7,8 +7,10 @@ import { buildFaqStructuredDataFromPublicItems } from "@/lib/seo/faq-public-stru
 import { mergeStructuredDataDocs } from "@/lib/seo/structured-data";
 import { buildStaticGlobalStructuredData } from "@/lib/seo/static-structured-data";
 import { buildLocalePageMetadata } from "@/lib/seo-metadata";
+import { Link } from "@/i18n/navigation";
 import { getPublicFaqForLocale } from "@/lib/api";
-import { generateCanonicalUrlForLocale } from "@/lib/site-url";
+import { FAQ_SAMPLE_DTC_CODES } from "@/data/popular-dtc-codes";
+import { generateCanonicalUrlForLocale, localizedPath } from "@/lib/site-url";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -44,6 +46,36 @@ export default async function FaqPage({ params }: { params: Promise<{ locale: st
         <h1 className="marketing-page__hero-title">{t("title")}</h1>
         <p className="marketing-page__hero-sub">{tSeo("faqDescription")}</p>
       </div>
+
+      <Stack gap="sm" mb="xl" className="faq-page__dtc-teaser">
+        <Text component="h2" size="lg" fw={700}>
+          {t("dtcSectionTitle")}
+        </Text>
+        <Text c="dimmed" size="sm" maw={720}>
+          {t("dtcSectionLead")}
+        </Text>
+        <Group gap="xs" wrap="wrap">
+          <Link href="/dtc" style={{ fontWeight: 600 }}>
+            {t("dtcHubLink")}
+          </Link>
+          {FAQ_SAMPLE_DTC_CODES.map((code) => (
+            <Link
+              key={code}
+              href={localizedPath(locale, `/dtc/${code}`)}
+              style={{
+                padding: "0.25rem 0.6rem",
+                borderRadius: 6,
+                border: "1px solid color-mix(in srgb, var(--mantine-color-gray-6) 35%, transparent)",
+                textDecoration: "none",
+                fontSize: "0.875rem",
+                fontWeight: 600,
+              }}
+            >
+              {code}
+            </Link>
+          ))}
+        </Group>
+      </Stack>
 
       {items === null ? (
         <Text c="red">{t("error")}</Text>

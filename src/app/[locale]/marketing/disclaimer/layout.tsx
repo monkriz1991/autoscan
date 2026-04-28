@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import JsonLd from "@/components/seo/JsonLd";
 import { buildLocalePageMetadata } from "@/lib/seo-metadata";
-import { fetchStructuredData } from "@/lib/seo/structured-data";
+import { buildStaticWebPageStructuredData } from "@/lib/seo/static-structured-data";
 import { alternateLanguageUrls } from "@/lib/site-url";
 
 export async function generateMetadata({
@@ -25,9 +25,7 @@ export default async function DisclaimerLayout({
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "seo" });
   const pageUrl = alternateLanguageUrls("/marketing/disclaimer")[locale];
-  const webpageLd = await fetchStructuredData({
-    bundles: ["webpage"],
-    locale,
+  const webpageLd = buildStaticWebPageStructuredData({
     pageUrl,
     title: t("disclaimerTitle"),
     description: t("disclaimerDescription"),

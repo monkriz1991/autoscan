@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import JsonLd from "@/components/seo/JsonLd";
-import { fetchStructuredData } from "@/lib/seo/structured-data";
+import { buildStaticWebPageStructuredData } from "@/lib/seo/static-structured-data";
 import { buildLocalePageMetadata } from "@/lib/seo-metadata";
 import { alternateLanguageUrls } from "@/lib/site-url";
 import { routing } from "@/i18n/routing";
@@ -25,9 +25,7 @@ export default async function PricingPage({
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "seo" });
   const pageUrl = alternateLanguageUrls("/pricing")[locale];
-  const pricingLd = await fetchStructuredData({
-    bundles: ["pricing"],
-    locale,
+  const pricingLd = buildStaticWebPageStructuredData({
     pageUrl,
     title: t("pricingTitle"),
     description: t("pricingDescription"),

@@ -3,6 +3,8 @@
  * Использует NEXT_PUBLIC_API_BASE_URL (например, http://localhost:8000/api/v1).
  */
 
+import { logSsrFetchMs } from "@/lib/server-fetch-timing";
+
 const BASE_URL =
   typeof window !== "undefined"
     ? (process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8001/api/v1")
@@ -959,7 +961,9 @@ export async function getDownloadsPageForLocale(
   if (cookieHeader) {
     headers.Cookie = cookieHeader;
   }
-  const res = await fetch(url, { headers, next: { revalidate: 60 } });
+  const res = await logSsrFetchMs(`downloads/page locale=${locale}`, () =>
+    fetch(url, { headers, next: { revalidate: 60 } }),
+  );
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
     throw new ApiError(res.status, data);
@@ -1062,15 +1066,17 @@ export async function getBlogPostsForLocale(locale: string): Promise<BlogPostIte
     /\/$/,
     "",
   );
-  const res = await fetch(`${base}/blog/`, {
-    credentials: "omit",
-    headers: {
-      "Content-Type": "application/json",
-      "Accept-Language": locale,
-      "X-Locale": locale,
-    },
-    next: { revalidate: 120 },
-  });
+  const res = await logSsrFetchMs(`blog/ list locale=${locale}`, () =>
+    fetch(`${base}/blog/`, {
+      credentials: "omit",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept-Language": locale,
+        "X-Locale": locale,
+      },
+      next: { revalidate: 120 },
+    }),
+  );
   if (!res.ok) {
     throw new ApiError(res.status, await res.json().catch(() => ({})));
   }
@@ -1161,14 +1167,16 @@ export async function getPlans(): Promise<Plan[]> {
 /** SSR тарифов с явной локалью: на сервере getLocaleHeaders() не видит document.lang. */
 export async function getPlansForLocale(locale: string): Promise<Plan[]> {
   const base = BASE_URL.replace(/\/$/, "");
-  const res = await fetch(`${base}/billing/plans/`, {
-    credentials: "omit",
-    headers: {
-      "Accept-Language": locale,
-      "X-Locale": locale,
-    },
-    next: { revalidate: 120 },
-  });
+  const res = await logSsrFetchMs(`billing/plans locale=${locale}`, () =>
+    fetch(`${base}/billing/plans/`, {
+      credentials: "omit",
+      headers: {
+        "Accept-Language": locale,
+        "X-Locale": locale,
+      },
+      next: { revalidate: 120 },
+    }),
+  );
   if (!res.ok) throw new ApiError(res.status, await res.json().catch(() => ({})));
   const data = await res.json();
   const list = Array.isArray(data) ? data : (data as { results?: Plan[] }).results ?? [];

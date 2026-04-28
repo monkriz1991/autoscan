@@ -16,10 +16,6 @@ import CookieConsentBanner from "@/components/ui/CookieConsentBanner";
 import GoogleAdsTag from "@/components/ui/GoogleAdsTag";
 import GoogleAnalytics from "@/components/ui/GoogleAnalytics";
 import LocaleHtmlLang from "@/components/ui/LocaleHtmlLang";
-import {
-  fetchStructuredData,
-  withStructuredDataFallback,
-} from "@/lib/seo/structured-data";
 import { buildStaticGlobalStructuredData } from "@/lib/seo/static-structured-data";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
@@ -91,8 +87,8 @@ export default async function LocaleLayout({
   }
   setRequestLocale(locale);
   const messages = await getMessages();
-  const globalLdRaw = await fetchStructuredData({ bundles: ["global"], locale });
-  const globalLd = withStructuredDataFallback(globalLdRaw, buildStaticGlobalStructuredData());
+  /** Без await к SEO API: быстрый RSC; глобальный JSON-LD совпадает с fallback из Django bundle `global`. */
+  const globalLd = buildStaticGlobalStructuredData();
 
   const pathHeader = (await headers()).get(MIDDLEWARE_PATHNAME_HEADER);
   const chromeKindFromServer =

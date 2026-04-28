@@ -1,11 +1,13 @@
+import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
 import { localizedPath } from "@/lib/site-url";
-import { getPlansForLocale, type Plan, type PlanFeatures } from "@/lib/api";
-import PlanCheckoutButton from "@/components/billing/PlanCheckoutButton";
 import AuthDashboardLink from "./AuthDashboardLink";
+import LandingVideo from "./LandingVideo";
+import HomePricingSection, { LandingPricingSkeleton } from "./HomePricingSection";
 
 type Props = { locale: string };
 
+/** Ролики кладутся в `frontend/public/vidio/` (раздача как статика); без файлов сеть будет без шторма повторов за счёт LandingVideo. */
 const HERO_PREVIEW_VIDEO_SRC = "/vidio/preview.mp4";
 const HERO_PREVIEW_POSTER_SRC = "/landing/hero-slide-diagnostics.png";
 const FEATURES_HEADING_VIDEO_SRC = "/vidio/chatvideo.mp4";
@@ -39,73 +41,9 @@ const BRAND_SLUGS = [
   "renault",
 ] as const;
 
-const TIER_ORDER: Record<string, number> = {
-  free: 0,
-  lite: 1,
-  basic: 2,
-  pro: 3,
-  premium: 4,
-};
-
-const defaultFeatures: PlanFeatures = {
-  unlimited_devices: false,
-  scan_errors: false,
-  view_params: false,
-  vehicle_config: false,
-  ai_chat_history: false,
-  record_params: false,
-  metrics_history: false,
-  realtime_analysis: false,
-};
-
-function durationSortKey(durationDays: number | null): number {
-  if (durationDays === null) return 0;
-  if (durationDays === 30) return 1;
-  if (durationDays === 365) return 2;
-  return 3;
-}
-
-function sortPlansForDisplay(plans: Plan[]): Plan[] {
-  return [...plans].sort((a, b) => {
-    const ta = TIER_ORDER[a.tier.toLowerCase()] ?? 99;
-    const tb = TIER_ORDER[b.tier.toLowerCase()] ?? 99;
-    if (ta !== tb) return ta - tb;
-    const da = durationSortKey(a.duration_days);
-    const db = durationSortKey(b.duration_days);
-    if (da !== db) return da - db;
-    return a.id - b.id;
-  });
-}
-
-function isFreeTier(plan: Plan): boolean {
-  const tier = plan.tier.toLowerCase();
-  if (tier === "free") return true;
-  const n = parseFloat(plan.price);
-  return Number.isFinite(n) && n <= 0;
-}
-
-function isFeaturedPlan(plan: Plan): boolean {
-  return plan.tier.toLowerCase() === "pro" && plan.duration_days !== 365;
-}
-
-function tierRank(plan: Plan): number {
-  return TIER_ORDER[plan.tier.toLowerCase()] ?? 99;
-}
-
-function planFeatures(plan: Plan): PlanFeatures {
-  return plan.features ?? defaultFeatures;
-}
-
-/** SSR-контент главной: H1, тексты, CTA и основные секции видны в HTML без JS. */
+/** SSR-контент главной: H1, тексты, CTA и основные секции видны в HTML без JS. Тарифы — отдельный RSC-поток (Suspense). */
 export default async function HomePageShell({ locale }: Props) {
   const t = await getTranslations({ locale, namespace: "landing" });
-  const tNav = await getTranslations({ locale, namespace: "nav" });
-  const tp = await getTranslations({ locale, namespace: "pricing" });
-  const plans = await getPlansForLocale(locale).catch((err) => {
-    console.error("[HomePageShell] failed to load pricing plans", err);
-    return [] as Plan[];
-  });
-  const sortedPlans = sortPlansForDisplay(plans);
 
   return (
     <div className="home-page">
@@ -125,14 +63,12 @@ export default async function HomePageShell({ locale }: Props) {
         }}
       >
         <div className="landing-hero__video-bg" style={{ position: "absolute", inset: 0, zIndex: 0, overflow: "hidden" }} aria-hidden>
-          <video
-            className="landing-hero__video-bg-el"
-            muted
-            loop
-            playsInline
-            autoPlay
-            preload="metadata"
+          <LandingVideo
+            mp4Src={HERO_PREVIEW_VIDEO_SRC}
             poster={HERO_PREVIEW_POSTER_SRC}
+            priority="hero"
+            className="landing-hero__video-bg-el"
+            preload="none"
             style={{
               position: "absolute",
               inset: 0,
@@ -145,9 +81,7 @@ export default async function HomePageShell({ locale }: Props) {
               transform: "scale(1.08)",
               filter: "blur(6px)",
             }}
-          >
-            <source src={HERO_PREVIEW_VIDEO_SRC} type="video/mp4" />
-          </video>
+          />
         </div>
         <div className="landing-hero__scrim" style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", backgroundImage: HERO_SCRIM_BG }} aria-hidden />
         <div
@@ -248,9 +182,13 @@ export default async function HomePageShell({ locale }: Props) {
           <div className="landing-features__heading-video-col">
             <div className="landing-features__heading-video-stage" role="img" aria-label={t("features.chatVideoAria")}>
               <div className="landing-features__heading-video-wrap" aria-hidden>
-                <video className="landing-features__heading-video" autoPlay muted loop playsInline preload="metadata">
-                  <source src={FEATURES_HEADING_VIDEO_SRC} type="video/mp4" />
-                </video>
+                <LandingVideo
+                  mp4Src={FEATURES_HEADING_VIDEO_SRC}
+                  poster={HERO_PREVIEW_POSTER_SRC}
+                  priority="feature"
+                  className="landing-features__heading-video"
+                  preload="none"
+                />
               </div>
             </div>
           </div>
@@ -261,9 +199,13 @@ export default async function HomePageShell({ locale }: Props) {
             <div className="landing-feature__video-shell" role="img" aria-label={t("features.liveDataVideoAria")}>
               <div className="landing-feature__video-stage">
                 <div className="landing-feature__video-wrap" aria-hidden>
-                  <video className="landing-feature__video" autoPlay muted loop playsInline preload="metadata" poster={FEATURE_LIVE_POSTER_SRC}>
-                    <source src={FEATURE_LIVE_VIDEO_SRC} type="video/mp4" />
-                  </video>
+                  <LandingVideo
+                    mp4Src={FEATURE_LIVE_VIDEO_SRC}
+                    poster={FEATURE_LIVE_POSTER_SRC}
+                    priority="feature"
+                    className="landing-feature__video"
+                    preload="none"
+                  />
                 </div>
               </div>
             </div>
@@ -306,97 +248,9 @@ export default async function HomePageShell({ locale }: Props) {
         <p style={{ color: "var(--text-muted)", fontSize: "0.875rem", margin: 0 }}>{t("cars.footnote")}</p>
       </section>
 
-      <section className="landing-pricing" style={{ padding: "56px 0", display: "grid", gap: "1.5rem" }}>
-        <div>
-          <h2 className="landing-section-title">
-            {t("pricing.title")}
-          </h2>
-          <p className="landing-pricing__lead" style={{ lineHeight: 1.65 }}>{t("pricing.subtitle")}</p>
-        </div>
-        <div className="landing-pricing__grid">
-          {sortedPlans.length === 0 ? (
-            <p style={{ color: "#d1dae6", margin: 0 }}>{tp("noPlans")}</p>
-          ) : (
-            sortedPlans.map((plan) => {
-              const f = planFeatures(plan);
-              const free = isFreeTier(plan);
-              const featured = isFeaturedPlan(plan);
-              const aiCount = plan.max_requests ?? 0;
-              const proOrHigher = tierRank(plan) >= TIER_ORDER.pro;
-              const predictiveMaintenance = f.predictive_maintenance_alerts ?? proOrHigher;
-              const aiBlogSearch = f.ai_blog_search ?? proOrHigher;
-              const aiChatAssistant = f.ai_chat_assistant ?? proOrHigher;
-              const priceMain = free ? tp("freePriceDisplay") : `${plan.price} ${plan.currency}`;
-              const period =
-                plan.duration_days === null
-                  ? tp("unlimited")
-                  : plan.duration_days === 30
-                    ? tp("periodBilledMonthly")
-                    : plan.duration_days === 365
-                      ? tp("periodBilledYearly")
-                      : tp("days", { count: plan.duration_days });
-              const devicesNote = f.unlimited_devices
-                ? tp("devicesUnlimited_explained")
-                : tp("devicesLimited_explained", { count: plan.max_devices });
-              const rows = [
-                [f.scan_errors, tp("feature_scan_errors")],
-                [aiCount > 0, tp("cardLine_ai", { count: aiCount })],
-                [f.view_params, tp("compare_live")],
-                [f.record_params, tp("compare_export")],
-                [f.metrics_history, tp("compare_history")],
-                [predictiveMaintenance, tp("feature_predictive_maintenance")],
-                [aiBlogSearch, tp("feature_ai_blog_search")],
-                [aiChatAssistant, tp("feature_ai_chat_assistant")],
-                [!free, free ? tp("supportCommunity") : tp("supportStandard")],
-              ] as const;
-
-              return (
-                <article
-                  key={plan.id}
-                  className={`landing-pricing-card${featured ? " landing-pricing-card--pro" : ""}`}
-                  style={{ display: "flex", flexDirection: "column", gap: 16 }}
-                >
-                  {featured ? (
-                    <span className="landing-pricing-card__ribbon" style={{ fontWeight: 800 }}>
-                      {tp("badgeMostPopular")}
-                    </span>
-                  ) : null}
-                  <div>
-                    <h3 style={{ margin: 0, color: "#0f172a", fontSize: "1.25rem", fontWeight: 800 }}>{plan.name}</h3>
-                    <div className="landing-pricing-card__price-wrap">
-                      <p className="landing-pricing-card__price" style={{ margin: "8px 0 0", fontWeight: 800 }}>{priceMain}</p>
-                    </div>
-                    <p style={{ margin: "6px 0 0", color: "#64748b", fontSize: "0.875rem" }}>
-                      {free ? tp("freeForever") : period}
-                    </p>
-                    <p style={{ margin: "10px 0 0", color: "#475569", fontSize: "0.875rem", lineHeight: 1.5 }}>
-                      {devicesNote}
-                    </p>
-                  </div>
-                  <ul style={{ display: "grid", gap: 10, margin: 0, padding: 0, listStyle: "none", color: "#334155" }}>
-                    {rows.map(([enabled, label]) => (
-                      <li key={label} style={{ display: "grid", gridTemplateColumns: "22px 1fr", gap: 10, alignItems: "start" }}>
-                        <span className={enabled ? "landing-pricing-icon-yes" : "landing-pricing-icon-no"} aria-hidden>
-                          {enabled ? "✓" : "×"}
-                        </span>
-                        <span style={!enabled ? { textDecoration: "line-through", opacity: 0.72 } : undefined}>{label}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div style={{ marginTop: "auto" }}>
-                    <PlanCheckoutButton plan={plan} />
-                    {free ? (
-                      <p style={{ margin: "0.75rem 0 0", textAlign: "center", color: "#64748b", fontSize: "0.875rem" }}>
-                        {tp("freeNoCreditCard")}
-                      </p>
-                    ) : null}
-                  </div>
-                </article>
-              );
-            })
-          )}
-        </div>
-      </section>
+      <Suspense fallback={<LandingPricingSkeleton />}>
+        <HomePricingSection locale={locale} />
+      </Suspense>
     </div>
   );
 }

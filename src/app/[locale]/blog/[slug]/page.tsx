@@ -5,7 +5,7 @@ import { routing } from "@/i18n/routing";
 import StaticJsonLd from "@/components/landing/StaticJsonLd";
 import JsonLd from "@/components/seo/JsonLd";
 import { getBlogPostForLocale } from "@/lib/api";
-import { fetchStructuredData } from "@/lib/seo/structured-data";
+import { buildStaticBlogArticleStructuredData } from "@/lib/seo/static-structured-data";
 import { buildOpenGraphTwitterBlock, blogPostOpenGraphImageAbsoluteUrl } from "@/lib/og-metadata";
 import { alternateLanguageUrls } from "@/lib/site-url";
 import BlogPostContent from "./BlogPostContent";
@@ -54,13 +54,11 @@ export default async function BlogPostPage({ params }: Props) {
   const tNav = await getTranslations({ locale, namespace: "nav" });
   const tSeo = await getTranslations({ locale, namespace: "seo" });
   const pageUrl = alternateLanguageUrls(`/blog/${slug}`)[locale];
-  const blogPostLd = await fetchStructuredData({
-    bundles: ["blog_post"],
-    locale,
+  const blogPostLd = buildStaticBlogArticleStructuredData({
     pageUrl,
-    slug,
     title: post.title,
     description: post.excerpt?.trim() || tSeo("blogDescription"),
+    datePublished: post.published_at,
   });
   const breadcrumbLd = {
     "@context": "https://schema.org",

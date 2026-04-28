@@ -6,10 +6,6 @@ import StaticJsonLd from "@/components/landing/StaticJsonLd";
 import { buildOpenGraphTwitterBlock, staticOpenGraphImageAbsoluteUrl } from "@/lib/og-metadata";
 import { getCanonicalUrlFromRequestHeaders } from "@/lib/request-canonical";
 import { buildLocalePageMetadata } from "@/lib/seo-metadata";
-import {
-  fetchStructuredData,
-  withStructuredDataFallback,
-} from "@/lib/seo/structured-data";
 import { buildStaticHomeStructuredData } from "@/lib/seo/static-structured-data";
 import { alternateLanguageUrls, getSiteOrigin } from "@/lib/site-url";
 import HomePageShell from "@/components/landing/HomePageShell";
@@ -78,21 +74,12 @@ export default async function HomePage({
   const pageUrlNoSlash = pageUrl.replace(/\/$/, "");
   const homeTitle = tSeo("homeTitle");
   const homeDescription = tSeo("homeDescription");
-  const homeLdRaw = await fetchStructuredData({
-    bundles: ["home"],
-    locale,
+  /** Локальный WebPage JSON-LD без блокирующего запроса к /seo/structured-data/. */
+  const homeLd = buildStaticHomeStructuredData({
     pageUrl,
     title: homeTitle,
     description: homeDescription,
   });
-  const homeLd = withStructuredDataFallback(
-    homeLdRaw,
-    buildStaticHomeStructuredData({
-      pageUrl,
-      title: homeTitle,
-      description: homeDescription,
-    }),
-  );
 
   const softwareApplicationLd = {
     "@context": "https://schema.org",

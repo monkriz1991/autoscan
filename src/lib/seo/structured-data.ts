@@ -3,6 +3,8 @@
  * Должен совпадать SEO_SITE_URL (Django) с NEXT_PUBLIC_SITE_URL (Next).
  */
 
+import { logSsrFetchMs } from "@/lib/server-fetch-timing";
+
 export type StructuredDataDoc = {
   "@context": string;
   "@graph": Record<string, unknown>[];
@@ -50,13 +52,15 @@ export async function fetchStructuredData(params: {
   const urlStr = u.toString();
 
   try {
-    const res = await fetch(urlStr, {
-      next: { revalidate: STRUCTURED_DATA_REVALIDATE_SEC },
-      headers: {
-        Accept: "application/json",
-        "X-Locale": params.locale,
-      },
-    });
+    const res = await logSsrFetchMs(`seo/structured-data bundles=${params.bundles.join(",")}`, async () =>
+      fetch(urlStr, {
+        next: { revalidate: STRUCTURED_DATA_REVALIDATE_SEC },
+        headers: {
+          Accept: "application/json",
+          "X-Locale": params.locale,
+        },
+      }),
+    );
     if (!res.ok) {
       logStructuredDataFailure(urlStr, `HTTP ${res.status}`);
       return null;

@@ -110,3 +110,37 @@ export function buildStaticHomeStructuredData(params: {
     ],
   };
 }
+
+/**
+ * Та же WebPage-схема для маркетинговых маршрутов (/pricing и т.д.) без запроса к API SEO.
+ */
+export function buildStaticWebPageStructuredData(params: {
+  pageUrl: string;
+  title: string;
+  description: string;
+}): StructuredDataDoc {
+  return buildStaticHomeStructuredData(params);
+}
+
+/** Article для поста блога без удалённого bundle `blog_post` (SSR без блокировки на SEO API). */
+export function buildStaticBlogArticleStructuredData(params: {
+  pageUrl: string;
+  title: string;
+  description: string;
+  datePublished: string;
+}): StructuredDataDoc {
+  const url = params.pageUrl.replace(/\/$/, "");
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${url}#article`,
+        headline: params.title,
+        description: params.description,
+        url,
+        datePublished: params.datePublished,
+      },
+    ],
+  };
+}

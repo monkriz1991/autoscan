@@ -1,9 +1,17 @@
-import { Badge, Group, Image, Stack, Text, Title } from "@mantine/core";
+import { Badge, Group, Image, Stack, Text } from "@mantine/core";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import JsonLd from "@/components/seo/JsonLd";
 import { routing } from "@/i18n/routing";
+import { buildFaqStructuredDataFromMessages } from "@/lib/seo/faq-structured-fallback";
+import {
+  faqRemoteOrNullForMerge,
+  fetchStructuredData,
+  withStructuredDataFallback,
+} from "@/lib/seo/structured-data";
 import { buildLocalePageMetadata } from "@/lib/seo-metadata";
 import { getPublicFaqForLocale } from "@/lib/api";
+import { generateCanonicalUrlForLocale } from "@/lib/site-url";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -23,6 +31,17 @@ export default async function FaqPage({ params }: { params: Promise<{ locale: st
   setRequestLocale(locale);
   const tSeo = await getTranslations({ locale, namespace: "seo" });
   const t = await getTranslations({ locale, namespace: "faqPage" });
+  const pageUrl = generateCanonicalUrlForLocale(locale, "/faq");
+  const remoteRaw = await fetchStructuredData({
+    bundles: ["faq"],
+    locale,
+    pageUrl,
+  });
+  const remote = faqRemoteOrNullForMerge(remoteRaw);
+  const faqLd = withStructuredDataFallback(
+    remote,
+    await buildFaqStructuredDataFromMessages(locale, pageUrl),
+  );
   const items = await getPublicFaqForLocale(locale).catch((err) => {
     console.error("[FaqPage] failed to load FAQ", err);
     return null;
@@ -30,6 +49,8 @@ export default async function FaqPage({ params }: { params: Promise<{ locale: st
 
   return (
     <Stack component="section" gap="lg" className="faq-page marketing-page">
+      {/* Только bundle `faq` — без дубля Organization/WebSite из layout (там уже static global). */}
+      <JsonLd data={faqLd} />
       <div className="marketing-page__hero">
         <h1 className="marketing-page__hero-title">{t("title")}</h1>
         <p className="marketing-page__hero-sub">{tSeo("faqDescription")}</p>

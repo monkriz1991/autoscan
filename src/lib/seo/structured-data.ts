@@ -87,3 +87,21 @@ export function withStructuredDataFallback(
   }
   return fallback;
 }
+
+/**
+ * Ответ SEO API с FAQPage без непустого `mainEntity` даёт ошибку в Search Console — считаем ответ недействительным и берём fallback.
+ */
+export function faqRemoteOrNullForMerge(doc: StructuredDataDoc | null): StructuredDataDoc | null {
+  if (!doc || !Array.isArray(doc["@graph"]) || doc["@graph"].length === 0) {
+    return null;
+  }
+  for (const node of doc["@graph"]) {
+    const n = node as Record<string, unknown>;
+    if (n["@type"] !== "FAQPage") continue;
+    const me = n["mainEntity"];
+    if (!Array.isArray(me) || me.length === 0) {
+      return null;
+    }
+  }
+  return doc;
+}

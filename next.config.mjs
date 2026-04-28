@@ -3,7 +3,7 @@ import createNextIntlPlugin from "next-intl/plugin";
 /**
  * Международная маршрутизация (App Router): ключ `i18n` в next.config не используется —
  * он относится к старому Pages Router. Здесь локали задаются в `src/i18n/routing.ts`,
- * префиксы URL и cookie локали обрабатывает `src/middleware.ts` (next-intl + кастомная логика).
+ * префиксы URL и локаль обрабатывает `src/middleware.ts` (next-intl + кастомная логика; `localeCookie: false` в routing).
  * Домен по умолчанию для canonical/OG: NEXT_PUBLIC_SITE_URL → https://aiscanauto.com
  */
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
@@ -17,6 +17,8 @@ const backendBase = process.env.NEXT_PUBLIC_BACKEND_BASE ||
 const nextConfig = {
   output: "standalone",
   reactStrictMode: true,
+  /** Не отдаём заголовок X-Powered-By: Next.js */
+  poweredByHeader: false,
   /** ESM-пакет Swiper: явная трансформация снижает сбои бандлера (webpack / Turbopack). */
   transpilePackages: ["swiper"],
   // CDN (s-maxage): публичные HTML/страницы; «последнее совпадение» переопределяет Cache-Control для того же ключа.
@@ -25,7 +27,21 @@ const nextConfig = {
     const privateAuthPages = [
       { key: "Cache-Control", value: "private, no-cache, must-revalidate" },
     ];
+    const securityHeaders = [
+      {
+        key: "Strict-Transport-Security",
+        value: "max-age=63072000; includeSubDomains; preload",
+      },
+      { key: "X-Frame-Options", value: "SAMEORIGIN" },
+      { key: "X-Content-Type-Options", value: "nosniff" },
+      { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+      {
+        key: "Permissions-Policy",
+        value: "camera=(), microphone=(), geolocation=()",
+      },
+    ];
     return [
+      { source: "/:path*", headers: securityHeaders },
       {
         source: "/_next/static/:path*",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],

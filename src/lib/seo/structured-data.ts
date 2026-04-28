@@ -10,6 +10,19 @@ export type StructuredDataDoc = {
   "@graph": Record<string, unknown>[];
 };
 
+/** Объединяет @graph двух документов (глобальные сущности + разметка страницы). */
+export function mergeStructuredDataDocs(
+  a: StructuredDataDoc,
+  b: StructuredDataDoc,
+): StructuredDataDoc {
+  const ga = Array.isArray(a["@graph"]) ? a["@graph"] : [];
+  const gb = Array.isArray(b["@graph"]) ? b["@graph"] : [];
+  return {
+    "@context": "https://schema.org",
+    "@graph": [...ga, ...gb],
+  };
+}
+
 function apiV1Base(): string {
   return (process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8001/api/v1").replace(/\/$/, "");
 }
@@ -104,4 +117,23 @@ export function faqRemoteOrNullForMerge(doc: StructuredDataDoc | null): Structur
     }
   }
   return doc;
+}
+
+/**
+ * Отбраковка ответа SEO API для pricing: нужен SoftwareApplication с непустым offers,
+ * иначе берём локальный fallback из getPlansForLocale.
+ */
+export function pricingRemoteOrNullForMerge(doc: StructuredDataDoc | null): StructuredDataDoc | null {
+  if (!doc || !Array.isArray(doc["@graph"]) || doc["@graph"].length === 0) {
+    return null;
+  }
+  for (const node of doc["@graph"]) {
+    const n = node as Record<string, unknown>;
+    if (n["@type"] !== "SoftwareApplication") continue;
+    const offers = n["offers"];
+    if (Array.isArray(offers) && offers.length > 0) {
+      return doc;
+    }
+  }
+  return null;
 }

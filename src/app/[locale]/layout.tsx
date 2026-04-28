@@ -3,7 +3,11 @@ import { headers } from "next/headers";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
-import { MIDDLEWARE_PATHNAME_HEADER, getLayoutChromeKind } from "@/lib/middleware-pathname";
+import {
+  MIDDLEWARE_PATHNAME_HEADER,
+  getLayoutChromeKind,
+  shouldOmitLayoutGlobalJsonLd,
+} from "@/lib/middleware-pathname";
 import { getCanonicalUrlFromRequestHeaders } from "@/lib/request-canonical";
 import { notFound } from "next/navigation";
 import { staticOpenGraphImageAbsoluteUrl } from "@/lib/og-metadata";
@@ -93,10 +97,11 @@ export default async function LocaleLayout({
   const pathHeader = (await headers()).get(MIDDLEWARE_PATHNAME_HEADER);
   const chromeKindFromServer =
     pathHeader != null ? getLayoutChromeKind(pathHeader) : undefined;
+  const omitGlobalLd = shouldOmitLayoutGlobalJsonLd(pathHeader ?? undefined);
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <JsonLd data={globalLd} />
+      {!omitGlobalLd ? <JsonLd data={globalLd} /> : null}
       <LocaleHtmlLang locale={locale} />
       <MantineProvider
         theme={createTheme({

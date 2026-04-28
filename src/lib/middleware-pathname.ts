@@ -42,3 +42,13 @@ export function getLayoutChromeKind(pathWithoutLocale: string): LayoutChromeKind
   if (isLandingChromePath(pathWithoutLocale)) return "landing";
   return "default";
 }
+
+/**
+ * Страницы, где полный JSON-LD (global + page) отдаётся в одном `<script>` на уровне page — дубль global в layout не нужен.
+ * Если заголовок отсутствует (без middleware), оставляем global в layout.
+ */
+export function shouldOmitLayoutGlobalJsonLd(pathHeader: string | null | undefined): boolean {
+  if (pathHeader == null || pathHeader === "") return false;
+  const n = pathHeader.replace(/\/+$/, "") || "/";
+  return n === "/faq" || n === "/pricing";
+}

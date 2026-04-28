@@ -2,27 +2,13 @@ import type { Metadata } from "next";
 import { routing } from "@/i18n/routing";
 import { getSiteOrigin, localizedPath, localeToOpenGraphLocale } from "@/lib/site-url";
 
-/** Нормализованный путь страницы без хвостового «/». */
-function localizedPathNormalized(locale: string, pathWithoutLocale: string): string {
-  const raw = localizedPath(locale, pathWithoutLocale);
-  if (raw === "/" || raw === "") return "";
-  return raw.replace(/\/+$/, "");
-}
-
 /**
- * Префикс URL для opengraph-image: при as-needed для en в дереве файлов остаётся сегмент /en/...
+ * Абсолютный URL до сегмента .../opengraph-image с учётом localePrefix: as-needed (en без /en/).
  */
-function openGraphImagePathPrefix(locale: string, pathWithoutLocale: string): string {
-  const p = localizedPathNormalized(locale, pathWithoutLocale);
-  if (locale === routing.defaultLocale) {
-    if (!p) return `/${routing.defaultLocale}`;
-    if (!p.startsWith(`/${routing.defaultLocale}/`)) {
-      return `/${routing.defaultLocale}${p}`;
-    }
-    return p;
-  }
-  if (!p) return `/${locale}`;
-  return p;
+function absoluteOpenGraphImageUrl(locale: string, pathWithoutLocale: string): string {
+  const localized = localizedPath(locale, pathWithoutLocale);
+  const basePath = localized === "/" ? "" : localized.replace(/\/+$/, "");
+  return `${getSiteOrigin()}${basePath}/opengraph-image`;
 }
 
 /**
@@ -70,15 +56,15 @@ export function buildOpenGraphTwitterBlock(params: {
 
 /** Абсолютный URL opengraph-image.tsx у корня локали (mock UI + tagline). */
 export function staticOpenGraphImageAbsoluteUrl(locale: string): string {
-  return `${getSiteOrigin()}${openGraphImagePathPrefix(locale, "")}/opengraph-image`;
+  return absoluteOpenGraphImageUrl(locale, "");
 }
 
 /** Абсолютный URL динамического OG для DTC. */
 export function dtcOpenGraphImageAbsoluteUrl(locale: string, code: string): string {
-  return `${getSiteOrigin()}${openGraphImagePathPrefix(locale, `/dtc/${code.toUpperCase()}`)}/opengraph-image`;
+  return absoluteOpenGraphImageUrl(locale, `/dtc/${code.toUpperCase()}`);
 }
 
 /** OG-картинка для поста блога (отдельный opengraph-image в сегменте [slug]). */
 export function blogPostOpenGraphImageAbsoluteUrl(locale: string, slug: string): string {
-  return `${getSiteOrigin()}${openGraphImagePathPrefix(locale, `/blog/${slug}`)}/opengraph-image`;
+  return absoluteOpenGraphImageUrl(locale, `/blog/${slug}`);
 }

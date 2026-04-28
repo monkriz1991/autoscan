@@ -1025,7 +1025,30 @@ export type BlogPostItem = {
 
 export type BlogPostDetail = BlogPostItem & {
   body_html: string;
+  /** ISO; для dateModified в JSON-LD, при отсутствии в ответе — дублирует published_at. */
+  updated_at: string;
 };
+
+function mapBlogPostDetail(data: Record<string, unknown>): BlogPostDetail {
+  const published = String(data.published_at ?? "");
+  return {
+    slug: String(data.slug ?? ""),
+    title: String(data.title ?? ""),
+    excerpt: String(data.excerpt ?? ""),
+    published_at: published,
+    updated_at: String(data.updated_at ?? published),
+    body_html: String(data.body_html ?? ""),
+    available_locales: Array.isArray(data.available_locales)
+      ? (data.available_locales as string[]).filter((x) => typeof x === "string")
+      : [],
+    cover_image_url:
+      data.cover_image_url === null ||
+      data.cover_image_url === undefined ||
+      data.cover_image_url === ""
+        ? null
+        : String(data.cover_image_url),
+  };
+}
 
 function mapBlogPostRows(data: unknown): BlogPostItem[] {
   if (!Array.isArray(data)) return [];
@@ -1094,23 +1117,8 @@ export async function getBlogPost(slug: string): Promise<BlogPostDetail> {
   if (!res.ok) {
     throw new ApiError(res.status, await res.json().catch(() => ({})));
   }
-  const data = await res.json();
-  return {
-    slug: String(data.slug ?? ""),
-    title: String(data.title ?? ""),
-    excerpt: String(data.excerpt ?? ""),
-    published_at: String(data.published_at ?? ""),
-    body_html: String(data.body_html ?? ""),
-    available_locales: Array.isArray(data.available_locales)
-      ? (data.available_locales as string[]).filter((x) => typeof x === "string")
-      : [],
-    cover_image_url:
-      data.cover_image_url === null ||
-      data.cover_image_url === undefined ||
-      data.cover_image_url === ""
-        ? null
-        : String(data.cover_image_url),
-  };
+  const data = (await res.json()) as Record<string, unknown>;
+  return mapBlogPostDetail(data);
 }
 
 /** SSR/метаданные: пост с заголовками локали (getBlogPost на сервере всегда брал бы en). */
@@ -1133,23 +1141,8 @@ export async function getBlogPostForLocale(
     next: { revalidate: 120 },
   });
   if (!res.ok) return null;
-  const data = await res.json();
-  return {
-    slug: String(data.slug ?? ""),
-    title: String(data.title ?? ""),
-    excerpt: String(data.excerpt ?? ""),
-    published_at: String(data.published_at ?? ""),
-    body_html: String(data.body_html ?? ""),
-    available_locales: Array.isArray(data.available_locales)
-      ? (data.available_locales as string[]).filter((x) => typeof x === "string")
-      : [],
-    cover_image_url:
-      data.cover_image_url === null ||
-      data.cover_image_url === undefined ||
-      data.cover_image_url === ""
-        ? null
-        : String(data.cover_image_url),
-  };
+  const data = (await res.json()) as Record<string, unknown>;
+  return mapBlogPostDetail(data);
 }
 
 export async function getPlans(): Promise<Plan[]> {

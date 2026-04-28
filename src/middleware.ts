@@ -61,7 +61,7 @@ export default function middleware(request: NextRequest) {
     }
   }
 
-  // Сначала next-intl: префикс в URL и cookie NEXT_LOCALE (localeDetection: false — без Accept-Language)
+  // Сначала next-intl: префикс в URL (localeCookie: false — без Set-Cookie для CDN-кэша HTML)
   const intlResponse = intlMiddleware(request);
   if (intlResponse.status >= 300 && intlResponse.status < 400) {
     return intlResponse;

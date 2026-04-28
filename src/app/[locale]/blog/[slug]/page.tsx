@@ -54,18 +54,22 @@ export default async function BlogPostPage({ params }: Props) {
   const tNav = await getTranslations({ locale, namespace: "nav" });
   const tSeo = await getTranslations({ locale, namespace: "seo" });
   const pageUrl = alternateLanguageUrls(`/blog/${slug}`)[locale];
+  const imageForLd = post.cover_image_url ?? blogPostOpenGraphImageAbsoluteUrl(locale, slug);
+  const dateModified = post.updated_at || post.published_at;
   const blogPostLd = buildStaticBlogArticleStructuredData({
     pageUrl,
     title: post.title,
     description: post.excerpt?.trim() || tSeo("blogDescription"),
     datePublished: post.published_at,
+    dateModified,
+    imageAbsoluteUrl: imageForLd,
   });
   const breadcrumbLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: tNav("home"), item: alternateLanguageUrls("")[locale] },
-      { "@type": "ListItem", position: 2, name: tSeo("blogTitle"), item: alternateLanguageUrls("/blog")[locale] },
+      { "@type": "ListItem", position: 2, name: tNav("blog"), item: alternateLanguageUrls("/blog")[locale] },
       { "@type": "ListItem", position: 3, name: post.title, item: pageUrl },
     ],
   };

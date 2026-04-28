@@ -128,7 +128,13 @@ export function buildStaticBlogArticleStructuredData(params: {
   title: string;
   description: string;
   datePublished: string;
+  dateModified: string;
+  imageAbsoluteUrl: string;
 }): StructuredDataDoc {
+  const base = getSiteOrigin();
+  const orgId = `${base}/#organization`;
+  const name = publicSiteName();
+  const logoUrl = publicLogoUrl() || `${base}/icon.png`;
   const url = params.pageUrl.replace(/\/$/, "");
   return {
     "@context": "https://schema.org",
@@ -140,6 +146,22 @@ export function buildStaticBlogArticleStructuredData(params: {
         description: params.description,
         url,
         datePublished: params.datePublished,
+        dateModified: params.dateModified,
+        author: {
+          "@type": "Organization",
+          name,
+          url: base,
+        },
+        publisher: {
+          "@type": "Organization",
+          "@id": orgId,
+          name,
+          logo: { "@type": "ImageObject", url: logoUrl },
+        },
+        image: {
+          "@type": "ImageObject",
+          url: params.imageAbsoluteUrl,
+        },
       },
     ],
   };

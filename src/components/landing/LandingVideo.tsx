@@ -112,9 +112,9 @@ export default function LandingVideo({
     });
   }, [shouldLoad, reducedMotion, failed, autoPlay]);
 
-  /** Hero: при reduced-motion оставляем статичный постер (см. global.scss). Feature: без классов видео — фон задаёт колонка/stage. */
+  /** При reduced-motion видео не крутим — тот же постер, что и до загрузки (и для hero, и для feature). */
   if (reducedMotion) {
-    if (priority === "hero" && poster) {
+    if (poster) {
       return (
         <div ref={containerRef} style={{ position: "absolute", inset: 0 }}>
           <Image

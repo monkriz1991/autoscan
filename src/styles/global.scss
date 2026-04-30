@@ -2190,10 +2190,7 @@ section.landing-hero .landing-hero__video-bg-el {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .landing-features__heading-video {
-    display: none;
-  }
-
+  /* Постер рендерится вместо <video> (LandingVideo / FeaturesSection); не скрываем img с тем же классом. */
   .landing-features__heading-video-col {
     background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
   }
@@ -2308,10 +2305,7 @@ section.landing-hero .landing-hero__video-bg-el {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .landing-feature__video {
-    display: none;
-  }
-
+  /* Видео заменяется на постер в разметке; градиент — запасной фон под img. */
   .landing-feature__video-stage {
     background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(59, 130, 246, 0.12) 0%, transparent 65%),
       linear-gradient(135deg, #1e293b 0%, #0f172a 100%);

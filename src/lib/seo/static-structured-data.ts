@@ -7,8 +7,23 @@ import { routing } from "@/i18n/routing";
 import { getSiteOrigin, localizedPath } from "@/lib/site-url";
 import { mergeStructuredDataDocs, type StructuredDataDoc } from "@/lib/seo/structured-data";
 
+/** Каноническое имя бренда в JSON-LD (совпадает с Django SEO_SITE_NAME по умолчанию). */
+export const CANONICAL_SEO_SITE_NAME = "AIscanAuto" as const;
+
+/**
+ * Единое написание бренда в Organization/WebSite/Article: пустой env и известные варианты «AiScanAuto» → канон.
+ * Иное непустое имя не трогаем (реальный ребрендинг).
+ */
+export function normalizePublicSiteName(raw: string): string {
+  const t = (raw ?? "").trim();
+  if (!t) return CANONICAL_SEO_SITE_NAME;
+  const key = t.toLowerCase().replace(/\s+/g, "");
+  if (key === "aiscanauto") return CANONICAL_SEO_SITE_NAME;
+  return t;
+}
+
 function publicSiteName(): string {
-  return (process.env.NEXT_PUBLIC_SITE_NAME || "AIscanAuto").trim();
+  return normalizePublicSiteName(process.env.NEXT_PUBLIC_SITE_NAME || "");
 }
 
 function publicLogoUrl(): string {
@@ -115,7 +130,11 @@ export function buildStaticHomeStructuredData(params: {
 }
 
 function publicSoftwareAppName(): string {
-  return (process.env.NEXT_PUBLIC_SEO_SOFTWARE_APP_NAME || "").trim() || publicSiteName();
+  const t = (process.env.NEXT_PUBLIC_SEO_SOFTWARE_APP_NAME || "").trim();
+  if (!t) return publicSiteName();
+  const key = t.toLowerCase().replace(/\s+/g, "");
+  if (key === "aiscanauto") return CANONICAL_SEO_SITE_NAME;
+  return t;
 }
 
 function publicSoftwareDescription(): string {
@@ -213,6 +232,34 @@ export function buildStaticWebPageStructuredData(params: {
  * WebPage + Person автора для /about (E-E-A-T, совпадает @id с блог-постами).
  * Склеивать с `buildStaticGlobalStructuredData` через mergeStructuredDataDocs.
  */
+export type BreadcrumbListItemInput = { name: string; url: string };
+
+/**
+ * BreadcrumbList для JSON-LD (крошки в выдаче). `items` — по порядку; URL абсолютные (как canonical).
+ */
+export function buildBreadcrumbListStructuredData(
+  pageUrl: string,
+  items: BreadcrumbListItemInput[],
+): StructuredDataDoc {
+  const page = pageUrl.replace(/\/$/, "");
+  const elements = items.map((row, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: row.name.trim() || "—",
+    item: row.url.replace(/\/$/, ""),
+  }));
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${page}#breadcrumb`,
+        itemListElement: elements,
+      },
+    ],
+  };
+}
+
 export function buildStaticAboutStructuredData(params: {
   pageUrl: string;
   title: string;

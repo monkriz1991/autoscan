@@ -2,10 +2,14 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
-import StaticJsonLd from "@/components/landing/StaticJsonLd";
 import JsonLd from "@/components/seo/JsonLd";
 import { getBlogPostForLocale } from "@/lib/api";
-import { buildStaticBlogArticleStructuredData } from "@/lib/seo/static-structured-data";
+import { mergeStructuredDataDocs } from "@/lib/seo/structured-data";
+import {
+  buildBreadcrumbListStructuredData,
+  buildStaticBlogArticleStructuredData,
+  CANONICAL_SEO_SITE_NAME,
+} from "@/lib/seo/static-structured-data";
 import { buildOpenGraphTwitterBlock, blogPostOpenGraphImageAbsoluteUrl } from "@/lib/og-metadata";
 import { alternateLanguageUrls, generateCanonicalUrlForLocale } from "@/lib/site-url";
 import { buildTitle } from "@/lib/seo/titles";
@@ -27,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const rawTitle = post.localized_title_raw.trim();
   const seoTitle = buildTitle.blogPost(rawTitle);
   const forceNoindex = !seoTitle || post.is_noindex;
-  const titleAbsolute = seoTitle ?? "AiScanAuto";
+  const titleAbsolute = seoTitle ?? CANONICAL_SEO_SITE_NAME;
   const description = post.excerpt?.trim() || t("blogDescription");
 
   const routable = new Set<string>(routing.locales);
@@ -92,19 +96,17 @@ export default async function BlogPostPage({ params }: Props) {
     dateModified,
     imageAbsoluteUrl: imageForLd,
   });
-  const breadcrumbLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: tNav("home"), item: alternateLanguageUrls("")[locale] },
-      { "@type": "ListItem", position: 2, name: tNav("blog"), item: alternateLanguageUrls("/blog")[locale] },
-      { "@type": "ListItem", position: 3, name: post.title, item: pageUrl },
-    ],
-  };
+  const crumbName =
+    post.title.length > 120 ? `${post.title.slice(0, 120).trimEnd()}…` : post.title;
+  const breadcrumbDoc = buildBreadcrumbListStructuredData(pageUrl, [
+    { name: tNav("home"), url: alternateLanguageUrls("")[locale] },
+    { name: tNav("blog"), url: alternateLanguageUrls("/blog")[locale] },
+    { name: crumbName, url: pageUrl },
+  ]);
+  const mergedLd = mergeStructuredDataDocs(blogPostLd, breadcrumbDoc);
   return (
     <>
-      <JsonLd data={blogPostLd} />
-      <StaticJsonLd data={breadcrumbLd} />
+      <JsonLd data={mergedLd} />
       <BlogPostContent post={post} />
     </>
   );

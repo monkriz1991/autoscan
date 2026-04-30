@@ -13,7 +13,10 @@ import {
   mergeStructuredDataDocs,
   withStructuredDataFallback,
 } from "@/lib/seo/structured-data";
-import { buildStaticGlobalStructuredData } from "@/lib/seo/static-structured-data";
+import {
+  buildBreadcrumbListStructuredData,
+  buildStaticGlobalStructuredData,
+} from "@/lib/seo/static-structured-data";
 import {
   alternateLanguageUrls,
   alternateLanguageUrlsForLocales,
@@ -131,6 +134,7 @@ export default async function DtcCodePage({ params }: PageProps) {
   }
 
   const t = await getTranslations({ locale, namespace: "dtcPage" });
+  const tNav = await getTranslations({ locale, namespace: "nav" });
   const tDetail = await getTranslations({ locale, namespace: "dtcDetail" });
   const pathWithoutLocale = `/dtc/${upper}`;
   /** Self-URL страницы для JSON-LD (совпадает с canonical). */
@@ -152,7 +156,15 @@ export default async function DtcCodePage({ params }: PageProps) {
     description: descForLd,
   });
   const pageLd = withStructuredDataFallback(remoteRaw, { "@context": "https://schema.org", "@graph": [] });
-  const merged = mergeStructuredDataDocs(buildStaticGlobalStructuredData(), pageLd);
+  const breadcrumbDoc = buildBreadcrumbListStructuredData(pageUrl, [
+    { name: tNav("home"), url: alternateLanguageUrls("")[locale] },
+    { name: tNav("dtc"), url: alternateLanguageUrls("/dtc")[locale] },
+    { name: upper, url: pageUrl },
+  ]);
+  const merged = mergeStructuredDataDocs(
+    mergeStructuredDataDocs(buildStaticGlobalStructuredData(), pageLd),
+    breadcrumbDoc,
+  );
 
   return (
     <>

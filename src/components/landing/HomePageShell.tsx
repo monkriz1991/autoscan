@@ -268,7 +268,7 @@ export default async function HomePageShell({ locale }: Props) {
                     posterAlt={t("features.chatVideoPosterAlt")}
                     priority="feature"
                     className="landing-features__heading-video"
-                    preload="none"
+                    preload="metadata"
                   />
                 </div>
               </div>
@@ -298,7 +298,7 @@ export default async function HomePageShell({ locale }: Props) {
                       posterAlt={t("features.liveDataPosterAlt")}
                       priority="feature"
                       className="landing-feature__video"
-                      preload="none"
+                      preload="metadata"
                     />
                   </div>
                 </div>

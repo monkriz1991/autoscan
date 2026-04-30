@@ -24,6 +24,10 @@ export const LOCALE_KEYWORDS: Record<AppLocale, readonly string[]> = {
     "car diagnostics",
     "obd2 ubuntu",
     "obd2 elm327",
+    "ai car scanner app",
+    "obd2 ai car scanner",
+    "elm327 scanner",
+    "elm327 app",
   ],
   ru: [
     "приложение ELM327 для Windows 10",
@@ -31,6 +35,11 @@ export const LOCALE_KEYWORDS: Record<AppLocale, readonly string[]> = {
     "ИИ диагностика авто бесплатно",
     "live data PID OBD2",
     "ELM327 для ПК",
+    // Популярные латинские запросы в магазинах (смешанный поиск RU)
+    "ai car scanner app",
+    "obd2 ai car scanner",
+    "elm327 scanner",
+    "elm327 app",
   ],
   de: [
     "ELM327 App Windows 10",

@@ -125,7 +125,7 @@ export default function middleware(request: NextRequest) {
         ? "/dashboard"
         : pathWithoutLocale.slice("/superadmin".length);
     const targetPath = localizedPath(locale, `/cabinet${suffix}`);
-    return NextResponse.redirect(new URL(targetPath, request.url), 308);
+    return NextResponse.redirect(new URL(targetPath, request.url), 301);
   }
 
   if (token && (pathWithoutLocale === "/login" || pathWithoutLocale === "/register" || pathWithoutLocale.startsWith("/login/") || pathWithoutLocale.startsWith("/register/"))) {

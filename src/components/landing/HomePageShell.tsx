@@ -71,6 +71,7 @@ export default async function HomePageShell({ locale }: Props) {
             webmSrc={HERO_PREVIEW_VIDEO_WEBM_SRC}
             mp4Src={HERO_PREVIEW_VIDEO_SRC}
             poster={HERO_PREVIEW_POSTER_SRC}
+            posterAlt={t("hero.backgroundPosterAlt")}
             className="landing-hero__video-bg-el"
           />
         </div>
@@ -137,7 +138,7 @@ export default async function HomePageShell({ locale }: Props) {
                   src={PLATFORM_ICON_WINDOWS}
                   width={22}
                   height={22}
-                  alt=""
+                  alt={t("hero.platformWindowsLabel")}
                   className="landing-store-btn__platform-icon"
                   priority
                 />
@@ -151,7 +152,7 @@ export default async function HomePageShell({ locale }: Props) {
                   src={PLATFORM_ICON_MACOS}
                   width={22}
                   height={22}
-                  alt=""
+                  alt={t("hero.platformMacLabel")}
                   className="landing-store-btn__platform-icon"
                   priority
                 />
@@ -165,7 +166,7 @@ export default async function HomePageShell({ locale }: Props) {
                   src={PLATFORM_ICON_LINUX}
                   width={22}
                   height={22}
-                  alt=""
+                  alt={t("hero.platformLinuxLabel")}
                   className="landing-store-btn__platform-icon"
                   priority
                 />
@@ -178,6 +179,27 @@ export default async function HomePageShell({ locale }: Props) {
             <AuthDashboardLink />
           </div>
         </div>
+      </section>
+
+      <section
+        className="landing-seo-intro"
+        style={{
+          padding: "clamp(12px, 2vw, 20px) clamp(16px, 4vw, 32px)",
+          background: "color-mix(in srgb, var(--landing-bg) 92%, transparent)",
+        }}
+      >
+        <p
+          style={{
+            color: "var(--text-muted)",
+            fontSize: "0.875rem",
+            lineHeight: 1.65,
+            maxWidth: 720,
+            margin: "0 auto",
+            textAlign: "center",
+          }}
+        >
+          {t("seoIntro")}
+        </p>
       </section>
 
       <section className="landing-features" style={{ padding: "48px 0" }}>
@@ -197,6 +219,7 @@ export default async function HomePageShell({ locale }: Props) {
                 <LandingVideo
                   mp4Src={FEATURES_HEADING_VIDEO_SRC}
                   poster={HERO_PREVIEW_POSTER_SRC}
+                  posterAlt={t("features.chatVideoAria")}
                   priority="feature"
                   className="landing-features__heading-video"
                   preload="none"
@@ -214,6 +237,7 @@ export default async function HomePageShell({ locale }: Props) {
                   <LandingVideo
                     mp4Src={FEATURE_LIVE_VIDEO_SRC}
                     poster={FEATURE_LIVE_POSTER_SRC}
+                    posterAlt={t("features.liveDataVideoAria")}
                     priority="feature"
                     className="landing-feature__video"
                     preload="none"
@@ -249,7 +273,7 @@ export default async function HomePageShell({ locale }: Props) {
                   src={`/landing/brands/${slug}.svg`}
                   width={40}
                   height={40}
-                  alt=""
+                  alt={t(`cars.brands.${slug}` as `cars.brands.${(typeof BRAND_SLUGS)[number]}`)}
                   loading="lazy"
                   decoding="async"
                   className="landing-ticker__logo"

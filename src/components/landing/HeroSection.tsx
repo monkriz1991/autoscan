@@ -204,7 +204,7 @@ export default function HeroSection({ authenticated }: Props) {
                 src={PLATFORM_ICON_WINDOWS}
                 width={22}
                 height={22}
-                alt=""
+                alt={t("platformWindowsLabel")}
                 className="landing-store-btn__platform-icon"
                 priority
               />
@@ -222,7 +222,7 @@ export default function HeroSection({ authenticated }: Props) {
                 src={PLATFORM_ICON_MACOS}
                 width={22}
                 height={22}
-                alt=""
+                alt={t("platformMacLabel")}
                 className="landing-store-btn__platform-icon"
                 priority
               />
@@ -240,7 +240,7 @@ export default function HeroSection({ authenticated }: Props) {
                 src={PLATFORM_ICON_LINUX}
                 width={22}
                 height={22}
-                alt=""
+                alt={t("platformLinuxLabel")}
                 className="landing-store-btn__platform-icon"
                 priority
               />

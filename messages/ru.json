@@ -883,6 +883,7 @@
       "softwareDescription": "Профессиональная диагностика авто с ИИ. Чтение кодов OBD2, анализ данных в реальном времени и инструкции по ремонту на основе ИИ.",
       "ratingCount": "847"
     },
+    "seoIntro": "AIscanAuto — приложение для ИИ-диагностики автомобиля и OBD2-сканера для Windows, macOS и Linux. Подключите адаптер ELM327, считывайте коды ошибок Check Engine (DTC), смотрите live data по OBD-II и получайте пошаговые подсказки ИИ по ремонту.",
     "howTo": {
       "name": "Как это работает",
       "s1": {
@@ -924,6 +925,7 @@
       "platformWindowsAria": "Перейти к загрузке: установщик Windows",
       "platformMacAria": "Перейти к загрузке: установщик macOS",
       "platformLinuxAria": "Перейти к загрузке: Linux",
+      "backgroundPosterAlt": "Скриншот приложения AIscanAuto: экран OBD2-диагностики, фон блока героя",
       "carouselAria": "Скриншоты десктоп-приложения",
       "slidePreviewVideoAlt": "Видео-превью: десктоп-приложение AIscanAuto в работе",
       "slidePreviewVideoTab": "Показать видео-превью продукта",

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { buildOpenGraphTwitterBlock, staticOpenGraphImageAbsoluteUrl } from "@/lib/og-metadata";
+import type { AppLocale } from "@/lib/seo/locale-keywords";
+import { LOCALE_KEYWORDS } from "@/lib/seo/locale-keywords";
 import {
   generateCanonicalUrl,
   localizedPath,
@@ -86,9 +88,13 @@ export async function buildLocalePageMetadata(
     };
   }
 
+  const loc = locale as AppLocale;
+  const keywords = [...(LOCALE_KEYWORDS[loc] ?? LOCALE_KEYWORDS.en)];
+
   return {
     title,
     description,
+    keywords,
     alternates: {
       canonical,
       ...(options?.noindex === true ? {} : { languages }),

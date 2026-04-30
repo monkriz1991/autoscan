@@ -883,6 +883,7 @@
       "softwareDescription": "Professionelle Fahrzeugdiagnose mit KI. OBD2-Fehlercodes lesen, Live-Daten analysieren und KI-gestützte Reparaturanleitungen erhalten.",
       "ratingCount": "847"
     },
+    "seoIntro": "AIscanAuto ist eine kostenlose KI-App zur Fahrzeugdiagnose und als OBD2-Scanner für Windows, macOS und Linux. Verbinden Sie einen ELM327-Adapter, lesen Sie Check-Engine- und DTC-Fehlercodes, überwachen Sie Live-OBD2-PID-Daten und erhalten Sie KI-gestützte Reparaturhinweise.",
     "howTo": {
       "name": "So funktioniert's",
       "s1": {
@@ -924,6 +925,7 @@
       "platformWindowsAria": "Zur Download-Seite: Windows-Installer",
       "platformMacAria": "Zur Download-Seite: macOS-Installer",
       "platformLinuxAria": "Zur Download-Seite: Linux",
+      "backgroundPosterAlt": "AIscanAuto Desktop-App: OBD2-Diagnosebildschirm als Hero-Hintergrundbild",
       "carouselAria": "Screenshots der Desktop-App",
       "slidePreviewVideoAlt": "Produktvorschau-Video: AIscanAuto Desktop-App in Aktion",
       "slidePreviewVideoTab": "Produktvorschau-Video anzeigen",

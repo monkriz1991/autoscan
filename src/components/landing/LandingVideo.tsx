@@ -18,6 +18,8 @@ export type LandingVideoProps = {
   mp4Src: string;
   /** Постер до загрузки и при ошибке источника. */
   poster?: string;
+  /** Текст для alt у постера (SEO и скринридеры); обязателен, если постер не чисто декоративный. */
+  posterAlt?: string;
   className?: string;
   style?: CSSProperties;
   /** Управляет тем, как рано IntersectionObserver начнёт загрузку относительно viewport. */
@@ -44,6 +46,7 @@ export default function LandingVideo({
   webmSrc,
   mp4Src,
   poster,
+  posterAlt = "",
   className,
   style,
   priority = "feature",
@@ -116,12 +119,12 @@ export default function LandingVideo({
         <div ref={containerRef} style={{ position: "absolute", inset: 0 }}>
           <Image
             src={poster}
-            alt=""
+            alt={posterAlt}
             fill
             sizes={priority === "hero" ? "100vw" : "(max-width: 900px) 100vw, 50vw"}
             className={className}
             style={{ ...style, pointerEvents: "none", display: "block" }}
-            aria-hidden
+            aria-hidden={!posterAlt}
           />
         </div>
       );
@@ -137,12 +140,12 @@ export default function LandingVideo({
         {poster ? (
           <Image
             src={poster}
-            alt=""
+            alt={posterAlt}
             fill
             sizes={priority === "hero" ? "100vw" : "(max-width: 900px) 100vw, 50vw"}
             className={className}
             style={{ ...style, pointerEvents: "none", display: "block" }}
-            aria-hidden
+            aria-hidden={!posterAlt}
           />
         ) : (
           <div className={className} style={style} aria-hidden />

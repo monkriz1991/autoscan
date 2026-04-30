@@ -4,8 +4,8 @@ import { routing } from "@/i18n/routing";
 export type AppLocale = (typeof routing.locales)[number];
 
 /**
- * Топ-5 SEO-ключевых слов по локали (meta keywords + опционально доработка title/description
- * в `generateLocalizedMetadata`).
+ * Базовый список SEO-ключевых слов по локали (meta keywords + опционально доработка title/description
+ * в `generateLocalizedMetadata`; у `en` список длиннее нишевых локалей).
  */
 export const LOCALE_KEYWORDS: Record<AppLocale, readonly string[]> = {
   en: [
@@ -14,6 +14,16 @@ export const LOCALE_KEYWORDS: Record<AppLocale, readonly string[]> = {
     "AI car diagnostic app free",
     "OBD2 live data PIDs",
     "elm327 app for pc",
+    "obd2 ai",
+    "elm327",
+    "p0420",
+    "aiscan",
+    "dtc p0420",
+    "auto scan",
+    "aichatone",
+    "car diagnostics",
+    "obd2 ubuntu",
+    "obd2 elm327",
   ],
   ru: [
     "приложение ELM327 для Windows 10",

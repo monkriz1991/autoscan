@@ -20,6 +20,8 @@ type Props = {
   webmSrc?: string;
   mp4Src: string;
   poster: string;
+  /** Alt для LCP-постера и для кадра видео (SEO). */
+  posterAlt: string;
   className?: string;
   style?: CSSProperties;
 };
@@ -28,7 +30,7 @@ type Props = {
  * Герой: на узких экранах только оптимизированный poster (LCP, без видео/blur/декодера).
  * Видео и чанк LandingVideo подгружаются только при min-width: 768px.
  */
-export default function LandingHeroMedia({ webmSrc, mp4Src, poster, className, style }: Props) {
+export default function LandingHeroMedia({ webmSrc, mp4Src, poster, posterAlt, className, style }: Props) {
   const [isWide, setIsWide] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -55,10 +57,10 @@ export default function LandingHeroMedia({ webmSrc, mp4Src, poster, className, s
 
   if (isWide !== true) {
     return (
-      <div style={{ position: "absolute", inset: 0 }} aria-hidden>
+      <div style={{ position: "absolute", inset: 0 }} aria-hidden={!posterAlt}>
         <Image
           src={poster}
-          alt=""
+          alt={posterAlt}
           fill
           priority
           sizes="100vw"
@@ -73,6 +75,7 @@ export default function LandingHeroMedia({ webmSrc, mp4Src, poster, className, s
       webmSrc={webmSrc}
       mp4Src={mp4Src}
       poster={poster}
+      posterAlt={posterAlt}
       priority="hero"
       className={className}
       preload="none"

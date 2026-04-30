@@ -883,6 +883,7 @@
       "softwareDescription": "Professional car diagnostics with AI. Read OBD2 error codes, analyze live data, and get AI-powered repair instructions.",
       "ratingCount": "847"
     },
+    "seoIntro": "AIscanAuto is a free AI car diagnostics and OBD2 scanner app for Windows, macOS, and Linux. Connect an ELM327 adapter, read Check Engine and DTC fault codes, monitor live OBD-II PID data, and get step-by-step AI repair guidance.",
     "howTo": {
       "name": "How It Works",
       "s1": {
@@ -924,6 +925,7 @@
       "platformWindowsAria": "Go to downloads: Windows installer",
       "platformMacAria": "Go to downloads: macOS installer",
       "platformLinuxAria": "Go to downloads: Linux installer",
+      "backgroundPosterAlt": "AIscanAuto desktop app: OBD2 diagnostics screen used as the hero background image",
       "carouselAria": "Desktop app screenshots",
       "slidePreviewVideoAlt": "Product preview video: AIscanAuto desktop app in action",
       "slidePreviewVideoTab": "Show product preview video",

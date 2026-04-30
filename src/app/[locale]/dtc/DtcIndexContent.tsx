@@ -75,7 +75,10 @@ export default async function DtcIndexContent({ locale, searchParams }: Props) {
     return <p style={{ color: "#b91c1c" }}>{t("error")}</p>;
   }
 
+  // pathBase — для plain HTML (<form action>): тут нужен явный префикс локали.
+  // linkBase — для <Link> next-intl: тот сам приклеит префикс, иначе локаль задвоится.
   const pathBase = localizedPath(locale, "/dtc");
+  const linkBase = "/dtc";
 
   return (
     <div style={{ maxWidth: "72rem", margin: "0 auto", padding: "0 1rem 3rem" }}>
@@ -131,7 +134,7 @@ export default async function DtcIndexContent({ locale, searchParams }: Props) {
           <button type="submit" className="btn-cta-primary" style={{ padding: "0.55rem 1rem" }}>
             {t("submitSearch")}
           </button>
-          <Link href={pathBase} style={{ padding: "0.55rem 0.75rem", color: "#64748b" }}>
+          <Link href={linkBase} style={{ padding: "0.55rem 0.75rem", color: "#64748b" }}>
             {t("reset")}
           </Link>
         </div>
@@ -150,7 +153,7 @@ export default async function DtcIndexContent({ locale, searchParams }: Props) {
           {data.results.map((row) => (
             <Link
               key={row.code}
-              href={localizedPath(locale, `/dtc/${row.code}`)}
+              href={`/dtc/${row.code}`}
               style={{ textDecoration: "none", color: "inherit" }}
             >
               <article
@@ -218,7 +221,7 @@ export default async function DtcIndexContent({ locale, searchParams }: Props) {
               </span>
             ) : (
               <Link
-                href={`${pathBase}${buildQuery(baseQs, { page: String(page - 1) })}`}
+                href={`${linkBase}${buildQuery(baseQs, { page: String(page - 1) })}`}
                 className="dtc-pagination__link dtc-pagination__nav"
                 rel="prev"
               >
@@ -241,7 +244,7 @@ export default async function DtcIndexContent({ locale, searchParams }: Props) {
               ) : (
                 <Link
                   key={item}
-                  href={`${pathBase}${buildQuery(baseQs, { page: String(item) })}`}
+                  href={`${linkBase}${buildQuery(baseQs, { page: String(item) })}`}
                   className="dtc-pagination__link"
                 >
                   {item}
@@ -254,7 +257,7 @@ export default async function DtcIndexContent({ locale, searchParams }: Props) {
               </span>
             ) : (
               <Link
-                href={`${pathBase}${buildQuery(baseQs, { page: String(page + 1) })}`}
+                href={`${linkBase}${buildQuery(baseQs, { page: String(page + 1) })}`}
                 className="dtc-pagination__link dtc-pagination__nav"
                 rel="next"
               >

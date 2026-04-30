@@ -6,7 +6,6 @@ import { Title, Text, Badge, Group, Button, Image, Box } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
 import type { BlogPostDetail } from "@/lib/api";
 import { extractDtcCodeFromSlug } from "@/lib/dtc-slug";
-import { localizedPath } from "@/lib/site-url";
 
 type Props = { post: BlogPostDetail };
 
@@ -82,7 +81,7 @@ export default function BlogPostContent({ post }: Props) {
           </Text>
           <Button
             component={Link}
-            href={localizedPath(locale, `/dtc/${dtcFromSlug}`)}
+            href={`/dtc/${dtcFromSlug}`}
             variant="light"
             size="sm"
           >

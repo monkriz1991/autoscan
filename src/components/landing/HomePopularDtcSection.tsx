@@ -1,6 +1,5 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { localizedPath } from "@/lib/site-url";
 import { POPULAR_DTC_CODES } from "@/data/popular-dtc-codes";
 
 type Props = { locale: string };
@@ -46,7 +45,7 @@ export default async function HomePopularDtcSection({ locale }: Props) {
         {POPULAR_DTC_CODES.map((code) => (
           <Link
             key={code}
-            href={localizedPath(locale, `/dtc/${code}`)}
+            href={`/dtc/${code}`}
             className="landing-dtc-popular__pill"
             style={{
               display: "block",

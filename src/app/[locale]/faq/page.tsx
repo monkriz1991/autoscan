@@ -10,7 +10,7 @@ import { buildLocalePageMetadata } from "@/lib/seo-metadata";
 import { Link } from "@/i18n/navigation";
 import { getPublicFaqForLocale } from "@/lib/api";
 import { FAQ_SAMPLE_DTC_CODES } from "@/data/popular-dtc-codes";
-import { generateCanonicalUrlForLocale, localizedPath } from "@/lib/site-url";
+import { generateCanonicalUrlForLocale } from "@/lib/site-url";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -61,7 +61,7 @@ export default async function FaqPage({ params }: { params: Promise<{ locale: st
           {FAQ_SAMPLE_DTC_CODES.map((code) => (
             <Link
               key={code}
-              href={localizedPath(locale, `/dtc/${code}`)}
+              href={`/dtc/${code}`}
               style={{
                 padding: "0.25rem 0.6rem",
                 borderRadius: 6,

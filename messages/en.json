@@ -51,6 +51,8 @@
     "privacyDescription": "How AIscanAuto collects, uses, and protects your personal data.",
     "contactsTitle": "Contacts",
     "contactsDescription": "Contact AIscanAuto for support and business inquiries.",
+    "aboutTitle": "About AiScanAuto — AI vehicle diagnostics",
+    "aboutDescription": "Learn who builds AIscanAuto, our mission for trustworthy OBD2 and AI car diagnostics, and who writes the blog.",
     "disclaimerTitle": "Disclaimer",
     "disclaimerDescription": "AIscanAuto limitation of liability for use of the service and site content.",
     "checkoutTitle": "Checkout",
@@ -798,6 +800,14 @@
     "title": "Contacts",
     "lead": "Reach AIscanAuto for support, billing, and business inquiries. We are setting up dedicated contact channels; this section will be updated with email and response times."
   },
+  "aboutPage": {
+    "title": "About AiScanAuto",
+    "lead": "AIscanAuto combines ELM327/OBD2 tooling with AI explanations so drivers and workshops can read fault codes, live data, and next diagnostic steps without guesswork.",
+    "missionTitle": "Our focus",
+    "missionBody": "We prioritize accurate DTC context, safe wording around repairs, and transparent limits of automated advice — always alongside qualified mechanics for safety-critical work.",
+    "authorHeading": "Editorial & blog author",
+    "authorBio": "Articles and guides on this site are authored by valenchits A, covering OBD2 codes, scanner setup, and how AIscanAuto features map to real-world diagnostics."
+  },
   "faqPage": {
     "title": "Frequently asked questions",
     "dtcSectionTitle": "Common OBD2 error codes",
@@ -814,6 +824,8 @@
   },
   "blogPage": {
     "title": "Blog",
+    "authorLabel": "Author",
+    "authorName": "valenchits A",
     "subtitle": "Guides on OBD2 codes, ELM327, live data, and AIscanAuto updates — written for drivers and shops.",
     "dtcArticleCta": "DTC {code} — reference page",
     "dtcArticleDescription": "Open the dedicated code page in our OBD2 library.",

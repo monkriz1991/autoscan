@@ -107,7 +107,7 @@ export default function CookieConsentBanner() {
             <Text size="xs" c="dimmed" mt={4}>
               {t("usNote")}
             </Text>
-            <Anchor component={Link} href="/marketing/privacy" size="xs" mt={6} display="inline-block">
+            <Anchor component={Link} href="/privacy" size="xs" mt={6} display="inline-block">
               {t("privacyLink")}
             </Anchor>
           </div>

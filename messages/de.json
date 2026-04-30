@@ -51,6 +51,8 @@
     "privacyDescription": "Wie AIscanAuto personenbezogene Daten verarbeitet und schützt.",
     "contactsTitle": "Kontakt",
     "contactsDescription": "AIscanAuto kontaktieren: Support und Geschäftsanfragen.",
+    "aboutTitle": "Über AiScanAuto — KI-Fahrzeugdiagnose",
+    "aboutDescription": "Erfahren Sie, wer AIscanAuto entwickelt, welches Ziel wir mit OBD2 und KI-Diagnose verfolgen und wer die Blog-Beiträge schreibt.",
     "disclaimerTitle": "Haftungsausschluss",
     "disclaimerDescription": "Haftungsbeschränkung von AIscanAuto bei Nutzung des Dienstes und der Websiteinhalte.",
     "checkoutTitle": "Kasse",
@@ -798,6 +800,14 @@
     "title": "Kontakt",
     "lead": "Wenden Sie sich an AIscanAuto für Support, Abrechnung und geschäftliche Anfragen. Wir richten dedizierte Kontaktwege ein; diese Seite wird mit E-Mail und Antwortzeiten ergänzt."
   },
+  "aboutPage": {
+    "title": "Über AiScanAuto",
+    "lead": "AIscanAuto verbindet ELM327/OBD2 mit KI-Erklärungen, damit Fahrer und Werkstätten Fehlercodes, Live-Daten und nächste Prüfschritte ohne Rätselraten einordnen können.",
+    "missionTitle": "Unser Fokus",
+    "missionBody": "Wir legen Wert auf korrekten DTC-Kontext, vorsichtige Formulierung bei Reparaturhinweisen und klare Grenzen automatisierter Ratschläge — bei sicherheitskritischen Arbeiten gilt immer der qualifizierte Mechaniker.",
+    "authorHeading": "Redaktion & Blog-Autor",
+    "authorBio": "Artikel und Guides auf dieser Website stammen von valenchits A — zu OBD2-Codes, Scanner-Setup und wie sich AIscanAuto in die Praxis der Diagnose einfügt."
+  },
   "faqPage": {
     "title": "Häufig gestellte Fragen",
     "dtcSectionTitle": "Häufige OBD2-Fehlercodes",
@@ -814,6 +824,8 @@
   },
   "blogPage": {
     "title": "Blog",
+    "authorLabel": "Autor",
+    "authorName": "valenchits A",
     "subtitle": "Leitfäden zu OBD2-Codes, ELM327, Live-Daten und AIscanAuto-Updates — für Fahrer und Werkstätten.",
     "dtcArticleCta": "DTC {code} — Referenzseite",
     "dtcArticleDescription": "Die Detailseite zu diesem Code in unserer OBD2-Bibliothek öffnen.",

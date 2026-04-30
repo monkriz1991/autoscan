@@ -2,7 +2,9 @@ import { Container, Stack, Text, Title } from "@mantine/core";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { routing } from "@/i18n/routing";
 import JsonLd from "@/components/seo/JsonLd";
+import dtcCodeKeys from "@/data/dtc-code-keys.json";
 import { getDtcCodeForLocale } from "@/lib/api";
 import { buildOpenGraphTwitterBlock, dtcOpenGraphImageAbsoluteUrl } from "@/lib/og-metadata";
 import { generateLocalizedMetadata } from "@/lib/seo/generate-localized-metadata";
@@ -18,7 +20,30 @@ import { stripHeadOnlyTagsFromHtml } from "@/lib/sanitize-rich-html";
 
 type PageProps = { params: Promise<{ locale: string; code: string }> };
 
-/** ISR: коды подтягиваются из API по запросу (тысячи кодов без полного SSG). */
+/** Предгенерация топ-N кодов из того же списка, что и sitemap-fallback (холодный SSR реже). */
+const DTC_PREBUILD_STATIC_COUNT = 500;
+
+function topDtcCodesForStaticParams(): string[] {
+  const arr = dtcCodeKeys as unknown;
+  if (!Array.isArray(arr)) return [];
+  return arr
+    .filter((c): c is string => typeof c === "string" && /^[PBCU][0-9A-Fa-f]{4}$/i.test(c))
+    .slice(0, DTC_PREBUILD_STATIC_COUNT)
+    .map((c) => c.toUpperCase());
+}
+
+export function generateStaticParams() {
+  const codes = topDtcCodesForStaticParams();
+  const out: { locale: string; code: string }[] = [];
+  for (const locale of routing.locales) {
+    for (const code of codes) {
+      out.push({ locale, code });
+    }
+  }
+  return out;
+}
+
+/** ISR: остальные коды подтягиваются из API по запросу. */
 export const revalidate = 600;
 
 /**

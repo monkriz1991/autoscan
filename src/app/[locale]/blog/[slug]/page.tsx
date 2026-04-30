@@ -45,6 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       : generateCanonicalUrlForLocale(routing.defaultLocale, `/blog/${slug}`);
   }
 
+  const modifiedForOg = post.updated_at || post.published_at;
   const ogTw = buildOpenGraphTwitterBlock({
     locale,
     title: titleAbsolute,
@@ -52,6 +53,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     url: canonicalUrl,
     imageUrl: blogPostOpenGraphImageAbsoluteUrl(locale, slug),
     type: "article",
+    publishedTime: post.published_at,
+    modifiedTime: modifiedForOg,
   });
   return {
     title: { absolute: titleAbsolute },

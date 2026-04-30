@@ -10,6 +10,7 @@ function priorityForPath(path: string): number {
   if (path === "/pricing" || /^\/(ru|de|pl|es|it)\/pricing$/.test(path)) return 0.9;
   if (path === "/dtc" || /^\/(ru|de|pl|es|it)\/dtc$/.test(path)) return 0.75;
   if (path.includes("/dtc/")) return 0.7;
+  if (path === "/about" || /^\/(ru|de|pl|es|it)\/about$/.test(path)) return 0.85;
   return 0.8;
 }
 

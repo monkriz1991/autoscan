@@ -59,6 +59,7 @@ export default async function BlogIndexPosts({ locale }: Props) {
 
             <div style={{ display: "grid", gap: "0.65rem" }}>
               <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", alignItems: "center" }}>
+                <span style={{ fontSize: "0.75rem", color: "#64748b", fontWeight: 600 }}>{t("authorName")}</span>
                 {post.published_at ? (
                   <span style={{ fontSize: "0.75rem", color: "#64748b" }}>
                     {new Date(post.published_at).toLocaleDateString(locale)}

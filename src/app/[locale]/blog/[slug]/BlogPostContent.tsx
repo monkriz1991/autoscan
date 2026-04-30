@@ -48,6 +48,9 @@ export default function BlogPostContent({ post }: Props) {
       ) : null}
 
       <div className="blog-post-page__meta">
+        <Text component="span" size="sm" c="dimmed" display="block" mb={4}>
+          {t("authorLabel")}: {t("authorName")}
+        </Text>
         <time dateTime={post.published_at}>
           {post.published_at ? formatPostDate(post.published_at, locale) : ""}
         </time>

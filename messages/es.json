@@ -51,6 +51,8 @@
     "privacyDescription": "Cómo AIscanAuto trata y protege tus datos personales.",
     "contactsTitle": "Contacto",
     "contactsDescription": "Contactar con AIscanAuto: soporte y consultas comerciales.",
+    "aboutTitle": "Acerca de AiScanAuto — diagnóstico del vehículo con IA",
+    "aboutDescription": "Quién desarrolla AIscanAuto, nuestra misión con OBD2 e IA, y quién redacta el blog.",
     "disclaimerTitle": "Descargo de responsabilidad",
     "disclaimerDescription": "Limitación de responsabilidad de AIscanAuto por el uso del servicio y el contenido del sitio.",
     "checkoutTitle": "Pago",
@@ -798,6 +800,14 @@
     "title": "Contacto",
     "lead": "Contacte con AIscanAuto para soporte, facturación y consultas comerciales. Estamos configurando canales dedicados; esta sección se actualizará con correo electrónico y plazos de respuesta."
   },
+  "aboutPage": {
+    "title": "Acerca de AiScanAuto",
+    "lead": "AIscanAuto combina ELM327/OBD2 con explicaciones de IA para que conductores y talleres interpreten códigos, datos en vivo y los siguientes pasos de diagnóstico sin adivinar.",
+    "missionTitle": "Nuestro enfoque",
+    "missionBody": "Priorizamos el contexto correcto del DTC, un lenguaje prudente sobre reparaciones y límites claros del consejo automatizado — para trabajos críticos en seguridad siempre hace falta un profesional cualificado.",
+    "authorHeading": "Editorial y autor del blog",
+    "authorBio": "Los artículos y guías de este sitio los firma valenchits A: códigos OBD2, configuración del escáner y cómo encajan las funciones de AIscanAuto en el diagnóstico real."
+  },
   "faqPage": {
     "title": "Preguntas frecuentes",
     "dtcSectionTitle": "Códigos de error OBD2 habituales",
@@ -814,6 +824,8 @@
   },
   "blogPage": {
     "title": "Blog",
+    "authorLabel": "Autor",
+    "authorName": "valenchits A",
     "subtitle": "Guías sobre códigos OBD2, ELM327, datos en vivo y novedades de AIscanAuto — para conductores y talleres.",
     "dtcArticleCta": "DTC {code} — página de referencia",
     "dtcArticleDescription": "Abrir la página dedicada a este código en nuestra biblioteca OBD2.",

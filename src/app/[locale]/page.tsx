@@ -4,6 +4,7 @@ import JsonLd from "@/components/seo/JsonLd";
 import HomePageShell from "@/components/landing/HomePageShell";
 import { routing } from "@/i18n/routing";
 import { buildLocalePageMetadata } from "@/lib/seo-metadata";
+import { buildTitle } from "@/lib/seo/titles";
 import { alternateLanguageUrls } from "@/lib/site-url";
 import {
   fetchStructuredData,
@@ -28,7 +29,12 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  return buildLocalePageMetadata(locale, "", "homeTitle", "homeDescription");
+  const absoluteHomeTitle = buildTitle.home(locale);
+  const base = await buildLocalePageMetadata(locale, "", "homeTitle", "homeDescription", {
+    pageTitleOverride: absoluteHomeTitle,
+  });
+  /** Иначе `[locale]/layout` добавляет шаблон `| siteName` к уже полному заголовку. */
+  return { ...base, title: { absolute: absoluteHomeTitle } };
 }
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
@@ -36,7 +42,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "seo" });
   const pageUrl = alternateLanguageUrls("")[locale];
-  const title = t("homeTitle");
+  const title = buildTitle.home(locale);
   const description = t("homeDescription");
 
   const remoteRaw = await fetchStructuredData({

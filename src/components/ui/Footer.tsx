@@ -60,16 +60,16 @@ export default function Footer() {
           <div>
             <h3 className="footer__col-title">{tFooter("colLegal")}</h3>
             <nav className="footer__col-links" aria-label={tFooter("colLegal")}>
-              <Link href="/marketing/terms" className="footer__col-link">
+              <Link href="/terms" className="footer__col-link">
                 {tFooter("terms")}
               </Link>
-              <Link href="/marketing/privacy" className="footer__col-link">
+              <Link href="/privacy" className="footer__col-link">
                 {tFooter("privacy")}
               </Link>
               <Link href="/marketing/disclaimer" className="footer__col-link">
                 {tFooter("disclaimer")}
               </Link>
-              <Link href="/marketing/contacts" className="footer__col-link">
+              <Link href="/contacts" className="footer__col-link">
                 {tFooter("contacts")}
               </Link>
             </nav>
@@ -79,10 +79,10 @@ export default function Footer() {
         <div className="footer__bottom">
           <div className="footer__copy">{tFooter("copyright", { year, siteName })}</div>
           <div className="footer__links">
-            <Link href="/marketing/terms">{tFooter("terms")}</Link>
-            <Link href="/marketing/privacy">{tFooter("privacy")}</Link>
+            <Link href="/terms">{tFooter("terms")}</Link>
+            <Link href="/privacy">{tFooter("privacy")}</Link>
             <Link href="/marketing/disclaimer">{tFooter("disclaimer")}</Link>
-            <Link href="/marketing/contacts">{tFooter("contacts")}</Link>
+            <Link href="/contacts">{tFooter("contacts")}</Link>
           </div>
         </div>
       </div>

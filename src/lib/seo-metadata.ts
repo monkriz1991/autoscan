@@ -26,7 +26,8 @@ export async function buildLocalePageMetadata(
     | "contactsTitle"
     | "disclaimerTitle"
     | "checkoutTitle"
-    | "downloadTitle",
+    | "downloadTitle"
+    | "aboutTitle",
   descriptionKey:
     | "homeDescription"
     | "pricingDescription"
@@ -39,16 +40,19 @@ export async function buildLocalePageMetadata(
     | "contactsDescription"
     | "disclaimerDescription"
     | "checkoutDescription"
-    | "downloadDescription",
+    | "downloadDescription"
+    | "aboutDescription",
   options?: {
     noindex?: boolean;
     /** При noindex: true — noindex,follow (юридические страницы в футере); иначе noindex,nofollow как у login. */
     robotsFollowWhenNoindex?: boolean;
     canonicalQuery?: Record<string, string | undefined>;
+    /** Полная строка для OG/Twitter и разметки, если отличается от перевода `titleKey` (напр. абсолютный `<title>`). */
+    pageTitleOverride?: string;
   },
 ): Promise<Metadata> {
   const t = await getTranslations({ locale, namespace: "seo" });
-  const title = t(titleKey);
+  const title = options?.pageTitleOverride ?? t(titleKey);
   const description = t(descriptionKey);
   const hreflangLinks = buildHreflangLinks(pathWithoutLocale, { noindex: options?.noindex });
   const languages = Object.fromEntries(hreflangLinks.map((link) => [link.hreflang, link.href]));

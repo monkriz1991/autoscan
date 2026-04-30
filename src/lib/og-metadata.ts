@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { routing } from "@/i18n/routing";
 import { getSiteOrigin, localizedPath, localeToOpenGraphLocale } from "@/lib/site-url";
+import { BLOG_AUTHOR_PERSON_NAME } from "@/lib/seo/static-structured-data";
 
 /**
  * Абсолютный URL до сегмента .../opengraph-image с учётом localePrefix: as-needed (en без /en/).
@@ -22,10 +23,20 @@ export function buildOpenGraphTwitterBlock(params: {
   url: string;
   imageUrl: string;
   type?: "website" | "article";
+  /** ISO 8601 для og:article:published_time */
+  publishedTime?: string;
+  /** ISO 8601 для og:article:modified_time */
+  modifiedTime?: string;
+  /** Имена авторов для article (по умолчанию — блог). */
+  authors?: string[];
 }): Pick<Metadata, "openGraph" | "twitter"> {
   const alternateLocale = routing.locales
     .filter((l) => l !== params.locale)
     .map((l) => localeToOpenGraphLocale(l));
+
+  const ogType = params.type ?? "website";
+  const articleAuthors =
+    ogType === "article" ? (params.authors?.length ? params.authors : [BLOG_AUTHOR_PERSON_NAME]) : undefined;
 
   return {
     openGraph: {
@@ -33,9 +44,16 @@ export function buildOpenGraphTwitterBlock(params: {
       description: params.description,
       url: params.url,
       siteName: "AIscanAuto",
-      type: params.type ?? "website",
+      type: ogType,
       locale: localeToOpenGraphLocale(params.locale),
       alternateLocale,
+      ...(ogType === "article" && params.publishedTime
+        ? { publishedTime: params.publishedTime }
+        : {}),
+      ...(ogType === "article" && params.modifiedTime
+        ? { modifiedTime: params.modifiedTime }
+        : {}),
+      ...(ogType === "article" && articleAuthors ? { authors: articleAuthors } : {}),
       images: [
         {
           url: params.imageUrl,

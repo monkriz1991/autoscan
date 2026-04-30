@@ -348,11 +348,11 @@ function RegisterForm() {
                 label={
                   <Text size="sm" component="span">
                     {t("acceptAllLabel")}{" "}
-                    <Anchor component={Link} href="/marketing/terms" size="sm" inherit underline="always">
+                    <Anchor component={Link} href="/terms" size="sm" inherit underline="always">
                       {tFooter("terms")}
                     </Anchor>
                     ,{" "}
-                    <Anchor component={Link} href="/marketing/privacy" size="sm" inherit underline="always">
+                    <Anchor component={Link} href="/privacy" size="sm" inherit underline="always">
                       {tFooter("privacy")}
                     </Anchor>{" "}
                     {t("acceptAllConjunction")}{" "}

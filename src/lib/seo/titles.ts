@@ -3,7 +3,14 @@
  * иначе layout добавит суффикс `| siteName` повторно.
  */
 export const buildTitle = {
-  home: (_locale: string) => `AI Car Diagnostics Online — AiScanAuto`,
+  /** Абсолютный title главной — без суффикса layout `%s | siteName`. */
+  home: (_locale: string) =>
+    `AI Car Diagnostics — Free OBD2 Scanner | AiScanAuto`,
+
+  /** Юридические страницы — абсолютные строки (бренд «AiScanAuto» единообразно). */
+  terms: () => `Terms of Use — AiScanAuto`,
+
+  privacy: () => `Privacy Policy — AiScanAuto`,
 
   blogList: (_locale: string) => `Auto Diagnostics Blog — AiScanAuto`,
 

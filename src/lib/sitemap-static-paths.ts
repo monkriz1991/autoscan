@@ -6,10 +6,11 @@ import { localizedPath, PUBLIC_SEO_LOCALE_CODES } from "@/lib/site-url";
  */
 export const SITEMAP_PATHS_WITHOUT_LOCALE = [
   "",
+  "/about",
   "/pricing",
-  "/marketing/terms",
-  "/marketing/privacy",
-  "/marketing/contacts",
+  "/terms",
+  "/privacy",
+  "/contacts",
   "/marketing/compare-obd2-apps",
   "/faq",
   "/download",

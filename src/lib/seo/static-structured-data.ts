@@ -27,11 +27,15 @@ function publicSocialLinks(): string[] {
     .filter(Boolean);
 }
 
-/** WebSite с SearchAction, если задано NEXT_PUBLIC_SEO_SEARCH_ENABLED=true (как SEO_SEARCH_ENABLED на бэкенде). */
+/** Стабильный @id автора блога (E-E-A-T, Person + sameAs) — фрагмент на странице /about. */
+export const BLOG_AUTHOR_PERSON_NAME = "valenchits A" as const;
+
+export function blogAuthorPersonId(base: string): string {
+  return `${base.replace(/\/$/, "")}/about#author-valenchits-a`;
+}
+
+/** WebSite с SearchAction (Sitelinks Search Box) — всегда, путь поиска совпадает с бэкендом. */
 function websiteSearchAction(base: string) {
-  if (process.env.NEXT_PUBLIC_SEO_SEARCH_ENABLED !== "true") {
-    return undefined;
-  }
   return {
     "@type": "SearchAction",
     target: {
@@ -80,9 +84,8 @@ export function buildStaticGlobalStructuredData(): StructuredDataDoc {
     url: base,
     name,
     publisher: { "@id": orgId },
+    potentialAction: websiteSearchAction(base),
   };
-  const search = websiteSearchAction(base);
-  if (search) website.potentialAction = search;
 
   return {
     "@context": "https://schema.org",
@@ -206,6 +209,40 @@ export function buildStaticWebPageStructuredData(params: {
   return buildStaticHomeStructuredData(params);
 }
 
+/**
+ * WebPage + Person автора для /about (E-E-A-T, совпадает @id с блог-постами).
+ * Склеивать с `buildStaticGlobalStructuredData` через mergeStructuredDataDocs.
+ */
+export function buildStaticAboutStructuredData(params: {
+  pageUrl: string;
+  title: string;
+  description: string;
+}): StructuredDataDoc {
+  const base = getSiteOrigin();
+  const url = params.pageUrl.replace(/\/$/, "");
+  const personId = blogAuthorPersonId(base);
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": personId,
+        name: BLOG_AUTHOR_PERSON_NAME,
+        url: personId,
+        sameAs: [personId],
+      },
+      {
+        "@type": "WebPage",
+        "@id": `${url}#webpage`,
+        url,
+        name: params.title,
+        description: params.description,
+        about: { "@id": personId },
+      },
+    ],
+  };
+}
+
 /** Article для поста блога без удалённого bundle `blog_post` (SSR без блокировки на SEO API). */
 export function buildStaticBlogArticleStructuredData(params: {
   pageUrl: string;
@@ -220,9 +257,18 @@ export function buildStaticBlogArticleStructuredData(params: {
   const name = publicSiteName();
   const logoUrl = publicLogoUrl() || `${base}/icon.png`;
   const url = params.pageUrl.replace(/\/$/, "");
+  const personId = blogAuthorPersonId(base);
+  const profileUrl = personId;
   return {
     "@context": "https://schema.org",
     "@graph": [
+      {
+        "@type": "Person",
+        "@id": personId,
+        name: BLOG_AUTHOR_PERSON_NAME,
+        url: profileUrl,
+        sameAs: [profileUrl],
+      },
       {
         "@type": "Article",
         "@id": `${url}#article`,
@@ -231,11 +277,7 @@ export function buildStaticBlogArticleStructuredData(params: {
         url,
         datePublished: params.datePublished,
         dateModified: params.dateModified,
-        author: {
-          "@type": "Organization",
-          name,
-          url: base,
-        },
+        author: { "@id": personId },
         publisher: {
           "@type": "Organization",
           "@id": orgId,

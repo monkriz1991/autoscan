@@ -71,6 +71,27 @@ const nextConfig = {
         destination: "/:locale/pricing",
         permanent: true,
       },
+      { source: "/marketing/terms", destination: "/terms", permanent: true },
+      { source: "/en/marketing/terms", destination: "/terms", permanent: true },
+      {
+        source: "/:locale(ru|de|pl|es|it)/marketing/terms",
+        destination: "/:locale/terms",
+        permanent: true,
+      },
+      { source: "/marketing/privacy", destination: "/privacy", permanent: true },
+      { source: "/en/marketing/privacy", destination: "/privacy", permanent: true },
+      {
+        source: "/:locale(ru|de|pl|es|it)/marketing/privacy",
+        destination: "/:locale/privacy",
+        permanent: true,
+      },
+      { source: "/marketing/contacts", destination: "/contacts", permanent: true },
+      { source: "/en/marketing/contacts", destination: "/contacts", permanent: true },
+      {
+        source: "/:locale(ru|de|pl|es|it)/marketing/contacts",
+        destination: "/:locale/contacts",
+        permanent: true,
+      },
       // Легаси slug с верхним регистром (middleware тоже нормализует /blog/*)
       {
         source: "/blog/OBD2-PID-Reference",

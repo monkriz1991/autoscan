@@ -1,37 +1,12 @@
-import type { Metadata } from "next";
-import { getTranslations, setRequestLocale } from "next-intl/server";
-import { buildLocalePageMetadata } from "@/lib/seo-metadata";
-import { buildTitle } from "@/lib/seo/titles";
+import { permanentRedirect } from "next/navigation";
+import { localizedPath } from "@/lib/site-url";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}): Promise<Metadata> {
-  const { locale } = await params;
-  const base = await buildLocalePageMetadata(
-    locale,
-    "/marketing/contacts",
-    "contactsTitle",
-    "contactsDescription",
-  );
-  return { ...base, title: { absolute: buildTitle.contacts() } };
-}
-
-/** Локализованная заглушка; реквизиты и каналы связи добавят позже. */
-export default async function ContactsPage({
+/** Легаси URL — канонический путь без `/marketing`. */
+export default async function LegacyMarketingContactsPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: "contactsPage" });
-
-  return (
-    <div className="container" style={{ padding: "1rem 0 2rem", maxWidth: "48rem" }}>
-      <h1>{t("title")}</h1>
-      <p style={{ lineHeight: 1.65, color: "#495057" }}>{t("lead")}</p>
-    </div>
-  );
+  permanentRedirect(localizedPath(locale, "/contacts"));
 }

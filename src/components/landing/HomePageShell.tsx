@@ -181,6 +181,24 @@ export default async function HomePageShell({ locale }: Props) {
         </div>
       </section>
 
+      {/* Видимая подпись к фону героя (видео/постер) — SEO и доступность вне aria-hidden контейнера */}
+      <p
+        className="landing-media-caption landing-media-caption--hero"
+        style={{
+          margin: 0,
+          padding: "10px clamp(16px, 4vw, 32px) 0",
+          fontSize: "0.8125rem",
+          lineHeight: 1.55,
+          color: "var(--text-muted)",
+          textAlign: "center",
+          maxWidth: 720,
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}
+      >
+        {t("mediaCaptions.heroBackground")}
+      </p>
+
       <section
         className="landing-seo-intro"
         style={{
@@ -202,6 +220,30 @@ export default async function HomePageShell({ locale }: Props) {
         </p>
       </section>
 
+      <section
+        className="landing-seo-details"
+        aria-labelledby="landing-seo-details-title"
+        style={{
+          padding: "clamp(24px, 3vw, 40px) clamp(16px, 4vw, 32px)",
+          background: "color-mix(in srgb, var(--landing-bg) 96%, transparent)",
+        }}
+      >
+        <div style={{ maxWidth: 900, margin: "0 auto", display: "grid", gap: "1rem" }}>
+          <h2 id="landing-seo-details-title" className="landing-section-title" style={{ margin: 0, textAlign: "center" }}>
+            {t("seoDetails.title")}
+          </h2>
+          <p style={{ color: "var(--text-muted)", fontSize: "0.875rem", lineHeight: 1.65, margin: 0 }}>
+            {t("seoDetails.p1")}
+          </p>
+          <p style={{ color: "var(--text-muted)", fontSize: "0.875rem", lineHeight: 1.65, margin: 0 }}>
+            {t("seoDetails.p2")}
+          </p>
+          <p style={{ color: "var(--text-muted)", fontSize: "0.875rem", lineHeight: 1.65, margin: 0 }}>
+            {t("seoDetails.p3")}
+          </p>
+        </div>
+      </section>
+
       <section className="landing-features" style={{ padding: "48px 0" }}>
         <div className="landing-features__heading-split">
           <div className="landing-features__heading-copy" style={{ display: "grid", gap: "1rem" }}>
@@ -214,37 +256,64 @@ export default async function HomePageShell({ locale }: Props) {
             </p>
           </div>
           <div className="landing-features__heading-video-col">
-            <div className="landing-features__heading-video-stage" role="img" aria-label={t("features.chatVideoAria")}>
-              <div className="landing-features__heading-video-wrap" aria-hidden>
-                <LandingVideo
-                  mp4Src={FEATURES_HEADING_VIDEO_SRC}
-                  poster={HERO_PREVIEW_POSTER_SRC}
-                  posterAlt={t("features.chatVideoAria")}
-                  priority="feature"
-                  className="landing-features__heading-video"
-                  preload="none"
-                />
+            <figure
+              className="landing-features__heading-video-figure"
+              style={{ margin: 0, display: "grid", gap: "0.5rem" }}
+            >
+              <div className="landing-features__heading-video-stage" role="img" aria-label={t("features.chatVideoAria")}>
+                <div className="landing-features__heading-video-wrap" aria-hidden>
+                  <LandingVideo
+                    mp4Src={FEATURES_HEADING_VIDEO_SRC}
+                    poster={HERO_PREVIEW_POSTER_SRC}
+                    posterAlt={t("features.chatVideoPosterAlt")}
+                    priority="feature"
+                    className="landing-features__heading-video"
+                    preload="none"
+                  />
+                </div>
               </div>
-            </div>
+              <figcaption
+                style={{
+                  fontSize: "0.8125rem",
+                  lineHeight: 1.55,
+                  color: "var(--text-muted)",
+                  margin: 0,
+                }}
+              >
+                {t("mediaCaptions.chatVideo")}
+              </figcaption>
+            </figure>
           </div>
         </div>
 
         <div className="landing-feature landing-feature--visible landing-feature--image-right">
           <div className="landing-feature__media">
-            <div className="landing-feature__video-shell" role="img" aria-label={t("features.liveDataVideoAria")}>
-              <div className="landing-feature__video-stage">
-                <div className="landing-feature__video-wrap" aria-hidden>
-                  <LandingVideo
-                    mp4Src={FEATURE_LIVE_VIDEO_SRC}
-                    poster={FEATURE_LIVE_POSTER_SRC}
-                    posterAlt={t("features.liveDataVideoAria")}
-                    priority="feature"
-                    className="landing-feature__video"
-                    preload="none"
-                  />
+            <figure style={{ margin: 0, display: "grid", gap: "0.5rem" }}>
+              <div className="landing-feature__video-shell" role="img" aria-label={t("features.liveDataVideoAria")}>
+                <div className="landing-feature__video-stage">
+                  <div className="landing-feature__video-wrap" aria-hidden>
+                    <LandingVideo
+                      mp4Src={FEATURE_LIVE_VIDEO_SRC}
+                      poster={FEATURE_LIVE_POSTER_SRC}
+                      posterAlt={t("features.liveDataPosterAlt")}
+                      priority="feature"
+                      className="landing-feature__video"
+                      preload="none"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
+              <figcaption
+                style={{
+                  fontSize: "0.8125rem",
+                  lineHeight: 1.55,
+                  color: "var(--text-muted)",
+                  margin: 0,
+                }}
+              >
+                {t("mediaCaptions.liveData")}
+              </figcaption>
+            </figure>
           </div>
           <div className="landing-feature__stack" style={{ display: "grid", gap: "1rem", textAlign: "left" }}>
             <span className="landing-feature__tag landing-feature__tag--pro">{t("features.f4.tag")}</span>

@@ -809,6 +809,7 @@
     "authorBio": "Articoli e guide sul sito sono firmati da valenchits A: codici OBD2, configurazione dello scanner e come le funzioni di AIscanAuto si applicano alla diagnostica reale."
   },
   "faqPage": {
+    "coverImageAlt": "Immagine di copertina FAQ: {question}",
     "title": "Domande frequenti",
     "dtcSectionTitle": "Codici di errore OBD2 comuni",
     "dtcSectionLead": "Consulta migliaia di codici DTC: powertrain, carrozzeria, telaio, rete — significato, cause tipiche e cosa verificare.",
@@ -823,6 +824,7 @@
     "error": "Impossibile caricare le FAQ. Riprova più tardi."
   },
   "blogPage": {
+    "coverAlt": "Immagine di copertina dell’articolo: {title}",
     "title": "Blog",
     "authorLabel": "Autore",
     "authorName": "valenchits A",
@@ -884,6 +886,17 @@
       "ratingCount": "847"
     },
     "seoIntro": "AIscanAuto è un'app gratuita di diagnostica auto con IA e scanner OBD2 per Windows, macOS e Linux. Collega un adattatore ELM327, leggi i codici di guasto Check Engine e DTC, monitora i PID OBD-II in tempo reale e ottieni indicazioni di riparazione passo passo con IA.",
+    "seoDetails": {
+      "title": "Scanner OBD2, ELM327 e diagnostica IA su desktop",
+      "p1": "La maggior parte delle auto a benzina e diesel dal 1996 ha una porta OBD-II standard. Con un adattatore ELM327 compatibile (USB, Bluetooth o Wi‑Fi), AIscanAuto legge codici DTC memorizzati e in sospeso, mostra i readiness monitor e aiuta a interpretare il Check Engine senza tentativi a caso.",
+      "p2": "I dati live (PID) mostrano trim carburante, sonde lambda, temperatura refrigerante, giri motore e altro a motore acceso. È utile con guasti intermittenti e per verificare una riparazione dopo la cancellazione dei codici.",
+      "p3": "La stessa esperienza AIscanAuto è disponibile su Windows, macOS e Linux — una pagina di download, flussi focalizzati su ELM327 e spiegazioni IA opzionali accanto ai dati OBD2 grezzi."
+    },
+    "mediaCaptions": {
+      "heroBackground": "Sfondo: diagnostica OBD2 desktop AIscanAuto — codici DTC, contesto Check Engine e interfaccia ELM327.",
+      "chatVideo": "Registrazione schermo: diagnostica OBD2 e chat IA insieme in AIscanAuto.",
+      "liveData": "Registrazione schermo: cruscotto PID motore live — parametri OBD2 in tempo reale in AIscanAuto."
+    },
     "howTo": {
       "name": "Come funziona",
       "s1": {
@@ -925,7 +938,7 @@
       "platformWindowsAria": "Vai ai download: installer Windows",
       "platformMacAria": "Vai ai download: installer macOS",
       "platformLinuxAria": "Vai ai download: Linux",
-      "backgroundPosterAlt": "App desktop AIscanAuto: schermata diagnostica OBD2 come immagine di sfondo dell'hero",
+      "backgroundPosterAlt": "AIscanAuto desktop come scanner OBD2: schermata diagnostica con codici DTC, dettagli Check Engine e sessione ELM327 — sfondo hero",
       "carouselAria": "Screenshot dell'app desktop",
       "slidePreviewVideoAlt": "Video anteprima: app desktop AIscanAuto in azione",
       "slidePreviewVideoTab": "Mostra video anteprima prodotto",
@@ -940,8 +953,10 @@
       "sectionTitle": "Tutto ciò che serve per anticipare le riparazioni",
       "chatLeadTitle": "Codici errore e chat IA — un’unica finestra",
       "chatLeadBody": "Vedi i dati in tempo reale, capisci il guasto e chiedi al bot senza cambiare schermata. Tutto per decidere la riparazione in un solo posto.",
-      "chatVideoAria": "Registrazione: diagnostica e chat IA in una finestra dell’app",
-      "liveDataVideoAria": "Registrazione: cruscotto dati motore in tempo reale nell’app",
+      "chatVideoAria": "Registrazione: diagnostica OBD2, elenco DTC e chat IA in una finestra AIscanAuto",
+      "chatVideoPosterAlt": "Screenshot AIscanAuto: diagnostica OBD2 con pannello chat IA e codici guasto visibili",
+      "liveDataVideoAria": "Registrazione: dashboard PID OBD2 live — giri, temperature e grafici sensori in AIscanAuto",
+      "liveDataPosterAlt": "Screenshot AIscanAuto: dashboard dati live con valori PID motore e indicatori",
       "f2": {
         "tag": "PRO",
         "title": "Prevedi i problemi\nprima che accadano",

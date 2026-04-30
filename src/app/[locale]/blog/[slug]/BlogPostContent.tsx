@@ -38,7 +38,7 @@ export default function BlogPostContent({ post }: Props) {
         <Box className="blog-post-page__cover">
           <Image
             src={post.cover_image_url}
-            alt={post.title}
+            alt={t("coverAlt", { title: post.title })}
             h={380}
             w="100%"
             fit="cover"

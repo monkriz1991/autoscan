@@ -92,7 +92,7 @@ export default async function FaqPage({ params }: { params: Promise<{ locale: st
                   {item.cover_image_url ? (
                     <Image
                       src={item.cover_image_url}
-                      alt={item.question}
+                      alt={t("coverImageAlt", { question: item.question })}
                       w={56}
                       h={56}
                       radius="md"

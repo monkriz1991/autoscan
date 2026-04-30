@@ -809,6 +809,7 @@
     "authorBio": "Articles and guides on this site are authored by valenchits A, covering OBD2 codes, scanner setup, and how AIscanAuto features map to real-world diagnostics."
   },
   "faqPage": {
+    "coverImageAlt": "FAQ cover image for: {question}",
     "title": "Frequently asked questions",
     "dtcSectionTitle": "Common OBD2 error codes",
     "dtcSectionLead": "Look up thousands of powertrain, body, chassis, and network diagnostic trouble codes — definitions, typical causes, and next steps.",
@@ -823,6 +824,7 @@
     "error": "Could not load FAQ. Try again later."
   },
   "blogPage": {
+    "coverAlt": "Blog cover image: {title}",
     "title": "Blog",
     "authorLabel": "Author",
     "authorName": "valenchits A",
@@ -884,6 +886,17 @@
       "ratingCount": "847"
     },
     "seoIntro": "AIscanAuto is a free AI car diagnostics and OBD2 scanner app for Windows, macOS, and Linux. Connect an ELM327 adapter, read Check Engine and DTC fault codes, monitor live OBD-II PID data, and get step-by-step AI repair guidance.",
+    "seoDetails": {
+      "title": "OBD2 scanner, ELM327, and AI car diagnostics on desktop",
+      "p1": "Most petrol and diesel cars since 1996 expose a standard OBD-II port. With a compatible ELM327 USB, Bluetooth, or Wi‑Fi adapter, AIscanAuto reads stored and pending DTC codes, shows readiness monitors, and helps you interpret Check Engine warnings without guesswork.",
+      "p2": "Live data (PID) streams let you watch fuel trims, oxygen sensors, coolant temperature, RPM, and more while the engine runs. That context matters when a code is intermittent or when you need to confirm a repair after clearing faults.",
+      "p3": "The same AIscanAuto experience is available on Windows, macOS, and Linux — one download page, clear ELM327-focused workflows, and optional AI explanations when you want plain-language next steps alongside raw OBD2 data."
+    },
+    "mediaCaptions": {
+      "heroBackground": "Background: AIscanAuto desktop OBD2 diagnostics — fault codes (DTC), Check Engine context, and ELM327-focused UI.",
+      "chatVideo": "Screen capture: OBD2 diagnostics and AI assistant chat together in AIscanAuto.",
+      "liveData": "Screen capture: live engine PID dashboard — real-time OBD2 parameters in AIscanAuto."
+    },
     "howTo": {
       "name": "How It Works",
       "s1": {
@@ -925,7 +938,7 @@
       "platformWindowsAria": "Go to downloads: Windows installer",
       "platformMacAria": "Go to downloads: macOS installer",
       "platformLinuxAria": "Go to downloads: Linux installer",
-      "backgroundPosterAlt": "AIscanAuto desktop app: OBD2 diagnostics screen used as the hero background image",
+      "backgroundPosterAlt": "AIscanAuto desktop OBD2 scanner: diagnostics view with fault codes (DTC), Check Engine details, and ELM327 session — hero background",
       "carouselAria": "Desktop app screenshots",
       "slidePreviewVideoAlt": "Product preview video: AIscanAuto desktop app in action",
       "slidePreviewVideoTab": "Show product preview video",
@@ -940,8 +953,10 @@
       "sectionTitle": "Everything you need to stay ahead of repairs",
       "chatLeadTitle": "Fault codes and AI chat — one screen",
       "chatLeadBody": "See what’s wrong, read live data, and ask the bot follow-up questions without switching windows. Everything you need to decide on repairs stays in one place.",
-      "chatVideoAria": "Screen recording: diagnostics and AI chat in a single app window",
-      "liveDataVideoAria": "Screen recording: live engine data dashboard in the app",
+      "chatVideoAria": "Screen recording: OBD2 diagnostics, DTC list, and AI chat in one AIscanAuto window",
+      "chatVideoPosterAlt": "AIscanAuto screenshot: OBD2 diagnostics with AI chat panel and fault codes visible",
+      "liveDataVideoAria": "Screen recording: live OBD2 PID dashboard — RPM, temperatures, and sensor graphs in AIscanAuto",
+      "liveDataPosterAlt": "AIscanAuto screenshot: live data dashboard with engine PID values and gauges",
       "f2": {
         "tag": "PRO",
         "title": "Predict problems\nbefore they happen",

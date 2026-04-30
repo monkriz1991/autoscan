@@ -45,7 +45,7 @@ export default async function BlogIndexPosts({ locale }: Props) {
             {post.cover_image_url ? (
               <img
                 src={post.cover_image_url}
-                alt={post.title}
+                alt={t("coverAlt", { title: post.title })}
                 loading="lazy"
                 style={{
                   display: "block",

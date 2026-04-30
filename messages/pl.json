@@ -809,6 +809,7 @@
     "authorBio": "Artykuły i poradniki na tej stronie pochodzą od valenchits A: kody OBD2, konfiguracja skanera oraz mapowanie funkcji AIscanAuto na realną diagnostykę."
   },
   "faqPage": {
+    "coverImageAlt": "Obrazek przy pytaniu FAQ: {question}",
     "title": "Często zadawane pytania",
     "dtcSectionTitle": "Typowe kody błędów OBD2",
     "dtcSectionLead": "Tysiące kodów DTC (P, B, C, U): opis, typowe przyczyny i co sprawdzić dalej.",
@@ -823,6 +824,7 @@
     "error": "Nie udało się załadować FAQ. Spróbuj ponownie później."
   },
   "blogPage": {
+    "coverAlt": "Okładka artykułu na blogu: {title}",
     "title": "Blog",
     "authorLabel": "Autor",
     "authorName": "valenchits A",
@@ -884,6 +886,17 @@
       "ratingCount": "847"
     },
     "seoIntro": "AIscanAuto to darmowa aplikacja AI do diagnostyki samochodu i skanera OBD2 na Windows, macOS i Linux. Podłącz adapter ELM327, odczytuj kody Check Engine i DTC, monitoruj na żywo dane PID OBD-II i otrzymuj wskazówki naprawcze od AI.",
+    "seoDetails": {
+      "title": "Skaner OBD2, ELM327 i diagnostyka AI na komputerze",
+      "p1": "Większość aut benzynowych i diesli od 1996 roku ma standardowe gniazdo OBD-II. Z kompatybilnym adapterem ELM327 (USB, Bluetooth lub Wi‑Fi) AIscanAuto odczytuje zapisane i oczekujące kody DTC, pokazuje monitory gotowości i pomaga zrozumieć Check Engine bez zgadywania.",
+      "p2": "Dane na żywo (PID) pozwalają śledzić korekty mieszanki, sondy lambda, temperaturę płynu, obroty i więcej przy pracującym silniku. To ważne przy sporadycznych usterkach i przy weryfikacji naprawy po skasowaniu kodów.",
+      "p3": "Ten sam przepływ AIscanAuto działa w Windows, macOS i Linux — jedna strona pobrania, proces pod ELM327 i opcjonalne wyjaśnienia AI obok surowych danych OBD2."
+    },
+    "mediaCaptions": {
+      "heroBackground": "Tło: diagnostyka OBD2 w AIscanAuto na komputerze — kody DTC, kontekst Check Engine i interfejs ELM327.",
+      "chatVideo": "Nagranie ekranu: diagnostyka OBD2 i czat AI razem w AIscanAuto.",
+      "liveData": "Nagranie ekranu: panel PID silnika na żywo — parametry OBD2 w czasie rzeczywistym w AIscanAuto."
+    },
     "howTo": {
       "name": "Jak to działa",
       "s1": {
@@ -925,7 +938,7 @@
       "platformWindowsAria": "Przejdź do pobierania: instalator Windows",
       "platformMacAria": "Przejdź do pobierania: instalator macOS",
       "platformLinuxAria": "Przejdź do pobierania: Linux",
-      "backgroundPosterAlt": "Aplikacja AIscanAuto na komputer: ekran diagnostyki OBD2 jako tło sekcji hero",
+      "backgroundPosterAlt": "AIscanAuto na komputer jako skaner OBD2: widok diagnostyki z kodami DTC, szczegółami Check Engine i sesją ELM327 — tło hero",
       "carouselAria": "Zrzuty ekranu aplikacji desktopowej",
       "slidePreviewVideoAlt": "Wideo podglądu: aplikacja AIscanAuto na komputer w działaniu",
       "slidePreviewVideoTab": "Pokaż wideo podglądu produktu",
@@ -940,8 +953,10 @@
       "sectionTitle": "Wszystko, czego potrzebujesz, by wyprzedzać naprawy",
       "chatLeadTitle": "Kody błędów i czat z botem — jedno okno",
       "chatLeadBody": "Widzisz parametry na żywo, przyczynę usterek i pytasz bota bez przełączania ekranów. Wszystko do decyzji o naprawie w jednym miejscu.",
-      "chatVideoAria": "Nagranie: diagnostyka i czat AI w jednym oknie aplikacji",
-      "liveDataVideoAria": "Nagranie: panel parametrów silnika na żywo w aplikacji",
+      "chatVideoAria": "Nagranie: diagnostyka OBD2, lista DTC i czat AI w jednym oknie AIscanAuto",
+      "chatVideoPosterAlt": "Zrzut AIscanAuto: diagnostyka OBD2 z panelem czatu AI i widocznymi kodami usterek",
+      "liveDataVideoAria": "Nagranie: panel PID OBD2 na żywo — obroty, temperatury i wykresy czujników w AIscanAuto",
+      "liveDataPosterAlt": "Zrzut AIscanAuto: pulpit danych na żywo z wartościami PID silnika i wskaźnikami",
       "f2": {
         "tag": "PRO",
         "title": "Wyprzedź awarie\nzanim się pojawią",

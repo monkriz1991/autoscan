@@ -809,6 +809,7 @@
     "authorBio": "Artikel und Guides auf dieser Website stammen von valenchits A — zu OBD2-Codes, Scanner-Setup und wie sich AIscanAuto in die Praxis der Diagnose einfügt."
   },
   "faqPage": {
+    "coverImageAlt": "FAQ-Titelbild zu: {question}",
     "title": "Häufig gestellte Fragen",
     "dtcSectionTitle": "Häufige OBD2-Fehlercodes",
     "dtcSectionLead": "Tausende Diagnose-Codes (P, B, C, U) mit Kurzinfo, typischen Ursachen und nächsten Schritten.",
@@ -823,6 +824,7 @@
     "error": "FAQ konnte nicht geladen werden. Bitte später erneut versuchen."
   },
   "blogPage": {
+    "coverAlt": "Blog-Titelbild: {title}",
     "title": "Blog",
     "authorLabel": "Autor",
     "authorName": "valenchits A",
@@ -884,6 +886,17 @@
       "ratingCount": "847"
     },
     "seoIntro": "AIscanAuto ist eine kostenlose KI-App zur Fahrzeugdiagnose und als OBD2-Scanner für Windows, macOS und Linux. Verbinden Sie einen ELM327-Adapter, lesen Sie Check-Engine- und DTC-Fehlercodes, überwachen Sie Live-OBD2-PID-Daten und erhalten Sie KI-gestützte Reparaturhinweise.",
+    "seoDetails": {
+      "title": "OBD2-Scanner, ELM327 und KI-Diagnose am Desktop",
+      "p1": "Die meisten Benziner und Diesel seit 1996 haben eine standardisierte OBD-II-Buchse. Mit einem kompatiblen ELM327-Adapter (USB, Bluetooth oder Wi‑Fi) liest AIscanAuto gespeicherte und ausstehende DTC-Codes, zeigt Readiness-Monitore und hilft, Check-Engine-Hinweise ohne Rätselraten zu verstehen.",
+      "p2": "Live-Daten (PID) zeigen z. B. Kraftstofftrimm, Lambdasonden, Kühlmitteltemperatur, Drehzahl und mehr während der Fahrt. Das hilft bei sporadischen Fehlern und um eine Reparatur nach dem Löschen zu prüfen.",
+      "p3": "Derselbe AIscanAuto-Ablauf läuft unter Windows, macOS und Linux — eine Download-Seite, klare ELM327-Schritte und optionale KI-Erklärungen neben den rohen OBD2-Daten."
+    },
+    "mediaCaptions": {
+      "heroBackground": "Hintergrund: AIscanAuto Desktop-OBD2-Diagnose — DTC-Fehlercodes, Check-Engine-Kontext und ELM327-Oberfläche.",
+      "chatVideo": "Bildschirmaufnahme: OBD2-Diagnose und KI-Chat zusammen in AIscanAuto.",
+      "liveData": "Bildschirmaufnahme: Live-Motoren-PID-Dashboard — Echtzeit-OBD2-Parameter in AIscanAuto."
+    },
     "howTo": {
       "name": "So funktioniert's",
       "s1": {
@@ -925,7 +938,7 @@
       "platformWindowsAria": "Zur Download-Seite: Windows-Installer",
       "platformMacAria": "Zur Download-Seite: macOS-Installer",
       "platformLinuxAria": "Zur Download-Seite: Linux",
-      "backgroundPosterAlt": "AIscanAuto Desktop-App: OBD2-Diagnosebildschirm als Hero-Hintergrundbild",
+      "backgroundPosterAlt": "AIscanAuto Desktop-OBD2-Scanner: Diagnoseansicht mit DTC-Codes, Check-Engine-Details und ELM327-Sitzung — Hero-Hintergrund",
       "carouselAria": "Screenshots der Desktop-App",
       "slidePreviewVideoAlt": "Produktvorschau-Video: AIscanAuto Desktop-App in Aktion",
       "slidePreviewVideoTab": "Produktvorschau-Video anzeigen",
@@ -940,8 +953,10 @@
       "sectionTitle": "Alles, um Reparaturen frühzeitig zu erkennen",
       "chatLeadTitle": "Fehlercodes und KI-Chat — ein Fenster",
       "chatLeadBody": "Live-Daten lesen, Ursache sehen und dem Bot Folgefragen stellen — ohne zu wechseln. Alles für Ihre Reparaturentscheidung an einem Ort.",
-      "chatVideoAria": "Bildschirmaufnahme: Diagnose und KI-Chat in einem App-Fenster",
-      "liveDataVideoAria": "Bildschirmaufnahme: Live-Motordaten-Dashboard in der App",
+      "chatVideoAria": "Bildschirmaufnahme: OBD2-Diagnose, DTC-Liste und KI-Chat in einem AIscanAuto-Fenster",
+      "chatVideoPosterAlt": "AIscanAuto-Screenshot: OBD2-Diagnose mit KI-Chat-Panel und sichtbaren Fehlercodes",
+      "liveDataVideoAria": "Bildschirmaufnahme: Live-OBD2-PID-Dashboard — Drehzahl, Temperaturen und Sensorgrafiken in AIscanAuto",
+      "liveDataPosterAlt": "AIscanAuto-Screenshot: Live-Daten-Dashboard mit Motoren-PID-Werten und Anzeigen",
       "f2": {
         "tag": "PRO",
         "title": "Probleme erkennen,\nbevor sie entstehen",

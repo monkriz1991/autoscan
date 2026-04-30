@@ -11,7 +11,7 @@ export const SITEMAP_PATHS_WITHOUT_LOCALE = [
   "/terms",
   "/privacy",
   "/contacts",
-  "/marketing/compare-obd2-apps",
+  "/compare-obd2-apps",
   "/faq",
   "/download",
   "/blog",

@@ -7,7 +7,7 @@ import {
   MIDDLEWARE_REQUEST_PATHNAME_HEADER,
 } from "@/lib/middleware-pathname";
 import { normalizePathSegmentsCase } from "@/lib/normalize-path-case";
-import { localizedPath, stripTrackingSearchParams } from "@/lib/site-url";
+import { getSiteOrigin, localizedPath, stripTrackingSearchParams } from "@/lib/site-url";
 import { routing } from "./i18n/routing";
 
 const DEFAULT_AFTER_AUTH = "/cabinet/dashboard";
@@ -17,6 +17,27 @@ const intlMiddleware = createMiddleware(routing);
 const localePathRe = new RegExp(`^\\/(${routing.locales.join("|")})(\\/|$)`);
 
 export default function middleware(request: NextRequest) {
+  /** Канонический хост без www (как в NEXT_PUBLIC_SITE_URL) — редирект, если запрос пришёл на www. */
+  const hostRaw = request.headers.get("host");
+  const host = hostRaw?.split(":")[0]?.toLowerCase();
+  if (host && host !== "localhost" && !host.startsWith("127.0.0.1")) {
+    try {
+      const apex = new URL(getSiteOrigin()).hostname.toLowerCase();
+      if (
+        apex &&
+        apex !== "localhost" &&
+        !apex.startsWith("127.0.0.1") &&
+        host === `www.${apex}`
+      ) {
+        const dest = new URL(request.url);
+        dest.hostname = apex;
+        return NextResponse.redirect(dest, 301);
+      }
+    } catch {
+      /* ignore: некорректный SITE_URL в dev */
+    }
+  }
+
   const { pathname } = request.nextUrl;
   const localeMatch = pathname.match(localePathRe);
   /** Путь без префикса локали: "" = главная этой локали (не смешивать с "/"). */

@@ -74,7 +74,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     extraKeywords: [`DTC ${upper}`, "OBD2", ...p0420Commercial],
   });
   const languages = alternateLanguageUrls(pathWithoutLocale);
-  const canonicalUrl = languages.en ?? (localized.alternates?.canonical as string);
+  // Каноникал той же локали, что и страница — иначе sitemap (локализованные URL) расходится с <link rel="canonical">.
+  const canonicalUrl =
+    languages[locale] ?? (localized.alternates?.canonical as string);
 
   const ogTw = buildOpenGraphTwitterBlock({
     locale,

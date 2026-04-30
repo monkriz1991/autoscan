@@ -4,7 +4,8 @@ import CompareObd2AppsContent from "@/components/marketing/CompareObd2AppsConten
 import { buildOpenGraphTwitterBlock, staticOpenGraphImageAbsoluteUrl } from "@/lib/og-metadata";
 import { alternateLanguageUrls } from "@/lib/site-url";
 
-const PATH = "/marketing/compare-obd2-apps";
+/** Канонический путь (без легаси /marketing/). */
+const PATH = "/compare-obd2-apps";
 
 export async function generateMetadata({
   params,

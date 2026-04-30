@@ -92,6 +92,13 @@ const nextConfig = {
         destination: "/:locale/contacts",
         permanent: true,
       },
+      { source: "/marketing/compare-obd2-apps", destination: "/compare-obd2-apps", permanent: true },
+      { source: "/en/marketing/compare-obd2-apps", destination: "/compare-obd2-apps", permanent: true },
+      {
+        source: "/:locale(ru|de|pl|es|it)/marketing/compare-obd2-apps",
+        destination: "/:locale/compare-obd2-apps",
+        permanent: true,
+      },
       // Легаси slug с верхним регистром (middleware тоже нормализует /blog/*)
       {
         source: "/blog/OBD2-PID-Reference",

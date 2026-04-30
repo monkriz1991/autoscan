@@ -199,7 +199,7 @@ export default function FeaturesSection() {
           {tLinks("obd2Codes")}
         </Link>
         <span aria-hidden>·</span>{" "}
-        <Link href="/marketing/compare-obd2-apps" className="landing-learn-more">
+        <Link href="/compare-obd2-apps" className="landing-learn-more">
           {tLinks("compareApps")}
         </Link>
       </Text>

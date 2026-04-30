@@ -51,7 +51,7 @@ const LANDING_CHROME_EXACT = new Set([
   "/login",
   "/register",
   "/dtc",
-  "/marketing/compare-obd2-apps",
+  "/compare-obd2-apps",
   "/windows-obd2-app",
   "/mac-obd2-scanner",
   "/linux-obd2",

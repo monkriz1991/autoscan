@@ -54,7 +54,7 @@ export default function PlatformObd2LandingContent({ t }: { t: Translate }) {
         <Link href="/pricing" className="landing-learn-more">
           {t("ctaPricing")}
         </Link>
-        <Link href="/marketing/compare-obd2-apps" className="landing-learn-more">
+        <Link href="/compare-obd2-apps" className="landing-learn-more">
           {t("ctaCompare")}
         </Link>
       </Stack>

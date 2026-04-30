@@ -49,7 +49,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const row of dtcRows) {
       if (!row.code) continue;
       const lm = row.updated_at ? new Date(row.updated_at) : now;
-      for (const locale of PUBLIC_SEO_LOCALE_CODES) {
+      const localesForRowRaw =
+        row.locales && row.locales.length > 0
+          ? row.locales.filter((l) => (PUBLIC_SEO_LOCALE_CODES as readonly string[]).includes(l))
+          : PUBLIC_SEO_LOCALE_CODES;
+      const localesForRow =
+        localesForRowRaw.length > 0 ? localesForRowRaw : PUBLIC_SEO_LOCALE_CODES;
+      for (const locale of localesForRow) {
         const path = localizedPath(locale, `/dtc/${row.code.toUpperCase()}`);
         const url = path === "/" ? `${origin}/` : `${origin}${path}`;
         dtcEntries.push({

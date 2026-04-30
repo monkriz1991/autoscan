@@ -4,7 +4,7 @@
  */
 import dtcCodeKeysFallback from "@/data/dtc-code-keys.json";
 
-export type DtcSitemapEntry = { code: string; updated_at?: string };
+export type DtcSitemapEntry = { code: string; updated_at?: string; locales?: string[] };
 
 /** Fallback, если API недоступен при сборке (ключи совпадают с импортом DTC на бэкенде). */
 function dtcSitemapEntriesFromFallback(): DtcSitemapEntry[] {
@@ -43,7 +43,11 @@ export async function getDtcCodesForSitemap(): Promise<DtcSitemapEntry[]> {
         const ua = r.updated_at;
         const updated_at =
           ua === null || ua === undefined ? "" : typeof ua === "string" ? ua : String(ua);
-        return { code, updated_at } as DtcSitemapEntry;
+        const rawLocales = r.locales;
+        const locales = Array.isArray(rawLocales)
+          ? rawLocales.filter((x): x is string => typeof x === "string" && x.length > 0)
+          : undefined;
+        return { code, updated_at, locales } as DtcSitemapEntry;
       })
       .filter((x): x is DtcSitemapEntry => x !== null);
     return mapped.length > 0 ? mapped : fallback;

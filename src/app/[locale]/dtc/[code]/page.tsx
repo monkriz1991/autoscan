@@ -14,7 +14,12 @@ import {
   withStructuredDataFallback,
 } from "@/lib/seo/structured-data";
 import { buildStaticGlobalStructuredData } from "@/lib/seo/static-structured-data";
-import { alternateLanguageUrls } from "@/lib/site-url";
+import {
+  alternateLanguageUrls,
+  alternateLanguageUrlsForLocales,
+  generateCanonicalUrlForLocale,
+  PUBLIC_SEO_LOCALE_CODES,
+} from "@/lib/site-url";
 import { buildTitle } from "@/lib/seo/titles";
 import { stripHeadOnlyTagsFromHtml } from "@/lib/sanitize-rich-html";
 
@@ -48,22 +53,26 @@ export const revalidate = 600;
 
 /**
  * SEO DTC:
- * - canonical + hreflang — middleware + generateCanonicalUrl; код в верхнем регистре.
- * - title/description из БД (meta_*), иначе шаблон из messages.
+ * - self-canonical и hreflang по фактически доступным локалям (см. API available_locales + sitemap);
+ * - код в верхнем регистре (middleware).
  */
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, code } = await params;
   const upper = code.toUpperCase();
   const pathWithoutLocale = `/dtc/${upper}`;
   const detail = await getDtcCodeForLocale(locale, upper).catch(() => null);
+  if (!detail) {
+    notFound();
+  }
   const t = await getTranslations({ locale, namespace: "seo" });
-  const summarySnippet = (detail?.summary?.trim() ?? "").slice(0, 120);
-  const metaForTitle = (detail?.meta_title?.trim() ?? "") || summarySnippet;
-  const title = detail
-    ? buildTitle.dtcCode(upper, metaForTitle || t("dtcDescription", { code: upper }).slice(0, 120))
-    : t("dtcTitle", { code: upper });
+  const summarySnippet = (detail.summary?.trim() ?? "").slice(0, 120);
+  const metaForTitle = (detail.meta_title?.trim() ?? "") || summarySnippet;
+  const title = buildTitle.dtcCode(
+    upper,
+    metaForTitle || t("dtcDescription", { code: upper }).slice(0, 120),
+  );
   const description =
-    detail?.meta_description?.trim() || detail?.summary?.slice(0, 160) || t("dtcDescription", { code: upper });
+    detail.meta_description?.trim() || detail.summary?.slice(0, 160) || t("dtcDescription", { code: upper });
 
   const p0420Commercial: string[] =
     upper === "P0420" ? ["P0420 catalyst repair cost", "catalyst efficiency below threshold"] : [];
@@ -73,10 +82,23 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description,
     extraKeywords: [`DTC ${upper}`, "OBD2", ...p0420Commercial],
   });
-  const languages = alternateLanguageUrls(pathWithoutLocale);
-  // Каноникал той же локали, что и страница — иначе sitemap (локализованные URL) расходится с <link rel="canonical">.
+  const allowedFromApi = detail.available_locales.filter(
+    (l): l is string =>
+      typeof l === "string" && (PUBLIC_SEO_LOCALE_CODES as readonly string[]).includes(l),
+  );
+  const pick = new Set<string>(allowedFromApi);
+  if (!pick.has(locale)) {
+    pick.add(locale);
+  }
+  const useFullCluster = pick.size >= PUBLIC_SEO_LOCALE_CODES.length;
+  const pickList = Array.from(pick);
+  const languages = useFullCluster
+    ? alternateLanguageUrls(pathWithoutLocale)
+    : alternateLanguageUrlsForLocales(pathWithoutLocale, pickList);
+  const languagesResolved =
+    Object.keys(languages).length > 0 ? languages : alternateLanguageUrls(pathWithoutLocale);
   const canonicalUrl =
-    languages[locale] ?? (localized.alternates?.canonical as string);
+    languagesResolved[locale] ?? generateCanonicalUrlForLocale(locale, pathWithoutLocale);
 
   const ogTw = buildOpenGraphTwitterBlock({
     locale,
@@ -92,7 +114,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     alternates: {
       ...localized.alternates,
       canonical: canonicalUrl,
-      languages,
+      languages: languagesResolved,
     },
     ...ogTw,
   };
@@ -111,7 +133,8 @@ export default async function DtcCodePage({ params }: PageProps) {
   const t = await getTranslations({ locale, namespace: "dtcPage" });
   const tDetail = await getTranslations({ locale, namespace: "dtcDetail" });
   const pathWithoutLocale = `/dtc/${upper}`;
-  const pageUrl = alternateLanguageUrls(pathWithoutLocale)[locale];
+  /** Self-URL страницы для JSON-LD (совпадает с canonical). */
+  const pageUrl = generateCanonicalUrlForLocale(locale, pathWithoutLocale);
   const tSeo = await getTranslations({ locale, namespace: "seo" });
   const titleForLd =
     detail.meta_title?.trim() ||

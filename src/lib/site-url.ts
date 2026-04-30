@@ -205,6 +205,42 @@ export function alternateLanguageUrls(
   return out;
 }
 
+/**
+ * hreflang-карта только для переданных локалей + x-default (URL defaultLocale, as-needed).
+ * Пустой набор — {} (вызывающий может подставить полный alternateLanguageUrls).
+ */
+export function alternateLanguageUrlsForLocales(
+  pathWithoutLocale: string,
+  localeCodes: readonly string[],
+  querySuffix: string = "",
+): Record<string, string> {
+  const allowed = new Set<string>(PUBLIC_SEO_LOCALE_CODES);
+  const pick = new Set(localeCodes.filter((l) => allowed.has(l)));
+  if (pick.size === 0) {
+    return {};
+  }
+  const inner = normalizePathForSeo(pathWithoutLocaleSegment(pathWithoutLocale));
+  const origin = getSiteOrigin();
+  const q =
+    querySuffix === "" ? "" : querySuffix.startsWith("?") ? querySuffix : `?${querySuffix}`;
+  const out: Record<string, string> = {};
+  for (const loc of PUBLIC_SEO_LOCALE_CODES) {
+    if (!pick.has(loc)) continue;
+    const href =
+      loc === routing.defaultLocale
+        ? inner === ""
+          ? `${origin}/`
+          : `${origin}${inner}`
+        : inner === ""
+          ? `${origin}/${loc}`
+          : `${origin}/${loc}${inner}`;
+    out[loc] = `${href}${q}`;
+  }
+  const xDefaultHref = inner === "" ? `${origin}/` : `${origin}${inner}`;
+  out["x-default"] = `${xDefaultHref}${q}`;
+  return out;
+}
+
 /** Локаль для og:locale */
 export function localeToOpenGraphLocale(locale: string): string {
   const map: Record<string, string> = {

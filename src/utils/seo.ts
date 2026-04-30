@@ -1,6 +1,12 @@
 import { routing } from "@/i18n/routing";
 import { isNoindexUtilityPath } from "@/lib/middleware-pathname";
-import { getSiteOrigin, localizedPath, normalizePathForSeo, pathWithoutLocaleSegment } from "@/lib/site-url";
+import {
+  getSiteOrigin,
+  localizedPath,
+  normalizePathForSeo,
+  pathWithoutLocaleSegment,
+  PUBLIC_SEO_LOCALE_CODES,
+} from "@/lib/site-url";
 
 export type HreflangLink = {
   hreflang: string;
@@ -31,7 +37,7 @@ export function buildHreflangLinks(pathname: string, options?: BuildHreflangOpti
     return [];
   }
 
-  const links = routing.locales.map((locale) => ({
+  const links = PUBLIC_SEO_LOCALE_CODES.map((locale) => ({
     hreflang: locale,
     href: buildUrl(locale, pathname, options?.pageParam),
   }));

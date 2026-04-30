@@ -4,8 +4,8 @@
  */
 
 import { routing } from "@/i18n/routing";
-import { getSiteOrigin } from "@/lib/site-url";
-import type { StructuredDataDoc } from "@/lib/seo/structured-data";
+import { getSiteOrigin, localizedPath } from "@/lib/site-url";
+import { mergeStructuredDataDocs, type StructuredDataDoc } from "@/lib/seo/structured-data";
 
 function publicSiteName(): string {
   return (process.env.NEXT_PUBLIC_SITE_NAME || "AIscanAuto").trim();
@@ -109,6 +109,90 @@ export function buildStaticHomeStructuredData(params: {
       },
     ],
   };
+}
+
+function publicSoftwareAppName(): string {
+  return (process.env.NEXT_PUBLIC_SEO_SOFTWARE_APP_NAME || "").trim() || publicSiteName();
+}
+
+function publicSoftwareDescription(): string {
+  return (
+    (process.env.NEXT_PUBLIC_SEO_SOFTWARE_DESCRIPTION || "").trim() ||
+    "AI-powered OBD2 car diagnostics: read DTCs, live data, and repair guidance."
+  );
+}
+
+function publicSoftwareOfferDescription(): string {
+  return (
+    (process.env.NEXT_PUBLIC_SEO_SOFTWARE_OFFER_DESCRIPTION || "").trim() ||
+    "Free tier available; paid plans for more devices and AI requests."
+  );
+}
+
+function publicSoftwareFeatureList(): string[] {
+  try {
+    const raw = (process.env.NEXT_PUBLIC_SEO_SOFTWARE_FEATURE_LIST_JSON || "[]").trim();
+    const arr = JSON.parse(raw) as unknown;
+    if (!Array.isArray(arr)) return [];
+    return arr.map((x) => String(x).trim()).filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * SoftwareApplication для страницы (главная и т.д.) — fallback без SEO API.
+ * Логика близка к apps.seo.builders.software_application._build_fallback_node.
+ */
+export function buildStaticSoftwareApplicationStructuredData(params: {
+  pageUrl: string;
+  locale: string;
+}): StructuredDataDoc {
+  const url = params.pageUrl.replace(/\/$/, "");
+  const base = getSiteOrigin();
+  const offerRel = localizedPath(params.locale, "/pricing");
+  const offerUrl = `${base}${offerRel}`;
+
+  const node: Record<string, unknown> = {
+    "@type": "SoftwareApplication",
+    "@id": `${url}#software`,
+    name: publicSoftwareAppName(),
+    applicationCategory: "AutomotiveApplication",
+    operatingSystem: "Windows, macOS, Linux, Android, iOS",
+    description: publicSoftwareDescription(),
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+      description: publicSoftwareOfferDescription(),
+      url: offerUrl,
+    },
+  };
+  const feats = publicSoftwareFeatureList();
+  if (feats.length) node.featureList = feats;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [node],
+  };
+}
+
+/** WebPage + SoftwareApplication для главной при недоступности бэкенда. */
+export function buildStaticHomeWithSoftwareStructuredData(params: {
+  pageUrl: string;
+  locale: string;
+  title: string;
+  description: string;
+}): StructuredDataDoc {
+  const homePart = buildStaticHomeStructuredData({
+    pageUrl: params.pageUrl,
+    title: params.title,
+    description: params.description,
+  });
+  const appPart = buildStaticSoftwareApplicationStructuredData({
+    pageUrl: params.pageUrl,
+    locale: params.locale,
+  });
+  return mergeStructuredDataDocs(homePart, appPart);
 }
 
 /**

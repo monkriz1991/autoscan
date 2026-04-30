@@ -78,9 +78,11 @@ export default function middleware(request: NextRequest) {
   if (blogSlugMatch) {
     const slugSeg = blogSlugMatch[1];
     const slugLower = slugSeg.toLowerCase();
-    if (slugSeg !== slugLower) {
+    /** Канонический slug после lower-case; отдельные SEO-редиректы (опечатки в URL). */
+    const canonicalBlogSlug = slugLower === "choice-of-obd-scaner" ? "choice-of-obd-scanner" : slugLower;
+    if (slugSeg !== canonicalBlogSlug) {
       const locale = localeMatch?.[1] || routing.defaultLocale;
-      const destUrl = new URL(localizedPath(locale, `/blog/${slugLower}`), request.url);
+      const destUrl = new URL(localizedPath(locale, `/blog/${canonicalBlogSlug}`), request.url);
       destUrl.search = stripTrackingSearchParams(request.nextUrl.searchParams).toString();
       return NextResponse.redirect(destUrl, 301);
     }

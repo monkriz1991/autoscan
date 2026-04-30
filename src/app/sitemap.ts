@@ -3,7 +3,7 @@ import { routing } from "@/i18n/routing";
 import { getBlogPostsForLocale } from "@/lib/api";
 import { getDtcCodesForSitemap } from "@/lib/dtc-sitemap";
 import { allLocalizedSitemapPaths } from "@/lib/sitemap-static-paths";
-import { getSiteOrigin, localizedPath } from "@/lib/site-url";
+import { getSiteOrigin, localizedPath, PUBLIC_SEO_LOCALE_CODES } from "@/lib/site-url";
 
 function priorityForPath(path: string): number {
   if (path === "/" || path.match(/^\/(ru|de|pl|es|it)\/?$/)) return path === "/" ? 1 : 0.95;
@@ -48,7 +48,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const row of dtcRows) {
       if (!row.code) continue;
       const lm = row.updated_at ? new Date(row.updated_at) : now;
-      for (const locale of routing.locales) {
+      for (const locale of PUBLIC_SEO_LOCALE_CODES) {
         const path = localizedPath(locale, `/dtc/${row.code.toUpperCase()}`);
         const url = path === "/" ? `${origin}/` : `${origin}${path}`;
         dtcEntries.push({
@@ -66,7 +66,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const blogEntries: MetadataRoute.Sitemap = [];
   for (const post of posts) {
     if (!post.slug) continue;
-    for (const locale of routing.locales) {
+    for (const locale of PUBLIC_SEO_LOCALE_CODES) {
       if (!post.available_locales.includes(locale)) continue;
       const path = localizedPath(locale, `/blog/${post.slug}`);
       const url = path === "/" ? `${origin}/` : `${origin}${path}`;

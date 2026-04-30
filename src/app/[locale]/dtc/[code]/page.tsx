@@ -40,11 +40,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const description =
     detail?.meta_description?.trim() || detail?.summary?.slice(0, 160) || t("dtcDescription", { code: upper });
 
+  const p0420Commercial: string[] =
+    upper === "P0420" ? ["P0420 catalyst repair cost", "catalyst efficiency below threshold"] : [];
   const localized = generateLocalizedMetadata(locale, {
     pathWithoutLocale,
     title,
     description,
-    extraKeywords: [`DTC ${upper}`, "OBD2"],
+    extraKeywords: [`DTC ${upper}`, "OBD2", ...p0420Commercial],
   });
   const languages = alternateLanguageUrls(pathWithoutLocale);
   const canonicalUrl = languages.en ?? (localized.alternates?.canonical as string);

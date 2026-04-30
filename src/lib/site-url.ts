@@ -1,5 +1,11 @@
 import { routing } from "@/i18n/routing";
 
+/**
+ * Публичный hreflang/sitemap на Next — только `routing.locales` (6 языков).
+ * Не путать с `SUPPORTED_LOCALES` в Django API, где может быть `uk` и др.
+ */
+export const PUBLIC_SEO_LOCALE_CODES = routing.locales;
+
 /** Базовый origin сайта для canonical, Open Graph и sitemap (NEXT_PUBLIC_SITE_URL). */
 export function getSiteOrigin(): string {
   const raw = (
@@ -148,13 +154,14 @@ function pathnameForAlternateInput(currentPath: string): string {
  * @param currentPath — путь без локали (`/dtc/P0420`), с префиксом (`/ru/dtc/P0420`),
  *   относительный от корня или абсолютный URL того же сайта; сегмент локали при наличии отбрасывается.
  */
+/** hreflang: по одному URL на каждый код из `PUBLIC_SEO_LOCALE_CODES` + `x-default` (= EN as-needed). */
 export function getAlternateLanguages(currentPath: string): AlternateLanguageLink[] {
   const pathname = pathnameForAlternateInput(currentPath);
   const { pathWithoutLocale } = splitLocaleFromPathname(pathname);
   const inner = normalizePathForSeo(pathWithoutLocaleSegment(pathWithoutLocale));
   const origin = getSiteOrigin();
   const out: AlternateLanguageLink[] = [];
-  for (const loc of routing.locales) {
+  for (const loc of PUBLIC_SEO_LOCALE_CODES) {
     const href =
       loc === routing.defaultLocale
         ? inner === ""

@@ -48,6 +48,10 @@ const LANDING_CHROME_EXACT = new Set([
   "/login",
   "/register",
   "/dtc",
+  "/marketing/compare-obd2-apps",
+  "/windows-obd2-app",
+  "/mac-obd2-scanner",
+  "/linux-obd2",
 ]);
 
 export function isLandingChromePath(pathWithoutLocale: string): boolean {
@@ -74,7 +78,7 @@ export function getLayoutChromeKind(pathWithoutLocale: string): LayoutChromeKind
 export function shouldOmitLayoutGlobalJsonLd(pathHeader: string | null | undefined): boolean {
   if (pathHeader == null || pathHeader === "") return false;
   const n = pathHeader.replace(/\/+$/, "") || "/";
-  return n === "/faq" || n === "/pricing";
+  return n === "/" || n === "/faq" || n === "/pricing";
 }
 
 /** Проверка utility-страниц: noindex и без hreflang alternates в корневом layout. */

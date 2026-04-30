@@ -1,14 +1,22 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { routing } from "@/i18n/routing";
 import JsonLd from "@/components/seo/JsonLd";
-import StaticJsonLd from "@/components/landing/StaticJsonLd";
-import { buildOpenGraphTwitterBlock, staticOpenGraphImageAbsoluteUrl } from "@/lib/og-metadata";
-import { getCanonicalUrlFromRequestHeaders } from "@/lib/request-canonical";
-import { buildLocalePageMetadata } from "@/lib/seo-metadata";
-import { buildStaticHomeStructuredData } from "@/lib/seo/static-structured-data";
-import { alternateLanguageUrls, getSiteOrigin } from "@/lib/site-url";
 import HomePageShell from "@/components/landing/HomePageShell";
+import { routing } from "@/i18n/routing";
+import { buildLocalePageMetadata } from "@/lib/seo-metadata";
+import { alternateLanguageUrls } from "@/lib/site-url";
+import {
+  fetchStructuredData,
+  mergeStructuredDataDocs,
+  withStructuredDataFallback,
+} from "@/lib/seo/structured-data";
+import {
+  buildStaticGlobalStructuredData,
+  buildStaticHomeWithSoftwareStructuredData,
+} from "@/lib/seo/static-structured-data";
+
+/** ISR: SEO JSON-LD с бэкенда; при сбое — статический граф. */
+export const revalidate = 600;
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -19,114 +27,37 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const { locale: rawLocale } = await params;
-  const locale = routing.locales.includes(rawLocale as (typeof routing.locales)[number])
-    ? rawLocale
-    : routing.defaultLocale;
-  const base = await buildLocalePageMetadata(locale, "", "homeTitle", "homeDescription");
-  const t = await getTranslations({ locale, namespace: "seo" });
-  const canonicalUrl = await getCanonicalUrlFromRequestHeaders(locale);
-  const keywords = t("homeKeywords")
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
-
-  const ogTw = buildOpenGraphTwitterBlock({
-    locale,
-    title: t("homeOgTitle"),
-    description: t("homeOgDescription"),
-    url: canonicalUrl,
-    imageUrl: staticOpenGraphImageAbsoluteUrl(locale),
-  });
-
-  return {
-    ...base,
-    title: { absolute: t("homeTitle") },
-    alternates: {
-      ...base.alternates,
-      canonical: canonicalUrl,
-    },
-    keywords,
-    ...ogTw,
-    twitter: {
-      ...ogTw.twitter,
-      title: t("homeTwitterTitle"),
-      description: t("homeTwitterDescription"),
-    },
-  };
+  const { locale } = await params;
+  return buildLocalePageMetadata(locale, "", "homeTitle", "homeDescription");
 }
 
-export default async function HomePage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  const { locale: rawLocale } = await params;
-  const locale = routing.locales.includes(rawLocale as (typeof routing.locales)[number])
-    ? rawLocale
-    : routing.defaultLocale;
+export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   setRequestLocale(locale);
-  const tSeo = await getTranslations({ locale, namespace: "seo" });
-  const tLand = await getTranslations({ locale, namespace: "landing" });
-  const tNav = await getTranslations({ locale, namespace: "nav" });
-  const homeAlternates = alternateLanguageUrls("");
-  const pageUrl = homeAlternates[locale] || homeAlternates[routing.defaultLocale] || `${getSiteOrigin()}/`;
-  const pageUrlNoSlash = pageUrl.replace(/\/$/, "");
-  const homeTitle = tSeo("homeTitle");
-  const homeDescription = tSeo("homeDescription");
-  /** Локальный WebPage JSON-LD без блокирующего запроса к /seo/structured-data/. */
-  const homeLd = buildStaticHomeStructuredData({
+  const t = await getTranslations({ locale, namespace: "seo" });
+  const pageUrl = alternateLanguageUrls("")[locale];
+  const title = t("homeTitle");
+  const description = t("homeDescription");
+
+  const remoteRaw = await fetchStructuredData({
+    bundles: ["home", "download"],
+    locale,
     pageUrl,
-    title: homeTitle,
-    description: homeDescription,
+    title,
+    description,
   });
-
-  const softwareApplicationLd = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "@id": `${pageUrlNoSlash}/#softwareapplication`,
-    name: "AIscanAuto",
-    applicationCategory: "UtilitiesApplication",
-    operatingSystem: "Windows, macOS, Linux",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
-    },
-    description: tLand("schema.softwareDescription"),
-  };
-
-  const howToLd = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: tLand("howTo.name"),
-    step: [1, 2, 3].map((n) => ({
-      "@type": "HowToStep",
-      position: n,
-      name: tLand(`howTo.s${n}.name` as never),
-      text: tLand(`howTo.s${n}.text` as never),
-    })),
-  };
-
-  const breadcrumbLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: tNav("home"),
-        item: pageUrl,
-      },
-    ],
-  };
+  const fallback = buildStaticHomeWithSoftwareStructuredData({
+    pageUrl,
+    locale,
+    title,
+    description,
+  });
+  const pageLd = withStructuredDataFallback(remoteRaw, fallback);
+  const homeJsonLd = mergeStructuredDataDocs(buildStaticGlobalStructuredData(), pageLd);
 
   return (
     <>
-      <JsonLd data={homeLd} />
-      <StaticJsonLd data={softwareApplicationLd} />
-      <StaticJsonLd data={howToLd} />
-      <StaticJsonLd data={breadcrumbLd} />
+      <JsonLd data={homeJsonLd} />
       <HomePageShell locale={locale} />
     </>
   );

@@ -6,6 +6,7 @@ import {
   MIDDLEWARE_PATHNAME_HEADER,
   MIDDLEWARE_REQUEST_PATHNAME_HEADER,
 } from "@/lib/middleware-pathname";
+import { normalizePathSegmentsCase } from "@/lib/normalize-path-case";
 import { localizedPath, stripTrackingSearchParams } from "@/lib/site-url";
 import { routing } from "./i18n/routing";
 
@@ -30,6 +31,17 @@ export default function middleware(request: NextRequest) {
       : pathname;
   const normalizedPathForHeader =
     pathWithoutLocale === "" ? "/" : pathWithoutLocale.replace(/\/+$/, "") || "/";
+
+  /** /DTC/P0420 и т.п. → /dtc/P0420 одним редиректом (кроме регистра кода DTC). */
+  const pathForCase =
+    pathWithoutLocale === "" ? "/" : pathWithoutLocale.startsWith("/") ? pathWithoutLocale : `/${pathWithoutLocale}`;
+  const caseNormalized = normalizePathSegmentsCase(pathForCase);
+  if (caseNormalized != null) {
+    const locale = localeMatch?.[1] || routing.defaultLocale;
+    const destUrl = new URL(localizedPath(locale, caseNormalized), request.url);
+    destUrl.search = stripTrackingSearchParams(request.nextUrl.searchParams).toString();
+    return NextResponse.redirect(destUrl, 301);
+  }
 
   /**
    * Явный префикс defaultLocale в URL (напр. /en) дублирует as-needed каноник (/).

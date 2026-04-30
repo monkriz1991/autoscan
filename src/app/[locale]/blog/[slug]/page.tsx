@@ -7,7 +7,8 @@ import JsonLd from "@/components/seo/JsonLd";
 import { getBlogPostForLocale } from "@/lib/api";
 import { buildStaticBlogArticleStructuredData } from "@/lib/seo/static-structured-data";
 import { buildOpenGraphTwitterBlock, blogPostOpenGraphImageAbsoluteUrl } from "@/lib/og-metadata";
-import { alternateLanguageUrls } from "@/lib/site-url";
+import { alternateLanguageUrls, generateCanonicalUrlForLocale } from "@/lib/site-url";
+import { buildTitle } from "@/lib/seo/titles";
 import BlogPostContent from "./BlogPostContent";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
@@ -22,21 +23,45 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     notFound();
   }
   const t = await getTranslations({ locale, namespace: "seo" });
-  const languages = alternateLanguageUrls(`/blog/${slug}`);
-  const url = languages[locale];
+  const canonicalUrl = generateCanonicalUrlForLocale(locale, `/blog/${slug}`);
+  const rawTitle = post.localized_title_raw.trim();
+  const seoTitle = buildTitle.blogPost(rawTitle);
+  const forceNoindex = !seoTitle || post.is_noindex;
+  const titleAbsolute = seoTitle ?? "AiScanAuto";
   const description = post.excerpt?.trim() || t("blogDescription");
+
+  const routable = new Set<string>(routing.locales);
+  const fromApi = (post.available_locales_indexable ?? []).filter((l) => routable.has(l));
+  const localesForHreflang = new Set(fromApi);
+  localesForHreflang.add(locale);
+
+  const languages: Record<string, string> = {};
+  if (!forceNoindex) {
+    for (const loc of localesForHreflang) {
+      languages[loc] = generateCanonicalUrlForLocale(loc, `/blog/${slug}`);
+    }
+    languages["x-default"] = localesForHreflang.has("en")
+      ? generateCanonicalUrlForLocale("en", `/blog/${slug}`)
+      : generateCanonicalUrlForLocale(routing.defaultLocale, `/blog/${slug}`);
+  }
+
   const ogTw = buildOpenGraphTwitterBlock({
     locale,
-    title: post.title,
+    title: titleAbsolute,
     description,
-    url,
+    url: canonicalUrl,
     imageUrl: blogPostOpenGraphImageAbsoluteUrl(locale, slug),
     type: "article",
   });
   return {
-    title: post.title,
+    title: { absolute: titleAbsolute },
     description,
-    alternates: { canonical: url, languages },
+    alternates: forceNoindex
+      ? { canonical: canonicalUrl }
+      : { canonical: canonicalUrl, languages },
+    robots: forceNoindex
+      ? { index: false, follow: true, googleBot: { index: false, follow: true } }
+      : { index: true, follow: true, googleBot: { index: true, follow: true } },
     ...ogTw,
   };
 }
@@ -53,7 +78,7 @@ export default async function BlogPostPage({ params }: Props) {
   }
   const tNav = await getTranslations({ locale, namespace: "nav" });
   const tSeo = await getTranslations({ locale, namespace: "seo" });
-  const pageUrl = alternateLanguageUrls(`/blog/${slug}`)[locale];
+  const pageUrl = generateCanonicalUrlForLocale(locale, `/blog/${slug}`);
   const imageForLd = post.cover_image_url ?? blogPostOpenGraphImageAbsoluteUrl(locale, slug);
   const dateModified = post.updated_at || post.published_at;
   const blogPostLd = buildStaticBlogArticleStructuredData({

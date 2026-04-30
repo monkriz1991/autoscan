@@ -1019,7 +1019,9 @@ export type BlogPostItem = {
   title: string;
   excerpt: string;
   published_at: string;
+  is_noindex: boolean;
   available_locales: string[];
+  available_locales_indexable: string[];
   cover_image_url: string | null;
 };
 
@@ -1027,20 +1029,37 @@ export type BlogPostDetail = BlogPostItem & {
   body_html: string;
   /** ISO; для dateModified в JSON-LD, при отсутствии в ответе — дублирует published_at. */
   updated_at: string;
+  /** Непустой только если в title_i18n для запрошенной локали есть заголовок (без slug-fallback). */
+  localized_title_raw: string;
 };
 
-function mapBlogPostDetail(data: Record<string, unknown>): BlogPostDetail {
+function mapBlogPostDetail(
+  data: Record<string, unknown>,
+  slug?: string,
+): BlogPostDetail {
   const published = String(data.published_at ?? "");
+  const rawTitle = String(data.title ?? "").trim();
+  const rawSlug = String(data.slug ?? slug ?? "");
+  const localizedRaw = String(data.localized_title_raw ?? "").trim();
   return {
-    slug: String(data.slug ?? ""),
-    title: String(data.title ?? ""),
-    excerpt: String(data.excerpt ?? ""),
+    slug: rawSlug,
+    title:
+      rawTitle ||
+      rawSlug
+        .replace(/-/g, " ")
+        .replace(/\b\w/g, (c) => c.toUpperCase()),
+    excerpt: String(data.excerpt ?? "").trim(),
     published_at: published,
     updated_at: String(data.updated_at ?? published),
     body_html: String(data.body_html ?? ""),
+    is_noindex: data.is_noindex === true,
     available_locales: Array.isArray(data.available_locales)
       ? (data.available_locales as string[]).filter((x) => typeof x === "string")
       : [],
+    available_locales_indexable: Array.isArray(data.available_locales_indexable)
+      ? (data.available_locales_indexable as string[]).filter((x) => typeof x === "string")
+      : [],
+    localized_title_raw: localizedRaw,
     cover_image_url:
       data.cover_image_url === null ||
       data.cover_image_url === undefined ||
@@ -1057,8 +1076,12 @@ function mapBlogPostRows(data: unknown): BlogPostItem[] {
     title: String(row.title ?? ""),
     excerpt: String(row.excerpt ?? ""),
     published_at: String(row.published_at ?? ""),
+    is_noindex: row.is_noindex === true,
     available_locales: Array.isArray(row.available_locales)
       ? (row.available_locales as string[]).filter((x) => typeof x === "string")
+      : [],
+    available_locales_indexable: Array.isArray(row.available_locales_indexable)
+      ? (row.available_locales_indexable as string[]).filter((x) => typeof x === "string")
       : [],
     cover_image_url:
       row.cover_image_url === null ||
@@ -1118,7 +1141,7 @@ export async function getBlogPost(slug: string): Promise<BlogPostDetail> {
     throw new ApiError(res.status, await res.json().catch(() => ({})));
   }
   const data = (await res.json()) as Record<string, unknown>;
-  return mapBlogPostDetail(data);
+  return mapBlogPostDetail(data, slug);
 }
 
 /** SSR/метаданные: пост с заголовками локали (getBlogPost на сервере всегда брал бы en). */
@@ -1132,17 +1155,19 @@ export async function getBlogPostForLocale(
       : process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8001/api/v1"
   ).replace(/\/$/, "");
   const url = `${base}/blog/${encodeURIComponent(slug)}/`;
-  const res = await fetch(url, {
-    credentials: "omit",
-    headers: {
-      "Accept-Language": locale,
-      "X-Locale": locale,
-    },
-    next: { revalidate: 120 },
-  });
+  const res = await logSsrFetchMs(`blog/${slug} locale=${locale}`, () =>
+    fetch(url, {
+      credentials: "omit",
+      headers: {
+        "Accept-Language": locale,
+        "X-Locale": locale,
+      },
+      next: { revalidate: 120 },
+    }),
+  );
   if (!res.ok) return null;
   const data = (await res.json()) as Record<string, unknown>;
-  return mapBlogPostDetail(data);
+  return mapBlogPostDetail(data, slug);
 }
 
 /** ---------- DTC справочник OBD2 ---------- */

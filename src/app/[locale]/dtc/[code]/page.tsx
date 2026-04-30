@@ -13,6 +13,8 @@ import {
 } from "@/lib/seo/structured-data";
 import { buildStaticGlobalStructuredData } from "@/lib/seo/static-structured-data";
 import { alternateLanguageUrls } from "@/lib/site-url";
+import { buildTitle } from "@/lib/seo/titles";
+import { stripHeadOnlyTagsFromHtml } from "@/lib/sanitize-rich-html";
 
 type PageProps = { params: Promise<{ locale: string; code: string }> };
 
@@ -30,10 +32,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const pathWithoutLocale = `/dtc/${upper}`;
   const detail = await getDtcCodeForLocale(locale, upper).catch(() => null);
   const t = await getTranslations({ locale, namespace: "seo" });
-  const title =
-    detail?.meta_title?.trim() ||
-    detail?.summary?.slice(0, 80) ||
-    t("dtcTitle", { code: upper });
+  const summarySnippet = (detail?.summary?.trim() ?? "").slice(0, 120);
+  const metaForTitle = (detail?.meta_title?.trim() ?? "") || summarySnippet;
+  const title = detail
+    ? buildTitle.dtcCode(upper, metaForTitle || t("dtcDescription", { code: upper }).slice(0, 120))
+    : t("dtcTitle", { code: upper });
   const description =
     detail?.meta_description?.trim() || detail?.summary?.slice(0, 160) || t("dtcDescription", { code: upper });
 
@@ -43,17 +46,25 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description,
     extraKeywords: [`DTC ${upper}`, "OBD2"],
   });
+  const languages = alternateLanguageUrls(pathWithoutLocale);
+  const canonicalUrl = languages.en ?? (localized.alternates?.canonical as string);
 
   const ogTw = buildOpenGraphTwitterBlock({
     locale,
-    title: localized.title as string,
+    title,
     description: localized.description as string,
-    url: localized.alternates?.canonical as string,
+    url: canonicalUrl,
     imageUrl: dtcOpenGraphImageAbsoluteUrl(locale, upper),
   });
 
   return {
     ...localized,
+    title: { absolute: title },
+    alternates: {
+      ...localized.alternates,
+      canonical: canonicalUrl,
+      languages,
+    },
     ...ogTw,
   };
 }
@@ -152,7 +163,7 @@ export default async function DtcCodePage({ params }: PageProps) {
                     <div
                       className="blog-prose"
                       style={{ marginTop: "0.75rem" }}
-                      dangerouslySetInnerHTML={{ __html: art.body_html }}
+                      dangerouslySetInnerHTML={{ __html: stripHeadOnlyTagsFromHtml(art.body_html) }}
                     />
                   ) : null}
                 </article>

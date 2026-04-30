@@ -177,13 +177,23 @@ export function getAlternateLanguages(currentPath: string): AlternateLanguageLin
  * Пример: "", "/pricing", "/faq", "/blog/post-slug"
  * Включает ключ x-default (URL defaultLocale) для hreflang.
  */
-export function alternateLanguageUrls(pathWithoutLocale: string): Record<string, string> {
+/**
+ * Карта hreflang → абсолютный URL.
+ * @param querySuffix — только «безопасные» параметры (например `?page=2` для списков DTC/блога),
+ *   чтобы взаимные alternate совпадали с каноном пагинации.
+ */
+export function alternateLanguageUrls(
+  pathWithoutLocale: string,
+  querySuffix: string = "",
+): Record<string, string> {
   const inner = normalizePathForSeo(pathWithoutLocaleSegment(pathWithoutLocale));
   const pathForGetter = inner === "" ? "/" : inner;
   const links = getAlternateLanguages(pathForGetter);
+  const q =
+    querySuffix === "" ? "" : querySuffix.startsWith("?") ? querySuffix : `?${querySuffix}`;
   const out: Record<string, string> = {};
   for (const { href, hreflang } of links) {
-    out[hreflang] = href;
+    out[hreflang] = `${href}${q}`;
   }
   return out;
 }

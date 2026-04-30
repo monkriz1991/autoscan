@@ -1,4 +1,22 @@
-import { getTranslations } from "next-intl/server";
+import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { buildLocalePageMetadata } from "@/lib/seo-metadata";
+import { buildTitle } from "@/lib/seo/titles";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const base = await buildLocalePageMetadata(
+    locale,
+    "/marketing/contacts",
+    "contactsTitle",
+    "contactsDescription",
+  );
+  return { ...base, title: { absolute: buildTitle.contacts() } };
+}
 
 /** Локализованная заглушка; реквизиты и каналы связи добавят позже. */
 export default async function ContactsPage({
@@ -7,6 +25,7 @@ export default async function ContactsPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "contactsPage" });
 
   return (

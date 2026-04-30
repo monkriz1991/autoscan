@@ -11,6 +11,7 @@ import { Link } from "@/i18n/navigation";
 import { getPublicFaqForLocale } from "@/lib/api";
 import { FAQ_SAMPLE_DTC_CODES } from "@/data/popular-dtc-codes";
 import { generateCanonicalUrlForLocale } from "@/lib/site-url";
+import { buildTitle } from "@/lib/seo/titles";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -22,7 +23,8 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  return buildLocalePageMetadata(locale, "/faq", "faqTitle", "faqDescription");
+  const base = await buildLocalePageMetadata(locale, "/faq", "faqTitle", "faqDescription");
+  return { ...base, title: { absolute: buildTitle.faq() } };
 }
 
 export default async function FaqPage({ params }: { params: Promise<{ locale: string }> }) {

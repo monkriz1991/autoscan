@@ -1,7 +1,9 @@
+import Image from "next/image";
 import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
 import { localizedPath } from "@/lib/site-url";
 import AuthDashboardLink from "./AuthDashboardLink";
+import LandingHeroMedia from "./LandingHeroMedia";
 import LandingVideo from "./LandingVideo";
 import HomePricingSection, { LandingPricingSkeleton } from "./HomePricingSection";
 import HomePopularDtcSection from "./HomePopularDtcSection";
@@ -10,6 +12,7 @@ type Props = { locale: string };
 
 /** Ролики кладутся в `frontend/public/vidio/` (раздача как статика); без файлов сеть будет без шторма повторов за счёт LandingVideo. */
 const HERO_PREVIEW_VIDEO_SRC = "/vidio/preview.mp4";
+const HERO_PREVIEW_VIDEO_WEBM_SRC = "/vidio/preview.av1.webm";
 const HERO_PREVIEW_POSTER_SRC = "/landing/hero-slide-diagnostics.png";
 const FEATURES_HEADING_VIDEO_SRC = "/vidio/chatvideo.mp4";
 const FEATURE_LIVE_VIDEO_SRC = "/vidio/realtime.mp4";
@@ -22,6 +25,11 @@ const HERO_GRAIN_BG = [
   `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.15' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
   `url("data:image/svg+xml,%3Csvg viewBox='0 0 128 128' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E")`,
 ].join(", ");
+
+/** Локальные PNG — стабильный рендер иконок ОС (без глифов шрифта в разных браузерах). */
+const PLATFORM_ICON_WINDOWS = "/landing/platform-windows.png";
+const PLATFORM_ICON_MACOS = "/landing/platform-macos.png";
+const PLATFORM_ICON_LINUX = "/landing/platform-linux.png";
 
 const BRAND_SLUGS = [
   "toyota",
@@ -49,14 +57,9 @@ export default async function HomePageShell({ locale }: Props) {
   return (
     <div className="home-page">
       <section
-        className="landing-hero"
+        className="landing-hero landing-hero--bleed"
         style={{
-          width: "100vw",
           position: "relative",
-          left: "50%",
-          right: "50%",
-          marginLeft: "-50vw",
-          marginRight: "-50vw",
           padding: "clamp(48px, 6vw, 88px) clamp(16px, 4vw, 32px) clamp(56px, 7vw, 96px)",
           overflow: "hidden",
           backgroundColor: "var(--landing-bg)",
@@ -64,24 +67,11 @@ export default async function HomePageShell({ locale }: Props) {
         }}
       >
         <div className="landing-hero__video-bg" style={{ position: "absolute", inset: 0, zIndex: 0, overflow: "hidden" }} aria-hidden>
-          <LandingVideo
+          <LandingHeroMedia
+            webmSrc={HERO_PREVIEW_VIDEO_WEBM_SRC}
             mp4Src={HERO_PREVIEW_VIDEO_SRC}
             poster={HERO_PREVIEW_POSTER_SRC}
-            priority="hero"
             className="landing-hero__video-bg-el"
-            preload="none"
-            style={{
-              position: "absolute",
-              inset: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              objectPosition: "center",
-              pointerEvents: "none",
-              display: "block",
-              transform: "scale(1.08)",
-              filter: "blur(6px)",
-            }}
           />
         </div>
         <div className="landing-hero__scrim" style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", backgroundImage: HERO_SCRIM_BG }} aria-hidden />
@@ -143,21 +133,42 @@ export default async function HomePageShell({ locale }: Props) {
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
               <a href={localizedPath(locale, "/download")} className="landing-store-btn landing-store-btn--primary" aria-label={t("hero.platformWindowsAria")}>
-                <span aria-hidden>⊞</span>
+                <Image
+                  src={PLATFORM_ICON_WINDOWS}
+                  width={22}
+                  height={22}
+                  alt=""
+                  className="landing-store-btn__platform-icon"
+                  priority
+                />
                 <span className="landing-store-btn__text">
                   <span className="landing-store-btn__kicker">{t("hero.platformKicker")}</span>
                   <span className="landing-store-btn__label">{t("hero.platformWindowsLabel")}</span>
                 </span>
               </a>
               <a href={localizedPath(locale, "/download")} className="landing-store-btn landing-store-btn--secondary" aria-label={t("hero.platformMacAria")}>
-                <span aria-hidden></span>
+                <Image
+                  src={PLATFORM_ICON_MACOS}
+                  width={22}
+                  height={22}
+                  alt=""
+                  className="landing-store-btn__platform-icon"
+                  priority
+                />
                 <span className="landing-store-btn__text">
                   <span className="landing-store-btn__kicker">{t("hero.platformKicker")}</span>
                   <span className="landing-store-btn__label">{t("hero.platformMacLabel")}</span>
                 </span>
               </a>
               <a href={localizedPath(locale, "/download")} className="landing-store-btn landing-store-btn--secondary" aria-label={t("hero.platformLinuxAria")}>
-                <span aria-hidden>◆</span>
+                <Image
+                  src={PLATFORM_ICON_LINUX}
+                  width={22}
+                  height={22}
+                  alt=""
+                  className="landing-store-btn__platform-icon"
+                  priority
+                />
                 <span className="landing-store-btn__text">
                   <span className="landing-store-btn__kicker">{t("hero.platformKicker")}</span>
                   <span className="landing-store-btn__label">{t("hero.platformLinuxLabel")}</span>
@@ -240,6 +251,7 @@ export default async function HomePageShell({ locale }: Props) {
                   height={40}
                   alt=""
                   loading="lazy"
+                  decoding="async"
                   className="landing-ticker__logo"
                 />
               )),

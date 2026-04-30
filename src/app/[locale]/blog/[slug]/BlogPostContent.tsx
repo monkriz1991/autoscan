@@ -6,6 +6,7 @@ import { Title, Text, Badge, Group, Button, Image, Box } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
 import type { BlogPostDetail } from "@/lib/api";
 import { extractDtcCodeFromSlug } from "@/lib/dtc-slug";
+import { stripHeadOnlyTagsFromHtml } from "@/lib/sanitize-rich-html";
 
 type Props = { post: BlogPostDetail };
 
@@ -92,7 +93,7 @@ export default function BlogPostContent({ post }: Props) {
 
       <div
         className="ck-content"
-        dangerouslySetInnerHTML={{ __html: post.body_html }}
+        dangerouslySetInnerHTML={{ __html: stripHeadOnlyTagsFromHtml(post.body_html) }}
       />
     </article>
   );

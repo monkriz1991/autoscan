@@ -3,8 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Box, Stack, Text, Title } from "@mantine/core";
-import { IconBrandWindows } from "@tabler/icons-react";
+import Image from "next/image";
 import { Link } from "@/i18n/navigation";
+
+/** Локальные PNG — стабильный рендер иконок ОС (без внешних CDN и глифов шрифта). */
+const PLATFORM_ICON_WINDOWS = "/landing/platform-windows.png";
+const PLATFORM_ICON_MACOS = "/landing/platform-macos.png";
+const PLATFORM_ICON_LINUX = "/landing/platform-linux.png";
 
 /** Видео-превью на главной (файл из `public/vidio/`). */
 const HERO_PREVIEW_VIDEO_SRC = "/vidio/preview.mp4";
@@ -47,14 +52,9 @@ export default function HeroSection({ authenticated }: Props) {
 
   return (
     <section
-      className="landing-hero"
+      className="landing-hero landing-hero--bleed"
       style={{
-        width: "100vw",
         position: "relative",
-        left: "50%",
-        right: "50%",
-        marginLeft: "-50vw",
-        marginRight: "-50vw",
         padding: "clamp(48px, 6vw, 88px) clamp(16px, 4vw, 32px) clamp(56px, 7vw, 96px)",
         overflow: "hidden",
         backgroundColor: "var(--landing-bg)",
@@ -200,7 +200,14 @@ export default function HeroSection({ authenticated }: Props) {
               className="landing-store-btn landing-store-btn--primary"
               aria-label={t("platformWindowsAria")}
             >
-              <IconBrandWindows size={22} stroke={1.5} aria-hidden />
+              <Image
+                src={PLATFORM_ICON_WINDOWS}
+                width={22}
+                height={22}
+                alt=""
+                className="landing-store-btn__platform-icon"
+                priority
+              />
               <span className="landing-store-btn__text">
                 <span className="landing-store-btn__kicker">{t("platformKicker")}</span>
                 <span className="landing-store-btn__label">{t("platformWindowsLabel")}</span>
@@ -211,12 +218,13 @@ export default function HeroSection({ authenticated }: Props) {
               className="landing-store-btn landing-store-btn--secondary"
               aria-label={t("platformMacAria")}
             >
-              <img
-                src="https://cdn.simpleicons.org/apple/ffffff"
+              <Image
+                src={PLATFORM_ICON_MACOS}
                 width={22}
                 height={22}
                 alt=""
-                loading="eager"
+                className="landing-store-btn__platform-icon"
+                priority
               />
               <span className="landing-store-btn__text">
                 <span className="landing-store-btn__kicker">{t("platformKicker")}</span>
@@ -228,12 +236,13 @@ export default function HeroSection({ authenticated }: Props) {
               className="landing-store-btn landing-store-btn--secondary"
               aria-label={t("platformLinuxAria")}
             >
-              <img
-                src="https://cdn.simpleicons.org/linux/ffffff"
+              <Image
+                src={PLATFORM_ICON_LINUX}
                 width={22}
                 height={22}
                 alt=""
-                loading="eager"
+                className="landing-store-btn__platform-icon"
+                priority
               />
               <span className="landing-store-btn__text">
                 <span className="landing-store-btn__kicker">{t("platformKicker")}</span>

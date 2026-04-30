@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { buildLocalePageMetadata } from "@/lib/seo-metadata";
+import { buildTitle } from "@/lib/seo/titles";
 import { generateCanonicalUrl, localizedPath } from "@/lib/site-url";
 import BlogIndexPosts from "./BlogIndexPosts";
 import BlogPostsSkeleton from "./BlogPostsSkeleton";
@@ -26,20 +27,26 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const sp = await searchParams;
-  const page = firstPageParam(sp.page);
+  const pageRaw = firstPageParam(sp.page);
+  const pageNum = pageRaw ? Math.max(1, parseInt(pageRaw, 10) || 1) : 1;
   const base = await buildLocalePageMetadata(
     locale,
     "/blog",
     "blogTitle",
     "blogDescription",
-    page ? { canonicalQuery: { page } } : undefined,
+    pageRaw ? { canonicalQuery: { page: pageRaw } } : undefined,
   );
+  const titleAbsolute =
+    pageNum > 1 ? buildTitle.blogListPage(locale, pageNum) : buildTitle.blogList(locale);
 
-  if (!page) {
-    return base;
+  if (!pageRaw) {
+    return {
+      ...base,
+      title: { absolute: titleAbsolute },
+    };
   }
 
-  const qSuffix = `?${new URLSearchParams({ page })}`;
+  const qSuffix = `?${new URLSearchParams({ page: pageRaw })}`;
   const languages: Record<string, string> = {};
   for (const loc of routing.locales) {
     languages[loc] = generateCanonicalUrl(`${localizedPath(loc, "/blog")}${qSuffix}`);
@@ -49,6 +56,7 @@ export async function generateMetadata({
 
   return {
     ...base,
+    title: { absolute: titleAbsolute },
     alternates: {
       ...base.alternates,
       canonical,

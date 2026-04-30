@@ -47,9 +47,15 @@ export function buildOpenGraphTwitterBlock(params: {
     },
     twitter: {
       card: "summary_large_image",
+      site: "@aiscanauto",
       title: params.title,
       description: params.description,
-      images: [params.imageUrl],
+      images: [
+        {
+          url: params.imageUrl,
+          alt: params.title,
+        },
+      ],
     },
   };
 }

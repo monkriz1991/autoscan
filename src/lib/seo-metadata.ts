@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { buildOpenGraphTwitterBlock, staticOpenGraphImageAbsoluteUrl } from "@/lib/og-metadata";
 import {
-  alternateLanguageUrls,
   generateCanonicalUrl,
   localizedPath,
 } from "@/lib/site-url";
+import { buildHreflangLinks } from "@/utils/seo";
 
 /**
  * Локализованные title/description + canonical/hreflang для публичных страниц.
@@ -50,8 +50,9 @@ export async function buildLocalePageMetadata(
   const t = await getTranslations({ locale, namespace: "seo" });
   const title = t(titleKey);
   const description = t(descriptionKey);
-  const languages = alternateLanguageUrls(pathWithoutLocale);
-  let canonical = languages[locale];
+  const hreflangLinks = buildHreflangLinks(pathWithoutLocale, { noindex: options?.noindex });
+  const languages = Object.fromEntries(hreflangLinks.map((link) => [link.hreflang, link.href]));
+  let canonical = languages[locale] ?? generateCanonicalUrl(localizedPath(locale, pathWithoutLocale));
   if (options?.canonicalQuery) {
     const qs = new URLSearchParams();
     for (const [k, v] of Object.entries(options.canonicalQuery)) {
@@ -86,7 +87,7 @@ export async function buildLocalePageMetadata(
     description,
     alternates: {
       canonical,
-      languages,
+      ...(options?.noindex === true ? {} : { languages }),
     },
     ...ogTw,
     ...(robotsNoindex !== undefined ? { robots: robotsNoindex } : {}),

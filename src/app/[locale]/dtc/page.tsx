@@ -17,6 +17,8 @@ import {
   localizedPath,
 } from "@/lib/site-url";
 import { routing } from "@/i18n/routing";
+import { buildTitle } from "@/lib/seo/titles";
+import { buildHreflangLinks } from "@/utils/seo";
 import DtcIndexContent from "./DtcIndexContent";
 
 function firstString(v: string | string[] | undefined): string | undefined {
@@ -48,11 +50,17 @@ export async function generateMetadata({
   const hasA = firstString(sp.has_articles);
   const pageNum = firstString(sp.page);
   const filterNoise = Boolean(q || family || hasA);
+  const parsedPage = Number.parseInt(pageNum ?? "", 10);
+  const page = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
+  const hasPageParam = pageNum !== undefined && pageNum !== "";
 
   const t = await getTranslations({ locale, namespace: "seo" });
+  const dtcTitle = hasPageParam
+    ? buildTitle.dtcListPage(page)
+    : buildTitle.dtcList();
   const localized = generateLocalizedMetadata(locale, {
     pathWithoutLocale: "/dtc",
-    title: t("dtcIndexTitle"),
+    title: dtcTitle,
     description: t("dtcIndexDescription"),
     extraKeywords: ["DTC", "OBD2"],
   });
@@ -66,10 +74,17 @@ export async function generateMetadata({
     canonical = generateCanonicalUrlForLocale(locale, "/dtc");
   }
 
-  const langs = alternateLanguageUrls("/dtc");
-  const languages = filterNoise
-    ? Object.fromEntries(routing.locales.map((loc) => [loc, langs[loc]]))
-    : localized.alternates?.languages;
+  const hreflangLinks = buildHreflangLinks("/dtc", {
+    pageParam: !filterNoise && hasPageParam ? page : undefined,
+    noindex: filterNoise,
+  });
+  const languages =
+    hreflangLinks.length > 0
+      ? Object.fromEntries(hreflangLinks.map((link) => [link.hreflang, link.href]))
+      : undefined;
+
+  const { alternates: localizedAlternates, ...localizedRest } = localized;
+  const { languages: _dropInheritedHreflang, ...alternatesSansHreflang } = localizedAlternates ?? {};
 
   const ogTw = buildOpenGraphTwitterBlock({
     locale,
@@ -80,11 +95,12 @@ export async function generateMetadata({
   });
 
   return {
-    ...localized,
+    ...localizedRest,
+    title: { absolute: dtcTitle },
     alternates: {
-      ...localized.alternates,
+      ...alternatesSansHreflang,
       canonical,
-      languages,
+      ...(languages ? { languages } : {}),
     },
     ...ogTw,
     ...(filterNoise

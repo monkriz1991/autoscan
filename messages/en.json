@@ -57,6 +57,7 @@
     "checkoutDescription": "Complete your AIscanAuto plan purchase.",
     "downloadTitle": "Download AI OBD2 scanner app (desktop)",
     "downloadDescription": "Download the AIscanAuto desktop app for Windows, macOS, and Linux—AI car diagnostics and OBD2 scanning on PC.",
+    "widgetEmbedTitle": "Booking widget",
     "blogPostNotFoundTitle": "Article not found",
     "homeKeywords": "AI car diagnostics app, AI OBD2 scanner, AI mechanic app, check engine light codes, OBD2 error codes, ELM327, car diagnostic app",
     "homeOgTitle": "AIscanAuto — Free AI Car Diagnostics & OBD2 Scanner",
@@ -896,7 +897,7 @@
       "f4": {
         "tag": "PRO",
         "title": "Live engine data, beautifully displayed",
-        "body": "Monitor 70+ real-time engine parameters. Customisable dashboard, freeze frame data, and sensor history graphs.",
+        "body": "Monitor real-time engine parameters. Freeze frame data and sensor history graphs.",
         "learnMore": "Learn more →"
       }
     },
@@ -951,7 +952,7 @@
         "n2": "Repair cost estimates",
         "n3": "Predictive maintenance",
         "n4": "AI mechanic chat",
-        "n5": "Full live data (70+ params)",
+        "n5": "Full live data",
         "cta": "Download Free"
       },
       "pro": {
@@ -964,7 +965,7 @@
         "p3": "Repair cost estimates (by region)",
         "p4": "Predictive maintenance alerts",
         "p5": "AI mechanic chat (unlimited)",
-        "p6": "Full live data (70+ parameters)",
+        "p6": "Full live data",
         "p7": "Data export (CSV, PDF)",
         "p8": "Multi-vehicle support (up to 5 cars)",
         "p9": "Priority support",

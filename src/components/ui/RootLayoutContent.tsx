@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "@/i18n/navigation";
+import { auditHeadings } from "@/lib/seo-audit";
 import {
   getLayoutChromeKind,
   type LayoutChromeKind,
@@ -27,6 +28,14 @@ export default function RootLayoutContent({
   const useOwnLayout = hasOwnLayout(pathname);
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
+
+  useEffect(() => {
+    if (process.env.NODE_ENV !== "development") {
+      return;
+    }
+    const id = requestAnimationFrame(() => auditHeadings());
+    return () => cancelAnimationFrame(id);
+  }, [pathname]);
 
   const chromeKind: LayoutChromeKind = mounted
     ? getLayoutChromeKind(pathname)

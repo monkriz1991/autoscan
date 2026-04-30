@@ -9,6 +9,7 @@ export async function generateMetadata({
   const { locale } = await params;
   return buildLocalePageMetadata(locale, "/register", "registerTitle", "registerDescription", {
     noindex: true,
+    robotsFollowWhenNoindex: false,
   });
 }
 

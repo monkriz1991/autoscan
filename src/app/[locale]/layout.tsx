@@ -4,8 +4,10 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import {
+  MIDDLEWARE_CANONICAL_SEARCH_HEADER,
   MIDDLEWARE_PATHNAME_HEADER,
   getLayoutChromeKind,
+  isNoindexUtilityPath,
   shouldOmitLayoutGlobalJsonLd,
 } from "@/lib/middleware-pathname";
 import { getCanonicalUrlFromRequestHeaders } from "@/lib/request-canonical";
@@ -41,11 +43,27 @@ export async function generateMetadata({
     .map((l) => localeToOpenGraphLocale(l));
   const ogImageUrl = staticOpenGraphImageAbsoluteUrl(locale);
 
-  const pathHeader = (await headers()).get(MIDDLEWARE_PATHNAME_HEADER) || "/";
+  const h = await headers();
+  const pathHeader = h.get(MIDDLEWARE_PATHNAME_HEADER) || "/";
+  const pathNorm = pathHeader.replace(/\/+$/, "") || "/";
   const pathForAlternates = pathHeader === "/" || pathHeader === "" ? "" : pathHeader;
+  const isNoindexPage = isNoindexUtilityPath(pathNorm);
   const canonicalUrl = await getCanonicalUrlFromRequestHeaders(locale);
-  /** hreflang: см. `getAlternateLanguages` в `@/lib/site-url` (здесь — запись для Metadata `alternates.languages`). */
-  const languages = alternateLanguageUrls(pathForAlternates);
+  /** Только page= из query (без UTM) — те же alternate, что и канон пагинации DTC/блога. */
+  const canonSearch = h.get(MIDDLEWARE_CANONICAL_SEARCH_HEADER) || "";
+  const pageFromQuery = new URLSearchParams(canonSearch).get("page");
+  const paginatedHreflangSuffix =
+    (pathNorm === "/dtc" || pathNorm === "/blog") &&
+    pageFromQuery &&
+    /^\d+$/.test(pageFromQuery)
+      ? `?page=${pageFromQuery}`
+      : "";
+  const alternates = isNoindexPage
+    ? { canonical: canonicalUrl }
+    : {
+        canonical: canonicalUrl,
+        languages: alternateLanguageUrls(pathForAlternates, paginatedHreflangSuffix),
+      };
   const ogUrl = canonicalUrl;
 
   return {
@@ -55,10 +73,13 @@ export async function generateMetadata({
       template: `%s | ${t("siteName")}`,
     },
     description: t("defaultDescription"),
-    alternates: {
-      canonical: canonicalUrl,
-      languages,
-    },
+    alternates,
+    robots: isNoindexPage
+      ? {
+          index: false,
+          follow: false,
+        }
+      : undefined,
     openGraph: {
       type: "website",
       siteName: "AIscanAuto",
@@ -71,9 +92,10 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
+      site: "@aiscanauto",
       title: t("siteTitle"),
       description: t("defaultDescription"),
-      images: [ogImageUrl],
+      images: [{ url: ogImageUrl, alt: t("siteName") }],
     },
   };
 }

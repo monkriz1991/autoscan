@@ -11,6 +11,28 @@ export const MIDDLEWARE_REQUEST_PATHNAME_HEADER = "x-url-pathname";
 /** Query без UTM/ref — для canonical в layout (сохраняет page и др.). */
 export const MIDDLEWARE_CANONICAL_SEARCH_HEADER = "x-canonical-search";
 
+/** Точные пути (без префикса локали): noindex и без hreflang-кластера в layout. */
+const NOINDEX_EXACT_PATHS = new Set([
+  "/marketing/disclaimer",
+  "/login",
+  "/register",
+  "/logout",
+]);
+
+/** Префиксы путей: приватные и служебные разделы. */
+const NOINDEX_PREFIX_PATHS: readonly string[] = [
+  "/cabinet",
+  "/account",
+  "/billing",
+  "/business",
+  "/checkout",
+  "/auth",
+  "/widget",
+  "/superadmin",
+  "/admin",
+  "/api",
+];
+
 /** Главная [locale]/page.tsx — нормализованный путь равен "/". */
 export function isHomeNormalizedPath(pathWithoutLocale: string): boolean {
   const n = pathWithoutLocale.replace(/\/+$/, "") || "/";
@@ -53,4 +75,19 @@ export function shouldOmitLayoutGlobalJsonLd(pathHeader: string | null | undefin
   if (pathHeader == null || pathHeader === "") return false;
   const n = pathHeader.replace(/\/+$/, "") || "/";
   return n === "/faq" || n === "/pricing";
+}
+
+/** Проверка utility-страниц: noindex и без hreflang alternates в корневом layout. */
+export function isNoindexUtilityPath(pathWithoutLocale: string): boolean {
+  const n = pathWithoutLocale.replace(/\/+$/, "") || "/";
+  if (NOINDEX_EXACT_PATHS.has(n)) {
+    return true;
+  }
+  for (const prefix of NOINDEX_PREFIX_PATHS) {
+    const p = prefix.replace(/\/+$/, "") || "/";
+    if (n === p || n.startsWith(`${p}/`)) {
+      return true;
+    }
+  }
+  return false;
 }

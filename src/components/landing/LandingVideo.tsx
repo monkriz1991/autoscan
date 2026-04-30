@@ -7,10 +7,13 @@ import {
   useState,
   type CSSProperties,
 } from "react";
+import Image from "next/image";
 
 export type LandingVideoPriority = "hero" | "feature";
 
 export type LandingVideoProps = {
+  /** Путь к WebM/AV1 в public (например /vidio/preview.av1.webm). */
+  webmSrc?: string;
   /** Путь к MP4 в public (например /vidio/preview.mp4). */
   mp4Src: string;
   /** Постер до загрузки и при ошибке источника. */
@@ -38,6 +41,7 @@ const ROOT_MARGIN_FEATURE = "0px 0px 480px 0px";
  * при ошибке декодирования/сети остаётся постер без повторных попыток.
  */
 export default function LandingVideo({
+  webmSrc,
   mp4Src,
   poster,
   className,
@@ -110,15 +114,13 @@ export default function LandingVideo({
     if (priority === "hero" && poster) {
       return (
         <div ref={containerRef} style={{ position: "absolute", inset: 0 }}>
-          <img
+          <Image
             src={poster}
             alt=""
+            fill
+            sizes={priority === "hero" ? "100vw" : "(max-width: 900px) 100vw, 50vw"}
             className={className}
-            style={{
-              ...style,
-              pointerEvents: "none",
-              display: "block",
-            }}
+            style={{ ...style, pointerEvents: "none", display: "block" }}
             aria-hidden
           />
         </div>
@@ -133,15 +135,13 @@ export default function LandingVideo({
     return (
       <div ref={containerRef} style={{ position: "absolute", inset: 0 }}>
         {poster ? (
-          <img
+          <Image
             src={poster}
             alt=""
+            fill
+            sizes={priority === "hero" ? "100vw" : "(max-width: 900px) 100vw, 50vw"}
             className={className}
-            style={{
-              ...style,
-              pointerEvents: "none",
-              display: "block",
-            }}
+            style={{ ...style, pointerEvents: "none", display: "block" }}
             aria-hidden
           />
         ) : (
@@ -168,6 +168,7 @@ export default function LandingVideo({
         onError={onVideoError}
         aria-hidden
       >
+        {webmSrc ? <source src={webmSrc} type="video/webm" /> : null}
         <source src={mp4Src} type="video/mp4" />
       </video>
     </div>

@@ -22,7 +22,8 @@
     "requestHistory": "История запросов",
     "faq": "FAQ",
     "download": "Скачать",
-    "dtc": "Коды DTC"
+    "dtc": "Коды DTC",
+    "mainNav": "Основная навигация"
   },
   "notFound": {
     "title": "Страница не найдена",
@@ -1098,5 +1099,43 @@
         "a": "We encrypt data in transit, use secure infrastructure, and do not sell your diagnostic data to third parties. You can review details in our Privacy Policy and manage or delete data from your account settings."
       }
     }
+  },
+  "a11y": {
+    "switchLanguage": "Сменить язык",
+    "openMenu": "Открыть меню",
+    "featureYes": "Есть в тарифе",
+    "featureNo": "Нет в тарифе"
+  },
+  "termsOfService": {
+    "englishBindingNotice": ""
+  },
+  "cabinetSettingsPage": {
+    "title": "Настройки",
+    "userDataSection": "Данные пользователя",
+    "avatarLabel": "Аватар",
+    "avatarPlaceholder": "Выберите изображение",
+    "avatarHint": "JPG, PNG, GIF или WebP. Макс. 5 МБ.",
+    "firstNameLabel": "Имя",
+    "firstNamePlaceholder": "Имя",
+    "lastNameLabel": "Фамилия",
+    "lastNamePlaceholder": "Фамилия",
+    "save": "Сохранить",
+    "successProfile": "Профиль сохранён",
+    "successAvatar": "Аватар загружен",
+    "errorSave": "Не удалось сохранить профиль",
+    "errorAvatar": "Не удалось загрузить аватар"
+  },
+  "widgetBooking": {
+    "title": "Онлайн-запись",
+    "step1": "1. Выберите услугу",
+    "step2": "2. Выберите специалиста",
+    "step3": "3. Подтверждение",
+    "selectCta": "Выбрать",
+    "pickServiceFirst": "Сначала выберите услугу",
+    "noSpecialists": "Нет доступных специалистов",
+    "serviceSelected": "Услуга выбрана ✓",
+    "specialistSelected": "Специалист выбран ✓",
+    "ctaDate": "Перейти к выбору даты",
+    "completePrev": "Завершите предыдущие шаги"
   }
 }

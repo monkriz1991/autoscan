@@ -1,9 +1,9 @@
 "use client";
 
 import { useLayoutEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
-import { Avatar, Burger, Button, Drawer, Menu, Stack } from "@mantine/core";
+import { Avatar, Burger, Button, Divider, Drawer, Group, Menu, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
   IconChartBar,
@@ -15,6 +15,8 @@ import {
 } from "@tabler/icons-react";
 import { isAuthenticated, logout, getMe } from "@/lib/api";
 import type { UserProfile } from "@/lib/api";
+import { routing } from "@/i18n/routing";
+import { localeMenuCodes, type Locale } from "@/i18n";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 const NAV_HREFS = [
@@ -28,6 +30,8 @@ const NAV_HREFS = [
 
 export default function Navbar() {
   const t = useTranslations("nav");
+  const tA11y = useTranslations("a11y");
+  const locale = useLocale() as Locale;
   const pathname = usePathname();
   const router = useRouter();
   const [opened, { toggle, close }] = useDisclosure(false);
@@ -79,7 +83,7 @@ export default function Navbar() {
           <span className="navbar__badge">{t("badge")}</span>
         </div>
 
-        <nav className="navbar__desktop-only" aria-label="Main">
+        <nav className="navbar__desktop-only" aria-label={t("mainNav")}>
           {NAV_HREFS.map(({ href, key }) => (
             <Link key={href} href={href} className={navLinkClass(href)}>
               {t(key)}
@@ -88,6 +92,8 @@ export default function Navbar() {
         </nav>
 
         <div className="navbar__nav">
+          <LanguageSwitcher />
+
           <div className="navbar__cta-wrap">
             <Button
               component={Link}
@@ -112,8 +118,6 @@ export default function Navbar() {
               </>
             )}
           </div>
-
-          <LanguageSwitcher />
 
           {authenticated && (
             <Menu position="bottom-end" shadow="md" width={200}>
@@ -222,6 +226,24 @@ export default function Navbar() {
           >
             {t("ctaDownload")}
           </Button>
+
+          <Divider my="md" label={tA11y("switchLanguage")} labelPosition="center" />
+          <Group gap="xs" justify="center" wrap="wrap">
+            {routing.locales.map((loc) => (
+              <Button
+                key={loc}
+                size="xs"
+                variant={locale === loc ? "filled" : "light"}
+                color={locale === loc ? "dark" : "gray"}
+                onClick={() => {
+                  router.replace(pathname, { locale: loc });
+                  close();
+                }}
+              >
+                {localeMenuCodes[loc as Locale] ?? loc.toUpperCase()}
+              </Button>
+            ))}
+          </Group>
         </Stack>
       </Drawer>
     </header>

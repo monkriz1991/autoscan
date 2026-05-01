@@ -78,6 +78,13 @@ const nextConfig = {
         destination: "/:locale/terms",
         permanent: true,
       },
+      { source: "/marketing/disclaimer", destination: "/terms#disclaimer", permanent: true },
+      { source: "/en/marketing/disclaimer", destination: "/terms#disclaimer", permanent: true },
+      {
+        source: "/:locale(ru|de|pl|es|it)/marketing/disclaimer",
+        destination: "/:locale/terms#disclaimer",
+        permanent: true,
+      },
       { source: "/marketing/privacy", destination: "/privacy", permanent: true },
       { source: "/en/marketing/privacy", destination: "/privacy", permanent: true },
       {

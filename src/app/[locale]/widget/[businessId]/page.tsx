@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import {
   Container,
   Title,
@@ -27,6 +28,7 @@ type Specialist = {
 };
 
 export default function WidgetPage() {
+  const t = useTranslations("widgetBooking");
   const params = useParams();
   const businessId = params.businessId as string;
 
@@ -83,13 +85,12 @@ export default function WidgetPage() {
   return (
     <Container size="sm" py="xl">
       <Title order={2} mb="lg">
-        Онлайн запись
+        {t("title")}
       </Title>
 
       <Accordion variant="separated" defaultValue="services">
-        {/* STEP 1 */}
         <Accordion.Item value="services">
-          <Accordion.Control>1️⃣ Выберите услугу</Accordion.Control>
+          <Accordion.Control>{t("step1")}</Accordion.Control>
 
           <Accordion.Panel>
             <Stack>
@@ -102,7 +103,7 @@ export default function WidgetPage() {
                       size="xs"
                       onClick={() => setSelectedService(service._id)}
                     >
-                      Выбрать
+                      {t("selectCta")}
                     </Button>
                   </Group>
                 </Card>
@@ -111,15 +112,14 @@ export default function WidgetPage() {
           </Accordion.Panel>
         </Accordion.Item>
 
-        {/* STEP 2 */}
         <Accordion.Item value="specialists">
-          <Accordion.Control>2️⃣ Выберите специалиста</Accordion.Control>
+          <Accordion.Control>{t("step2")}</Accordion.Control>
 
           <Accordion.Panel>
             {!selectedService ? (
-              <Text c="dimmed">Сначала выберите услугу</Text>
+              <Text c="dimmed">{t("pickServiceFirst")}</Text>
             ) : filteredSpecialists.length === 0 ? (
-              <Text c="dimmed">Нет доступных специалистов</Text>
+              <Text c="dimmed">{t("noSpecialists")}</Text>
             ) : (
               <Stack>
                 {filteredSpecialists.map((s) => (
@@ -131,7 +131,7 @@ export default function WidgetPage() {
                         size="xs"
                         onClick={() => setSelectedSpecialist(s._id)}
                       >
-                        Выбрать
+                        {t("selectCta")}
                       </Button>
                     </Group>
                   </Card>
@@ -141,20 +141,19 @@ export default function WidgetPage() {
           </Accordion.Panel>
         </Accordion.Item>
 
-        {/* STEP 3 */}
         <Accordion.Item value="confirm">
-          <Accordion.Control>3️⃣ Подтверждение</Accordion.Control>
+          <Accordion.Control>{t("step3")}</Accordion.Control>
 
           <Accordion.Panel>
             {selectedService && selectedSpecialist ? (
               <Stack>
-                <Text>Услуга выбрана ✔</Text>
-                <Text>Специалист выбран ✔</Text>
+                <Text>{t("serviceSelected")}</Text>
+                <Text>{t("specialistSelected")}</Text>
 
-                <Button fullWidth>Перейти к выбору даты 🔥</Button>
+                <Button fullWidth>{t("ctaDate")}</Button>
               </Stack>
             ) : (
-              <Text c="dimmed">Завершите предыдущие шаги</Text>
+              <Text c="dimmed">{t("completePrev")}</Text>
             )}
           </Accordion.Panel>
         </Accordion.Item>

@@ -22,7 +22,8 @@
     "requestHistory": "Anfrageverlauf",
     "faq": "FAQ",
     "download": "Download",
-    "dtc": "DTC-Codes"
+    "dtc": "DTC-Codes",
+    "mainNav": "Hauptnavigation"
   },
   "notFound": {
     "title": "Seite nicht gefunden",
@@ -1098,5 +1099,43 @@
         "a": "We encrypt data in transit, use secure infrastructure, and do not sell your diagnostic data to third parties. You can review details in our Privacy Policy and manage or delete data from your account settings."
       }
     }
+  },
+  "a11y": {
+    "switchLanguage": "Sprache wechseln",
+    "openMenu": "Menü öffnen",
+    "featureYes": "Enthalten",
+    "featureNo": "Nicht enthalten"
+  },
+  "termsOfService": {
+    "englishBindingNotice": "Der folgende Vertragstext ist auf Englisch verfasst und rechtlich maßgeblich. Die deutsche Oberfläche dient der Navigation; bei Abweichungen gilt die englische Fassung."
+  },
+  "cabinetSettingsPage": {
+    "title": "Einstellungen",
+    "userDataSection": "Profildaten",
+    "avatarLabel": "Avatar",
+    "avatarPlaceholder": "Bild auswählen",
+    "avatarHint": "JPG, PNG, GIF oder WebP. Max. 5 MB.",
+    "firstNameLabel": "Vorname",
+    "firstNamePlaceholder": "Vorname",
+    "lastNameLabel": "Nachname",
+    "lastNamePlaceholder": "Nachname",
+    "save": "Speichern",
+    "successProfile": "Profil gespeichert",
+    "successAvatar": "Avatar hochgeladen",
+    "errorSave": "Profil konnte nicht gespeichert werden",
+    "errorAvatar": "Avatar konnte nicht hochgeladen werden"
+  },
+  "widgetBooking": {
+    "title": "Online-Terminbuchung",
+    "step1": "1. Leistung wählen",
+    "step2": "2. Spezialist wählen",
+    "step3": "3. Bestätigung",
+    "selectCta": "Auswählen",
+    "pickServiceFirst": "Bitte zuerst eine Leistung wählen",
+    "noSpecialists": "Keine verfügbaren Spezialisten",
+    "serviceSelected": "Leistung ausgewählt ✓",
+    "specialistSelected": "Spezialist ausgewählt ✓",
+    "ctaDate": "Weiter zur Terminwahl",
+    "completePrev": "Bitte schließen Sie die vorherigen Schritte ab"
   }
 }

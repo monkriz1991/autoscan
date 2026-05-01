@@ -66,7 +66,7 @@ export default function Footer() {
               <Link href="/privacy" className="footer__col-link">
                 {tFooter("privacy")}
               </Link>
-              <Link href="/marketing/disclaimer" className="footer__col-link">
+              <Link href="/terms#disclaimer" className="footer__col-link">
                 {tFooter("disclaimer")}
               </Link>
               <Link href="/contacts" className="footer__col-link">
@@ -81,7 +81,7 @@ export default function Footer() {
           <div className="footer__links">
             <Link href="/terms">{tFooter("terms")}</Link>
             <Link href="/privacy">{tFooter("privacy")}</Link>
-            <Link href="/marketing/disclaimer">{tFooter("disclaimer")}</Link>
+            <Link href="/terms#disclaimer">{tFooter("disclaimer")}</Link>
             <Link href="/contacts">{tFooter("contacts")}</Link>
           </div>
         </div>

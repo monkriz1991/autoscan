@@ -1,0 +1,36 @@
+# AIscanAuto
+
+AIscanAuto is a free AI-powered OBD2 car diagnostic application for Windows, macOS, and Linux.
+
+## What it does
+
+- Reads OBD2 fault codes (DTCs) from any ELM327 adapter
+- Provides AI-generated explanations and repair guidance for diagnostic trouble codes
+- Monitors live engine data (PIDs) in real time
+- Supports 99% of cars manufactured from 1996 onwards
+
+## Key features
+
+- AI diagnostics: natural-language explanations of complex fault codes
+- Live data streaming: real-time sensor readings and PID monitoring
+- Multi-platform: desktop apps for Windows, macOS (Intel & Apple Silicon), and Linux
+- ELM327 compatibility: works with Bluetooth, Wi-Fi, and USB OBD2 adapters
+- Free tier available with paid plans for advanced features
+
+## Target audience
+
+- Car owners performing DIY diagnostics
+- Auto repair shops and mechanics
+- Automotive enthusiasts and tuners
+
+## Languages supported
+
+English, German, Russian, Polish, Spanish, Italian
+
+## Website
+
+https://aiscanauto.com
+
+## Contact
+
+support@aiscanauto.com

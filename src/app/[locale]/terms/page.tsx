@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
-import TermsOfServiceContent from "@/components/marketing/TermsOfServiceContent";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import TermsOfServiceMarkdownBody from "@/components/marketing/TermsOfServiceMarkdownBody";
 import { buildLocalePageMetadata } from "@/lib/seo-metadata";
 import { buildTitle } from "@/lib/seo/titles";
+import { loadTermsMarkdown } from "@/lib/legal-markdown";
 
 export async function generateMetadata({
   params,
@@ -20,5 +21,10 @@ export async function generateMetadata({
 export default async function TermsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return <TermsOfServiceContent />;
+  const t = await getTranslations({ locale, namespace: "termsOfService" });
+  const markdown = loadTermsMarkdown(locale);
+  const showEnglishNotice = locale !== "en" && locale !== "ru";
+  const notice = showEnglishNotice ? t("englishBindingNotice") : "";
+
+  return <TermsOfServiceMarkdownBody notice={notice} markdown={markdown} />;
 }

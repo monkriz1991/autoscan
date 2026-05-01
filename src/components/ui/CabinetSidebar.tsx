@@ -59,6 +59,7 @@ function SidebarNav({ onLinkClick }: { onLinkClick?: () => void }) {
 
 export default function CabinetSidebar() {
   const t = useTranslations("nav");
+  const tA11y = useTranslations("a11y");
   const [opened, { open, close }] = useDisclosure(false);
 
   return (
@@ -70,7 +71,7 @@ export default function CabinetSidebar() {
         <Burger
           opened={opened}
           onClick={open}
-          aria-label="Open menu"
+          aria-label={tA11y("openMenu")}
           size="sm"
         />
         <span className="layout__mobile-header-title">{t("menu")}</span>

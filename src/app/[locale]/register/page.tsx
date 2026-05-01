@@ -356,7 +356,7 @@ function RegisterForm() {
                       {tFooter("privacy")}
                     </Anchor>{" "}
                     {t("acceptAllConjunction")}{" "}
-                    <Anchor component={Link} href="/marketing/disclaimer" size="sm" inherit underline="always">
+                    <Anchor component={Link} href="/terms#disclaimer" size="sm" inherit underline="always">
                       {tFooter("disclaimer")}
                     </Anchor>
                   </Text>

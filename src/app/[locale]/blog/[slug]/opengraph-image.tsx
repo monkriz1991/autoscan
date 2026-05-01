@@ -3,6 +3,7 @@ import { ImageResponse } from "next/og";
 export const alt = "AIscanAuto Blog";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+export const dynamic = "force-dynamic";
 
 function slugToTitle(slug: string): string {
   return slug
@@ -12,12 +13,37 @@ function slugToTitle(slug: string): string {
     .join(" ");
 }
 
+async function fetchBlogTitle(slug: string, locale: string): Promise<string | null> {
+  try {
+    const base = (process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8001/api/v1").replace(
+      /\/$/,
+      "",
+    );
+    const url = `${base}/blog/${encodeURIComponent(slug)}/`;
+    const res = await fetch(url, {
+      credentials: "omit",
+      headers: {
+        "Accept-Language": locale,
+        "X-Locale": locale,
+      },
+      next: { revalidate: 120 },
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as Record<string, unknown>;
+    const title = String(data.localized_title_raw ?? data.title ?? "").trim();
+    return title || null;
+  } catch {
+    return null;
+  }
+}
+
 /**
- * OG для статьи блога: mock UI + tagline + заголовок из slug (без запроса к API — edge-friendly).
+ * OG для статьи блога: mock UI + tagline + заголовок из API (с fallback на slug).
  */
 export default async function Image({ params }: { params: Promise<{ locale: string; slug: string }> }) {
-  const { slug } = await params;
-  const title = slugToTitle(slug);
+  const { locale, slug } = await params;
+  const apiTitle = await fetchBlogTitle(slug, locale);
+  const title = apiTitle || slugToTitle(slug);
 
   return new ImageResponse(
     (

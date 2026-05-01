@@ -22,7 +22,14 @@
     "requestHistory": "Request history",
     "faq": "FAQ",
     "download": "Download",
-    "dtc": "DTC Codes"
+    "dtc": "DTC Codes",
+    "mainNav": "Primary navigation"
+  },
+  "a11y": {
+    "switchLanguage": "Switch language",
+    "openMenu": "Open menu",
+    "featureYes": "Included",
+    "featureNo": "Not included"
   },
   "notFound": {
     "title": "Page not found",
@@ -879,6 +886,38 @@
     "cancelTitle": "Payment cancelled",
     "cancelBody": "You can choose a plan again at any time.",
     "backToPricing": "Back to plans"
+  },
+  "termsOfService": {
+    "englishBindingNotice": ""
+  },
+  "cabinetSettingsPage": {
+    "title": "Settings",
+    "userDataSection": "Profile",
+    "avatarLabel": "Avatar",
+    "avatarPlaceholder": "Choose image",
+    "avatarHint": "JPG, PNG, GIF or WebP. Max 5 MB.",
+    "firstNameLabel": "First name",
+    "firstNamePlaceholder": "First name",
+    "lastNameLabel": "Last name",
+    "lastNamePlaceholder": "Last name",
+    "save": "Save",
+    "successProfile": "Profile saved",
+    "successAvatar": "Avatar uploaded",
+    "errorSave": "Could not save profile",
+    "errorAvatar": "Could not upload avatar"
+  },
+  "widgetBooking": {
+    "title": "Online booking",
+    "step1": "1. Choose a service",
+    "step2": "2. Choose a specialist",
+    "step3": "3. Confirmation",
+    "selectCta": "Select",
+    "pickServiceFirst": "Choose a service first",
+    "noSpecialists": "No specialists available",
+    "serviceSelected": "Service selected ✓",
+    "specialistSelected": "Specialist selected ✓",
+    "ctaDate": "Continue to pick a date",
+    "completePrev": "Complete the previous steps"
   },
   "landing": {
     "schema": {

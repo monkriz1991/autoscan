@@ -206,6 +206,10 @@ body {
   max-width: min(calc(100vw - 2rem), 1920px);
   min-height: 48px;
   box-sizing: border-box;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
 }
 
 .navbar__brand {
@@ -254,6 +258,8 @@ body {
   align-items: center;
   flex-wrap: wrap;
   justify-content: flex-end;
+  /* Не даём шапке «съесть» язык/Download: min-width:0 + flex:1 ломали правый кластер на средних ширинах */
+  flex-shrink: 0;
 }
 
 @media (min-width: 960px) {
@@ -272,6 +278,27 @@ body {
   min-height: 36px;
 }
 
+/* Кнопка языка: контраст на светлой шапке; на узких экранах — только иконка */
+.navbar__lang-btn {
+  color: #0f172a !important;
+  border: 1px solid rgba(30, 37, 110, 0.18);
+  font-weight: 600;
+}
+
+.navbar__lang-btn:hover {
+  background: rgba(30, 37, 110, 0.08) !important;
+}
+
+@media (max-width: 479px) {
+  .navbar__lang-code {
+    display: none;
+  }
+
+  .navbar__lang-slot {
+    min-width: 2.5rem;
+  }
+}
+
 .navbar__desktop-only {
   display: none;
 }
@@ -282,6 +309,7 @@ body {
     align-items: center;
     gap: 4px;
     flex: 1;
+    min-width: 0;
     justify-content: center;
     flex-wrap: wrap;
   }
@@ -3510,4 +3538,61 @@ a.dtc-pagination__link:hover {
 .dtc-pagination__nav {
   min-width: 5.5rem;
   padding: 0 0.75rem;
+}
+
+/* Условия использования (Markdown) — читаемость как у юридических Text size="sm" */
+.terms-markdown {
+  color: var(--text-color, #e5e7eb);
+  font-size: 0.875rem;
+  line-height: 1.65;
+
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0 0 0.35rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 1.25rem 0 0.5rem;
+  }
+
+  p {
+    margin: 0 0 0.65rem;
+    color: var(--text-muted, #a1a7b3);
+  }
+
+  strong {
+    color: var(--text-color, #e5e7eb);
+    font-weight: 600;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid rgba(148, 163, 184, 0.25);
+    margin: 1rem 0;
+  }
+
+  ol,
+  ul {
+    margin: 0.35rem 0 0.65rem;
+    padding-left: 1.25rem;
+    color: var(--text-muted, #a1a7b3);
+  }
+
+  li {
+    margin-bottom: 0.35rem;
+  }
+
+  em {
+    color: #868e96;
+    font-size: 0.8125rem;
+  }
+}
+
+.terms-markdown__link {
+  text-decoration: underline;
+  color: var(--link-color, #93c5fd);
 }

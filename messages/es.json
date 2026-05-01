@@ -22,7 +22,8 @@
     "requestHistory": "Historial de solicitudes",
     "faq": "FAQ",
     "download": "Descargar",
-    "dtc": "Códigos DTC"
+    "dtc": "Códigos DTC",
+    "mainNav": "Navegación principal"
   },
   "notFound": {
     "title": "Página no encontrada",
@@ -1098,5 +1099,43 @@
         "a": "We encrypt data in transit, use secure infrastructure, and do not sell your diagnostic data to third parties. You can review details in our Privacy Policy and manage or delete data from your account settings."
       }
     }
+  },
+  "a11y": {
+    "switchLanguage": "Cambiar idioma",
+    "openMenu": "Abrir menú",
+    "featureYes": "Incluido",
+    "featureNo": "No incluido"
+  },
+  "termsOfService": {
+    "englishBindingNotice": "El texto contractual siguiente está redactado en inglés y es jurídicamente vinculante. La interfaz en español facilita la navegación; en caso de discrepancia, prevalece la versión en inglés."
+  },
+  "cabinetSettingsPage": {
+    "title": "Ajustes",
+    "userDataSection": "Datos del perfil",
+    "avatarLabel": "Avatar",
+    "avatarPlaceholder": "Elegir imagen",
+    "avatarHint": "JPG, PNG, GIF o WebP. Máx. 5 MB.",
+    "firstNameLabel": "Nombre",
+    "firstNamePlaceholder": "Nombre",
+    "lastNameLabel": "Apellidos",
+    "lastNamePlaceholder": "Apellidos",
+    "save": "Guardar",
+    "successProfile": "Perfil guardado",
+    "successAvatar": "Avatar subido",
+    "errorSave": "No se pudo guardar el perfil",
+    "errorAvatar": "No se pudo subir el avatar"
+  },
+  "widgetBooking": {
+    "title": "Reserva online",
+    "step1": "1. Elige un servicio",
+    "step2": "2. Elige un especialista",
+    "step3": "3. Confirmación",
+    "selectCta": "Seleccionar",
+    "pickServiceFirst": "Primero elige un servicio",
+    "noSpecialists": "No hay especialistas disponibles",
+    "serviceSelected": "Servicio seleccionado ✓",
+    "specialistSelected": "Especialista seleccionado ✓",
+    "ctaDate": "Continuar para elegir fecha",
+    "completePrev": "Completa los pasos anteriores"
   }
 }

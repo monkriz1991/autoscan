@@ -13,7 +13,6 @@ export const MIDDLEWARE_CANONICAL_SEARCH_HEADER = "x-canonical-search";
 
 /** Точные пути (без префикса локали): noindex и без hreflang-кластера в layout. */
 const NOINDEX_EXACT_PATHS = new Set([
-  "/marketing/disclaimer",
   "/login",
   "/register",
   "/logout",

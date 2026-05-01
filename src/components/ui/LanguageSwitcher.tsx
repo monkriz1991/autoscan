@@ -1,26 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { Menu, Button } from "@mantine/core";
 import { IconLanguage } from "@tabler/icons-react";
 import { routing } from "@/i18n/routing";
-
-const LOCALE_NAMES: Record<string, string> = {
-  en: "EN",
-  de: "DE",
-  ru: "RU",
-  pl: "PL",
-  it: "IT",
-  es: "ES",
-};
+import { localeMenuCodes, type Locale } from "@/i18n";
 
 export default function LanguageSwitcher() {
-  const locale = useLocale();
+  const locale = useLocale() as Locale;
   const router = useRouter();
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
+  const tA11y = useTranslations("a11y");
 
   useEffect(() => {
     setMounted(true);
@@ -30,22 +23,23 @@ export default function LanguageSwitcher() {
     router.replace(pathname, { locale: newLocale });
   };
 
-  const label = LOCALE_NAMES[locale] ?? locale;
+  const label = localeMenuCodes[locale] ?? locale.toUpperCase();
 
   /* Кнопка того же размера, что и с Menu: слот не схлопывается до гидратации (иначе «прыгает» шапка).
    * Menu ренерим только после mount — иначе id поповера расходятся SSR/клиент. */
   const trigger = (
     <Button
-      variant="subtle"
+      variant="light"
       size="sm"
-      color="silver"
-      leftSection={<IconLanguage size={18} />}
-      aria-label="Switch language"
+      color="gray"
+      className="navbar__lang-btn"
+      leftSection={<IconLanguage size={18} stroke={1.75} />}
+      aria-label={tA11y("switchLanguage")}
       disabled={!mounted}
       tabIndex={mounted ? undefined : -1}
       style={!mounted ? { pointerEvents: "none" } : undefined}
     >
-      {label}
+      <span className="navbar__lang-code">{label}</span>
     </Button>
   );
 
@@ -63,7 +57,7 @@ export default function LanguageSwitcher() {
                 onClick={() => switchLocale(loc)}
                 disabled={locale === loc}
               >
-                {LOCALE_NAMES[loc] ?? loc}
+                {localeMenuCodes[loc as Locale] ?? loc.toUpperCase()}
               </Menu.Item>
             ))}
           </Menu.Dropdown>

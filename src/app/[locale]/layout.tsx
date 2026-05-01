@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
@@ -26,6 +26,12 @@ import { buildStaticGlobalStructuredData } from "@/lib/seo/static-structured-dat
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 import "@/styles/global.scss";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));

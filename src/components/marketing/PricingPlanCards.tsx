@@ -69,6 +69,7 @@ function tierRank(plan: Plan): number {
 type FeatureRowProps = { yes: boolean; compact?: boolean };
 
 function FeatureRowYesNo({ yes, compact }: FeatureRowProps) {
+  const tA11y = useTranslations("a11y");
   const size = compact ? 14 : 16;
   const box = compact ? 22 : 26;
   if (yes) {
@@ -79,7 +80,7 @@ function FeatureRowYesNo({ yes, compact }: FeatureRowProps) {
         variant="light"
         color="teal"
         className="pricing-v2-card__icon pricing-v2-card__icon--yes"
-        aria-label="yes"
+        aria-label={tA11y("featureYes")}
       >
         <IconCheck size={size} stroke={2.5} />
       </ThemeIcon>
@@ -92,7 +93,7 @@ function FeatureRowYesNo({ yes, compact }: FeatureRowProps) {
       variant="light"
       color="gray"
       className="pricing-v2-card__icon pricing-v2-card__icon--no"
-      aria-label="no"
+      aria-label={tA11y("featureNo")}
     >
       <IconX size={size} stroke={2} />
     </ThemeIcon>

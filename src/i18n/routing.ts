@@ -1,8 +1,12 @@
 import { defineRouting } from "next-intl/routing";
 
+/** Единый список локалей (источник правды для middleware, i18n.ts, переключателя языка). */
+export const SUPPORTED_LOCALES = ["en", "ru", "de", "pl", "es", "it"] as const;
+export type AppLocale = (typeof SUPPORTED_LOCALES)[number];
+
 export const routing = defineRouting({
   /** Порядок: default (en), затем остальные — для sitemap/hreflang в едином порядке */
-  locales: ["en", "ru", "de", "pl", "es", "it"],
+  locales: [...SUPPORTED_LOCALES],
   /** Язык по умолчанию и фалбэк для путей без префикса локали */
   defaultLocale: "en",
   /** EN без префикса в URL (/), остальные локали — /de, /ru, … */

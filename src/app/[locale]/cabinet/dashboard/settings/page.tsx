@@ -15,10 +15,12 @@ import {
   Avatar,
   FileInput,
 } from "@mantine/core";
+import { useTranslations } from "next-intl";
 import { getMe, updateMe, uploadAvatar } from "@/lib/api";
 import type { UserProfile } from "@/lib/api";
 
 export default function CabinetSettingsPage() {
+  const t = useTranslations("cabinetSettingsPage");
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -54,9 +56,9 @@ export default function CabinetSettingsPage() {
         last_name: lastName.trim(),
       });
       setUser(updated);
-      setSuccess("Профиль сохранён");
+      setSuccess(t("successProfile"));
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Ошибка сохранения");
+      setError(err instanceof Error ? err.message : t("errorSave"));
     } finally {
       setSaving(false);
     }
@@ -71,10 +73,10 @@ export default function CabinetSettingsPage() {
     try {
       const updated = await uploadAvatar(file);
       setUser(updated);
-      setSuccess("Аватар загружен");
+      setSuccess(t("successAvatar"));
       setAvatarFile(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Ошибка загрузки аватара");
+      setError(err instanceof Error ? err.message : t("errorAvatar"));
     } finally {
       setUploadingAvatar(false);
     }
@@ -90,7 +92,7 @@ export default function CabinetSettingsPage() {
 
   return (
     <Stack gap="xl">
-      <Title order={1}>Настройки</Title>
+      <Title order={1}>{t("title")}</Title>
 
       {error && (
         <Notification color="red" onClose={() => setError("")}>
@@ -105,7 +107,7 @@ export default function CabinetSettingsPage() {
 
       <Card withBorder p="lg" radius="md" shadow="sm">
         <Text size="xs" c="dimmed" tt="uppercase" fw={600} mb="md">
-          Данные пользователя
+          {t("userDataSection")}
         </Text>
         <Group mb="md">
           <Avatar
@@ -118,8 +120,8 @@ export default function CabinetSettingsPage() {
           </Avatar>
           <Stack gap="xs">
             <FileInput
-              label="Аватар"
-              placeholder="Выберите изображение"
+              label={t("avatarLabel")}
+              placeholder={t("avatarPlaceholder")}
               accept="image/jpeg,image/png,image/gif,image/webp"
               value={avatarFile}
               onChange={handleAvatarUpload}
@@ -127,19 +129,19 @@ export default function CabinetSettingsPage() {
               clearable
             />
             <Text size="xs" c="dimmed">
-              JPG, PNG, GIF или WebP. Макс. 5 МБ.
+              {t("avatarHint")}
             </Text>
           </Stack>
         </Group>
         <TextInput
-          label="Имя"
-          placeholder="Имя"
+          label={t("firstNameLabel")}
+          placeholder={t("firstNamePlaceholder")}
           value={firstName}
           onChange={(e) => setFirstName(e.currentTarget.value)}
         />
         <TextInput
-          label="Фамилия"
-          placeholder="Фамилия"
+          label={t("lastNameLabel")}
+          placeholder={t("lastNamePlaceholder")}
           value={lastName}
           onChange={(e) => setLastName(e.currentTarget.value)}
           mt="md"
@@ -151,7 +153,7 @@ export default function CabinetSettingsPage() {
             variant="light"
             size="sm"
           >
-            Сохранить
+            {t("save")}
           </Button>
         </Group>
       </Card>

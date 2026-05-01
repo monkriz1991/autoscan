@@ -53,6 +53,16 @@ export default function middleware(request: NextRequest) {
   const normalizedPathForHeader =
     pathWithoutLocale === "" ? "/" : pathWithoutLocale.replace(/\/+$/, "") || "/";
 
+  if (pathWithoutLocale === "/marketing/terms" || pathWithoutLocale === "/marketing/disclaimer") {
+    const locale = localeMatch?.[1] || routing.defaultLocale;
+    const destUrl = new URL(localizedPath(locale, "/terms"), request.url);
+    destUrl.search = stripTrackingSearchParams(request.nextUrl.searchParams).toString();
+    if (pathWithoutLocale === "/marketing/disclaimer") {
+      destUrl.hash = "disclaimer";
+    }
+    return NextResponse.redirect(destUrl, 301);
+  }
+
   /** /DTC/P0420 и т.п. → /dtc/P0420 одним редиректом (кроме регистра кода DTC). */
   const pathForCase =
     pathWithoutLocale === "" ? "/" : pathWithoutLocale.startsWith("/") ? pathWithoutLocale : `/${pathWithoutLocale}`;

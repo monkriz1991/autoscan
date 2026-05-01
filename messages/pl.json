@@ -22,7 +22,8 @@
     "requestHistory": "Historia zapytań",
     "faq": "FAQ",
     "download": "Pobierz",
-    "dtc": "Kody DTC"
+    "dtc": "Kody DTC",
+    "mainNav": "Nawigacja główna"
   },
   "notFound": {
     "title": "Nie znaleziono strony",
@@ -1098,5 +1099,43 @@
         "a": "We encrypt data in transit, use secure infrastructure, and do not sell your diagnostic data to third parties. You can review details in our Privacy Policy and manage or delete data from your account settings."
       }
     }
+  },
+  "a11y": {
+    "switchLanguage": "Zmień język",
+    "openMenu": "Otwórz menu",
+    "featureYes": "W pakiecie",
+    "featureNo": "Brak w pakiecie"
+  },
+  "termsOfService": {
+    "englishBindingNotice": "Poniższy tekst umowy jest w języku angielskim i ma moc prawną. Polski interfejs ułatwia nawigację; w razie rozbieżności obowiązuje wersja angielska."
+  },
+  "cabinetSettingsPage": {
+    "title": "Ustawienia",
+    "userDataSection": "Dane profilu",
+    "avatarLabel": "Awatar",
+    "avatarPlaceholder": "Wybierz obraz",
+    "avatarHint": "JPG, PNG, GIF lub WebP. Maks. 5 MB.",
+    "firstNameLabel": "Imię",
+    "firstNamePlaceholder": "Imię",
+    "lastNameLabel": "Nazwisko",
+    "lastNamePlaceholder": "Nazwisko",
+    "save": "Zapisz",
+    "successProfile": "Profil zapisany",
+    "successAvatar": "Awatar przesłany",
+    "errorSave": "Nie udało się zapisać profilu",
+    "errorAvatar": "Nie udało się przesłać awatara"
+  },
+  "widgetBooking": {
+    "title": "Rezerwacja online",
+    "step1": "1. Wybierz usługę",
+    "step2": "2. Wybierz specjalistę",
+    "step3": "3. Potwierdzenie",
+    "selectCta": "Wybierz",
+    "pickServiceFirst": "Najpierw wybierz usługę",
+    "noSpecialists": "Brak dostępnych specjalistów",
+    "serviceSelected": "Usługa wybrana ✓",
+    "specialistSelected": "Specjalista wybrany ✓",
+    "ctaDate": "Przejdź do wyboru daty",
+    "completePrev": "Dokończ poprzednie kroki"
   }
 }

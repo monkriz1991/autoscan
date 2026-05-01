@@ -256,10 +256,7 @@ export default async function HomePageShell({ locale }: Props) {
             </p>
           </div>
           <div className="landing-features__heading-video-col">
-            <figure
-              className="landing-features__heading-video-figure"
-              style={{ margin: 0, display: "grid", gap: "0.5rem" }}
-            >
+            <figure className="landing-features__heading-video-figure">
               <div className="landing-features__heading-video-stage" role="img" aria-label={t("features.chatVideoAria")}>
                 <div className="landing-features__heading-video-wrap" aria-hidden>
                   <LandingVideo

@@ -2108,6 +2108,19 @@ section.landing-hero .landing-hero__video-bg-el {
   position: relative;
   background: #0c0e12;
   min-height: clamp(200px, 42vw, 320px);
+  /* Flex: на десктопе даём figure/stage реальную высоту (иначе min-height: 100% у stage ломал процент от «auto» и IO давал 0px). */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Figure на всю колонку; stage растягивается, подпись снизу */
+.landing-features__heading-video-figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  gap: 0.5rem;
 }
 
 @media (min-width: 960px) {
@@ -2123,12 +2136,8 @@ section.landing-hero .landing-hero__video-bg-el {
   width: 100%;
   min-height: clamp(200px, 42vw, 320px);
   height: 100%;
-}
-
-@media (min-width: 960px) {
-  .landing-features__heading-video-stage {
-    min-height: 100%;
-  }
+  flex: 1;
+  min-width: 0;
 }
 
 .landing-features__heading-video-wrap {

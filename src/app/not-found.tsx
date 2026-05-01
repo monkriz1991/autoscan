@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import { Container, Stack, Text, Title } from "@mantine/core";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { localizedPath } from "@/lib/site-url";
 import { staticOpenGraphImageAbsoluteUrl } from "@/lib/og-metadata";
 
@@ -37,26 +36,48 @@ export const metadata: Metadata = {
   },
 };
 
-/**
- * Локализованная 404 внутри `[locale]` (неверная локаль, несуществующий путь).
- * HTTP 404 выставляет Next при вызове notFound() или отсутствии сегмента маршрута.
- */
-export default async function LocaleNotFound() {
+export default async function NotFound() {
   const locale = (await headers()).get("x-next-intl-locale") || "en";
-  setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "notFound" });
 
   return (
-    <Container size="sm" py="xl">
-      <Stack gap="md">
-        <Title order={1}>{t("title")}</Title>
-        <Text c="dimmed">{t("description")}</Text>
-        <Text>
-          <a className="btn-cta-primary" href={localizedPath(locale, "/")}>
-            {t("backHome")}
-          </a>
-        </Text>
-      </Stack>
-    </Container>
+    <div
+      style={{
+        maxWidth: "32rem",
+        margin: "0 auto",
+        padding: "4rem 1.25rem",
+        fontFamily:
+          'system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, sans-serif',
+        color: "#e8eef5",
+        lineHeight: 1.6,
+      }}
+    >
+      <h1
+        style={{
+          fontSize: "1.75rem",
+          fontWeight: 700,
+          margin: "0 0 0.5rem",
+          color: "#e8eef5",
+        }}
+      >
+        {t("title")}
+      </h1>
+      <p style={{ color: "#8b9cb3", fontSize: "1.05rem", margin: "0 0 1.5rem" }}>
+        {t("description")}
+      </p>
+      <a
+        href={localizedPath(locale, "/")}
+        className="btn-cta-primary"
+        style={{
+          display: "inline-block",
+          padding: "0.6rem 1.2rem",
+          borderRadius: "8px",
+          textDecoration: "none",
+          fontWeight: 600,
+        }}
+      >
+        {t("backHome")}
+      </a>
+    </div>
   );
 }

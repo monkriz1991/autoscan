@@ -2,7 +2,10 @@
  * SSR-fallback для JSON-LD страницы тарифов, если недоступен SEO API (см. apps.seo.builders.pricing).
  */
 import type { Plan } from "@/lib/api";
-import { buildStaticWebPageStructuredData } from "@/lib/seo/static-structured-data";
+import {
+  buildStaticWebPageStructuredData,
+  optionalPublicAggregateRatingNode,
+} from "@/lib/seo/static-structured-data";
 import type { StructuredDataDoc } from "@/lib/seo/structured-data";
 
 function softwareAppDisplayName(): string {
@@ -49,6 +52,10 @@ export function buildPricingStructuredDataFromPlans(
   };
   if (appDesc) {
     appNode.description = appDesc;
+  }
+  const agg = optionalPublicAggregateRatingNode();
+  if (agg !== null) {
+    appNode.aggregateRating = agg;
   }
   return {
     "@context": "https://schema.org",

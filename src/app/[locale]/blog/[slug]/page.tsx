@@ -28,7 +28,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
   const t = await getTranslations({ locale, namespace: "seo" });
   const canonicalUrl = generateCanonicalUrlForLocale(locale, `/blog/${slug}`);
-  const rawTitle = post.localized_title_raw.trim();
+  const rawTitle =
+    post.localized_title_raw.trim() || post.title.trim();
   const seoTitle = buildTitle.blogPost(rawTitle);
   const forceNoindex = !seoTitle || post.is_noindex;
   const titleAbsolute = seoTitle ?? CANONICAL_SEO_SITE_NAME;

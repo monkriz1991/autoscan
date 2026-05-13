@@ -7,10 +7,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  return buildLocalePageMetadata(locale, "/register", "registerTitle", "registerDescription", {
-    noindex: true,
-    robotsFollowWhenNoindex: false,
-  });
+  return buildLocalePageMetadata(locale, "/register", "registerTitle", "registerDescription");
 }
 
 export default function RegisterSegmentLayout({ children }: { children: React.ReactNode }) {

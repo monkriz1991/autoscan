@@ -93,6 +93,11 @@ export default async function Image({ params }: { params: Promise<{ locale: stri
         <div style={{ fontSize: 20, color: "#64748b" }}>aiscanauto.com</div>
       </div>
     ),
-    { ...size },
+    {
+      ...size,
+      headers: {
+        "X-Robots-Tag": "noindex, noimageindex",
+      },
+    },
   );
 }

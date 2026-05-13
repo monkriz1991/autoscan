@@ -100,6 +100,8 @@ export function buildStaticGlobalStructuredData(): StructuredDataDoc {
     name,
     publisher: { "@id": orgId },
     potentialAction: websiteSearchAction(base),
+    // GSC: CreativeWork-подтипы с ожиданием image на части шаблонов
+    image: `${base}/og-image.webp`,
   };
 
   return {
@@ -115,6 +117,7 @@ export function buildStaticHomeStructuredData(params: {
   description: string;
 }): StructuredDataDoc {
   const url = params.pageUrl.replace(/\/$/, "");
+  const og = `${getSiteOrigin()}/og-image.webp`;
   return {
     "@context": "https://schema.org",
     "@graph": [
@@ -124,6 +127,7 @@ export function buildStaticHomeStructuredData(params: {
         url,
         name: params.title,
         description: params.description,
+        primaryImageOfPage: { "@type": "ImageObject", url: og },
       },
     ],
   };
@@ -162,6 +166,23 @@ function publicSoftwareFeatureList(): string[] {
   }
 }
 
+/** AggregateRating из публичных env (паритет с Django SEO_AGGREGATE_RATING_*). */
+export function optionalPublicAggregateRatingNode(): Record<string, unknown> | null {
+  const rawVal = (process.env.NEXT_PUBLIC_SEO_AGGREGATE_RATING_VALUE ?? "").trim();
+  const rawCount = (process.env.NEXT_PUBLIC_SEO_AGGREGATE_RATING_COUNT ?? "").trim();
+  if (!rawVal || !rawCount) return null;
+  const count = Number.parseInt(rawCount, 10);
+  if (!Number.isFinite(count) || count <= 0) return null;
+  const normalized = rawVal.replace(",", ".");
+  const num = Number.parseFloat(normalized);
+  if (!Number.isFinite(num) || num <= 0) return null;
+  return {
+    "@type": "AggregateRating",
+    ratingValue: normalized,
+    ratingCount: count,
+  };
+}
+
 /**
  * SoftwareApplication для страницы (главная и т.д.) — fallback без SEO API.
  * Логика близка к apps.seo.builders.software_application._build_fallback_node.
@@ -182,16 +203,22 @@ export function buildStaticSoftwareApplicationStructuredData(params: {
     applicationCategory: "AutomotiveApplication",
     operatingSystem: "Windows, macOS, Linux, Android, iOS",
     description: publicSoftwareDescription(),
+    image: `${base}/og-image.webp`,
     offers: {
       "@type": "Offer",
       price: "0",
       priceCurrency: "USD",
       description: publicSoftwareOfferDescription(),
       url: offerUrl,
+      availability: "https://schema.org/InStock",
     },
   };
   const feats = publicSoftwareFeatureList();
   if (feats.length) node.featureList = feats;
+  const agg = optionalPublicAggregateRatingNode();
+  if (agg !== null) {
+    node.aggregateRating = agg;
+  }
   return {
     "@context": "https://schema.org",
     "@graph": [node],
@@ -285,6 +312,7 @@ export function buildStaticAboutStructuredData(params: {
         name: params.title,
         description: params.description,
         about: { "@id": personId },
+        primaryImageOfPage: { "@type": "ImageObject", url: `${base}/og-image.webp` },
       },
     ],
   };

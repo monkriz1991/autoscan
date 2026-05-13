@@ -12,11 +12,7 @@ export const MIDDLEWARE_REQUEST_PATHNAME_HEADER = "x-url-pathname";
 export const MIDDLEWARE_CANONICAL_SEARCH_HEADER = "x-canonical-search";
 
 /** Точные пути (без префикса локали): noindex и без hreflang-кластера в layout. */
-const NOINDEX_EXACT_PATHS = new Set([
-  "/login",
-  "/register",
-  "/logout",
-]);
+const NOINDEX_EXACT_PATHS = new Set(["/login", "/logout"]);
 
 /** Префиксы путей: приватные и служебные разделы. */
 const NOINDEX_PREFIX_PATHS: readonly string[] = [

@@ -44,6 +44,11 @@ export default async function Image({ params }: { params: Promise<{ locale: stri
         <div style={{ display: "flex", fontSize: 22, color: "#64748b" }}>{`aiscanauto.com/dtc/${upper}`}</div>
       </div>
     ),
-    { ...size },
+    {
+      ...size,
+      headers: {
+        "X-Robots-Tag": "noindex, noimageindex",
+      },
+    },
   );
 }
